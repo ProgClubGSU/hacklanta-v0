@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
+from app.domains.users.router import router as users_router
 
 
 @asynccontextmanager
@@ -35,7 +36,9 @@ def create_app() -> FastAPI:
     async def health_check() -> dict[str, str]:
         return {"status": "ok"}
 
-    # TODO: Include domain routers
+    app.include_router(users_router, prefix="/api/v1")
+
+    # TODO: Include domain routers as they are implemented
     # app.include_router(applicants_router, prefix="/api/v1")
     # app.include_router(contestants_router, prefix="/api/v1")
     # app.include_router(events_router, prefix="/api/v1")
