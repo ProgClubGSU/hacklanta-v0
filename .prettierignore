@@ -1,0 +1,7 @@
+node_modules
+dist
+.astro
+.turbo
+cdk.out
+pnpm-lock.yaml
+services/api

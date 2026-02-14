@@ -1,0 +1,81 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # Step 1: Lint + Type Check
+  # lint:
+  #   name: Lint & Type Check
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: pnpm install --frozen-lockfile
+  #     - run: pnpm turbo lint
+
+  # Step 2: Test
+  # test:
+  #   name: Test
+  #   needs: lint
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: pnpm install --frozen-lockfile
+  #     - run: pnpm turbo test
+
+  # Step 3: Build & Deploy Frontend
+  # deploy-frontend:
+  #   name: Deploy Frontend to Vercel
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: pnpm install --frozen-lockfile
+  #     - run: pnpm turbo build --filter=@hacklanta/web
+  #     - name: Deploy to Vercel
+  #       run: echo "TODO: vercel deploy --prod"
+
+  # Step 4: Build & Push API Docker Image
+  # deploy-api:
+  #   name: Build & Deploy API
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+  #         aws-region: us-east-1
+  #     - name: Login to ECR
+  #       uses: aws-actions/amazon-ecr-login@v2
+  #     - name: Build and push Docker image
+  #       run: |
+  #         docker build -t hacklanta-api ./services/api
+  #         docker tag hacklanta-api:latest ${{ secrets.ECR_REPO }}:latest
+  #         docker push ${{ secrets.ECR_REPO }}:latest
+  #     - name: Deploy to ECS
+  #       run: echo "TODO: aws ecs update-service"
+
+  # Step 5: Run Migrations
+  # migrate:
+  #   name: Run Database Migrations
+  #   needs: deploy-api
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo "TODO: Run alembic upgrade head via ECS task"
+
+  # Step 6: Sentry Release
+  # sentry:
+  #   name: Create Sentry Release
+  #   needs: [deploy-frontend, deploy-api]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: echo "TODO: sentry-cli releases new && upload source maps"
+
+  placeholder:
+    name: Deploy Pipeline (not yet configured)
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploy pipeline steps are commented out — configure secrets first"

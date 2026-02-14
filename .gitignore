@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+.astro/
+.turbo/
+.vercel/
+out/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+*.egg
+.venv/
+venv/
+.uv/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# AWS CDK
+cdk.out/
+
+# Testing
+coverage/
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Sentry
+.sentryclirc
+
+# Misc
+*.log
