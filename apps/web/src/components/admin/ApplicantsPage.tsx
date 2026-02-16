@@ -6,18 +6,21 @@ import StatsOverview from './StatsOverview';
 
 export default function ApplicantsPage() {
   const [selected, setSelected] = useState<ApplicationData | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const handleUpdated = (updated: ApplicationData) => {
     setSelected(updated);
+    // Trigger refresh of table and stats
+    setRefreshKey((prev) => prev + 1);
   };
 
   return (
     <div>
-      <StatsOverview />
+      <StatsOverview key={`stats-${refreshKey}`} />
 
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         <div className={selected ? 'lg:col-span-2' : 'lg:col-span-3'}>
-          <ApplicantTable onSelect={setSelected} />
+          <ApplicantTable key={`table-${refreshKey}`} onSelect={setSelected} />
         </div>
 
         {selected && (

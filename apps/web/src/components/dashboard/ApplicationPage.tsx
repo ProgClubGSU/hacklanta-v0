@@ -16,9 +16,19 @@ export default function ApplicationPage() {
       return;
     }
 
-    const fetchApplication = async () => {
+    const initializeUser = async () => {
       try {
         const token = await getToken();
+
+        // First, sync the user from Clerk to the database (for local dev)
+        // This ensures the user exists in the DB before fetching their application
+        try {
+          await apiFetch('/api/v1/users/sync', { method: 'POST' }, token);
+        } catch (syncError) {
+          console.warn('User sync failed (may already exist):', syncError);
+        }
+
+        // Now fetch their application
         const data = await apiFetch<ApplicationData>('/api/v1/applications/me', {}, token);
         setApplication(data);
       } catch {
@@ -29,7 +39,7 @@ export default function ApplicationPage() {
       }
     };
 
-    fetchApplication();
+    initializeUser();
   }, [isLoaded, isSignedIn, getToken]);
 
   if (!isLoaded || loading) {

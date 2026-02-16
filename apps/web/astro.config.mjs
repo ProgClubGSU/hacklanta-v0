@@ -5,7 +5,14 @@ import tailwindcss from '@tailwindcss/vite';
 import clerk from '@clerk/astro';
 
 export default defineConfig({
-  integrations: [react(), clerk()],
+  integrations: [
+    react(),
+    clerk({
+      appearance: {
+        baseTheme: 'dark',
+      },
+    }),
+  ],
   adapter: node({ mode: 'standalone' }),
   output: 'server',
   vite: {
