@@ -1,7 +1,127 @@
 ---
 // [04] FAQ accordion
+
+const faqs = [
+  {
+    q: 'Who can participate?',
+    a: 'Any college student! You don\'t need to be a CS major or have prior hackathon experience. Beginners are absolutely welcome — we\'ll have workshops to get you started.',
+  },
+  {
+    q: 'How much does it cost?',
+    a: 'Nothing. Hacklanta is completely free. We provide food, swag, workspace, WiFi, and good vibes. All you need is a laptop and the drive to build.',
+  },
+  {
+    q: 'Do I need a team?',
+    a: 'Nope! You can come solo and find a team at the event using our team finder, or you can register with a pre-formed team of up to 4 people.',
+  },
+  {
+    q: 'What can I build?',
+    a: 'Anything! Web apps, mobile apps, hardware projects, games, AI tools — if you can demo it, you can submit it. We\'ll announce specific prize tracks closer to the event.',
+  },
+  {
+    q: 'What should I bring?',
+    a: 'Your laptop, charger, and any hardware you want to hack on. We provide everything else — food, drinks, snacks, WiFi, and power outlets.',
+  },
+  {
+    q: 'How does judging work?',
+    a: 'Teams demo their projects to a panel of judges at the end. Projects are evaluated on creativity, technical complexity, design, and impact. Multiple prize categories means more chances to win.',
+  },
+  {
+    q: 'When and where is it?',
+    a: 'Hacklanta takes place at Georgia State University in Atlanta, GA. Check the countdown timer above for the exact date. Doors open at 9 AM, hacking ends at 8 PM.',
+  },
+  {
+    q: 'Is there a code of conduct?',
+    a: 'Yes. We follow the MLH Code of Conduct. Hacklanta is an inclusive, harassment-free event. We\'re here to build, learn, and have fun together.',
+  },
+];
 ---
 
-<section id="faq">
-  <!-- TODO: FAQ accordion with casino card-flip animations -->
+<section id="faq" class="relative bg-base-black px-4 py-24 md:py-32">
+  <div class="mx-auto max-w-3xl">
+    <!-- Section header -->
+    <div class="faq-header mb-12">
+      <div class="flex items-center gap-3 font-mono text-xs tracking-widest text-text-muted">
+        <span class="text-neon-green">[04]</span>
+        <span class="h-px flex-1 bg-base-border"></span>
+        <span>// faq</span>
+      </div>
+      <h2 class="mt-4 font-display text-4xl font-black text-text-primary md:text-5xl">
+        The <span class="text-neon-green">fine print</span>
+      </h2>
+    </div>
+
+    <!-- FAQ items -->
+    <div class="faq-list space-y-2">
+      {faqs.map((faq, i) => (
+        <details class="faq-item group border border-base-border bg-base-card transition-colors hover:border-neon-green/20">
+          <summary class="flex cursor-pointer items-center justify-between px-5 py-4 font-mono text-sm text-text-primary transition-colors select-none [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center gap-3">
+              <span class="text-text-muted">{String(i + 1).padStart(2, '0')}.</span>
+              <span>{faq.q}</span>
+            </span>
+            <span class="ml-4 shrink-0 text-neon-green transition-transform group-open:rotate-45">+</span>
+          </summary>
+          <div class="border-t border-base-border px-5 py-4">
+            <p class="pl-8 font-mono text-xs leading-relaxed text-text-secondary">
+              {faq.a}
+            </p>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <!-- Still have questions? -->
+    <div class="faq-cta mt-8 text-center">
+      <p class="font-mono text-sm text-text-muted">
+        still have questions? hit us up
+      </p>
+      <div class="mt-3 flex justify-center gap-3">
+        <a
+          href="mailto:hello@hacklanta.com"
+          class="border border-neon-green/50 bg-neon-green/10 px-4 py-2 font-mono text-xs text-neon-green transition-all hover:bg-neon-green/20"
+        >
+          // email
+        </a>
+        <a
+          href="https://discord.gg/progsu"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="border border-base-border bg-base-card px-4 py-2 font-mono text-xs text-text-secondary transition-all hover:border-neon-green/30 hover:text-text-primary"
+        >
+          // discord
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.faq-header', {
+    scrollTrigger: { trigger: '.faq-header', start: 'top 80%' },
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+  });
+
+  gsap.from('.faq-item', {
+    scrollTrigger: { trigger: '.faq-list', start: 'top 80%' },
+    opacity: 0,
+    y: 20,
+    stagger: 0.08,
+    duration: 0.5,
+    ease: 'power2.out',
+  });
+
+  gsap.from('.faq-cta', {
+    scrollTrigger: { trigger: '.faq-cta', start: 'top 85%' },
+    opacity: 0,
+    y: 20,
+    duration: 0.6,
+  });
+</script>

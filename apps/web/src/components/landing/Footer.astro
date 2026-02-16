@@ -1,7 +1,101 @@
 ---
-// Footer
+// Footer — progsu branding, social links, card suit decorations
+const currentYear = new Date().getFullYear();
 ---
 
-<footer id="footer">
-  <!-- TODO: Footer with progsu branding and social links -->
+<footer id="footer" class="border-t border-base-border bg-base-black px-4 py-16">
+  <div class="mx-auto max-w-5xl">
+    <div class="grid gap-10 md:grid-cols-3">
+      <!-- Brand column -->
+      <div>
+        <p class="font-display text-2xl font-black text-text-primary">
+          HACK<span class="text-neon-green">LANTA</span>
+        </p>
+        <p class="mt-2 font-mono text-xs leading-relaxed text-text-muted">
+          A 12-hour hackathon by progsu.<br />
+          Go all in. Build something wild.
+        </p>
+        <div class="mt-4 flex gap-2 text-lg text-text-muted/30">
+          <span class="text-suit-red">♥</span>
+          <span class="text-gold">♠</span>
+          <span class="text-neon-green">♣</span>
+          <span class="text-suit-red">♦</span>
+        </div>
+      </div>
+
+      <!-- Links column -->
+      <div>
+        <p class="mb-3 font-mono text-xs tracking-widest text-text-muted">// LINKS</p>
+        <ul class="space-y-2">
+          <li>
+            <a href="/apply" class="font-mono text-sm text-text-secondary transition-colors hover:text-neon-green">Apply</a>
+          </li>
+          <li>
+            <a href="#schedule" class="font-mono text-sm text-text-secondary transition-colors hover:text-neon-green">Schedule</a>
+          </li>
+          <li>
+            <a href="#faq" class="font-mono text-sm text-text-secondary transition-colors hover:text-neon-green">FAQ</a>
+          </li>
+          <li>
+            <a href="#sponsors" class="font-mono text-sm text-text-secondary transition-colors hover:text-neon-green">Sponsors</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social column -->
+      <div>
+        <p class="mb-3 font-mono text-xs tracking-widest text-text-muted">// CONNECT</p>
+        <ul class="space-y-2">
+          <li>
+            <a
+              href="https://instagram.com/progsu"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-sm text-text-secondary transition-colors hover:text-hot-pink"
+            >
+              Instagram
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://discord.gg/progsu"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-sm text-text-secondary transition-colors hover:text-cyan"
+            >
+              Discord
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/progsu"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-sm text-text-secondary transition-colors hover:text-text-primary"
+            >
+              GitHub
+            </a>
+          </li>
+          <li>
+            <a
+              href="mailto:hello@hacklanta.com"
+              class="font-mono text-sm text-text-secondary transition-colors hover:text-gold"
+            >
+              Email
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-base-border pt-8 md:flex-row">
+      <p class="font-mono text-xs text-text-muted">
+        &copy; {currentYear} progsu &mdash; Programming Club @ Georgia State University
+      </p>
+      <p class="font-mono text-xs text-text-muted">
+        built with <span class="text-suit-red">♥</span> and too much caffeine
+      </p>
+    </div>
+  </div>
 </footer>

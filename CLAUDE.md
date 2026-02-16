@@ -590,6 +590,16 @@ volumes:
 
 Run `turbo dev` in root to start the Astro frontend dev server alongside docker-compose for the backend.
 
+### Python Tooling
+
+**Always use `uv` instead of raw `python`/`pip`/`python3` commands.** The project uses `uv` as the Python package manager and runner.
+
+- Run Python scripts: `uv run python script.py`
+- Run tools: `uv run ruff check app/`, `uv run pytest`
+- Install dependencies: `uv sync` or `uv sync --all-extras` (to include dev deps)
+- Add a dependency: `uv add <package>`
+- Never use `python`, `python3`, or `pip` directly — they may not resolve to the correct virtualenv
+
 ---
 
 ## Modularity & Parallel Safety

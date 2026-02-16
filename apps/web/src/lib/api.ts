@@ -1,8 +1,12 @@
 const API_BASE = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
 
-interface ApiResponse<T> {
-  data: T;
-  meta?: { total: number; page: number };
+export interface ApiError {
+  detail: string;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: { total: number; page: number; page_size: number; total_pages: number };
 }
 
 /**
@@ -16,7 +20,7 @@ export async function apiFetch<T>(
   path: string,
   options: RequestInit = {},
   token?: string | null,
-): Promise<ApiResponse<T>> {
+): Promise<T> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>),
@@ -32,7 +36,8 @@ export async function apiFetch<T>(
   });
 
   if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
+    const body = await res.json().catch(() => ({ detail: res.statusText }));
+    throw new Error(body.detail ?? `API error: ${res.status}`);
   }
 
   return res.json();

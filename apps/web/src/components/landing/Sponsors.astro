@@ -1,7 +1,120 @@
 ---
 // [03] Sponsors grid
+
+// Placeholder sponsors — replace with real sponsor data
+const tiers = [
+  {
+    name: 'DIAMOND',
+    color: 'text-cyan',
+    border: 'border-cyan/30',
+    sponsors: [
+      { name: 'Your Company Here', logo: null },
+    ],
+  },
+  {
+    name: 'GOLD',
+    color: 'text-gold',
+    border: 'border-gold/30',
+    sponsors: [
+      { name: 'Sponsor 1', logo: null },
+      { name: 'Sponsor 2', logo: null },
+    ],
+  },
+  {
+    name: 'SILVER',
+    color: 'text-text-secondary',
+    border: 'border-base-border',
+    sponsors: [
+      { name: 'Sponsor 3', logo: null },
+      { name: 'Sponsor 4', logo: null },
+      { name: 'Sponsor 5', logo: null },
+    ],
+  },
+];
 ---
 
-<section id="sponsors">
-  <!-- TODO: Sponsor logos grid -->
+<section id="sponsors" class="relative bg-base-black px-4 py-24 md:py-32">
+  <div class="mx-auto max-w-5xl">
+    <!-- Section header -->
+    <div class="sponsors-header mb-12">
+      <div class="flex items-center gap-3 font-mono text-xs tracking-widest text-text-muted">
+        <span class="text-neon-green">[03]</span>
+        <span class="h-px flex-1 bg-base-border"></span>
+        <span>// sponsors</span>
+      </div>
+      <h2 class="mt-4 font-display text-4xl font-black text-text-primary md:text-5xl">
+        The <span class="text-gold">house</span> backers
+      </h2>
+      <p class="mt-3 font-mono text-sm text-text-muted">
+        These orgs keep the table funded. Big thanks to our sponsors.
+      </p>
+    </div>
+
+    <!-- Sponsor tiers -->
+    <div class="sponsors-grid space-y-10">
+      {tiers.map((tier) => (
+        <div>
+          <p class={`mb-4 text-center font-mono text-xs tracking-widest ${tier.color}`}>
+            ♦ {tier.name} TIER ♦
+          </p>
+          <div class={`grid gap-4 ${
+            tier.sponsors.length === 1 ? 'grid-cols-1 max-w-md mx-auto' :
+            tier.sponsors.length === 2 ? 'grid-cols-2 max-w-2xl mx-auto' :
+            'grid-cols-2 md:grid-cols-3'
+          }`}>
+            {tier.sponsors.map((sponsor) => (
+              <div class={`flex items-center justify-center border ${tier.border} bg-base-card p-8 transition-all hover:bg-base-dark hover:shadow-[0_0_20px_rgba(0,0,0,0.3)]`}>
+                {sponsor.logo ? (
+                  <img src={sponsor.logo} alt={sponsor.name} class="h-12 max-w-[180px] object-contain opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0" />
+                ) : (
+                  <span class="font-mono text-sm text-text-muted">{sponsor.name}</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Become a sponsor CTA -->
+    <div class="sponsors-cta mt-12 text-center">
+      <p class="font-mono text-sm text-text-muted">
+        want to sponsor hacklanta?
+      </p>
+      <a
+        href="mailto:sponsor@hacklanta.com"
+        class="mt-3 inline-block border border-gold/50 bg-gold/10 px-6 py-2 font-mono text-sm text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(255,215,0,0.1)]"
+      >
+        // contact_us
+      </a>
+    </div>
+  </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.sponsors-header', {
+    scrollTrigger: { trigger: '.sponsors-header', start: 'top 80%' },
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+  });
+
+  gsap.from('.sponsors-grid', {
+    scrollTrigger: { trigger: '.sponsors-grid', start: 'top 80%' },
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+  });
+
+  gsap.from('.sponsors-cta', {
+    scrollTrigger: { trigger: '.sponsors-cta', start: 'top 85%' },
+    opacity: 0,
+    y: 20,
+    duration: 0.6,
+  });
+</script>

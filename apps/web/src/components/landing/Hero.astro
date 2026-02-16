@@ -2,6 +2,155 @@
 // Hero section — full viewport, GSAP animated, casino glow
 ---
 
-<section id="hero">
-  <!-- TODO: Implement hero with GSAP ScrollTrigger animations -->
+<section
+  id="hero"
+  class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-base-black px-4 text-center"
+>
+  <!-- Ambient glow effects -->
+  <div
+    class="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-[120px]"
+    style="background: radial-gradient(circle, rgba(0,255,136,0.4) 0%, transparent 70%);"
+  ></div>
+  <div
+    class="pointer-events-none absolute right-0 top-0 h-[400px] w-[400px] rounded-full opacity-10 blur-[100px]"
+    style="background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, transparent 70%);"
+  ></div>
+
+  <!-- Decorative card suits floating -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <span class="hero-suit absolute left-[10%] top-[15%] text-4xl text-suit-red/10">♥</span>
+    <span class="hero-suit absolute right-[12%] top-[20%] text-5xl text-gold/10">♠</span>
+    <span class="hero-suit absolute left-[20%] bottom-[25%] text-3xl text-neon-green/10">♣</span>
+    <span class="hero-suit absolute right-[18%] bottom-[20%] text-4xl text-suit-red/10">♦</span>
+    <span class="hero-suit absolute left-[5%] top-[50%] text-6xl text-gold/5">♠</span>
+    <span class="hero-suit absolute right-[8%] top-[45%] text-5xl text-hot-pink/5">♥</span>
+  </div>
+
+  <div class="relative z-10">
+    <!-- Terminal line -->
+    <p class="hero-line mb-6 font-mono text-sm tracking-widest text-text-muted opacity-0">
+      <span class="text-neon-green">$</span> presented_by <span class="text-gold">progsu</span>
+    </p>
+
+    <!-- Main title -->
+    <h1 class="hero-title font-display text-7xl font-black tracking-tight text-text-primary opacity-0 md:text-9xl">
+      HACK<span class="text-neon-green" style="text-shadow: 0 0 80px rgba(0,255,136,0.3), 0 0 40px rgba(0,255,136,0.1);">LANTA</span>
+    </h1>
+
+    <!-- Subtitle -->
+    <div class="hero-subtitle mt-6 flex flex-wrap items-center justify-center gap-3 font-mono text-lg text-text-secondary opacity-0">
+      <span class="text-suit-red">♦</span>
+      <span>12-hour hackathon</span>
+      <span class="text-suit-red">♥</span>
+      <span>atlanta, ga</span>
+      <span class="text-gold">♠</span>
+    </div>
+
+    <!-- Countdown placeholder -->
+    <div class="hero-countdown mt-10 opacity-0">
+      <div class="flex items-center justify-center gap-4 md:gap-6">
+        <div class="flex flex-col items-center">
+          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
+          <span class="font-mono text-[10px] tracking-widest text-text-muted">DAYS</span>
+        </div>
+        <span class="font-display text-3xl text-text-muted/40">:</span>
+        <div class="flex flex-col items-center">
+          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
+          <span class="font-mono text-[10px] tracking-widest text-text-muted">HOURS</span>
+        </div>
+        <span class="font-display text-3xl text-text-muted/40">:</span>
+        <div class="flex flex-col items-center">
+          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
+          <span class="font-mono text-[10px] tracking-widest text-text-muted">MINS</span>
+        </div>
+        <span class="font-display text-3xl text-text-muted/40">:</span>
+        <div class="flex flex-col items-center">
+          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
+          <span class="font-mono text-[10px] tracking-widest text-text-muted">SECS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="hero-cta mt-12 opacity-0">
+      <a
+        href="/apply"
+        class="group inline-block border-2 border-neon-green bg-neon-green/10 px-8 py-4 font-mono text-lg font-bold text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_30px_rgba(0,255,136,0.3)]"
+      >
+        <span class="mr-2 text-text-muted transition-colors group-hover:text-neon-green">$</span>DEAL_ME_IN
+      </a>
+    </div>
+
+    <!-- Bottom suits -->
+    <p class="hero-suits mt-10 font-mono text-xs text-text-muted opacity-0">
+      ♠ ♦ ♣ ♥ &mdash; go all in &mdash; ♥ ♣ ♦ ♠
+    </p>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0">
+    <div class="flex flex-col items-center gap-2">
+      <span class="font-mono text-[10px] tracking-widest text-text-muted">SCROLL</span>
+      <div class="h-8 w-px animate-pulse bg-gradient-to-b from-neon-green/50 to-transparent"></div>
+    </div>
+  </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+
+  // Hero entrance timeline
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.to('.hero-line', { opacity: 1, y: 0, duration: 0.6 }, 0.2)
+    .to('.hero-title', { opacity: 1, y: 0, duration: 0.8 }, 0.4)
+    .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.6 }, 0.8)
+    .to('.hero-countdown', { opacity: 1, y: 0, duration: 0.6 }, 1.0)
+    .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 1.2)
+    .to('.hero-suits', { opacity: 1, duration: 0.4 }, 1.4)
+    .to('.hero-scroll', { opacity: 1, duration: 0.4 }, 1.6);
+
+  // Floating suit animation
+  gsap.utils.toArray<HTMLElement>('.hero-suit').forEach((suit, i) => {
+    gsap.to(suit, {
+      y: `${15 + i * 5}`,
+      x: `${(i % 2 === 0 ? 1 : -1) * 10}`,
+      rotation: (i % 2 === 0 ? 1 : -1) * 15,
+      duration: 3 + i * 0.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut',
+    });
+  });
+
+  // Countdown timer — set your event date here
+  const EVENT_DATE = new Date('2026-04-01T09:00:00-04:00'); // Example date, adjust as needed
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = EVENT_DATE.getTime() - now.getTime();
+
+    if (diff <= 0) {
+      document.querySelectorAll('.countdown-num').forEach((el) => {
+        el.textContent = '00';
+      });
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const mins = Math.floor((diff / (1000 * 60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+
+    const nums = document.querySelectorAll('.countdown-num');
+    if (nums.length >= 4) {
+      nums[0].textContent = String(days).padStart(2, '0');
+      nums[1].textContent = String(hours).padStart(2, '0');
+      nums[2].textContent = String(mins).padStart(2, '0');
+      nums[3].textContent = String(secs).padStart(2, '0');
+    }
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>

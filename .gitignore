@@ -53,3 +53,4 @@ htmlcov/
 
 # Misc
 *.log
+.vercel

@@ -2,6 +2,119 @@
 // [01] About Hacklanta section
 ---
 
-<section id="about">
-  <!-- TODO: About section with terminal motifs -->
+<section id="about" class="relative bg-base-black px-4 py-24 md:py-32">
+  <div class="mx-auto max-w-5xl">
+    <!-- Section header -->
+    <div class="about-header mb-12">
+      <div class="flex items-center gap-3 font-mono text-xs tracking-widest text-text-muted">
+        <span class="text-neon-green">[01]</span>
+        <span class="h-px flex-1 bg-base-border"></span>
+        <span>// about_hacklanta</span>
+      </div>
+      <h2 class="mt-4 font-display text-4xl font-black text-text-primary md:text-5xl">
+        What's the <span class="text-gold">play</span>?
+      </h2>
+    </div>
+
+    <div class="grid gap-8 md:grid-cols-2">
+      <!-- Left column: description -->
+      <div class="about-card space-y-6">
+        <p class="font-mono text-sm leading-relaxed text-text-secondary">
+          Hacklanta is a <span class="text-neon-green font-bold">12-hour hackathon</span> hosted
+          by <span class="text-gold">progsu</span> (Programming Club @ Georgia State University).
+          Whether you're a seasoned dev or writing your first line of code — this is your table.
+        </p>
+        <p class="font-mono text-sm leading-relaxed text-text-secondary">
+          Build something wild. Learn something new. Break something on purpose.
+          No buy-in required, just <span class="text-hot-pink">pure creative energy</span>
+          and the willingness to go all in.
+        </p>
+        <div class="border-l-2 border-neon-green/30 pl-4">
+          <p class="font-mono text-xs italic text-text-muted">
+            "The house always wins — unless you're the one building the house."
+          </p>
+        </div>
+      </div>
+
+      <!-- Right column: stats -->
+      <div class="about-card grid grid-cols-2 gap-4">
+        <div class="border border-base-border bg-base-card p-5 transition-colors hover:border-neon-green/30">
+          <p class="font-display text-3xl font-black text-neon-green">12</p>
+          <p class="mt-1 font-mono text-[10px] tracking-widest text-text-muted">HOURS</p>
+        </div>
+        <div class="border border-base-border bg-base-card p-5 transition-colors hover:border-gold/30">
+          <p class="font-display text-3xl font-black text-gold">4</p>
+          <p class="mt-1 font-mono text-[10px] tracking-widest text-text-muted">MEMBER TEAMS</p>
+        </div>
+        <div class="border border-base-border bg-base-card p-5 transition-colors hover:border-hot-pink/30">
+          <p class="font-display text-3xl font-black text-hot-pink">∞</p>
+          <p class="mt-1 font-mono text-[10px] tracking-widest text-text-muted">POSSIBILITIES</p>
+        </div>
+        <div class="border border-base-border bg-base-card p-5 transition-colors hover:border-cyan/30">
+          <p class="font-display text-3xl font-black text-cyan">$0</p>
+          <p class="mt-1 font-mono text-[10px] tracking-widest text-text-muted">TO ENTER</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- What to expect -->
+    <div class="about-expect mt-16">
+      <h3 class="mb-6 font-mono text-sm tracking-wider text-neon-green">{'>'} WHAT_TO_EXPECT</h3>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="group border border-base-border bg-base-card p-6 transition-all hover:border-neon-green/30 hover:shadow-[0_0_20px_rgba(0,255,136,0.05)]">
+          <span class="text-2xl">🃏</span>
+          <h4 class="mt-3 font-display text-lg font-bold text-text-primary">Workshops</h4>
+          <p class="mt-2 font-mono text-xs leading-relaxed text-text-muted">
+            Hands-on sessions from industry pros. Level up your stack before you build.
+          </p>
+        </div>
+        <div class="group border border-base-border bg-base-card p-6 transition-all hover:border-gold/30 hover:shadow-[0_0_20px_rgba(255,215,0,0.05)]">
+          <span class="text-2xl">🎰</span>
+          <h4 class="mt-3 font-display text-lg font-bold text-text-primary">Mini-games</h4>
+          <p class="mt-2 font-mono text-xs leading-relaxed text-text-muted">
+            Side quests and challenges throughout the event. Prizes for the bold.
+          </p>
+        </div>
+        <div class="group border border-base-border bg-base-card p-6 transition-all hover:border-hot-pink/30 hover:shadow-[0_0_20px_rgba(255,51,102,0.05)]">
+          <span class="text-2xl">🍕</span>
+          <h4 class="mt-3 font-display text-lg font-bold text-text-primary">Free Food</h4>
+          <p class="mt-2 font-mono text-xs leading-relaxed text-text-muted">
+            Meals and snacks provided all day. Fuel your grind, on the house.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Header animation
+  gsap.from('.about-header', {
+    scrollTrigger: { trigger: '.about-header', start: 'top 80%' },
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+  });
+
+  // Cards stagger
+  gsap.from('.about-card', {
+    scrollTrigger: { trigger: '.about-card', start: 'top 80%' },
+    opacity: 0,
+    y: 40,
+    stagger: 0.2,
+    duration: 0.8,
+  });
+
+  // Expect section
+  gsap.from('.about-expect', {
+    scrollTrigger: { trigger: '.about-expect', start: 'top 80%' },
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+  });
+</script>
