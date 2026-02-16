@@ -1,5 +1,5 @@
 ---
-// [05] FAQ
+// [05] FAQ — casino-noir fine print
 
 const faqs = [
   { q: 'Who can participate?', a: 'Any college student! You don\'t need to be a CS major or have prior hackathon experience. Beginners are absolutely welcome — we\'ll have workshops to get you started.' },
@@ -13,33 +13,118 @@ const faqs = [
 ];
 ---
 
-<section id="faq" class="relative bg-black-card px-4 py-24 md:py-32">
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-light/60 to-transparent"></div>
+<section id="faq" class="relative overflow-hidden bg-black px-4 py-28 md:py-36">
+  <!-- Top gradient border -->
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
 
-  <div class="mx-auto max-w-3xl">
-    <div class="faq-header mb-12">
-      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
-        <span class="text-red/60">[05]</span>
-        <span class="h-px flex-1 bg-border/60"></span>
-        <span>FAQ</span>
+  <!-- Ambient glow — center-left -->
+  <div
+    class="pointer-events-none absolute left-[10%] top-[30%] h-[600px] w-[500px] rounded-full"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.05) 0%, rgba(196,30,58,0.012) 40%, transparent 65%);"
+  ></div>
+  <!-- Gold accent glow — bottom right -->
+  <div
+    class="pointer-events-none absolute right-[15%] bottom-[10%] h-[300px] w-[300px] rounded-full opacity-[0.03] blur-[80px]"
+    style="background: radial-gradient(circle, rgba(201,168,76,0.5) 0%, transparent 70%);"
+  ></div>
+
+  <!-- CSS 3D Floating Poker Chips -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden faq-floaters" aria-hidden="true" style="perspective: 1000px;">
+    <!-- Chip 1 — top right (red, large) -->
+    <div
+      class="faq-floater absolute right-[5%] top-[12%] hidden md:block"
+      style="animation: chip-float 7s ease-in-out infinite;"
+    >
+      <div class="chip chip--lg" style="--chip-base-transform: rotateY(-20deg) rotateX(55deg) rotateZ(-8deg); transform: var(--chip-base-transform);">
+        <div class="chip-face chip-face--front chip-face--lg chip-face--red">
+          <div class="chip-ring chip-ring--outer chip-ring--lg chip-ring--red-outer"></div>
+          <div class="chip-ring chip-ring--inner chip-ring--lg chip-ring--red-inner"></div>
+          <span class="chip-suit chip-suit--lg">&#9824;</span>
+        </div>
+        <div class="chip-edge chip-edge--lg chip-edge--red" style="transform: translateZ(5px);"></div>
+        <div class="chip-edge chip-edge--lg chip-edge--red" style="transform: translateZ(3px);"></div>
+        <div class="chip-edge chip-edge--lg chip-edge--red" style="transform: translateZ(1px);"></div>
+        <div class="chip-edge chip-edge--lg chip-edge--red" style="transform: translateZ(-1px);"></div>
+        <div class="chip-edge chip-edge--lg chip-edge--red" style="transform: translateZ(-3px);"></div>
+        <div class="chip-edge chip-edge--lg chip-edge--red" style="transform: translateZ(-5px);"></div>
+        <div class="chip-face chip-face--back chip-face--lg chip-face--red-back">
+          <div class="chip-ring chip-ring--outer chip-ring--lg chip-ring--red-outer"></div>
+          <span class="chip-suit chip-suit--lg chip-suit--back">&#9824;</span>
+        </div>
       </div>
-      <h2 class="mt-5 font-display text-5xl tracking-wide text-white-pure md:text-6xl">
-        THE FINE PRINT
-      </h2>
     </div>
 
-    <div class="faq-list space-y-1.5">
+    <!-- Chip 2 — left (gold) -->
+    <div
+      class="faq-floater absolute left-[4%] top-[40%] hidden lg:block"
+      style="animation: chip-float 8.5s ease-in-out infinite 1.2s;"
+    >
+      <div class="chip chip--md" style="--chip-base-transform: rotateY(18deg) rotateX(50deg) rotateZ(10deg); transform: var(--chip-base-transform);">
+        <div class="chip-face chip-face--front chip-face--md chip-face--gold">
+          <div class="chip-ring chip-ring--outer chip-ring--md chip-ring--gold-outer"></div>
+          <div class="chip-ring chip-ring--inner chip-ring--md chip-ring--gold-inner"></div>
+          <span class="chip-suit chip-suit--md chip-suit--gold">&#9830;</span>
+        </div>
+        <div class="chip-edge chip-edge--md chip-edge--gold" style="transform: translateZ(4px);"></div>
+        <div class="chip-edge chip-edge--md chip-edge--gold" style="transform: translateZ(2px);"></div>
+        <div class="chip-edge chip-edge--md chip-edge--gold" style="transform: translateZ(0px);"></div>
+        <div class="chip-edge chip-edge--md chip-edge--gold" style="transform: translateZ(-2px);"></div>
+        <div class="chip-edge chip-edge--md chip-edge--gold" style="transform: translateZ(-4px);"></div>
+        <div class="chip-face chip-face--back chip-face--md chip-face--gold-back">
+          <div class="chip-ring chip-ring--outer chip-ring--md chip-ring--gold-outer"></div>
+          <span class="chip-suit chip-suit--md chip-suit--back chip-suit--gold">&#9830;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chip 3 — bottom right (red, small) -->
+    <div
+      class="faq-floater absolute bottom-[18%] right-[6%] hidden md:block"
+      style="animation: chip-float 6.5s ease-in-out infinite 0.8s;"
+    >
+      <div class="chip chip--sm" style="--chip-base-transform: rotateY(14deg) rotateX(58deg) rotateZ(6deg); transform: var(--chip-base-transform);">
+        <div class="chip-face chip-face--front chip-face--sm chip-face--red">
+          <div class="chip-ring chip-ring--outer chip-ring--sm chip-ring--red-outer"></div>
+          <div class="chip-ring chip-ring--inner chip-ring--sm chip-ring--red-inner"></div>
+          <span class="chip-suit chip-suit--sm">&#9829;</span>
+        </div>
+        <div class="chip-edge chip-edge--sm chip-edge--red" style="transform: translateZ(3px);"></div>
+        <div class="chip-edge chip-edge--sm chip-edge--red" style="transform: translateZ(1px);"></div>
+        <div class="chip-edge chip-edge--sm chip-edge--red" style="transform: translateZ(-1px);"></div>
+        <div class="chip-edge chip-edge--sm chip-edge--red" style="transform: translateZ(-3px);"></div>
+        <div class="chip-face chip-face--back chip-face--sm chip-face--red-back">
+          <div class="chip-ring chip-ring--outer chip-ring--sm chip-ring--red-outer"></div>
+          <span class="chip-suit chip-suit--sm chip-suit--back">&#9829;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-3xl">
+    <div class="faq-header mb-14">
+      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+        <span class="text-red/60">[05]</span>
+        <span class="h-px flex-1 bg-gradient-to-r from-border/80 to-transparent"></span>
+        <span>FAQ</span>
+      </div>
+      <h2 class="mt-6 font-display text-5xl tracking-wide text-white-pure md:text-7xl">
+        THE FINE PRINT
+      </h2>
+      <div class="mt-4 h-px w-24 bg-gradient-to-r from-red/60 to-transparent"></div>
+    </div>
+
+    <div class="faq-list space-y-2">
       {faqs.map((faq, i) => (
-        <details class="faq-item group border border-border/50 bg-black/40 transition-all duration-300 hover:border-border-light open:border-red/20 open:bg-black-card/60">
-          <summary class="flex cursor-pointer items-center justify-between px-6 py-4 select-none [&::-webkit-details-marker]:hidden">
-            <span class="flex items-center gap-3">
-              <span class="font-mono text-[10px] text-gray-darker">{String(i + 1).padStart(2, '0')}</span>
-              <span class="font-body text-[14px] font-medium text-white/90">{faq.q}</span>
+        <details class="faq-item group border border-border/40 bg-black-card/20 transition-all duration-500 hover:border-border-light/60 open:border-red/25 open:bg-black-card/50">
+          <summary class="flex cursor-pointer items-center justify-between px-6 py-5 select-none [&::-webkit-details-marker]:hidden">
+            <span class="flex items-center gap-4">
+              <span class="font-mono text-[10px] text-gray-darker transition-colors duration-300 group-open:text-red/60">{String(i + 1).padStart(2, '0')}</span>
+              <span class="font-body text-[14px] font-medium text-white/80 transition-colors duration-300 group-hover:text-white group-open:text-white">{faq.q}</span>
             </span>
-            <span class="ml-4 shrink-0 font-mono text-sm text-red/40 transition-all duration-300 group-hover:text-red/70 group-open:rotate-45 group-open:text-red">+</span>
+            <span class="ml-4 flex h-6 w-6 shrink-0 items-center justify-center font-mono text-sm text-red/30 transition-all duration-500 group-hover:text-red/60 group-open:rotate-45 group-open:text-red">+</span>
           </summary>
-          <div class="border-t border-border/30 px-6 py-4">
-            <p class="pl-8 font-body text-[13px] leading-[1.8] text-gray">
+          <div class="border-t border-border/20 px-6 py-5">
+            <p class="pl-9 font-body text-[13px] leading-[1.9] text-gray">
               {faq.a}
             </p>
           </div>
@@ -47,22 +132,26 @@ const faqs = [
       ))}
     </div>
 
-    <div class="faq-cta mt-10 text-center">
+    <div class="faq-cta mt-12 text-center">
       <p class="font-body text-[13px] text-gray-dark">still have questions?</p>
-      <div class="mt-4 flex justify-center gap-3">
+      <div class="mt-5 flex justify-center gap-3">
         <a
           href="mailto:hello@hacklanta.com"
-          class="group inline-flex items-center gap-2 border border-red/30 bg-red/[0.06] px-5 py-2.5 font-body text-[10px] font-semibold tracking-[0.15em] text-red/80 transition-all duration-300 hover:border-red/50 hover:text-red"
+          class="group relative inline-flex items-center gap-2 overflow-hidden border border-red/30 bg-red/[0.06] px-6 py-3 font-body text-[10px] font-semibold tracking-[0.15em] text-red/80 transition-all duration-500 hover:border-red/50 hover:text-red hover:shadow-[0_0_24px_rgba(196,30,58,0.08)]"
         >
-          EMAIL <span class="transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span>
+          <span class="relative z-10">EMAIL</span>
+          <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span>
+          <span class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-red/[0.06] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
         </a>
         <a
           href="https://discord.gg/progsu"
           target="_blank"
           rel="noopener noreferrer"
-          class="group inline-flex items-center gap-2 border border-border bg-black/40 px-5 py-2.5 font-body text-[10px] font-semibold tracking-[0.15em] text-gray transition-all duration-300 hover:border-border-light hover:text-white"
+          class="group relative inline-flex items-center gap-2 overflow-hidden border border-border/80 bg-black-card/30 px-6 py-3 font-body text-[10px] font-semibold tracking-[0.15em] text-gray transition-all duration-500 hover:border-border-light hover:text-white hover:shadow-[0_0_24px_rgba(0,0,0,0.2)]"
         >
-          DISCORD <span class="transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span>
+          <span class="relative z-10">DISCORD</span>
+          <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span>
+          <span class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.02] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
         </a>
       </div>
     </div>
@@ -76,14 +165,137 @@ const faqs = [
 
   gsap.from('.faq-header', {
     scrollTrigger: { trigger: '.faq-header', start: 'top 80%' },
-    opacity: 0, y: 30, duration: 0.8,
+    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
   });
   gsap.from('.faq-item', {
-    scrollTrigger: { trigger: '.faq-list', start: 'top 80%' },
-    opacity: 0, y: 15, stagger: 0.06, duration: 0.5, ease: 'power2.out',
+    scrollTrigger: { trigger: '.faq-list', start: 'top 82%' },
+    opacity: 0, y: 20, stagger: 0.07, duration: 0.6, ease: 'power3.out',
   });
   gsap.from('.faq-cta', {
     scrollTrigger: { trigger: '.faq-cta', start: 'top 85%' },
-    opacity: 0, y: 20, duration: 0.6,
+    opacity: 0, y: 25, duration: 0.8, ease: 'power3.out',
+  });
+
+  // ===== Parallax on floating elements =====
+  const faqSection = document.getElementById('faq')!;
+  const faqFloaters = faqSection.querySelectorAll<HTMLElement>('.faq-floater');
+  const faqSpeeds = [0.08, -0.06, 0.07];
+
+  const faqAnims = Array.from(faqFloaters).map((el) => ({
+    x: gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power2.out' }),
+    y: gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power2.out' }),
+  }));
+
+  faqSection.addEventListener('mousemove', (e) => {
+    const rect = faqSection.getBoundingClientRect();
+    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    faqAnims.forEach((anim, i) => {
+      const s = faqSpeeds[i];
+      anim.x(nx * rect.width * Math.abs(s) * Math.sign(s));
+      anim.y(ny * rect.height * Math.abs(s) * 0.5 * Math.sign(s));
+    });
+  });
+  faqSection.addEventListener('mouseleave', () => {
+    faqAnims.forEach((a) => { a.x(0); a.y(0); });
+  });
+
+  // ===== Scroll parallax =====
+  const faqScrollSpeeds = [55, -45, 60];
+  faqFloaters.forEach((el, i) => {
+    gsap.to(el, {
+      yPercent: faqScrollSpeeds[i],
+      ease: 'none',
+      scrollTrigger: {
+        trigger: faqSection,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
   });
 </script>
+
+<style>
+  /* ── 3D Poker Chips ── */
+  .chip {
+    transform-style: preserve-3d;
+    transform: var(--chip-base-transform);
+  }
+  .chip--sm  { width: 85px;  height: 85px; }
+  .chip--md  { width: 95px;  height: 95px; }
+  .chip--lg  { width: 110px; height: 110px; }
+  @media (min-width: 1024px) {
+    .chip--md  { width: 125px; height: 125px; }
+    .chip--lg  { width: 145px; height: 145px; }
+  }
+
+  .chip-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+  }
+  .chip-face--front { transform: translateZ(7px); box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+  .chip-face--back  { transform: translateZ(-7px) rotateY(180deg); }
+  .chip-face--sm.chip-face--front { transform: translateZ(5px); }
+  .chip-face--sm.chip-face--back  { transform: translateZ(-5px) rotateY(180deg); }
+
+  .chip-face--red {
+    background: linear-gradient(145deg, rgba(122,16,36,0.85), rgba(196,30,58,0.5) 40%, rgba(122,16,36,0.9));
+    border: 3px solid rgba(196,30,58,0.3);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .chip-face--red-back {
+    background: linear-gradient(145deg, rgba(90,12,26,0.85), rgba(150,20,40,0.4) 40%, rgba(90,12,26,0.9));
+    border: 3px solid rgba(196,30,58,0.15);
+  }
+  .chip-face--gold {
+    background: linear-gradient(145deg, rgba(42,34,16,0.9), rgba(139,118,53,0.4) 40%, rgba(42,34,16,0.95));
+    border: 3px solid rgba(201,168,76,0.3);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .chip-face--gold-back {
+    background: linear-gradient(145deg, rgba(30,24,10,0.9), rgba(100,84,38,0.35) 40%, rgba(30,24,10,0.95));
+    border: 3px solid rgba(201,168,76,0.15);
+  }
+
+  .chip-edge {
+    position: absolute;
+    inset: 2px;
+    border-radius: 50%;
+    backface-visibility: hidden;
+  }
+  .chip-edge--red {
+    background: linear-gradient(180deg, rgba(196,30,58,0.35), rgba(122,16,36,0.6) 30%, rgba(60,8,16,0.8) 70%, rgba(196,30,58,0.25));
+    border: 2px solid rgba(196,30,58,0.2);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
+  }
+  .chip-edge--gold {
+    background: linear-gradient(180deg, rgba(201,168,76,0.3), rgba(139,118,53,0.5) 30%, rgba(42,34,16,0.8) 70%, rgba(201,168,76,0.2));
+    border: 2px solid rgba(201,168,76,0.18);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.4);
+  }
+
+  .chip-ring { position: absolute; border-radius: 50%; }
+  .chip-ring--outer { inset: 10%; border-width: 2px; border-style: dashed; }
+  .chip-ring--inner { inset: 22%; border-width: 1px; border-style: solid; }
+  .chip-ring--red-outer  { border-color: rgba(196,30,58,0.25); }
+  .chip-ring--red-inner  { border-color: rgba(196,30,58,0.12); }
+  .chip-ring--gold-outer { border-color: rgba(201,168,76,0.25); }
+  .chip-ring--gold-inner { border-color: rgba(201,168,76,0.12); }
+
+  .chip-suit { position: relative; z-index: 1; color: rgba(0,0,0,0.35); font-family: var(--font-display); }
+  .chip-suit--gold { color: rgba(0,0,0,0.25); }
+  .chip-suit--back { opacity: 0.5; }
+  .chip-suit--sm { font-size: 16px; }
+  .chip-suit--md { font-size: 18px; }
+  .chip-suit--lg { font-size: 22px; }
+  @media (min-width: 1024px) {
+    .chip-suit--md { font-size: 22px; }
+    .chip-suit--lg { font-size: 26px; }
+  }
+</style>

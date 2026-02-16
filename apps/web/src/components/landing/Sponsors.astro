@@ -1,64 +1,172 @@
 ---
-// [04] Sponsors
+// [04] Sponsors — luxury casino noir
 
 const tiers = [
   {
     name: 'DIAMOND',
     color: 'text-gold',
-    border: 'border-gold-dim/20',
+    border: 'border-gold-dim/25',
+    hoverBorder: 'hover:border-gold/40',
+    hoverGlow: 'hover:shadow-[0_8px_40px_rgba(201,168,76,0.08)]',
     sponsors: [{ name: 'Your Company Here', logo: null }],
   },
   {
     name: 'GOLD',
     color: 'text-red',
     border: 'border-red/15',
+    hoverBorder: 'hover:border-red/35',
+    hoverGlow: 'hover:shadow-[0_8px_40px_rgba(196,30,58,0.06)]',
     sponsors: [{ name: 'Sponsor 1', logo: null }, { name: 'Sponsor 2', logo: null }],
   },
   {
     name: 'SILVER',
     color: 'text-gray',
-    border: 'border-border',
+    border: 'border-border/80',
+    hoverBorder: 'hover:border-border-light',
+    hoverGlow: 'hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]',
     sponsors: [{ name: 'Sponsor 3', logo: null }, { name: 'Sponsor 4', logo: null }, { name: 'Sponsor 5', logo: null }],
   },
 ];
 ---
 
-<section id="sponsors" class="relative bg-black px-4 py-24 md:py-32">
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-light/60 to-transparent"></div>
+<section id="sponsors" class="relative overflow-hidden bg-black px-4 py-28 md:py-36">
+  <!-- Top gradient border -->
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
 
-  <div class="mx-auto max-w-5xl">
-    <div class="sponsors-header mb-14 text-center">
+  <!-- Ambient red glow — left -->
+  <div
+    class="pointer-events-none absolute left-[-8%] top-[40%] h-[600px] w-[600px] rounded-full"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.05) 0%, rgba(196,30,58,0.012) 40%, transparent 65%);"
+  ></div>
+  <!-- Gold glow — top right for Diamond tier -->
+  <div
+    class="pointer-events-none absolute right-[10%] top-[5%] h-[400px] w-[400px] rounded-full opacity-[0.04] blur-[100px]"
+    style="background: radial-gradient(circle, rgba(201,168,76,0.5) 0%, transparent 70%);"
+  ></div>
+
+  <!-- CSS 3D Floating Dice -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden sponsor-floaters" aria-hidden="true" style="perspective: 900px;">
+    <!-- Die 1 — top left, showing faces 5 (front), 3 (top), 2 (right) -->
+    <div
+      class="sponsor-floater absolute left-[3%] top-[8%] hidden md:block"
+      style="animation: dice-float 7.5s ease-in-out infinite;"
+    >
+      <div class="die die--lg" style="--dice-base-transform: rotateX(-25deg) rotateY(30deg) rotateZ(8deg); transform: var(--dice-base-transform);">
+        <div class="die-face die-face--front die-face--lg">
+          <i class="pip pip--lg" style="grid-area: 1/1;"></i>
+          <i class="pip pip--lg" style="grid-area: 1/3;"></i>
+          <i class="pip pip--lg" style="grid-area: 2/2;"></i>
+          <i class="pip pip--lg" style="grid-area: 3/1;"></i>
+          <i class="pip pip--lg" style="grid-area: 3/3;"></i>
+        </div>
+        <div class="die-face die-face--top die-face--lg">
+          <i class="pip pip--lg" style="grid-area: 1/3;"></i>
+          <i class="pip pip--lg" style="grid-area: 2/2;"></i>
+          <i class="pip pip--lg" style="grid-area: 3/1;"></i>
+        </div>
+        <div class="die-face die-face--right die-face--lg">
+          <i class="pip pip--lg" style="grid-area: 1/3;"></i>
+          <i class="pip pip--lg" style="grid-area: 3/1;"></i>
+        </div>
+        <div class="die-face die-face--bottom die-face--lg"></div>
+      </div>
+    </div>
+
+    <!-- Die 2 — right side, showing faces 4 (front), 1 (top), 6 (left) -->
+    <div
+      class="sponsor-floater absolute right-[4%] top-[18%] hidden md:block"
+      style="animation: dice-float 8s ease-in-out infinite 1.5s;"
+    >
+      <div class="die die--md" style="--dice-base-transform: rotateX(-20deg) rotateY(-25deg) rotateZ(-6deg); transform: var(--dice-base-transform);">
+        <div class="die-face die-face--front die-face--md">
+          <i class="pip pip--md" style="grid-area: 1/1;"></i>
+          <i class="pip pip--md" style="grid-area: 1/3;"></i>
+          <i class="pip pip--md" style="grid-area: 3/1;"></i>
+          <i class="pip pip--md" style="grid-area: 3/3;"></i>
+        </div>
+        <div class="die-face die-face--top die-face--md">
+          <i class="pip pip--md" style="grid-area: 2/2;"></i>
+        </div>
+        <div class="die-face die-face--left die-face--md">
+          <i class="pip pip--md" style="grid-area: 1/1;"></i>
+          <i class="pip pip--md" style="grid-area: 1/3;"></i>
+          <i class="pip pip--md" style="grid-area: 2/1;"></i>
+          <i class="pip pip--md" style="grid-area: 2/3;"></i>
+          <i class="pip pip--md" style="grid-area: 3/1;"></i>
+          <i class="pip pip--md" style="grid-area: 3/3;"></i>
+        </div>
+        <div class="die-face die-face--bottom die-face--md"></div>
+      </div>
+    </div>
+
+    <!-- Die 3 — bottom left, showing faces 6 (front), 2 (top), 1 (right) -->
+    <div
+      class="sponsor-floater absolute bottom-[12%] left-[6%] hidden lg:block"
+      style="animation: dice-float 6.5s ease-in-out infinite 0.5s;"
+    >
+      <div class="die die--sm" style="--dice-base-transform: rotateX(-18deg) rotateY(22deg) rotateZ(15deg); transform: var(--dice-base-transform);">
+        <div class="die-face die-face--front die-face--sm">
+          <i class="pip pip--sm" style="grid-area: 1/1;"></i>
+          <i class="pip pip--sm" style="grid-area: 1/3;"></i>
+          <i class="pip pip--sm" style="grid-area: 2/1;"></i>
+          <i class="pip pip--sm" style="grid-area: 2/3;"></i>
+          <i class="pip pip--sm" style="grid-area: 3/1;"></i>
+          <i class="pip pip--sm" style="grid-area: 3/3;"></i>
+        </div>
+        <div class="die-face die-face--top die-face--sm">
+          <i class="pip pip--sm" style="grid-area: 1/3;"></i>
+          <i class="pip pip--sm" style="grid-area: 3/1;"></i>
+        </div>
+        <div class="die-face die-face--right die-face--sm">
+          <i class="pip pip--sm" style="grid-area: 2/2;"></i>
+        </div>
+        <div class="die-face die-face--bottom die-face--sm"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-5xl">
+    <div class="sponsors-header mb-16 text-center">
       <div class="flex items-center justify-center gap-4 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
-        <span class="h-px w-12 bg-gradient-to-r from-transparent to-border"></span>
+        <span class="h-px w-16 bg-gradient-to-r from-transparent to-border/80"></span>
         <span class="text-red/60">[04]</span>
         <span>SPONSORS</span>
-        <span class="h-px w-12 bg-gradient-to-l from-transparent to-border"></span>
+        <span class="h-px w-16 bg-gradient-to-l from-transparent to-border/80"></span>
       </div>
-      <h2 class="mt-5 font-display text-5xl tracking-wide text-white-pure md:text-6xl">
+      <h2 class="mt-6 font-display text-5xl tracking-wide text-white-pure md:text-7xl">
         THE HOUSE BACKERS
       </h2>
-      <p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-gray-dark">
+      <p class="mx-auto mt-5 max-w-md font-body text-sm leading-relaxed text-gray-dark">
         These orgs keep the table funded.
       </p>
     </div>
 
-    <div class="sponsors-grid space-y-10">
-      {tiers.map((tier) => (
+    <div class="sponsors-grid space-y-12">
+      {tiers.map((tier, tierIdx) => (
         <div>
-          <p class={`mb-4 text-center font-mono text-[8px] tracking-[0.4em] ${tier.color}/60`}>
-            &#9670; {tier.name} TIER &#9670;
-          </p>
+          <div class="mb-5 flex items-center justify-center gap-3">
+            <span class="h-px w-8 bg-gradient-to-r from-transparent to-border/60"></span>
+            <p class={`text-center font-mono text-[8px] tracking-[0.4em] ${tier.color}/50`}>
+              &#9670; {tier.name} TIER &#9670;
+            </p>
+            <span class="h-px w-8 bg-gradient-to-l from-transparent to-border/60"></span>
+          </div>
           <div class={`grid gap-3 ${
-            tier.sponsors.length === 1 ? 'grid-cols-1 max-w-md mx-auto' :
+            tier.sponsors.length === 1 ? 'grid-cols-1 max-w-lg mx-auto' :
             tier.sponsors.length === 2 ? 'grid-cols-2 max-w-2xl mx-auto' :
             'grid-cols-2 md:grid-cols-3'
           }`}>
             {tier.sponsors.map((sponsor) => (
-              <div class={`group flex items-center justify-center border ${tier.border} bg-black-card/50 p-10 transition-all duration-300 hover:bg-black-card hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)]`}>
+              <div class={`group relative overflow-hidden border ${tier.border} bg-black/50 transition-all duration-500 ${tier.hoverBorder} ${tier.hoverGlow} hover:bg-black-card/80 ${tierIdx === 0 ? 'p-14' : tierIdx === 1 ? 'p-10' : 'p-8'}`}>
+                {/* Subtle gradient overlay on hover */}
+                <div class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={`background: linear-gradient(135deg, ${tierIdx === 0 ? 'rgba(201,168,76,0.03)' : 'rgba(196,30,58,0.02)'}, transparent 60%);`}></div>
+
                 {sponsor.logo ? (
-                  <img src={sponsor.logo} alt={sponsor.name} class="h-10 max-w-[160px] object-contain opacity-40 grayscale transition-all duration-300 group-hover:opacity-70 group-hover:grayscale-0" />
+                  <img src={sponsor.logo} alt={sponsor.name} class="relative h-10 max-w-[160px] object-contain opacity-40 grayscale transition-all duration-500 group-hover:opacity-70 group-hover:grayscale-0" />
                 ) : (
-                  <span class="font-body text-sm text-gray-darker transition-colors duration-300 group-hover:text-gray-dark">{sponsor.name}</span>
+                  <div class="relative flex items-center justify-center">
+                    <span class="font-body text-sm text-gray-darker transition-colors duration-500 group-hover:text-gray-dark">{sponsor.name}</span>
+                  </div>
                 )}
               </div>
             ))}
@@ -67,14 +175,15 @@ const tiers = [
       ))}
     </div>
 
-    <div class="sponsors-cta mt-14 text-center">
+    <div class="sponsors-cta mt-16 text-center">
       <p class="font-body text-[13px] text-gray-dark">want to sponsor hacklanta?</p>
       <a
         href="mailto:sponsor@hacklanta.com"
-        class="group mt-4 inline-flex items-center gap-2 border border-red/30 bg-red/[0.06] px-7 py-2.5 font-body text-[11px] font-semibold tracking-[0.15em] text-red/80 transition-all duration-300 hover:border-red/50 hover:text-red hover:shadow-[0_0_24px_rgba(196,30,58,0.1)]"
+        class="group relative mt-5 inline-flex items-center gap-2.5 overflow-hidden border border-red/30 bg-red/[0.06] px-8 py-3 font-body text-[11px] font-semibold tracking-[0.15em] text-red/80 transition-all duration-500 hover:border-red/50 hover:text-red hover:shadow-[0_0_30px_rgba(196,30,58,0.1)]"
       >
-        <span>CONTACT US</span>
-        <span class="transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span>
+        <span class="relative z-10">CONTACT US</span>
+        <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+        <span class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-red/[0.06] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
       </a>
     </div>
   </div>
@@ -87,14 +196,138 @@ const tiers = [
 
   gsap.from('.sponsors-header', {
     scrollTrigger: { trigger: '.sponsors-header', start: 'top 80%' },
-    opacity: 0, y: 30, duration: 0.8,
+    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
   });
   gsap.from('.sponsors-grid', {
-    scrollTrigger: { trigger: '.sponsors-grid', start: 'top 80%' },
-    opacity: 0, y: 30, duration: 0.8,
+    scrollTrigger: { trigger: '.sponsors-grid', start: 'top 82%' },
+    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
   });
   gsap.from('.sponsors-cta', {
     scrollTrigger: { trigger: '.sponsors-cta', start: 'top 85%' },
-    opacity: 0, y: 20, duration: 0.6,
+    opacity: 0, y: 25, duration: 0.8, ease: 'power3.out',
+  });
+
+  // ===== Parallax on floating elements =====
+  const sponsorSection = document.getElementById('sponsors')!;
+  const sponsorFloaters = sponsorSection.querySelectorAll<HTMLElement>('.sponsor-floater');
+  const sponsorSpeeds = [0.08, -0.06, 0.07];
+
+  const sponsorAnims = Array.from(sponsorFloaters).map((el) => ({
+    x: gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power2.out' }),
+    y: gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power2.out' }),
+  }));
+
+  sponsorSection.addEventListener('mousemove', (e) => {
+    const rect = sponsorSection.getBoundingClientRect();
+    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    sponsorAnims.forEach((anim, i) => {
+      const s = sponsorSpeeds[i];
+      anim.x(nx * rect.width * Math.abs(s) * Math.sign(s));
+      anim.y(ny * rect.height * Math.abs(s) * 0.5 * Math.sign(s));
+    });
+  });
+  sponsorSection.addEventListener('mouseleave', () => {
+    sponsorAnims.forEach((a) => { a.x(0); a.y(0); });
+  });
+
+  // ===== Scroll parallax =====
+  const sponsorScrollSpeeds = [50, -60, 45];
+  sponsorFloaters.forEach((el, i) => {
+    gsap.to(el, {
+      yPercent: sponsorScrollSpeeds[i],
+      ease: 'none',
+      scrollTrigger: {
+        trigger: sponsorSection,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
   });
 </script>
+
+<style>
+  /* ── 3D Dice ── */
+  .die {
+    transform-style: preserve-3d;
+    transform: var(--dice-base-transform);
+  }
+  .die--lg { width: 80px; height: 80px; }
+  .die--md { width: 60px; height: 60px; }
+  .die--sm { width: 55px; height: 55px; }
+  @media (min-width: 1024px) {
+    .die--lg { width: 100px; height: 100px; }
+  }
+
+  .die-face {
+    position: absolute;
+    border-radius: 12%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    place-items: center;
+    padding: 18%;
+    backface-visibility: hidden;
+  }
+  .die-face--lg { width: 80px; height: 80px; }
+  .die-face--md { width: 60px; height: 60px; }
+  .die-face--sm { width: 55px; height: 55px; }
+  @media (min-width: 1024px) {
+    .die-face--lg { width: 100px; height: 100px; }
+  }
+
+  .die-face--front {
+    background: linear-gradient(145deg, rgba(122,16,36,0.55), rgba(15,8,10,0.9) 50%, rgba(122,16,36,0.45));
+    border: 2px solid rgba(196,30,58,0.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), inset 0 -1px 0 rgba(0,0,0,0.3);
+    transform: translateZ(var(--half));
+  }
+  .die-face--lg { --half: 40px; }
+  .die-face--md { --half: 30px; }
+  .die-face--sm { --half: 27.5px; }
+  @media (min-width: 1024px) {
+    .die-face--lg { --half: 50px; }
+  }
+
+  .die-face--top {
+    background: linear-gradient(180deg, rgba(122,16,36,0.6), rgba(15,8,10,0.85));
+    border: 2px solid rgba(196,30,58,0.15);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    transform: rotateX(90deg) translateZ(var(--half));
+  }
+
+  .die-face--right {
+    background: linear-gradient(270deg, rgba(122,16,36,0.35), rgba(10,5,7,0.95));
+    border: 2px solid rgba(196,30,58,0.1);
+    transform: rotateY(90deg) translateZ(var(--half));
+  }
+
+  .die-face--left {
+    background: linear-gradient(90deg, rgba(122,16,36,0.35), rgba(10,5,7,0.95));
+    border: 2px solid rgba(196,30,58,0.1);
+    transform: rotateY(-90deg) translateZ(var(--half));
+  }
+
+  .die-face--bottom {
+    background: rgba(0,0,0,0.5);
+    border: none;
+    transform: rotateX(-90deg) translateZ(var(--half));
+    filter: blur(8px);
+    opacity: 0.3;
+    border-radius: 50%;
+  }
+
+  .pip {
+    display: block;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(196,30,58,0.5), rgba(196,30,58,0.2));
+    box-shadow: 0 0 4px rgba(196,30,58,0.15), inset 0 1px 1px rgba(255,255,255,0.08);
+  }
+  .pip--lg { width: 10px; height: 10px; }
+  .pip--md { width: 7px; height: 7px; }
+  .pip--sm { width: 6px; height: 6px; }
+  @media (min-width: 1024px) {
+    .pip--lg { width: 12px; height: 12px; }
+  }
+</style>

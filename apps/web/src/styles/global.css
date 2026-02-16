@@ -94,3 +94,23 @@ body::after {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+@keyframes chip-float {
+  0%, 100% { transform: var(--chip-base-transform) translateY(0px); }
+  50% { transform: var(--chip-base-transform) translateY(-10px); }
+}
+
+@keyframes dice-float {
+  0%, 100% { transform: var(--dice-base-transform) translateY(0px); }
+  50% { transform: var(--dice-base-transform) translateY(-10px); }
+}
+
+@keyframes coin-float {
+  0%, 100% { transform: var(--coin-base-transform) translateY(0px); }
+  50% { transform: var(--coin-base-transform) translateY(-8px); }
+}
+
+@keyframes cardback-float {
+  0%, 100% { transform: var(--cardback-base-transform) translateY(0px); }
+  50% { transform: var(--cardback-base-transform) translateY(-9px); }
+}

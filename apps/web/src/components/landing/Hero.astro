@@ -1,6 +1,5 @@
 ---
-// Hero — cinematic dark casino with floating 3D cards + slot machine countdown
-const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+// Hero — cinematic dark casino with floating 3D cards + high-roller countdown
 ---
 
 <section
@@ -94,163 +93,90 @@ const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
       <span class="font-body text-[11px] font-medium tracking-[0.2em] text-gray uppercase md:text-xs">atlanta, ga</span>
     </div>
 
-    <!-- ========== SLOT MACHINE COUNTDOWN ========== -->
+    <!-- ========== HIGH ROLLER COUNTDOWN ========== -->
     <div class="hero-countdown mt-10 opacity-0">
-      <div class="flex items-center justify-center gap-1.5 md:gap-2.5">
+      <div class="flex items-center justify-center gap-4 md:gap-6">
 
         <!-- DAYS -->
-        <div class="flex flex-col items-center">
-          <div class="flex gap-0.5">
-            <div class="slot-frame">
-              <div class="slot-window">
-                <div class="slot-drum" data-reel="d-tens" style="transform-style: preserve-3d;">
-                  {digits.map((n) => (
-                    <span
-                      class="slot-face"
-                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
-                    >{n}</span>
-                  ))}
-                </div>
-                <div class="slot-fade-top"></div>
-                <div class="slot-fade-bottom"></div>
-                <div class="slot-highlight"></div>
-              </div>
+        <div class="timer-unit">
+          <div class="timer-card group">
+            <div class="timer-card-inner">
+              <span class="timer-value" data-unit="days">00</span>
             </div>
-            <div class="slot-frame">
-              <div class="slot-window">
-                <div class="slot-drum" data-reel="d-ones" style="transform-style: preserve-3d;">
-                  {digits.map((n) => (
-                    <span
-                      class="slot-face"
-                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
-                    >{n}</span>
-                  ))}
-                </div>
-                <div class="slot-fade-top"></div>
-                <div class="slot-fade-bottom"></div>
-                <div class="slot-highlight"></div>
-              </div>
-            </div>
+            <!-- Glow line on top -->
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/40 to-transparent"></div>
+            <!-- Corner accents -->
+            <div class="absolute left-0 top-0 h-3 w-px bg-red/30"></div>
+            <div class="absolute left-0 top-0 h-px w-3 bg-red/30"></div>
+            <div class="absolute bottom-0 right-0 h-3 w-px bg-red/20"></div>
+            <div class="absolute bottom-0 right-0 h-px w-3 bg-red/20"></div>
           </div>
-          <span class="mt-2 font-mono text-[7px] tracking-[0.4em] text-gray-darker">DAYS</span>
+          <span class="timer-label">DAYS</span>
         </div>
 
-        <span class="slot-colon font-display text-xl text-border-light md:text-2xl">:</span>
+        <!-- Separator -->
+        <div class="timer-sep">
+          <span class="timer-sep-dot"></span>
+          <span class="timer-sep-dot"></span>
+        </div>
 
         <!-- HOURS -->
-        <div class="flex flex-col items-center">
-          <div class="flex gap-0.5">
-            <div class="slot-frame">
-              <div class="slot-window">
-                <div class="slot-drum" data-reel="h-tens" style="transform-style: preserve-3d;">
-                  {digits.map((n) => (
-                    <span
-                      class="slot-face"
-                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
-                    >{n}</span>
-                  ))}
-                </div>
-                <div class="slot-fade-top"></div>
-                <div class="slot-fade-bottom"></div>
-                <div class="slot-highlight"></div>
-              </div>
+        <div class="timer-unit">
+          <div class="timer-card group">
+            <div class="timer-card-inner">
+              <span class="timer-value" data-unit="hours">00</span>
             </div>
-            <div class="slot-frame">
-              <div class="slot-window">
-                <div class="slot-drum" data-reel="h-ones" style="transform-style: preserve-3d;">
-                  {digits.map((n) => (
-                    <span
-                      class="slot-face"
-                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
-                    >{n}</span>
-                  ))}
-                </div>
-                <div class="slot-fade-top"></div>
-                <div class="slot-fade-bottom"></div>
-                <div class="slot-highlight"></div>
-              </div>
-            </div>
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/40 to-transparent"></div>
+            <div class="absolute left-0 top-0 h-3 w-px bg-red/30"></div>
+            <div class="absolute left-0 top-0 h-px w-3 bg-red/30"></div>
+            <div class="absolute bottom-0 right-0 h-3 w-px bg-red/20"></div>
+            <div class="absolute bottom-0 right-0 h-px w-3 bg-red/20"></div>
           </div>
-          <span class="mt-2 font-mono text-[7px] tracking-[0.4em] text-gray-darker">HOURS</span>
+          <span class="timer-label">HRS</span>
         </div>
 
-        <span class="slot-colon font-display text-xl text-border-light md:text-2xl">:</span>
-
-        <!-- MINS -->
-        <div class="flex flex-col items-center">
-          <div class="flex gap-0.5">
-            <div class="slot-frame">
-              <div class="slot-window">
-                <div class="slot-drum" data-reel="m-tens" style="transform-style: preserve-3d;">
-                  {digits.map((n) => (
-                    <span
-                      class="slot-face"
-                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
-                    >{n}</span>
-                  ))}
-                </div>
-                <div class="slot-fade-top"></div>
-                <div class="slot-fade-bottom"></div>
-                <div class="slot-highlight"></div>
-              </div>
-            </div>
-            <div class="slot-frame">
-              <div class="slot-window">
-                <div class="slot-drum" data-reel="m-ones" style="transform-style: preserve-3d;">
-                  {digits.map((n) => (
-                    <span
-                      class="slot-face"
-                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
-                    >{n}</span>
-                  ))}
-                </div>
-                <div class="slot-fade-top"></div>
-                <div class="slot-fade-bottom"></div>
-                <div class="slot-highlight"></div>
-              </div>
-            </div>
-          </div>
-          <span class="mt-2 font-mono text-[7px] tracking-[0.4em] text-gray-darker">MINS</span>
+        <!-- Separator -->
+        <div class="timer-sep">
+          <span class="timer-sep-dot"></span>
+          <span class="timer-sep-dot"></span>
         </div>
 
-        <span class="slot-colon font-display text-xl text-border-light md:text-2xl">:</span>
-
-        <!-- SECS -->
-        <div class="flex flex-col items-center">
-          <div class="flex gap-0.5">
-            <div class="slot-frame">
-              <div class="slot-window">
-                <div class="slot-drum" data-reel="s-tens" style="transform-style: preserve-3d;">
-                  {digits.map((n) => (
-                    <span
-                      class="slot-face"
-                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
-                    >{n}</span>
-                  ))}
-                </div>
-                <div class="slot-fade-top"></div>
-                <div class="slot-fade-bottom"></div>
-                <div class="slot-highlight"></div>
-              </div>
+        <!-- MINUTES -->
+        <div class="timer-unit">
+          <div class="timer-card group">
+            <div class="timer-card-inner">
+              <span class="timer-value" data-unit="mins">00</span>
             </div>
-            <div class="slot-frame">
-              <div class="slot-window">
-                <div class="slot-drum" data-reel="s-ones" style="transform-style: preserve-3d;">
-                  {digits.map((n) => (
-                    <span
-                      class="slot-face"
-                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
-                    >{n}</span>
-                  ))}
-                </div>
-                <div class="slot-fade-top"></div>
-                <div class="slot-fade-bottom"></div>
-                <div class="slot-highlight"></div>
-              </div>
-            </div>
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/40 to-transparent"></div>
+            <div class="absolute left-0 top-0 h-3 w-px bg-red/30"></div>
+            <div class="absolute left-0 top-0 h-px w-3 bg-red/30"></div>
+            <div class="absolute bottom-0 right-0 h-3 w-px bg-red/20"></div>
+            <div class="absolute bottom-0 right-0 h-px w-3 bg-red/20"></div>
           </div>
-          <span class="mt-2 font-mono text-[7px] tracking-[0.4em] text-gray-darker">SECS</span>
+          <span class="timer-label">MIN</span>
         </div>
+
+        <!-- Separator -->
+        <div class="timer-sep">
+          <span class="timer-sep-dot"></span>
+          <span class="timer-sep-dot"></span>
+        </div>
+
+        <!-- SECONDS -->
+        <div class="timer-unit">
+          <div class="timer-card group">
+            <div class="timer-card-inner">
+              <span class="timer-value timer-value--sec" data-unit="secs">00</span>
+            </div>
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/40 to-transparent"></div>
+            <div class="absolute left-0 top-0 h-3 w-px bg-red/30"></div>
+            <div class="absolute left-0 top-0 h-px w-3 bg-red/30"></div>
+            <div class="absolute bottom-0 right-0 h-3 w-px bg-red/20"></div>
+            <div class="absolute bottom-0 right-0 h-px w-3 bg-red/20"></div>
+          </div>
+          <span class="timer-label">SEC</span>
+        </div>
+
       </div>
     </div>
 
@@ -261,7 +187,7 @@ const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
         class="group relative inline-flex items-center gap-3 overflow-hidden bg-red px-10 py-4 font-body text-sm font-bold tracking-[0.15em] text-white-pure transition-all duration-300 hover:bg-red-bright hover:shadow-[0_0_50px_rgba(196,30,58,0.35)] hover:scale-[1.03]"
       >
         <span class="relative z-10">DEAL ME IN</span>
-        
+
         <span class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
       </a>
     </div>
@@ -277,118 +203,133 @@ const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 </section>
 
 <style>
-  /* Slot machine variables */
-  :root {
-    --drum-radius: 38px;
-    --face-height: 48px;
+  /* ── High Roller Countdown ── */
+  .timer-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
   }
 
-  @media (min-width: 768px) {
-    :root {
-      --drum-radius: 52px;
-      --face-height: 64px;
-    }
-  }
-
-  /* Frame — the metallic border around each digit */
-  .slot-frame {
+  .timer-card {
     position: relative;
-    background: linear-gradient(180deg, #1a1a1c 0%, #0f0f10 50%, #1a1a1c 100%);
-    border: 1px solid rgba(42, 42, 43, 0.6);
-    border-radius: 4px;
+    background: linear-gradient(165deg, rgba(15,15,16,0.95), rgba(8,8,9,0.98));
+    border: 1px solid rgba(196,30,58,0.12);
+    border-radius: 8px;
     padding: 2px;
     box-shadow:
-      0 2px 8px rgba(0, 0, 0, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      0 4px 20px rgba(0,0,0,0.6),
+      0 0 40px rgba(196,30,58,0.03),
+      inset 0 1px 0 rgba(255,255,255,0.03);
+    transition: border-color 0.5s, box-shadow 0.5s;
+  }
+  .timer-card:hover {
+    border-color: rgba(196,30,58,0.25);
+    box-shadow:
+      0 4px 20px rgba(0,0,0,0.6),
+      0 0 50px rgba(196,30,58,0.06);
   }
 
-  /* Window — the viewport that clips the drum */
-  .slot-window {
-    position: relative;
-    width: 32px;
-    height: var(--face-height);
-    overflow: hidden;
-    perspective: 200px;
-    border-radius: 2px;
-    background: #0a0a0b;
-  }
-
-  @media (min-width: 768px) {
-    .slot-window {
-      width: 44px;
-    }
-  }
-
-  /* Drum — the 3D cylinder */
-  .slot-drum {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 50%;
-    left: 0;
-    transform-origin: center center;
-    transform: rotateX(0deg);
-  }
-
-  /* Each digit face on the drum */
-  .slot-face {
-    position: absolute;
-    width: 100%;
-    height: var(--face-height);
-    top: calc(50% - var(--face-height) / 2);
+  .timer-card-inner {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    color: #C41E3A;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
+    width: 56px;
+    height: 64px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(10,10,11,1) 0%, rgba(5,5,5,1) 100%);
+    overflow: hidden;
+    position: relative;
   }
-
-  /* Top fade — slot machine peek effect */
-  .slot-fade-top {
+  .timer-card-inner::after {
+    content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 40%;
-    background: linear-gradient(to bottom, #0a0a0b 0%, transparent 100%);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .slot-fade-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 40%;
-    background: linear-gradient(to top, #0a0a0b 0%, transparent 100%);
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  /* Center highlight line — the "reading line" */
-  .slot-highlight {
-    position: absolute;
+    inset: 0;
     top: 50%;
-    left: 0;
-    right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(196, 30, 58, 0.15), transparent);
-    z-index: 3;
+    background: linear-gradient(90deg, transparent, rgba(196,30,58,0.08), transparent);
     pointer-events: none;
-    transform: translateY(-0.5px);
   }
 
-  .slot-colon {
-    margin-top: -12px;
+  @media (min-width: 768px) {
+    .timer-card-inner {
+      width: 76px;
+      height: 84px;
+    }
+  }
+
+  .timer-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    letter-spacing: 0.06em;
+    color: #C41E3A;
+    text-shadow: 0 0 30px rgba(196,30,58,0.25);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s;
+    line-height: 1;
+  }
+  .timer-value--sec {
+    color: rgba(196,30,58,0.7);
+    text-shadow: 0 0 20px rgba(196,30,58,0.15);
+  }
+
+  @media (min-width: 768px) {
+    .timer-value {
+      font-size: 56px;
+    }
+  }
+
+  /* Tick animation */
+  .timer-value.tick {
+    animation: digit-tick 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes digit-tick {
+    0% { transform: translateY(8px); opacity: 0.4; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  .timer-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    color: var(--color-gray-darker);
+  }
+  @media (min-width: 768px) {
+    .timer-label {
+      font-size: 9px;
+    }
+  }
+
+  /* Separator dots */
+  .timer-sep {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 22px;
+  }
+  .timer-sep-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(196,30,58,0.35);
+    box-shadow: 0 0 8px rgba(196,30,58,0.15);
+    animation: sep-pulse 2s ease-in-out infinite;
+  }
+  .timer-sep-dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  @keyframes sep-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
   }
 </style>
 
 <script>
   import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
 
   // ===== Hero entrance =====
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -410,106 +351,89 @@ const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     ease: 'power2.out',
   });
 
-  // ===== Slot Machine Countdown =====
-  const EVENT_DATE = new Date('2026-04-01T09:00:00-04:00');
+  // ===== Mouse parallax on hero cards =====
+  const hero = document.getElementById('hero')!;
+  const cards = document.querySelectorAll<HTMLElement>('.hero-card');
+  const speeds = [0.1, -0.08, 0.065, -0.12, 0.05];
 
-  // Reel state: tracks cumulative rotation for continuous spinning direction
-  const reelState: Record<string, { rotation: number; currentDigit: number }> = {};
+  const cardAnimations = Array.from(cards).map((el) => ({
+    x: gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power2.out' }),
+    y: gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power2.out' }),
+  }));
 
-  // Get all reel elements
-  const reels = document.querySelectorAll<HTMLElement>('.slot-drum');
-  reels.forEach((reel) => {
-    const id = reel.dataset.reel!;
-    reelState[id] = { rotation: 0, currentDigit: 0 };
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    cardAnimations.forEach((anim, i) => {
+      const s = speeds[i];
+      anim.x(nx * rect.width * Math.abs(s) * Math.sign(s));
+      anim.y(ny * rect.height * Math.abs(s) * 0.6 * Math.sign(s));
+    });
+  });
+  hero.addEventListener('mouseleave', () => {
+    cardAnimations.forEach((anim) => { anim.x(0); anim.y(0); });
   });
 
-  function getReelEl(id: string): HTMLElement | null {
-    return document.querySelector(`[data-reel="${id}"]`);
-  }
-
-  function spinToDigit(id: string, digit: number, animate: boolean, initialDelay = 0) {
-    const el = getReelEl(id);
-    if (!el) return;
-
-    const state = reelState[id];
-
-    if (!animate) {
-      // Initial set — big dramatic spin
-      // Start from 3-5 full rotations ahead, then land on target
-      const spins = 3 + initialDelay * 0.5;
-      const targetRot = -(digit * 36);
-      const startRot = targetRot + 360 * spins;
-
-      gsap.fromTo(
-        el,
-        { rotateX: startRot },
-        {
-          rotateX: targetRot,
-          duration: 1.8 + initialDelay * 0.2,
-          delay: 1.8 + initialDelay * 0.12,
-          ease: 'power3.out',
-        }
-      );
-
-      state.rotation = targetRot;
-      state.currentDigit = digit;
-      return;
-    }
-
-    // Normal tick — continuous spin direction
-    if (digit === state.currentDigit) return;
-
-    // Calculate steps forward in countdown direction
-    let delta = state.currentDigit - digit;
-    if (delta < 0) delta += 10; // wrapping (e.g. 0 → 9)
-    if (delta === 0) delta = 10; // full revolution
-
-    const newRot = state.rotation - delta * 36;
-
-    gsap.to(el, {
-      rotateX: newRot,
-      duration: 0.5,
-      ease: 'back.out(1.2)',
+  // ===== Scroll parallax on hero cards =====
+  const scrollSpeeds = [80, -60, 50, -100, 40];
+  cards.forEach((card, i) => {
+    gsap.to(card, {
+      yPercent: scrollSpeeds[i],
+      ease: 'none',
+      scrollTrigger: {
+        trigger: hero,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      },
     });
+  });
 
-    state.rotation = newRot;
-    state.currentDigit = digit;
+  // ===== Countdown =====
+  const EVENT_DATE = new Date('2026-04-01T09:00:00-04:00');
+
+  const unitEls = {
+    days: document.querySelector<HTMLElement>('[data-unit="days"]')!,
+    hours: document.querySelector<HTMLElement>('[data-unit="hours"]')!,
+    mins: document.querySelector<HTMLElement>('[data-unit="mins"]')!,
+    secs: document.querySelector<HTMLElement>('[data-unit="secs"]')!,
+  };
+
+  let prev = { days: '', hours: '', mins: '', secs: '' };
+
+  function pad(n: number) {
+    return String(n).padStart(2, '0');
   }
 
-  function getCountdownDigits() {
+  function updateCountdown() {
     const now = new Date();
     const diff = Math.max(0, EVENT_DATE.getTime() - now.getTime());
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const mins = Math.floor((diff / (1000 * 60)) % 60);
-    const secs = Math.floor((diff / 1000) % 60);
+    const days = pad(Math.floor(diff / (1000 * 60 * 60 * 24)));
+    const hours = pad(Math.floor((diff / (1000 * 60 * 60)) % 24));
+    const mins = pad(Math.floor((diff / (1000 * 60)) % 60));
+    const secs = pad(Math.floor((diff / 1000) % 60));
 
-    return {
-      'd-tens': Math.floor(days / 10) % 10,
-      'd-ones': days % 10,
-      'h-tens': Math.floor(hours / 10),
-      'h-ones': hours % 10,
-      'm-tens': Math.floor(mins / 10),
-      'm-ones': mins % 10,
-      's-tens': Math.floor(secs / 10),
-      's-ones': secs % 10,
-    };
+    const vals = { days, hours, mins, secs } as const;
+
+    for (const [key, val] of Object.entries(vals) as [keyof typeof vals, string][]) {
+      const el = unitEls[key];
+      if (val !== prev[key]) {
+        el.textContent = val;
+        el.classList.remove('tick');
+        void el.offsetWidth; // reflow to restart animation
+        el.classList.add('tick');
+        prev[key] = val;
+      }
+    }
   }
 
-  // Initial spin — dramatic entrance
-  const initialDigits = getCountdownDigits();
-  const reelOrder = ['d-tens', 'd-ones', 'h-tens', 'h-ones', 'm-tens', 'm-ones', 's-tens', 's-ones'];
-
-  reelOrder.forEach((id, i) => {
-    spinToDigit(id, initialDigits[id as keyof typeof initialDigits], false, i);
-  });
+  // Initial dramatic reveal — numbers count up from 00 to actual value
+  setTimeout(() => {
+    updateCountdown();
+  }, 2000);
 
   // Tick every second
-  setInterval(() => {
-    const d = getCountdownDigits();
-    for (const id of reelOrder) {
-      spinToDigit(id, d[id as keyof typeof d], true);
-    }
-  }, 1000);
+  setInterval(updateCountdown, 1000);
 </script>

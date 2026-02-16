@@ -1,102 +1,182 @@
 ---
-// [02] Tracks — CSS 3D poker chips
+// [02] Tracks — luxury playing cards with 3D tilt
 
 const tracks = [
   {
     name: 'Web Dev',
     suit: '&#9824;',
+    suitName: 'SPADES',
+    rank: 'A',
     label: 'ACE OF SPADES',
-    color: 'red',
     desc: 'Full-stack web applications, from sleek frontends to powerful APIs.',
+    gradient: 'from-[#1a0a0f] via-[#150a0d] to-[#0d0608]',
+    accent: '#C41E3A',
+    accentRgb: '196,30,58',
   },
   {
     name: 'AI / ML',
     suit: '&#9829;',
+    suitName: 'HEARTS',
+    rank: 'K',
     label: 'KING OF HEARTS',
-    color: 'red-bright',
     desc: 'Machine learning models, AI-powered tools, and intelligent automation.',
+    gradient: 'from-[#1a0a0f] via-[#170b0e] to-[#0d0608]',
+    accent: '#E63946',
+    accentRgb: '230,57,70',
   },
   {
     name: 'Cybersecurity',
     suit: '&#9827;',
+    suitName: 'CLUBS',
+    rank: 'Q',
     label: 'QUEEN OF CLUBS',
-    color: 'red',
     desc: 'Security tools, CTF-style challenges, and defensive solutions.',
+    gradient: 'from-[#0f0f14] via-[#0c0c10] to-[#08080b]',
+    accent: '#C41E3A',
+    accentRgb: '196,30,58',
   },
   {
     name: 'Open Innovation',
     suit: '&#9830;',
+    suitName: 'DIAMONDS',
+    rank: 'J',
     label: 'JACK OF DIAMONDS',
-    color: 'gold',
     desc: 'Anything goes. Hardware hacks, creative tools, wild ideas — surprise us.',
+    gradient: 'from-[#14110a] via-[#100e08] to-[#0a0906]',
+    accent: '#C9A84C',
+    accentRgb: '201,168,76',
   },
 ];
 ---
 
-<section id="tracks" class="relative bg-black px-4 py-24 md:py-32">
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-light/60 to-transparent"></div>
+<section id="tracks" class="relative overflow-hidden bg-black px-4 py-28 md:py-40">
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
 
-  <div class="mx-auto max-w-5xl">
-    <!-- Section header -->
-    <div class="tracks-header mb-16 text-center">
+  <!-- Ambient glows -->
+  <div
+    class="pointer-events-none absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.05) 0%, transparent 60%);"
+  ></div>
+  <div
+    class="pointer-events-none absolute right-[5%] top-[15%] h-[350px] w-[350px] rounded-full opacity-[0.03] blur-[100px]"
+    style="background: radial-gradient(circle, rgba(201,168,76,0.7) 0%, transparent 70%);"
+  ></div>
+
+  <div class="relative z-10 mx-auto max-w-6xl">
+    <!-- Header -->
+    <div class="tracks-header mb-20 text-center">
       <div class="flex items-center justify-center gap-4 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
-        <span class="h-px w-12 bg-gradient-to-r from-transparent to-border"></span>
+        <span class="h-px w-16 bg-gradient-to-r from-transparent to-border/80"></span>
         <span class="text-red/60">[02]</span>
         <span>TRACKS</span>
-        <span class="h-px w-12 bg-gradient-to-l from-transparent to-border"></span>
+        <span class="h-px w-16 bg-gradient-to-l from-transparent to-border/80"></span>
       </div>
-      <h2 class="mt-5 font-display text-5xl tracking-wide text-white-pure md:text-6xl">
+      <h2 class="mt-6 font-display text-5xl tracking-wide text-white-pure md:text-7xl">
         PICK YOUR HAND
       </h2>
-      <p class="mx-auto mt-4 max-w-sm font-body text-sm leading-relaxed text-gray-dark">
+      <p class="mx-auto mt-5 max-w-sm font-body text-sm leading-relaxed text-gray-dark">
         Four tracks. Four suits. Choose your play.
       </p>
     </div>
 
-    <!-- Chips grid -->
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+    <!-- Cards -->
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {tracks.map((track) => (
-        <div class="track-chip group" style="perspective: 600px;">
-          <div class="relative flex flex-col items-center">
-            {/* The chip */}
+        <div class="track-card group" style="perspective: 800px;">
+          <div
+            class={`playing-card relative overflow-hidden rounded-xl bg-gradient-to-b ${track.gradient} transition-all duration-500 group-hover:-translate-y-2`}
+            style={`border: 1px solid rgba(${track.accentRgb}, 0.12); box-shadow: 0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.02) inset; aspect-ratio: 5/7;`}
+            data-accent={track.accentRgb}
+          >
+            <!-- Card inner glow on hover -->
             <div
-              class="relative h-44 w-44 cursor-pointer transition-transform duration-500 group-hover:scale-105 md:h-48 md:w-48"
-              style="transform-style: preserve-3d;"
-            >
-              {/* Outer ring */}
-              <div class="absolute inset-0 rounded-full border-[6px] border-red/30 bg-black-card shadow-[0_12px_40px_rgba(196,30,58,0.12)] transition-all duration-500 group-hover:border-red/60 group-hover:shadow-[0_20px_60px_rgba(196,30,58,0.25)]"></div>
+              class="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style={`background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(${track.accentRgb}, 0.08) 0%, transparent 70%); box-shadow: 0 12px 50px rgba(${track.accentRgb}, 0.15), 0 0 80px rgba(${track.accentRgb}, 0.05);`}
+            ></div>
 
-              {/* Inner dashed ring — poker chip edge pattern */}
-              <div class="absolute inset-3 rounded-full border-2 border-dashed border-red/20 transition-colors duration-500 group-hover:border-red/40"></div>
+            <!-- Hover border glow -->
+            <div
+              class="absolute inset-0 rounded-xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              style={`border: 1px solid rgba(${track.accentRgb}, 0.3);`}
+            ></div>
 
-              {/* Second inner ring */}
-              <div class="absolute inset-6 rounded-full border border-border-light/40 transition-colors duration-500 group-hover:border-border-light/70"></div>
-
-              {/* Center content */}
-              <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span class="text-3xl text-red/60 transition-all duration-500 group-hover:text-red group-hover:scale-110" set:html={track.suit}></span>
-                <span class="mt-1 font-display text-lg tracking-wider text-white-pure">{track.name.toUpperCase()}</span>
-              </div>
-
-              {/* Subtle rotating glow ring on hover */}
-              <div class="absolute -inset-1 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100" style="background: conic-gradient(from 0deg, transparent, rgba(196,30,58,0.08), transparent, rgba(196,30,58,0.08), transparent); animation: spin-slow 8s linear infinite;"></div>
+            <!-- Corner decorations — top left rank + suit -->
+            <div class="absolute left-3.5 top-3 flex flex-col items-center md:left-4 md:top-3.5">
+              <span class="font-display text-2xl leading-none md:text-3xl" style={`color: ${track.accent};`}>{track.rank}</span>
+              <span class="mt-0.5 text-sm leading-none md:text-base" style={`color: ${track.accent}; opacity: 0.7;`} set:html={track.suit}></span>
             </div>
 
-            {/* Label below chip */}
-            <p class="mt-5 font-mono text-[8px] tracking-[0.35em] text-red/50 transition-colors duration-300 group-hover:text-red/80">
-              {track.label}
-            </p>
+            <!-- Corner decorations — bottom right rank + suit (inverted) -->
+            <div class="absolute bottom-3 right-3.5 flex rotate-180 flex-col items-center md:bottom-3.5 md:right-4">
+              <span class="font-display text-2xl leading-none md:text-3xl" style={`color: ${track.accent};`}>{track.rank}</span>
+              <span class="mt-0.5 text-sm leading-none md:text-base" style={`color: ${track.accent}; opacity: 0.7;`} set:html={track.suit}></span>
+            </div>
 
-            {/* Description */}
-            <p class="mt-3 max-w-[200px] text-center font-body text-[12px] leading-[1.7] text-gray-dark">
-              {track.desc}
-            </p>
+            <!-- Large center suit watermark -->
+            <div class="absolute inset-0 flex items-center justify-center">
+              <span
+                class="text-[120px] leading-none transition-all duration-700 group-hover:scale-105 md:text-[140px]"
+                style={`color: rgba(${track.accentRgb}, 0.04); filter: blur(1px);`}
+                set:html={track.suit}
+              ></span>
+            </div>
+
+            <!-- Center content -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center px-5">
+              <!-- Suit icon -->
+              <span
+                class="text-3xl transition-all duration-500 group-hover:scale-110 md:text-4xl"
+                style={`color: rgba(${track.accentRgb}, 0.5);`}
+                set:html={track.suit}
+              ></span>
+
+              <!-- Track name -->
+              <h3 class="mt-3 font-display text-2xl tracking-wider text-white-pure md:text-[1.7rem]">
+                {track.name.toUpperCase()}
+              </h3>
+
+              <!-- Divider -->
+              <div class="mx-auto mt-3 h-px w-10" style={`background: linear-gradient(90deg, transparent, rgba(${track.accentRgb}, 0.3), transparent);`}></div>
+
+              <!-- Description -->
+              <p class="mt-3 text-center font-body text-[11px] leading-[1.7] text-gray-dark md:text-[12px]">
+                {track.desc}
+              </p>
+            </div>
+
+            <!-- Card label at bottom -->
+            <div class="absolute inset-x-0 bottom-5 text-center md:bottom-6">
+              <span class="font-mono text-[7px] tracking-[0.3em] md:text-[8px]" style={`color: rgba(${track.accentRgb}, 0.35);`}>
+                {track.label}
+              </span>
+            </div>
+
+            <!-- Subtle inner border line -->
+            <div
+              class="pointer-events-none absolute inset-3 rounded-lg md:inset-4"
+              style={`border: 1px solid rgba(${track.accentRgb}, 0.06);`}
+            ></div>
           </div>
         </div>
       ))}
     </div>
   </div>
 </section>
+
+<style>
+  .playing-card {
+    transform: rotateY(0deg) rotateX(0deg);
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease, translate 0.5s ease;
+  }
+
+  .group:hover .playing-card {
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.03) inset !important;
+  }
+
+  /* JS-driven 3D tilt styles are applied inline */
+</style>
 
 <script>
   import { gsap } from 'gsap';
@@ -105,16 +185,46 @@ const tracks = [
 
   gsap.from('.tracks-header', {
     scrollTrigger: { trigger: '.tracks-header', start: 'top 80%' },
-    opacity: 0, y: 30, duration: 0.8,
+    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
   });
 
-  gsap.from('.track-chip', {
-    scrollTrigger: { trigger: '.track-chip', start: 'top 85%' },
+  gsap.from('.track-card', {
+    scrollTrigger: { trigger: '.track-card', start: 'top 85%' },
     opacity: 0,
-    y: 60,
-    rotation: gsap.utils.wrap([-8, 5, -5, 8]),
-    stagger: 0.15,
+    y: 80,
+    stagger: 0.12,
     duration: 0.9,
-    ease: 'back.out(1.4)',
+    ease: 'power3.out',
+  });
+
+  // 3D tilt on hover
+  document.querySelectorAll<HTMLElement>('.playing-card').forEach((card) => {
+    const parent = card.closest('.track-card') as HTMLElement;
+    if (!parent) return;
+
+    const accentRgb = card.dataset.accent || '196,30,58';
+
+    parent.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateY = ((x - centerX) / centerX) * 8;
+      const rotateX = ((centerY - y) / centerY) * 6;
+
+      card.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+      card.style.boxShadow = `
+        ${-rotateY * 2}px ${rotateX * 2 + 20}px 60px rgba(0,0,0,0.5),
+        0 0 40px rgba(${accentRgb}, 0.06),
+        0 0 0 1px rgba(255,255,255,0.03) inset
+      `;
+    });
+
+    parent.addEventListener('mouseleave', () => {
+      card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      card.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.02) inset';
+    });
   });
 </script>

@@ -1,83 +1,186 @@
 ---
-// [03] Schedule — clean timeline
+// [03] Schedule — tournament-style phased schedule
 
-const schedule = [
-  { time: '9:00 AM', title: 'Doors Open + Check-in', type: 'general', desc: 'Grab your badge, find your table, settle in.' },
-  { time: '9:30 AM', title: 'Opening Ceremony', type: 'ceremony', desc: 'Welcome, rules, and the official start.' },
-  { time: '10:00 AM', title: 'Hacking Begins', type: 'general', desc: 'The clock starts. Go all in.' },
-  { time: '11:00 AM', title: 'Workshop: Intro to APIs', type: 'workshop', desc: 'Build your first REST API from scratch.' },
-  { time: '12:30 PM', title: 'Lunch', type: 'meal', desc: 'Food provided — recharge and network.' },
-  { time: '1:30 PM', title: 'Workshop: AI/ML Crash Course', type: 'workshop', desc: 'Get hands-on with machine learning.' },
-  { time: '3:00 PM', title: 'Mini-game: Speed Debug', type: 'minigame', desc: 'Fix bugs against the clock. Prizes for the fastest.' },
-  { time: '5:00 PM', title: 'Dinner', type: 'meal', desc: 'Refuel for the home stretch.' },
-  { time: '6:00 PM', title: 'Mini-game: UI Roulette', type: 'minigame', desc: 'Random UI challenge. Spin the wheel of CSS.' },
-  { time: '8:00 PM', title: 'Submissions Due', type: 'general', desc: 'Final commits. Push it or lose it.' },
-  { time: '8:30 PM', title: 'Demo & Judging', type: 'ceremony', desc: 'Show what you built. Impress the judges.' },
-  { time: '9:30 PM', title: 'Awards Ceremony', type: 'ceremony', desc: 'Winners announced. Prizes dealt.' },
+const phases = [
+  {
+    name: 'THE OPENING',
+    time: '9:00 AM – 10:00 AM',
+    suit: '&#9824;',
+    events: [
+      { time: '9:00 AM', title: 'Doors Open + Check-in', type: 'general' },
+      { time: '9:30 AM', title: 'Opening Ceremony', type: 'ceremony' },
+      { time: '10:00 AM', title: 'Hacking Begins', type: 'general' },
+    ],
+  },
+  {
+    name: 'THE GRIND',
+    time: '11:00 AM – 5:00 PM',
+    suit: '&#9829;',
+    events: [
+      { time: '11:00 AM', title: 'Workshop: Intro to APIs', type: 'workshop' },
+      { time: '12:30 PM', title: 'Lunch', type: 'meal' },
+      { time: '1:30 PM', title: 'Workshop: AI/ML Crash Course', type: 'workshop' },
+      { time: '3:00 PM', title: 'Mini-game: Speed Debug', type: 'minigame' },
+      { time: '5:00 PM', title: 'Dinner', type: 'meal' },
+    ],
+  },
+  {
+    name: 'THE FINAL HAND',
+    time: '6:00 PM – 9:30 PM',
+    suit: '&#9830;',
+    events: [
+      { time: '6:00 PM', title: 'Mini-game: UI Roulette', type: 'minigame' },
+      { time: '8:00 PM', title: 'Submissions Due', type: 'general' },
+      { time: '8:30 PM', title: 'Demo & Judging', type: 'ceremony' },
+      { time: '9:30 PM', title: 'Awards Ceremony', type: 'ceremony' },
+    ],
+  },
 ];
 
-const typeConfig: Record<string, { color: string; dot: string; label: string }> = {
-  workshop: { color: 'text-red', dot: 'bg-red', label: 'WORKSHOP' },
-  minigame: { color: 'text-red-bright', dot: 'bg-red-bright', label: 'MINI-GAME' },
-  ceremony: { color: 'text-gold', dot: 'bg-gold', label: 'CEREMONY' },
-  meal: { color: 'text-gray', dot: 'bg-gray', label: 'MEAL' },
-  general: { color: 'text-white', dot: 'bg-white', label: 'GENERAL' },
+const typeStyles: Record<string, { badge: string; text: string }> = {
+  workshop: { badge: 'bg-red/10 text-red/80 border-red/15', text: 'WS' },
+  minigame: { badge: 'bg-red-bright/10 text-red-bright/80 border-red-bright/15', text: 'MG' },
+  ceremony: { badge: 'bg-gold/10 text-gold/80 border-gold-dim/20', text: 'CE' },
+  meal: { badge: 'bg-gray/10 text-gray/80 border-gray/15', text: 'ML' },
+  general: { badge: 'bg-white/5 text-white/60 border-white/10', text: 'GN' },
 };
 ---
 
-<section id="schedule" class="relative bg-black-card px-4 py-24 md:py-32">
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-light/60 to-transparent"></div>
+<section id="schedule" class="relative overflow-hidden bg-black px-4 py-28 md:py-40">
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
 
-  <div class="mx-auto max-w-4xl">
-    <div class="schedule-header mb-14">
-      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
-        <span class="text-red/60">[03]</span>
-        <span class="h-px flex-1 bg-border/60"></span>
-        <span>SCHEDULE</span>
+  <!-- Ambient glows -->
+  <div
+    class="pointer-events-none absolute right-[-5%] top-[25%] h-[700px] w-[500px] rounded-full"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.06) 0%, rgba(196,30,58,0.015) 40%, transparent 65%);"
+  ></div>
+  <div
+    class="pointer-events-none absolute left-[5%] bottom-[10%] h-[300px] w-[300px] rounded-full opacity-[0.03] blur-[80px]"
+    style="background: radial-gradient(circle, rgba(201,168,76,0.6) 0%, transparent 70%);"
+  ></div>
+
+  <!-- CSS 3D Floating Card Backs -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden sched-floaters" aria-hidden="true" style="perspective: 1000px;">
+    <!-- Card back 1 — top right -->
+    <div
+      class="sched-floater absolute right-[4%] top-[6%] hidden h-[140px] w-[95px] md:block lg:h-[170px] lg:w-[115px]"
+      style="--cardback-base-transform: rotateY(20deg) rotateX(-6deg) rotateZ(8deg); transform: var(--cardback-base-transform); animation: cardback-float 8s ease-in-out infinite;"
+    >
+      <div class="relative h-full w-full overflow-hidden rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/50 via-[#1a0a0f] to-red-dark/40 shadow-[0_15px_40px_rgba(196,30,58,0.08)]">
+        <!-- Card back pattern -->
+        <div class="absolute inset-1.5 rounded border border-red/10">
+          <div class="absolute inset-1 rounded border border-dashed border-red/8"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-2xl text-red/10 lg:text-3xl">&#9824;</span>
+          </div>
+        </div>
       </div>
-      <h2 class="mt-5 font-display text-5xl tracking-wide text-white-pure md:text-6xl">
-        THE LINEUP
-      </h2>
-      <p class="mt-3 font-body text-sm text-gray-dark">
-        12 hours. One shot. Here's the deal.
-      </p>
     </div>
 
-    <div class="relative">
-      <!-- Timeline line -->
-      <div class="absolute left-[72px] top-0 hidden h-full w-px bg-gradient-to-b from-red/40 via-border to-transparent md:block"></div>
-
-      <div class="space-y-2">
-        {schedule.map((event) => {
-          const cfg = typeConfig[event.type] || typeConfig.general;
-          return (
-            <div class="schedule-item group flex gap-4 md:gap-6">
-              <div class="hidden w-[72px] shrink-0 pt-4 text-right md:block">
-                <span class="font-mono text-[11px] text-gray-dark">{event.time}</span>
-              </div>
-              <div class="relative hidden shrink-0 md:flex md:items-start">
-                <div class={`mt-[17px] h-2 w-2 rounded-full ${cfg.dot} opacity-40 ring-2 ring-black-card transition-opacity duration-300 group-hover:opacity-100`}></div>
-              </div>
-              <div class="flex-1 border border-border/60 bg-black/40 px-5 py-4 transition-all duration-300 group-hover:border-border-light group-hover:bg-black-card/80">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class={`font-mono text-[8px] tracking-[0.3em] ${cfg.color}/70`}>{cfg.label}</span>
-                  <span class="font-mono text-[10px] text-gray-darker md:hidden">{event.time}</span>
-                </div>
-                <h3 class="mt-1 font-display text-base tracking-wide text-white">{event.title}</h3>
-                <p class="mt-1 font-body text-[12px] leading-relaxed text-gray-dark">{event.desc}</p>
-              </div>
-            </div>
-          );
-        })}
+    <!-- Card back 2 — left -->
+    <div
+      class="sched-floater absolute left-[3%] top-[35%] hidden h-[120px] w-[82px] lg:block"
+      style="--cardback-base-transform: rotateY(-15deg) rotateX(10deg) rotateZ(-10deg); transform: var(--cardback-base-transform); animation: cardback-float 7s ease-in-out infinite 1.5s;"
+    >
+      <div class="relative h-full w-full overflow-hidden rounded-lg border border-red/10 bg-gradient-to-br from-red-dark/40 via-[#150a0d] to-red-dark/35 shadow-[0_12px_30px_rgba(196,30,58,0.06)]">
+        <div class="absolute inset-1.5 rounded border border-red/8">
+          <div class="absolute inset-1 rounded border border-dashed border-red/6"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-xl text-red/8">&#9829;</span>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <!-- Card back 3 — bottom right, smaller -->
+    <div
+      class="sched-floater absolute bottom-[10%] right-[7%] hidden h-[100px] w-[68px] md:block"
+      style="--cardback-base-transform: rotateY(-22deg) rotateX(8deg) rotateZ(-14deg); transform: var(--cardback-base-transform); animation: cardback-float 9s ease-in-out infinite 2.5s;"
+    >
+      <div class="relative h-full w-full overflow-hidden rounded-md border border-red/8 bg-gradient-to-br from-red-dark/35 via-[#120a0c] to-red-dark/30 shadow-[0_10px_25px_rgba(196,30,58,0.04)]">
+        <div class="absolute inset-1 rounded border border-red/6">
+          <div class="absolute inset-0.5 rounded border border-dashed border-red/5"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <span class="text-lg text-red/6">&#9827;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-5xl">
+    <!-- Header -->
+    <div class="schedule-header mb-16">
+      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+        <span class="text-red/60">[03]</span>
+        <span class="h-px flex-1 bg-gradient-to-r from-border/80 to-transparent"></span>
+        <span>SCHEDULE</span>
+      </div>
+      <h2 class="mt-6 font-display text-5xl tracking-wide text-white-pure md:text-7xl">
+        THE LINEUP
+      </h2>
+      <p class="mt-4 font-body text-sm text-gray-dark">
+        12 hours. One shot. Here's the deal.
+      </p>
+      <div class="mt-4 h-px w-24 bg-gradient-to-r from-red/60 to-transparent"></div>
+    </div>
+
+    <!-- Phases -->
+    <div class="schedule-phases space-y-6">
+      {phases.map((phase) => (
+        <div class="schedule-phase group/phase">
+          <!-- Phase header -->
+          <div class="relative overflow-hidden rounded-t-xl border border-b-0 border-border/40 bg-gradient-to-r from-black-card/80 to-black-card/40 px-6 py-5 md:px-8">
+            <div class="absolute inset-0 opacity-[0.03]" style={`background: linear-gradient(135deg, rgba(196,30,58,0.4) 0%, transparent 50%);`}></div>
+
+            <div class="relative flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <span class="text-xl text-red/30 md:text-2xl" set:html={phase.suit}></span>
+                <div>
+                  <h3 class="font-display text-xl tracking-wider text-white-pure md:text-2xl">{phase.name}</h3>
+                  <p class="mt-0.5 font-mono text-[9px] tracking-[0.2em] text-gray-dark">{phase.time}</p>
+                </div>
+              </div>
+              <span class="hidden font-mono text-[9px] tracking-[0.3em] text-gray-darker md:block">
+                {phase.events.length} EVENT{phase.events.length !== 1 ? 'S' : ''}
+              </span>
+            </div>
+          </div>
+
+          <!-- Events -->
+          <div class="overflow-hidden rounded-b-xl border border-t-0 border-border/40">
+            {phase.events.map((event, eventIdx) => {
+              const style = typeStyles[event.type] || typeStyles.general;
+              return (
+                <div class={`group flex items-center gap-4 px-6 py-4 transition-all duration-300 hover:bg-white/[0.015] md:px-8 ${eventIdx < phase.events.length - 1 ? 'border-b border-border/20' : ''}`}>
+                  {/* Time */}
+                  <span class="w-[72px] shrink-0 font-mono text-[11px] text-gray-dark transition-colors duration-300 group-hover:text-gray md:text-xs">
+                    {event.time}
+                  </span>
+
+                  {/* Type badge */}
+                  <span class={`hidden h-6 w-6 shrink-0 items-center justify-center rounded border font-mono text-[7px] font-bold tracking-wider sm:flex ${style.badge}`}>
+                    {style.text}
+                  </span>
+
+                  {/* Title */}
+                  <span class="font-body text-[13px] text-white/80 transition-colors duration-300 group-hover:text-white md:text-[14px]">
+                    {event.title}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </div>
 
     <!-- Legend -->
-    <div class="mt-8 flex flex-wrap justify-center gap-5">
-      {Object.entries(typeConfig).map(([, cfg]) => (
-        <span class={`flex items-center gap-1.5 font-mono text-[8px] tracking-[0.2em] ${cfg.color}/50`}>
-          <span class={`inline-block h-1.5 w-1.5 rounded-full ${cfg.dot} opacity-30`}></span>
-          {cfg.label}
+    <div class="mt-10 flex flex-wrap justify-center gap-5">
+      {Object.entries(typeStyles).map(([key, style]) => (
+        <span class="flex items-center gap-2 font-mono text-[8px] tracking-[0.15em] text-gray-dark">
+          <span class={`flex h-4 w-4 items-center justify-center rounded border text-[6px] font-bold ${style.badge}`}>{style.text}</span>
+          {key === 'minigame' ? 'MINI-GAME' : key.toUpperCase()}
         </span>
       ))}
     </div>
@@ -91,10 +194,50 @@ const typeConfig: Record<string, { color: string; dot: string; label: string }> 
 
   gsap.from('.schedule-header', {
     scrollTrigger: { trigger: '.schedule-header', start: 'top 80%' },
-    opacity: 0, y: 30, duration: 0.8,
+    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
   });
-  gsap.from('.schedule-item', {
-    scrollTrigger: { trigger: '.schedule-item', start: 'top 85%' },
-    opacity: 0, x: -20, stagger: 0.06, duration: 0.5, ease: 'power2.out',
+
+  gsap.from('.schedule-phase', {
+    scrollTrigger: { trigger: '.schedule-phases', start: 'top 82%' },
+    opacity: 0, y: 40, stagger: 0.2, duration: 0.9, ease: 'power3.out',
+  });
+
+  // ===== Parallax on floating elements =====
+  const schedSection = document.getElementById('schedule')!;
+  const schedFloaters = schedSection.querySelectorAll<HTMLElement>('.sched-floater');
+  const schedSpeeds = [0.08, -0.06, 0.07];
+
+  const schedAnims = Array.from(schedFloaters).map((el) => ({
+    x: gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power2.out' }),
+    y: gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power2.out' }),
+  }));
+
+  schedSection.addEventListener('mousemove', (e) => {
+    const rect = schedSection.getBoundingClientRect();
+    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    schedAnims.forEach((anim, i) => {
+      const s = schedSpeeds[i];
+      anim.x(nx * rect.width * Math.abs(s) * Math.sign(s));
+      anim.y(ny * rect.height * Math.abs(s) * 0.5 * Math.sign(s));
+    });
+  });
+  schedSection.addEventListener('mouseleave', () => {
+    schedAnims.forEach((a) => { a.x(0); a.y(0); });
+  });
+
+  // ===== Scroll parallax =====
+  const schedScrollSpeeds = [55, -40, 65];
+  schedFloaters.forEach((el, i) => {
+    gsap.to(el, {
+      yPercent: schedScrollSpeeds[i],
+      ease: 'none',
+      scrollTrigger: {
+        trigger: schedSection,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
   });
 </script>
