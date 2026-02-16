@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import type { ApplicationData } from './ApplicationForm';
+import ApplicationForm from './ApplicationForm';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; glow: string; icon: string }> = {
   pending: {
@@ -29,10 +31,34 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; glow: string
 
 interface Props {
   application: ApplicationData;
+  onUpdated?: (application: ApplicationData) => void;
 }
 
-export default function ApplicationStatus({ application }: Props) {
+export default function ApplicationStatus({ application, onUpdated }: Props) {
+  const [isEditing, setIsEditing] = useState(false);
   const config = STATUS_CONFIG[application.status] ?? STATUS_CONFIG.pending;
+  const canEdit = application.status === 'pending' || application.status === 'waitlisted';
+
+  if (isEditing && canEdit) {
+    return (
+      <div>
+        <button
+          onClick={() => setIsEditing(false)}
+          className="mb-4 font-mono text-sm text-text-muted transition-colors hover:text-text-primary"
+        >
+          ← back to status
+        </button>
+        <ApplicationForm
+          initialData={application}
+          isEditing
+          onSubmitted={(updated) => {
+            onUpdated?.(updated);
+            setIsEditing(false);
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto mt-8 max-w-2xl">
@@ -82,9 +108,23 @@ export default function ApplicationStatus({ application }: Props) {
 
         {/* Footer */}
         <div className="border-t border-base-border bg-base-dark px-6 py-3">
-          <p className="text-center font-mono text-xs text-text-muted">
-            &#9824; &#9830; &#9827; &#9829; &mdash; the house is reviewing your hand &mdash; &#9829; &#9827; &#9830; &#9824;
-          </p>
+          {canEdit ? (
+            <div className="flex items-center justify-between">
+              <p className="font-mono text-xs text-text-muted">
+                &#9824; You can edit your application until reviewed
+              </p>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="border border-neon-green bg-neon-green/10 px-4 py-2 font-mono text-xs text-neon-green transition-all hover:bg-neon-green/20"
+              >
+                $ edit_application
+              </button>
+            </div>
+          ) : (
+            <p className="text-center font-mono text-xs text-text-muted">
+              &#9824; &#9830; &#9827; &#9829; &mdash; the house is reviewing your hand &mdash; &#9829; &#9827; &#9830; &#9824;
+            </p>
+          )}
         </div>
       </div>
     </div>

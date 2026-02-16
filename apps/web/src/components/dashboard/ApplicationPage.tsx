@@ -65,7 +65,7 @@ export default function ApplicationPage() {
   }
 
   if (application) {
-    return <ApplicationStatus application={application} />;
+    return <ApplicationStatus application={application} onUpdated={setApplication} />;
   }
 
   return <ApplicationForm onSubmitted={setApplication} />;

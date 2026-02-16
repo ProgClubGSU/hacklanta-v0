@@ -20,14 +20,16 @@ export interface ApplicationData {
 }
 
 interface Props {
+  initialData?: ApplicationData;
+  isEditing?: boolean;
   onSubmitted?: (application: ApplicationData) => void;
 }
 
-const YEAR_OPTIONS = ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate', 'PhD'];
+const YEAR_OPTIONS = ['freshman', 'sophomore', 'junior', 'senior', 'grad'];
 const EXPERIENCE_OPTIONS = ['beginner', 'intermediate', 'advanced'];
 const TSHIRT_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
-export default function ApplicationForm({ onSubmitted }: Props) {
+export default function ApplicationForm({ initialData, isEditing = false, onSubmitted }: Props) {
   const { getToken } = useAuth();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,17 +38,17 @@ export default function ApplicationForm({ onSubmitted }: Props) {
   const [uploadingResume, setUploadingResume] = useState(false);
 
   const [form, setForm] = useState({
-    university: '',
-    major: '',
-    year_of_study: '',
-    graduation_date: '',
-    resume_url: '',
-    github_url: '',
-    linkedin_url: '',
-    why_attend: '',
-    experience_level: '',
-    dietary_restrictions: '',
-    tshirt_size: '',
+    university: initialData?.university ?? '',
+    major: initialData?.major ?? '',
+    year_of_study: initialData?.year_of_study ?? '',
+    graduation_date: initialData?.graduation_date ?? '',
+    resume_url: initialData?.resume_url ?? '',
+    github_url: initialData?.github_url ?? '',
+    linkedin_url: initialData?.linkedin_url ?? '',
+    why_attend: initialData?.why_attend ?? '',
+    experience_level: initialData?.experience_level ?? '',
+    dietary_restrictions: initialData?.dietary_restrictions ?? '',
+    tshirt_size: initialData?.tshirt_size ?? '',
   });
 
   const updateField = (field: string, value: string) => {
@@ -91,8 +93,11 @@ export default function ApplicationForm({ onSubmitted }: Props) {
         tshirt_size: form.tshirt_size || null,
       };
 
-      const result = await apiFetch<ApplicationData>('/api/v1/applications', {
-        method: 'POST',
+      const endpoint = isEditing ? '/api/v1/applications/me' : '/api/v1/applications';
+      const method = isEditing ? 'PATCH' : 'POST';
+
+      const result = await apiFetch<ApplicationData>(endpoint, {
+        method,
         body: JSON.stringify(payload),
       }, token);
 
@@ -142,7 +147,10 @@ export default function ApplicationForm({ onSubmitted }: Props) {
                 label="Year of Study"
                 value={form.year_of_study}
                 onChange={(v) => updateField('year_of_study', v)}
-                options={YEAR_OPTIONS}
+                options={YEAR_OPTIONS.map((val) => ({
+                  value: val,
+                  label: val.charAt(0).toUpperCase() + val.slice(1),
+                }))}
                 required
               />
               <InputField
@@ -162,12 +170,13 @@ export default function ApplicationForm({ onSubmitted }: Props) {
             <div className="grid gap-4 md:grid-cols-2">
               <div>
                 <label className="mb-1 block font-mono text-xs tracking-wider text-text-secondary">
-                  Resume (PDF)
+                  Resume (PDF) <span className="text-suit-red">*</span>
                 </label>
                 <input
                   type="file"
                   accept=".pdf"
                   onChange={(e) => setResumeFile(e.target.files?.[0] ?? null)}
+                  required={!form.resume_url}
                   className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none file:mr-3 file:border-0 file:bg-neon-green/10 file:px-3 file:py-1 file:font-mono file:text-xs file:text-neon-green"
                 />
                 {resumeFile && (
@@ -203,19 +212,29 @@ export default function ApplicationForm({ onSubmitted }: Props) {
                 label="Experience Level"
                 value={form.experience_level}
                 onChange={(v) => updateField('experience_level', v)}
-                options={EXPERIENCE_OPTIONS}
+                options={EXPERIENCE_OPTIONS.map((val) => ({
+                  value: val,
+                  label: val.charAt(0).toUpperCase() + val.slice(1),
+                }))}
+                required
               />
               <div>
                 <label className="mb-1 block font-mono text-xs tracking-wider text-text-secondary">
-                  Why do you want to attend?
+                  Why do you want to attend? <span className="text-suit-red">*</span>
                 </label>
                 <textarea
                   value={form.why_attend}
                   onChange={(e) => updateField('why_attend', e.target.value)}
                   rows={4}
+                  required
+                  minLength={50}
+                  maxLength={1000}
                   className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-neon-green"
-                  placeholder="Tell us what you're hoping to build, learn, or break..."
+                  placeholder="Tell us what you're hoping to build, learn, or break... (50-1000 characters)"
                 />
+                <p className="mt-1 font-mono text-xs text-text-muted">
+                  {form.why_attend.length}/1000 characters {form.why_attend.length < 50 && `(minimum 50)`}
+                </p>
               </div>
             </div>
           </fieldset>
@@ -236,7 +255,8 @@ export default function ApplicationForm({ onSubmitted }: Props) {
                 label="T-Shirt Size"
                 value={form.tshirt_size}
                 onChange={(v) => updateField('tshirt_size', v)}
-                options={TSHIRT_OPTIONS}
+                options={TSHIRT_OPTIONS.map((val) => ({ value: val, label: val }))}
+                required
               />
             </div>
           </fieldset>
@@ -307,9 +327,13 @@ function SelectField({
   label: string;
   value: string;
   onChange: (value: string) => void;
-  options: string[];
+  options: string[] | { value: string; label: string }[];
   required?: boolean;
 }) {
+  const normalizedOptions = options.map((opt) =>
+    typeof opt === 'string' ? { value: opt, label: opt } : opt
+  );
+
   return (
     <div>
       <label className="mb-1 block font-mono text-xs tracking-wider text-text-secondary">
@@ -323,9 +347,9 @@ function SelectField({
         className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors focus:border-neon-green"
       >
         <option value="">Select...</option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
+        {normalizedOptions.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
           </option>
         ))}
       </select>

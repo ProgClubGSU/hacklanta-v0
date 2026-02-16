@@ -9,6 +9,7 @@ from app.core.security import AdminUser, CurrentUser
 from app.domains.applicants import service
 from app.domains.applicants.schemas import (
     ApplicationCreate,
+    ApplicationEdit,
     ApplicationResponse,
     ApplicationUpdate,
     BulkStatusResponse,
@@ -53,6 +54,19 @@ async def get_my_application(
 ) -> ApplicationResponse:
     """Get the current user's application."""
     application = await service.get_my_application(session, clerk_id=user["sub"])
+    return ApplicationResponse.model_validate(application)
+
+
+@router.patch("/me", response_model=ApplicationResponse)
+async def edit_my_application(
+    data: ApplicationEdit,
+    user: CurrentUser,
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> ApplicationResponse:
+    """Edit the current user's application (only if pending or waitlisted)."""
+    application = await service.edit_my_application(
+        session, clerk_id=user["sub"], data=data
+    )
     return ApplicationResponse.model_validate(application)
 
 

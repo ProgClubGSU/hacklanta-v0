@@ -79,3 +79,18 @@ async def update_application_status(
     await session.commit()
     await session.refresh(application)
     return application
+
+
+async def update_application_data(
+    session: AsyncSession,
+    application: Application,
+    *,
+    data: dict,
+) -> Application:
+    """Update application fields (user-editable fields only)."""
+    for key, value in data.items():
+        if value is not None:  # Only update provided fields
+            setattr(application, key, value)
+    await session.commit()
+    await session.refresh(application)
+    return application
