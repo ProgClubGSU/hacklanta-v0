@@ -47,6 +47,60 @@ async def get_upload_url(
     return generate_upload_url(file_extension=".pdf")
 
 
+@router.get("/download-url/{resume_key:path}")
+async def get_download_url(
+    resume_key: str,
+    user: CurrentUser,
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> dict:
+    """Get a presigned S3 URL for downloading a resume.
+
+    Authorization:
+    - Users can download their own resume
+    - Admins can download any resume
+    """
+    from fastapi import HTTPException
+    from app.utils.s3 import generate_download_url
+    from app.domains.applicants import repository
+    from app.domains.users.repository import get_user_by_clerk_id
+
+    # Check if user is admin
+    metadata = user.get("metadata", {}) or {}
+    public_metadata = user.get("public_metadata", {}) or {}
+    role = metadata.get("role") or public_metadata.get("role")
+    is_admin = role == "admin"
+
+    # If not admin, verify the resume belongs to this user
+    if not is_admin:
+        clerk_id = user["sub"]
+
+        # Get user ID from clerk_id
+        db_user = await get_user_by_clerk_id(session, clerk_id)
+        if not db_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found",
+            )
+
+        # Get user's application
+        application = await repository.get_application_by_user_id(session, db_user.id)
+        if not application:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Application not found",
+            )
+
+        # Verify the requested resume belongs to this user
+        if application.resume_url != resume_key:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You can only download your own resume",
+            )
+
+    download_url = generate_download_url(key=resume_key)
+    return {"download_url": download_url}
+
+
 @router.get("/me", response_model=ApplicationResponse)
 async def get_my_application(
     user: CurrentUser,

@@ -5,17 +5,41 @@ import { apiFetch } from '../../lib/api';
 export interface ApplicationData {
   id: string;
   status: string;
+
+  // Academic Info
   university: string;
   major: string;
   year_of_study: string;
   graduation_date: string | null;
+
+  // Contact Info
+  phone_number: string | null;
+  email: string | null;
+
+  // Links
   resume_url: string | null;
   github_url: string | null;
   linkedin_url: string | null;
+
+  // About
   why_attend: string | null;
   experience_level: string | null;
+
+  // Logistics
   dietary_restrictions: string | null;
   tshirt_size: string | null;
+
+  // Legal & Agreements
+  age_confirmed: boolean;
+  code_of_conduct_accepted: boolean;
+  liability_waiver_accepted: boolean;
+
+  // Marketing
+  how_did_you_hear: string | null;
+  resume_sharing_opt_in: boolean;
+  email_opt_in: boolean;
+  sms_opt_in: boolean;
+
   created_at: string;
 }
 
@@ -38,20 +62,42 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
   const [uploadingResume, setUploadingResume] = useState(false);
 
   const [form, setForm] = useState({
+    // Academic Info
     university: initialData?.university ?? '',
     major: initialData?.major ?? '',
     year_of_study: initialData?.year_of_study ?? '',
     graduation_date: initialData?.graduation_date ?? '',
+
+    // Contact Info
+    phone_number: initialData?.phone_number ?? '',
+    email: initialData?.email ?? '',
+
+    // Links
     resume_url: initialData?.resume_url ?? '',
     github_url: initialData?.github_url ?? '',
     linkedin_url: initialData?.linkedin_url ?? '',
+
+    // About
     why_attend: initialData?.why_attend ?? '',
     experience_level: initialData?.experience_level ?? '',
+
+    // Logistics
     dietary_restrictions: initialData?.dietary_restrictions ?? '',
     tshirt_size: initialData?.tshirt_size ?? '',
+
+    // Legal & Agreements
+    age_confirmed: initialData?.age_confirmed ?? false,
+    code_of_conduct_accepted: initialData?.code_of_conduct_accepted ?? false,
+    liability_waiver_accepted: initialData?.liability_waiver_accepted ?? false,
+
+    // Marketing
+    how_did_you_hear: initialData?.how_did_you_hear ?? '',
+    resume_sharing_opt_in: initialData?.resume_sharing_opt_in ?? false,
+    email_opt_in: initialData?.email_opt_in ?? false,
+    sms_opt_in: initialData?.sms_opt_in ?? false,
   });
 
-  const updateField = (field: string, value: string) => {
+  const updateField = (field: string, value: string | boolean) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -84,6 +130,8 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
       const payload = {
         ...form,
         graduation_date: form.graduation_date || null,
+        phone_number: form.phone_number || null,
+        email: form.email || null,
         resume_url: resumeKey,
         github_url: form.github_url || null,
         linkedin_url: form.linkedin_url || null,
@@ -91,6 +139,7 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
         experience_level: form.experience_level || null,
         dietary_restrictions: form.dietary_restrictions || null,
         tshirt_size: form.tshirt_size || null,
+        how_did_you_hear: form.how_did_you_hear || null,
       };
 
       const endpoint = isEditing ? '/api/v1/applications/me' : '/api/v1/applications';
@@ -158,6 +207,31 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
                 value={form.graduation_date}
                 onChange={(v) => updateField('graduation_date', v)}
                 type="date"
+              />
+            </div>
+          </fieldset>
+
+          {/* Section: Contact Info */}
+          <fieldset>
+            <legend className="mb-4 font-mono text-sm tracking-wider text-neon-green">
+              {'>'} CONTACT_INFO
+            </legend>
+            <div className="grid gap-4 md:grid-cols-2">
+              <InputField
+                label="Phone Number"
+                value={form.phone_number}
+                onChange={(v) => updateField('phone_number', v)}
+                required
+                placeholder="+1 (555) 123-4567"
+                type="tel"
+              />
+              <InputField
+                label="Email Address"
+                value={form.email}
+                onChange={(v) => updateField('email', v)}
+                required
+                placeholder="you@example.com"
+                type="email"
               />
             </div>
           </fieldset>
@@ -260,6 +334,65 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
               />
             </div>
           </fieldset>
+
+          {/* Section: Legal & Agreements */}
+          <fieldset>
+            <legend className="mb-4 font-mono text-sm tracking-wider text-neon-green">
+              {'>'} LEGAL_&_AGREEMENTS
+            </legend>
+            <div className="space-y-3">
+              <CheckboxField
+                label="I confirm that I am 18 years of age or older"
+                checked={form.age_confirmed}
+                onChange={(checked) => updateField('age_confirmed', checked)}
+                required
+              />
+              <CheckboxField
+                label="I accept the Code of Conduct"
+                checked={form.code_of_conduct_accepted}
+                onChange={(checked) => updateField('code_of_conduct_accepted', checked)}
+                required
+              />
+              <CheckboxField
+                label="I accept the Liability Waiver"
+                checked={form.liability_waiver_accepted}
+                onChange={(checked) => updateField('liability_waiver_accepted', checked)}
+                required
+              />
+            </div>
+          </fieldset>
+
+          {/* Section: Marketing */}
+          <fieldset>
+            <legend className="mb-4 font-mono text-sm tracking-wider text-neon-green">
+              {'>'} MARKETING_&_COMMUNICATIONS
+            </legend>
+            <div className="space-y-4">
+              <InputField
+                label="How did you hear about Hacklanta?"
+                value={form.how_did_you_hear}
+                onChange={(v) => updateField('how_did_you_hear', v)}
+                placeholder="Instagram, friend, flyer, etc."
+              />
+              <div className="space-y-3">
+                <CheckboxField
+                  label="I consent to share my resume with event sponsors"
+                  checked={form.resume_sharing_opt_in}
+                  onChange={(checked) => updateField('resume_sharing_opt_in', checked)}
+                />
+                <CheckboxField
+                  label="I would like to receive emails about future events"
+                  checked={form.email_opt_in}
+                  onChange={(checked) => updateField('email_opt_in', checked)}
+                />
+                <CheckboxField
+                  label="I would like to receive SMS messages about future events. Message and data rates may apply. You can opt out at any time by replying STOP."
+                  checked={form.sms_opt_in}
+                  onChange={(checked) => updateField('sms_opt_in', checked)}
+                />
+              </div>
+            </div>
+          </fieldset>
         </div>
 
         {/* Error display */}
@@ -353,6 +486,34 @@ function SelectField({
           </option>
         ))}
       </select>
+    </div>
+  );
+}
+
+function CheckboxField({
+  label,
+  checked,
+  onChange,
+  required = false,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  required?: boolean;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        required={required}
+        className="mt-1 h-4 w-4 cursor-pointer border border-base-border bg-base-dark accent-neon-green outline-none transition-colors focus:ring-2 focus:ring-neon-green focus:ring-offset-2 focus:ring-offset-base-card"
+      />
+      <label className="flex-1 cursor-pointer font-mono text-xs leading-relaxed text-text-secondary">
+        {label}
+        {required && <span className="text-suit-red"> *</span>}
+      </label>
     </div>
   );
 }
