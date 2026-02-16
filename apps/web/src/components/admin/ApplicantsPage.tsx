@@ -14,13 +14,22 @@ export default function ApplicantsPage() {
     setRefreshKey((prev) => prev + 1);
   };
 
+  const handleBulkUpdate = () => {
+    // Trigger refresh of stats when bulk actions complete
+    setRefreshKey((prev) => prev + 1);
+  };
+
   return (
     <div>
       <StatsOverview key={`stats-${refreshKey}`} />
 
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         <div className={selected ? 'lg:col-span-2' : 'lg:col-span-3'}>
-          <ApplicantTable key={`table-${refreshKey}`} onSelect={setSelected} />
+          <ApplicantTable
+            key={`table-${refreshKey}`}
+            onSelect={setSelected}
+            onBulkUpdate={handleBulkUpdate}
+          />
         </div>
 
         {selected && (

@@ -146,8 +146,11 @@ async def list_applications(
     page_size: Annotated[int, Query(ge=1, le=100)] = 20,
     status_filter: Annotated[str | None, Query(alias="status")] = None,
     experience: Annotated[str | None, Query()] = None,
+    search: Annotated[str | None, Query()] = None,
+    sort_by: Annotated[str | None, Query()] = None,
+    sort_order: Annotated[str, Query()] = "desc",
 ) -> PaginatedResponse[ApplicationResponse]:
-    """List all applications with pagination and filters (admin only)."""
+    """List all applications with pagination, filters, search, and sorting (admin only)."""
     params = PaginationParams(page=page, page_size=page_size)
     from app.domains.applicants.repository import list_applications as list_apps
 
@@ -157,6 +160,9 @@ async def list_applications(
         limit=params.limit,
         status_filter=status_filter,
         experience_filter=experience,
+        search=search,
+        sort_by=sort_by,
+        sort_order=sort_order,
     )
     items = [ApplicationResponse.model_validate(app) for app in applications]
     return paginate(items, total, params)

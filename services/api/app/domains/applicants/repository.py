@@ -44,22 +44,56 @@ async def list_applications(
     limit: int = 20,
     status_filter: str | None = None,
     experience_filter: str | None = None,
+    search: str | None = None,
+    sort_by: str | None = None,
+    sort_order: str = "desc",
 ) -> tuple[list[Application], int]:
     query = select(Application)
     count_query = select(func.count()).select_from(Application)
 
+    # Status filter
     if status_filter:
         query = query.where(Application.status == status_filter)
         count_query = count_query.where(Application.status == status_filter)
 
+    # Experience filter
     if experience_filter:
         query = query.where(Application.experience_level == experience_filter)
         count_query = count_query.where(Application.experience_level == experience_filter)
 
+    # Search across multiple fields
+    if search:
+        search_term = f"%{search}%"
+        search_condition = (
+            Application.university.ilike(search_term)
+            | Application.major.ilike(search_term)
+            | Application.email.ilike(search_term)
+            | Application.phone_number.ilike(search_term)
+        )
+        query = query.where(search_condition)
+        count_query = count_query.where(search_condition)
+
+    # Get total count
     total_result = await session.execute(count_query)
     total = total_result.scalar_one()
 
-    query = query.order_by(Application.created_at.desc()).offset(offset).limit(limit)
+    # Sorting
+    sort_column = {
+        "created_at": Application.created_at,
+        "university": Application.university,
+        "major": Application.major,
+        "status": Application.status,
+        "year_of_study": Application.year_of_study,
+        "experience_level": Application.experience_level,
+    }.get(sort_by, Application.created_at)
+
+    if sort_order == "asc":
+        query = query.order_by(sort_column.asc())
+    else:
+        query = query.order_by(sort_column.desc())
+
+    # Pagination
+    query = query.offset(offset).limit(limit)
     result = await session.execute(query)
     applications = list(result.scalars().all())
 
