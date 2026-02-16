@@ -55,8 +55,8 @@ export default function StatsOverview() {
     <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
       <StatCard label="TOTAL" value={stats.total} color="text-text-primary" loading={loading} />
       <StatCard label="PENDING" value={stats.pending} color="text-gold" loading={loading} />
-      <StatCard label="ACCEPTED" value={stats.accepted} color="text-neon-green" loading={loading} />
-      <StatCard label="WAITLISTED" value={stats.waitlisted} color="text-cyan" loading={loading} />
+      <StatCard label="ACCEPTED" value={stats.accepted} color="text-gold" loading={loading} />
+      <StatCard label="WAITLISTED" value={stats.waitlisted} color="text-teal-light" loading={loading} />
       <StatCard label="REJECTED" value={stats.rejected} color="text-suit-red" loading={loading} />
     </div>
   );

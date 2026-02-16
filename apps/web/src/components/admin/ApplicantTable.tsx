@@ -12,9 +12,9 @@ const EXPERIENCE_OPTIONS = ['all', 'beginner', 'intermediate', 'advanced'];
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'text-gold',
-  accepted: 'text-neon-green',
+  accepted: 'text-gold',
   rejected: 'text-suit-red',
-  waitlisted: 'text-cyan',
+  waitlisted: 'text-teal-light',
 };
 
 export default function ApplicantTable({ onSelect }: Props) {
@@ -140,7 +140,7 @@ export default function ApplicantTable({ onSelect }: Props) {
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="font-mono text-xs text-text-secondary transition-colors hover:text-neon-green disabled:opacity-30"
+              className="font-mono text-xs text-text-secondary transition-colors hover:text-gold disabled:opacity-30"
             >
               {'<'} prev
             </button>
@@ -150,7 +150,7 @@ export default function ApplicantTable({ onSelect }: Props) {
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
-              className="font-mono text-xs text-text-secondary transition-colors hover:text-neon-green disabled:opacity-30"
+              className="font-mono text-xs text-text-secondary transition-colors hover:text-gold disabled:opacity-30"
             >
               next {'>'}
             </button>
@@ -178,7 +178,7 @@ function FilterSelect({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="border border-base-border bg-base-dark px-2 py-1 font-mono text-xs text-text-primary outline-none focus:border-neon-green"
+        className="border border-base-border bg-base-dark px-2 py-1 font-mono text-xs text-text-primary outline-none focus:border-gold"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>

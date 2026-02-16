@@ -1,5 +1,5 @@
 ---
-// [02] Schedule / Timeline section
+// [03] Schedule — clean timeline
 
 const schedule = [
   { time: '9:00 AM', title: 'Doors Open + Check-in', type: 'general', desc: 'Grab your badge, find your table, settle in.' },
@@ -16,60 +16,55 @@ const schedule = [
   { time: '9:30 PM', title: 'Awards Ceremony', type: 'ceremony', desc: 'Winners announced. Prizes dealt.' },
 ];
 
-const typeConfig: Record<string, { color: string; border: string; label: string }> = {
-  workshop: { color: 'text-neon-green', border: 'border-neon-green/40', label: 'WORKSHOP' },
-  minigame: { color: 'text-hot-pink', border: 'border-hot-pink/40', label: 'MINI-GAME' },
-  ceremony: { color: 'text-gold', border: 'border-gold/40', label: 'CEREMONY' },
-  meal: { color: 'text-cyan', border: 'border-cyan/40', label: 'MEAL' },
-  general: { color: 'text-text-secondary', border: 'border-base-border', label: 'GENERAL' },
+const typeConfig: Record<string, { color: string; dot: string; label: string }> = {
+  workshop: { color: 'text-red', dot: 'bg-red', label: 'WORKSHOP' },
+  minigame: { color: 'text-red-bright', dot: 'bg-red-bright', label: 'MINI-GAME' },
+  ceremony: { color: 'text-gold', dot: 'bg-gold', label: 'CEREMONY' },
+  meal: { color: 'text-gray', dot: 'bg-gray', label: 'MEAL' },
+  general: { color: 'text-white', dot: 'bg-white', label: 'GENERAL' },
 };
 ---
 
-<section id="schedule" class="relative bg-base-black px-4 py-24 md:py-32">
+<section id="schedule" class="relative bg-black-card px-4 py-24 md:py-32">
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-light/60 to-transparent"></div>
+
   <div class="mx-auto max-w-4xl">
-    <!-- Section header -->
-    <div class="schedule-header mb-12">
-      <div class="flex items-center gap-3 font-mono text-xs tracking-widest text-text-muted">
-        <span class="text-neon-green">[02]</span>
-        <span class="h-px flex-1 bg-base-border"></span>
-        <span>// schedule</span>
+    <div class="schedule-header mb-14">
+      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+        <span class="text-red/60">[03]</span>
+        <span class="h-px flex-1 bg-border/60"></span>
+        <span>SCHEDULE</span>
       </div>
-      <h2 class="mt-4 font-display text-4xl font-black text-text-primary md:text-5xl">
-        The <span class="text-hot-pink">lineup</span>
+      <h2 class="mt-5 font-display text-5xl tracking-wide text-white-pure md:text-6xl">
+        THE LINEUP
       </h2>
-      <p class="mt-3 font-mono text-sm text-text-muted">
+      <p class="mt-3 font-body text-sm text-gray-dark">
         12 hours. One shot. Here's the deal.
       </p>
     </div>
 
-    <!-- Timeline -->
     <div class="relative">
-      <!-- Vertical line -->
-      <div class="absolute left-[72px] top-0 hidden h-full w-px bg-gradient-to-b from-neon-green/30 via-base-border to-base-border md:block"></div>
+      <!-- Timeline line -->
+      <div class="absolute left-[72px] top-0 hidden h-full w-px bg-gradient-to-b from-red/40 via-border to-transparent md:block"></div>
 
-      <div class="space-y-3">
+      <div class="space-y-2">
         {schedule.map((event) => {
           const cfg = typeConfig[event.type] || typeConfig.general;
           return (
-            <div class={`schedule-item group flex gap-4 md:gap-6`}>
-              {/* Time */}
+            <div class="schedule-item group flex gap-4 md:gap-6">
               <div class="hidden w-[72px] shrink-0 pt-4 text-right md:block">
-                <span class="font-mono text-xs text-text-muted">{event.time}</span>
+                <span class="font-mono text-[11px] text-gray-dark">{event.time}</span>
               </div>
-
-              {/* Dot */}
-              <div class="relative hidden shrink-0 md:block">
-                <div class={`mt-4 h-3 w-3 rounded-full border-2 ${cfg.border} bg-base-black transition-colors group-hover:bg-base-card`}></div>
+              <div class="relative hidden shrink-0 md:flex md:items-start">
+                <div class={`mt-[17px] h-2 w-2 rounded-full ${cfg.dot} opacity-40 ring-2 ring-black-card transition-opacity duration-300 group-hover:opacity-100`}></div>
               </div>
-
-              {/* Card */}
-              <div class={`flex-1 border ${cfg.border} bg-base-card p-4 transition-all group-hover:shadow-[0_0_15px_rgba(0,0,0,0.3)]`}>
+              <div class="flex-1 border border-border/60 bg-black/40 px-5 py-4 transition-all duration-300 group-hover:border-border-light group-hover:bg-black-card/80">
                 <div class="flex flex-wrap items-center gap-2">
-                  <span class={`font-mono text-[10px] tracking-widest ${cfg.color}`}>{cfg.label}</span>
-                  <span class="font-mono text-[10px] text-text-muted md:hidden">{event.time}</span>
+                  <span class={`font-mono text-[8px] tracking-[0.3em] ${cfg.color}/70`}>{cfg.label}</span>
+                  <span class="font-mono text-[10px] text-gray-darker md:hidden">{event.time}</span>
                 </div>
-                <h3 class="mt-1 font-display text-sm font-bold text-text-primary">{event.title}</h3>
-                <p class="mt-1 font-mono text-xs text-text-muted">{event.desc}</p>
+                <h3 class="mt-1 font-display text-base tracking-wide text-white">{event.title}</h3>
+                <p class="mt-1 font-body text-[12px] leading-relaxed text-gray-dark">{event.desc}</p>
               </div>
             </div>
           );
@@ -77,11 +72,11 @@ const typeConfig: Record<string, { color: string; border: string; label: string 
       </div>
     </div>
 
-    <!-- Type legend -->
-    <div class="mt-8 flex flex-wrap justify-center gap-4">
+    <!-- Legend -->
+    <div class="mt-8 flex flex-wrap justify-center gap-5">
       {Object.entries(typeConfig).map(([, cfg]) => (
-        <span class={`font-mono text-[10px] tracking-wider ${cfg.color}`}>
-          <span class="mr-1 inline-block h-2 w-2 rounded-full" style={`background: currentColor;`}></span>
+        <span class={`flex items-center gap-1.5 font-mono text-[8px] tracking-[0.2em] ${cfg.color}/50`}>
+          <span class={`inline-block h-1.5 w-1.5 rounded-full ${cfg.dot} opacity-30`}></span>
           {cfg.label}
         </span>
       ))}
@@ -92,22 +87,14 @@ const typeConfig: Record<string, { color: string; border: string; label: string 
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
   gsap.registerPlugin(ScrollTrigger);
 
   gsap.from('.schedule-header', {
     scrollTrigger: { trigger: '.schedule-header', start: 'top 80%' },
-    opacity: 0,
-    y: 30,
-    duration: 0.8,
+    opacity: 0, y: 30, duration: 0.8,
   });
-
   gsap.from('.schedule-item', {
     scrollTrigger: { trigger: '.schedule-item', start: 'top 85%' },
-    opacity: 0,
-    x: -30,
-    stagger: 0.08,
-    duration: 0.6,
-    ease: 'power2.out',
+    opacity: 0, x: -20, stagger: 0.06, duration: 0.5, ease: 'power2.out',
   });
 </script>

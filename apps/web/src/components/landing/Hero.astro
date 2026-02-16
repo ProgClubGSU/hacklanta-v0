@@ -1,72 +1,255 @@
 ---
-// Hero section — full viewport, GSAP animated, casino glow
+// Hero — cinematic dark casino with floating 3D cards + slot machine countdown
+const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 ---
 
 <section
   id="hero"
-  class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-base-black px-4 text-center"
+  class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black px-4 text-center"
 >
-  <!-- Ambient glow effects -->
+  <!-- Red ambient light -->
   <div
-    class="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-[120px]"
-    style="background: radial-gradient(circle, rgba(0,255,136,0.4) 0%, transparent 70%);"
+    class="pointer-events-none absolute left-1/2 top-[40%] h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.14) 0%, rgba(196,30,58,0.04) 35%, transparent 65%);"
   ></div>
+  <!-- Subtle gold glow -->
   <div
-    class="pointer-events-none absolute right-0 top-0 h-[400px] w-[400px] rounded-full opacity-10 blur-[100px]"
-    style="background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, transparent 70%);"
+    class="pointer-events-none absolute left-[60%] top-[30%] h-[400px] w-[400px] rounded-full opacity-[0.04] blur-[100px]"
+    style="background: radial-gradient(circle, rgba(201,168,76,0.6) 0%, transparent 70%);"
+  ></div>
+  <!-- Vignette -->
+  <div
+    class="pointer-events-none absolute inset-0"
+    style="background: radial-gradient(ellipse 65% 60% at 50% 45%, transparent 15%, rgba(5,5,5,0.5) 60%, rgba(5,5,5,0.92) 100%);"
   ></div>
 
-  <!-- Decorative card suits floating -->
-  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-    <span class="hero-suit absolute left-[10%] top-[15%] text-4xl text-suit-red/10">♥</span>
-    <span class="hero-suit absolute right-[12%] top-[20%] text-5xl text-gold/10">♠</span>
-    <span class="hero-suit absolute left-[20%] bottom-[25%] text-3xl text-neon-green/10">♣</span>
-    <span class="hero-suit absolute right-[18%] bottom-[20%] text-4xl text-suit-red/10">♦</span>
-    <span class="hero-suit absolute left-[5%] top-[50%] text-6xl text-gold/5">♠</span>
-    <span class="hero-suit absolute right-[8%] top-[45%] text-5xl text-hot-pink/5">♥</span>
+  <!-- CSS 3D Floating Cards -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true" style="perspective: 1200px;">
+    <div
+      class="hero-card absolute left-[5%] top-[8%] h-[180px] w-[120px] rounded-lg md:h-[220px] md:w-[150px]"
+      style="--card-base-transform: rotateY(-18deg) rotateX(8deg) rotateZ(-6deg); transform: var(--card-base-transform); animation: card-float 7s ease-in-out infinite;"
+    >
+      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/20 bg-gradient-to-br from-red-dark/80 via-red/60 to-red-dark/90 shadow-[0_20px_60px_rgba(196,30,58,0.15)]">
+        <span class="text-4xl text-black/40 md:text-5xl">&#9824;</span>
+      </div>
+    </div>
+    <div
+      class="hero-card absolute right-[6%] top-[12%] h-[160px] w-[110px] rounded-lg md:h-[200px] md:w-[135px]"
+      style="--card-base-transform: rotateY(22deg) rotateX(-5deg) rotateZ(8deg); transform: var(--card-base-transform); animation: card-float 8.5s ease-in-out infinite 1s;"
+    >
+      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/20 bg-gradient-to-br from-red-dark/80 via-red/50 to-red-dark/90 shadow-[0_20px_60px_rgba(196,30,58,0.12)]">
+        <span class="text-4xl text-black/40 md:text-5xl">&#9829;</span>
+      </div>
+    </div>
+    <div
+      class="hero-card absolute bottom-[12%] left-[10%] h-[140px] w-[95px] rounded-lg md:h-[180px] md:w-[120px]"
+      style="--card-base-transform: rotateY(12deg) rotateX(15deg) rotateZ(10deg); transform: var(--card-base-transform); animation: card-float 6.5s ease-in-out infinite 0.5s;"
+    >
+      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/70 via-red/40 to-red-dark/80 shadow-[0_20px_60px_rgba(196,30,58,0.1)]">
+        <span class="text-3xl text-black/30 md:text-4xl">&#9830;</span>
+      </div>
+    </div>
+    <div
+      class="hero-card absolute -right-[3%] bottom-[5%] h-[200px] w-[135px] rounded-lg md:h-[240px] md:w-[160px]"
+      style="--card-base-transform: rotateY(-25deg) rotateX(10deg) rotateZ(-12deg); transform: var(--card-base-transform); animation: card-float 9s ease-in-out infinite 2s;"
+    >
+      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/70 via-red/35 to-red-dark/80 shadow-[0_20px_60px_rgba(196,30,58,0.08)]">
+        <span class="text-5xl text-black/30 md:text-6xl">&#9827;</span>
+      </div>
+    </div>
+    <div
+      class="hero-card absolute left-[25%] top-[55%] hidden h-[120px] w-[80px] rounded-lg lg:block"
+      style="--card-base-transform: rotateY(-8deg) rotateX(20deg) rotateZ(4deg); transform: var(--card-base-transform); animation: card-float 7.5s ease-in-out infinite 1.5s;"
+    >
+      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/10 bg-gradient-to-br from-red-dark/60 via-red/30 to-red-dark/70 shadow-[0_15px_40px_rgba(196,30,58,0.06)]">
+        <span class="text-2xl text-black/25">&#9824;</span>
+      </div>
+    </div>
   </div>
 
-  <div class="relative z-10">
-    <!-- Terminal line -->
-    <p class="hero-line mb-6 font-mono text-sm tracking-widest text-text-muted opacity-0">
-      <span class="text-neon-green">$</span> presented_by <span class="text-gold">progsu</span>
+  <!-- Main content -->
+  <div class="relative z-10 max-w-4xl">
+    <!-- Presented by -->
+    <p class="hero-line font-mono text-[10px] tracking-[0.4em] text-gray-dark opacity-0 uppercase">
+      presented by <span class="text-red/70">progsu</span>
     </p>
 
-    <!-- Main title -->
-    <h1 class="hero-title font-display text-7xl font-black tracking-tight text-text-primary opacity-0 md:text-9xl">
-      HACK<span class="text-neon-green" style="text-shadow: 0 0 80px rgba(0,255,136,0.3), 0 0 40px rgba(0,255,136,0.1);">LANTA</span>
+    <!-- Title -->
+    <h1
+      class="hero-title mt-6 font-display leading-[0.85] text-white-pure opacity-0"
+      style="font-size: clamp(4.5rem, 14vw, 11rem); letter-spacing: 0.04em;"
+    >
+      HACKLANTA
     </h1>
 
-    <!-- Subtitle -->
-    <div class="hero-subtitle mt-6 flex flex-wrap items-center justify-center gap-3 font-mono text-lg text-text-secondary opacity-0">
-      <span class="text-suit-red">♦</span>
-      <span>12-hour hackathon</span>
-      <span class="text-suit-red">♥</span>
-      <span>atlanta, ga</span>
-      <span class="text-gold">♠</span>
+    <!-- Red rule -->
+    <div class="hero-rule mx-auto mt-4 h-px w-48 opacity-0" style="background: linear-gradient(90deg, transparent, #C41E3A, transparent);"></div>
+
+    <!-- Event details -->
+    <div class="hero-details mt-6 flex flex-wrap items-center justify-center gap-3 opacity-0 md:gap-5">
+      <span class="font-body text-[11px] font-medium tracking-[0.2em] text-gray uppercase md:text-xs">12-hour hackathon</span>
+      <span class="text-[10px] text-red/40">&#9670;</span>
+      <span class="font-body text-[11px] font-medium tracking-[0.2em] text-gray uppercase md:text-xs">april 1, 2026</span>
+      <span class="text-[10px] text-red/40">&#9670;</span>
+      <span class="font-body text-[11px] font-medium tracking-[0.2em] text-gray uppercase md:text-xs">atlanta, ga</span>
     </div>
 
-    <!-- Countdown placeholder -->
+    <!-- ========== SLOT MACHINE COUNTDOWN ========== -->
     <div class="hero-countdown mt-10 opacity-0">
-      <div class="flex items-center justify-center gap-4 md:gap-6">
+      <div class="flex items-center justify-center gap-1.5 md:gap-2.5">
+
+        <!-- DAYS -->
         <div class="flex flex-col items-center">
-          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
-          <span class="font-mono text-[10px] tracking-widest text-text-muted">DAYS</span>
+          <div class="flex gap-0.5">
+            <div class="slot-frame">
+              <div class="slot-window">
+                <div class="slot-drum" data-reel="d-tens" style="transform-style: preserve-3d;">
+                  {digits.map((n) => (
+                    <span
+                      class="slot-face"
+                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
+                    >{n}</span>
+                  ))}
+                </div>
+                <div class="slot-fade-top"></div>
+                <div class="slot-fade-bottom"></div>
+                <div class="slot-highlight"></div>
+              </div>
+            </div>
+            <div class="slot-frame">
+              <div class="slot-window">
+                <div class="slot-drum" data-reel="d-ones" style="transform-style: preserve-3d;">
+                  {digits.map((n) => (
+                    <span
+                      class="slot-face"
+                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
+                    >{n}</span>
+                  ))}
+                </div>
+                <div class="slot-fade-top"></div>
+                <div class="slot-fade-bottom"></div>
+                <div class="slot-highlight"></div>
+              </div>
+            </div>
+          </div>
+          <span class="mt-2 font-mono text-[7px] tracking-[0.4em] text-gray-darker">DAYS</span>
         </div>
-        <span class="font-display text-3xl text-text-muted/40">:</span>
+
+        <span class="slot-colon font-display text-xl text-border-light md:text-2xl">:</span>
+
+        <!-- HOURS -->
         <div class="flex flex-col items-center">
-          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
-          <span class="font-mono text-[10px] tracking-widest text-text-muted">HOURS</span>
+          <div class="flex gap-0.5">
+            <div class="slot-frame">
+              <div class="slot-window">
+                <div class="slot-drum" data-reel="h-tens" style="transform-style: preserve-3d;">
+                  {digits.map((n) => (
+                    <span
+                      class="slot-face"
+                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
+                    >{n}</span>
+                  ))}
+                </div>
+                <div class="slot-fade-top"></div>
+                <div class="slot-fade-bottom"></div>
+                <div class="slot-highlight"></div>
+              </div>
+            </div>
+            <div class="slot-frame">
+              <div class="slot-window">
+                <div class="slot-drum" data-reel="h-ones" style="transform-style: preserve-3d;">
+                  {digits.map((n) => (
+                    <span
+                      class="slot-face"
+                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
+                    >{n}</span>
+                  ))}
+                </div>
+                <div class="slot-fade-top"></div>
+                <div class="slot-fade-bottom"></div>
+                <div class="slot-highlight"></div>
+              </div>
+            </div>
+          </div>
+          <span class="mt-2 font-mono text-[7px] tracking-[0.4em] text-gray-darker">HOURS</span>
         </div>
-        <span class="font-display text-3xl text-text-muted/40">:</span>
+
+        <span class="slot-colon font-display text-xl text-border-light md:text-2xl">:</span>
+
+        <!-- MINS -->
         <div class="flex flex-col items-center">
-          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
-          <span class="font-mono text-[10px] tracking-widest text-text-muted">MINS</span>
+          <div class="flex gap-0.5">
+            <div class="slot-frame">
+              <div class="slot-window">
+                <div class="slot-drum" data-reel="m-tens" style="transform-style: preserve-3d;">
+                  {digits.map((n) => (
+                    <span
+                      class="slot-face"
+                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
+                    >{n}</span>
+                  ))}
+                </div>
+                <div class="slot-fade-top"></div>
+                <div class="slot-fade-bottom"></div>
+                <div class="slot-highlight"></div>
+              </div>
+            </div>
+            <div class="slot-frame">
+              <div class="slot-window">
+                <div class="slot-drum" data-reel="m-ones" style="transform-style: preserve-3d;">
+                  {digits.map((n) => (
+                    <span
+                      class="slot-face"
+                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
+                    >{n}</span>
+                  ))}
+                </div>
+                <div class="slot-fade-top"></div>
+                <div class="slot-fade-bottom"></div>
+                <div class="slot-highlight"></div>
+              </div>
+            </div>
+          </div>
+          <span class="mt-2 font-mono text-[7px] tracking-[0.4em] text-gray-darker">MINS</span>
         </div>
-        <span class="font-display text-3xl text-text-muted/40">:</span>
+
+        <span class="slot-colon font-display text-xl text-border-light md:text-2xl">:</span>
+
+        <!-- SECS -->
         <div class="flex flex-col items-center">
-          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
-          <span class="font-mono text-[10px] tracking-widest text-text-muted">SECS</span>
+          <div class="flex gap-0.5">
+            <div class="slot-frame">
+              <div class="slot-window">
+                <div class="slot-drum" data-reel="s-tens" style="transform-style: preserve-3d;">
+                  {digits.map((n) => (
+                    <span
+                      class="slot-face"
+                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
+                    >{n}</span>
+                  ))}
+                </div>
+                <div class="slot-fade-top"></div>
+                <div class="slot-fade-bottom"></div>
+                <div class="slot-highlight"></div>
+              </div>
+            </div>
+            <div class="slot-frame">
+              <div class="slot-window">
+                <div class="slot-drum" data-reel="s-ones" style="transform-style: preserve-3d;">
+                  {digits.map((n) => (
+                    <span
+                      class="slot-face"
+                      style={`transform: rotateX(${n * 36}deg) translateZ(var(--drum-radius));`}
+                    >{n}</span>
+                  ))}
+                </div>
+                <div class="slot-fade-top"></div>
+                <div class="slot-fade-bottom"></div>
+                <div class="slot-highlight"></div>
+              </div>
+            </div>
+          </div>
+          <span class="mt-2 font-mono text-[7px] tracking-[0.4em] text-gray-darker">SECS</span>
         </div>
       </div>
     </div>
@@ -75,82 +258,258 @@
     <div class="hero-cta mt-12 opacity-0">
       <a
         href="/apply"
-        class="group inline-block border-2 border-neon-green bg-neon-green/10 px-8 py-4 font-mono text-lg font-bold text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_30px_rgba(0,255,136,0.3)]"
+        class="group relative inline-flex items-center gap-3 overflow-hidden bg-red px-10 py-4 font-body text-sm font-bold tracking-[0.15em] text-white-pure transition-all duration-300 hover:bg-red-bright hover:shadow-[0_0_50px_rgba(196,30,58,0.35)] hover:scale-[1.03]"
       >
-        <span class="mr-2 text-text-muted transition-colors group-hover:text-neon-green">$</span>DEAL_ME_IN
+        <span class="relative z-10">DEAL ME IN</span>
+        
+        <span class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
       </a>
     </div>
-
-    <!-- Bottom suits -->
-    <p class="hero-suits mt-10 font-mono text-xs text-text-muted opacity-0">
-      ♠ ♦ ♣ ♥ &mdash; go all in &mdash; ♥ ♣ ♦ ♠
-    </p>
   </div>
 
   <!-- Scroll indicator -->
   <div class="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0">
-    <div class="flex flex-col items-center gap-2">
-      <span class="font-mono text-[10px] tracking-widest text-text-muted">SCROLL</span>
-      <div class="h-8 w-px animate-pulse bg-gradient-to-b from-neon-green/50 to-transparent"></div>
+    <div class="flex flex-col items-center gap-3">
+      <span class="font-mono text-[7px] tracking-[0.5em] text-gray-darker uppercase">Scroll</span>
+      <div class="h-8 w-px bg-gradient-to-b from-red/30 to-transparent"></div>
     </div>
   </div>
 </section>
 
+<style>
+  /* Slot machine variables */
+  :root {
+    --drum-radius: 38px;
+    --face-height: 48px;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      --drum-radius: 52px;
+      --face-height: 64px;
+    }
+  }
+
+  /* Frame — the metallic border around each digit */
+  .slot-frame {
+    position: relative;
+    background: linear-gradient(180deg, #1a1a1c 0%, #0f0f10 50%, #1a1a1c 100%);
+    border: 1px solid rgba(42, 42, 43, 0.6);
+    border-radius: 4px;
+    padding: 2px;
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  /* Window — the viewport that clips the drum */
+  .slot-window {
+    position: relative;
+    width: 32px;
+    height: var(--face-height);
+    overflow: hidden;
+    perspective: 200px;
+    border-radius: 2px;
+    background: #0a0a0b;
+  }
+
+  @media (min-width: 768px) {
+    .slot-window {
+      width: 44px;
+    }
+  }
+
+  /* Drum — the 3D cylinder */
+  .slot-drum {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 0;
+    transform-origin: center center;
+    transform: rotateX(0deg);
+  }
+
+  /* Each digit face on the drum */
+  .slot-face {
+    position: absolute;
+    width: 100%;
+    height: var(--face-height);
+    top: calc(50% - var(--face-height) / 2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #C41E3A;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Top fade — slot machine peek effect */
+  .slot-fade-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to bottom, #0a0a0b 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .slot-fade-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to top, #0a0a0b 0%, transparent 100%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Center highlight line — the "reading line" */
+  .slot-highlight {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(196, 30, 58, 0.15), transparent);
+    z-index: 3;
+    pointer-events: none;
+    transform: translateY(-0.5px);
+  }
+
+  .slot-colon {
+    margin-top: -12px;
+  }
+</style>
+
 <script>
   import { gsap } from 'gsap';
 
-  // Hero entrance timeline
+  // ===== Hero entrance =====
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  tl.to('.hero-line', { opacity: 1, y: 0, duration: 0.6 }, 0.2)
-    .to('.hero-title', { opacity: 1, y: 0, duration: 0.8 }, 0.4)
-    .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.6 }, 0.8)
-    .to('.hero-countdown', { opacity: 1, y: 0, duration: 0.6 }, 1.0)
-    .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 1.2)
-    .to('.hero-suits', { opacity: 1, duration: 0.4 }, 1.4)
-    .to('.hero-scroll', { opacity: 1, duration: 0.4 }, 1.6);
+  tl.to('.hero-line', { opacity: 1, y: 0, duration: 0.6 }, 0.3)
+    .to('.hero-title', { opacity: 1, y: 0, duration: 1.4, ease: 'power2.out' }, 0.5)
+    .to('.hero-rule', { opacity: 1, scaleX: 1, duration: 0.8 }, 1.2)
+    .to('.hero-details', { opacity: 1, y: 0, duration: 0.6 }, 1.5)
+    .to('.hero-countdown', { opacity: 1, y: 0, duration: 0.8 }, 1.8)
+    .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 2.4)
+    .to('.hero-scroll', { opacity: 1, duration: 0.6 }, 3.0);
 
-  // Floating suit animation
-  gsap.utils.toArray<HTMLElement>('.hero-suit').forEach((suit, i) => {
-    gsap.to(suit, {
-      y: `${15 + i * 5}`,
-      x: `${(i % 2 === 0 ? 1 : -1) * 10}`,
-      rotation: (i % 2 === 0 ? 1 : -1) * 15,
-      duration: 3 + i * 0.5,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-    });
+  gsap.from('.hero-card', {
+    opacity: 0,
+    scale: 0.6,
+    stagger: 0.2,
+    duration: 1.5,
+    delay: 0.8,
+    ease: 'power2.out',
   });
 
-  // Countdown timer — set your event date here
-  const EVENT_DATE = new Date('2026-04-01T09:00:00-04:00'); // Example date, adjust as needed
+  // ===== Slot Machine Countdown =====
+  const EVENT_DATE = new Date('2026-04-01T09:00:00-04:00');
 
-  function updateCountdown() {
-    const now = new Date();
-    const diff = EVENT_DATE.getTime() - now.getTime();
+  // Reel state: tracks cumulative rotation for continuous spinning direction
+  const reelState: Record<string, { rotation: number; currentDigit: number }> = {};
 
-    if (diff <= 0) {
-      document.querySelectorAll('.countdown-num').forEach((el) => {
-        el.textContent = '00';
-      });
+  // Get all reel elements
+  const reels = document.querySelectorAll<HTMLElement>('.slot-drum');
+  reels.forEach((reel) => {
+    const id = reel.dataset.reel!;
+    reelState[id] = { rotation: 0, currentDigit: 0 };
+  });
+
+  function getReelEl(id: string): HTMLElement | null {
+    return document.querySelector(`[data-reel="${id}"]`);
+  }
+
+  function spinToDigit(id: string, digit: number, animate: boolean, initialDelay = 0) {
+    const el = getReelEl(id);
+    if (!el) return;
+
+    const state = reelState[id];
+
+    if (!animate) {
+      // Initial set — big dramatic spin
+      // Start from 3-5 full rotations ahead, then land on target
+      const spins = 3 + initialDelay * 0.5;
+      const targetRot = -(digit * 36);
+      const startRot = targetRot + 360 * spins;
+
+      gsap.fromTo(
+        el,
+        { rotateX: startRot },
+        {
+          rotateX: targetRot,
+          duration: 1.8 + initialDelay * 0.2,
+          delay: 1.8 + initialDelay * 0.12,
+          ease: 'power3.out',
+        }
+      );
+
+      state.rotation = targetRot;
+      state.currentDigit = digit;
       return;
     }
+
+    // Normal tick — continuous spin direction
+    if (digit === state.currentDigit) return;
+
+    // Calculate steps forward in countdown direction
+    let delta = state.currentDigit - digit;
+    if (delta < 0) delta += 10; // wrapping (e.g. 0 → 9)
+    if (delta === 0) delta = 10; // full revolution
+
+    const newRot = state.rotation - delta * 36;
+
+    gsap.to(el, {
+      rotateX: newRot,
+      duration: 0.5,
+      ease: 'back.out(1.2)',
+    });
+
+    state.rotation = newRot;
+    state.currentDigit = digit;
+  }
+
+  function getCountdownDigits() {
+    const now = new Date();
+    const diff = Math.max(0, EVENT_DATE.getTime() - now.getTime());
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
     const mins = Math.floor((diff / (1000 * 60)) % 60);
     const secs = Math.floor((diff / 1000) % 60);
 
-    const nums = document.querySelectorAll('.countdown-num');
-    if (nums.length >= 4) {
-      nums[0].textContent = String(days).padStart(2, '0');
-      nums[1].textContent = String(hours).padStart(2, '0');
-      nums[2].textContent = String(mins).padStart(2, '0');
-      nums[3].textContent = String(secs).padStart(2, '0');
-    }
+    return {
+      'd-tens': Math.floor(days / 10) % 10,
+      'd-ones': days % 10,
+      'h-tens': Math.floor(hours / 10),
+      'h-ones': hours % 10,
+      'm-tens': Math.floor(mins / 10),
+      'm-ones': mins % 10,
+      's-tens': Math.floor(secs / 10),
+      's-ones': secs % 10,
+    };
   }
 
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+  // Initial spin — dramatic entrance
+  const initialDigits = getCountdownDigits();
+  const reelOrder = ['d-tens', 'd-ones', 'h-tens', 'h-ones', 'm-tens', 'm-ones', 's-tens', 's-ones'];
+
+  reelOrder.forEach((id, i) => {
+    spinToDigit(id, initialDigits[id as keyof typeof initialDigits], false, i);
+  });
+
+  // Tick every second
+  setInterval(() => {
+    const d = getCountdownDigits();
+    for (const id of reelOrder) {
+      spinToDigit(id, d[id as keyof typeof d], true);
+    }
+  }, 1000);
 </script>

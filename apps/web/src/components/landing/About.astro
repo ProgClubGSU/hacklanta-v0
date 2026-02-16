@@ -1,84 +1,93 @@
 ---
-// [01] About Hacklanta section
+// [01] About — clean, bold, informational
 ---
 
-<section id="about" class="relative bg-base-black px-4 py-24 md:py-32">
+<section id="about" class="relative bg-black-card px-4 py-24 md:py-32">
+  <!-- Top border -->
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-light/60 to-transparent"></div>
+
+  <!-- Subtle red ambient -->
+  <div
+    class="pointer-events-none absolute right-[15%] top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full opacity-[0.03] blur-[120px]"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.8) 0%, transparent 70%);"
+  ></div>
+
   <div class="mx-auto max-w-5xl">
     <!-- Section header -->
-    <div class="about-header mb-12">
-      <div class="flex items-center gap-3 font-mono text-xs tracking-widest text-text-muted">
-        <span class="text-neon-green">[01]</span>
-        <span class="h-px flex-1 bg-base-border"></span>
-        <span>// about_hacklanta</span>
+    <div class="about-header mb-14">
+      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+        <span class="text-red/60">[01]</span>
+        <span class="h-px flex-1 bg-border/60"></span>
+        <span>ABOUT</span>
       </div>
-      <h2 class="mt-4 font-display text-4xl font-black text-text-primary md:text-5xl">
-        What's the <span class="text-gold">play</span>?
+      <h2 class="mt-5 font-display text-5xl tracking-wide text-white-pure md:text-6xl">
+        WHAT'S THE PLAY
       </h2>
     </div>
 
-    <div class="grid gap-8 md:grid-cols-2">
+    <div class="grid gap-12 md:grid-cols-2">
       <!-- Left column: description -->
       <div class="about-card space-y-6">
-        <p class="font-mono text-sm leading-relaxed text-text-secondary">
-          Hacklanta is a <span class="text-neon-green font-bold">12-hour hackathon</span> hosted
-          by <span class="text-gold">progsu</span> (Programming Club @ Georgia State University).
-          Whether you're a seasoned dev or writing your first line of code — this is your table.
+        <p class="font-body text-[15px] leading-[1.8] text-gray">
+          Hacklanta is a <span class="font-semibold text-white">12-hour hackathon</span> hosted
+          by <span class="text-red">progsu</span> — the Programming Club at Georgia State University.
+          Whether you're a seasoned dev or writing your first line of code, this is your table.
         </p>
-        <p class="font-mono text-sm leading-relaxed text-text-secondary">
+        <p class="font-body text-[15px] leading-[1.8] text-gray">
           Build something wild. Learn something new. Break something on purpose.
-          No buy-in required, just <span class="text-hot-pink">pure creative energy</span>
+          No buy-in required — just <span class="text-red">pure creative energy</span>
           and the willingness to go all in.
         </p>
-        <div class="border-l-2 border-neon-green/30 pl-4">
-          <p class="font-mono text-xs italic text-text-muted">
+        <div class="border-l-2 border-red/30 pl-5">
+          <p class="font-body text-sm italic leading-relaxed text-gray-dark">
             "The house always wins — unless you're the one building the house."
           </p>
         </div>
       </div>
 
       <!-- Right column: stats -->
-      <div class="about-card grid grid-cols-2 gap-4">
-        <div class="border border-base-border bg-base-card p-5 transition-colors hover:border-neon-green/30">
-          <p class="font-display text-3xl font-black text-neon-green">12</p>
-          <p class="mt-1 font-mono text-[10px] tracking-widest text-text-muted">HOURS</p>
+      <div class="about-card grid grid-cols-2 gap-3">
+        <div class="group border border-border bg-black/60 p-6 transition-all duration-300 hover:border-red/20 hover:shadow-[0_4px_24px_rgba(196,30,58,0.06)]">
+          <p class="font-display text-5xl text-red">12</p>
+          <p class="mt-2 font-mono text-[8px] tracking-[0.35em] text-gray-dark">HOURS</p>
         </div>
-        <div class="border border-base-border bg-base-card p-5 transition-colors hover:border-gold/30">
-          <p class="font-display text-3xl font-black text-gold">4</p>
-          <p class="mt-1 font-mono text-[10px] tracking-widest text-text-muted">MEMBER TEAMS</p>
+        <div class="group border border-border bg-black/60 p-6 transition-all duration-300 hover:border-red/20 hover:shadow-[0_4px_24px_rgba(196,30,58,0.06)]">
+          <p class="font-display text-5xl text-red">4</p>
+          <p class="mt-2 font-mono text-[8px] tracking-[0.35em] text-gray-dark">PER TEAM</p>
         </div>
-        <div class="border border-base-border bg-base-card p-5 transition-colors hover:border-hot-pink/30">
-          <p class="font-display text-3xl font-black text-hot-pink">∞</p>
-          <p class="mt-1 font-mono text-[10px] tracking-widest text-text-muted">POSSIBILITIES</p>
+        <div class="group border border-border bg-black/60 p-6 transition-all duration-300 hover:border-gold-dim/20 hover:shadow-[0_4px_24px_rgba(201,168,76,0.04)]">
+          <p class="font-display text-5xl text-gold">&#8734;</p>
+          <p class="mt-2 font-mono text-[8px] tracking-[0.35em] text-gray-dark">POSSIBILITIES</p>
         </div>
-        <div class="border border-base-border bg-base-card p-5 transition-colors hover:border-cyan/30">
-          <p class="font-display text-3xl font-black text-cyan">$0</p>
-          <p class="mt-1 font-mono text-[10px] tracking-widest text-text-muted">TO ENTER</p>
+        <div class="group border border-border bg-black/60 p-6 transition-all duration-300 hover:border-red/20 hover:shadow-[0_4px_24px_rgba(196,30,58,0.06)]">
+          <p class="font-display text-5xl text-white-pure">$0</p>
+          <p class="mt-2 font-mono text-[8px] tracking-[0.35em] text-gray-dark">TO ENTER</p>
         </div>
       </div>
     </div>
 
     <!-- What to expect -->
-    <div class="about-expect mt-16">
-      <h3 class="mb-6 font-mono text-sm tracking-wider text-neon-green">{'>'} WHAT_TO_EXPECT</h3>
+    <div class="about-expect mt-20">
+      <h3 class="mb-8 font-mono text-[9px] tracking-[0.4em] text-gray-darker">WHAT TO EXPECT</h3>
       <div class="grid gap-4 md:grid-cols-3">
-        <div class="group border border-base-border bg-base-card p-6 transition-all hover:border-neon-green/30 hover:shadow-[0_0_20px_rgba(0,255,136,0.05)]">
-          <span class="text-2xl">🃏</span>
-          <h4 class="mt-3 font-display text-lg font-bold text-text-primary">Workshops</h4>
-          <p class="mt-2 font-mono text-xs leading-relaxed text-text-muted">
+        <div class="group border border-border bg-black/40 p-7 transition-all duration-300 hover:border-red/15 hover:shadow-[0_8px_30px_rgba(196,30,58,0.04)]">
+          <span class="text-2xl text-red/50">&#9824;</span>
+          <h4 class="mt-4 font-display text-xl tracking-wide text-white">WORKSHOPS</h4>
+          <p class="mt-2 font-body text-[13px] leading-[1.7] text-gray-dark">
             Hands-on sessions from industry pros. Level up your stack before you build.
           </p>
         </div>
-        <div class="group border border-base-border bg-base-card p-6 transition-all hover:border-gold/30 hover:shadow-[0_0_20px_rgba(255,215,0,0.05)]">
-          <span class="text-2xl">🎰</span>
-          <h4 class="mt-3 font-display text-lg font-bold text-text-primary">Mini-games</h4>
-          <p class="mt-2 font-mono text-xs leading-relaxed text-text-muted">
+        <div class="group border border-border bg-black/40 p-7 transition-all duration-300 hover:border-red/15 hover:shadow-[0_8px_30px_rgba(196,30,58,0.04)]">
+          <span class="text-2xl text-red/50">&#9830;</span>
+          <h4 class="mt-4 font-display text-xl tracking-wide text-white">MINI-GAMES</h4>
+          <p class="mt-2 font-body text-[13px] leading-[1.7] text-gray-dark">
             Side quests and challenges throughout the event. Prizes for the bold.
           </p>
         </div>
-        <div class="group border border-base-border bg-base-card p-6 transition-all hover:border-hot-pink/30 hover:shadow-[0_0_20px_rgba(255,51,102,0.05)]">
-          <span class="text-2xl">🍕</span>
-          <h4 class="mt-3 font-display text-lg font-bold text-text-primary">Free Food</h4>
-          <p class="mt-2 font-mono text-xs leading-relaxed text-text-muted">
+        <div class="group border border-border bg-black/40 p-7 transition-all duration-300 hover:border-red/15 hover:shadow-[0_8px_30px_rgba(196,30,58,0.04)]">
+          <span class="text-2xl text-red/50">&#9829;</span>
+          <h4 class="mt-4 font-display text-xl tracking-wide text-white">FREE FOOD</h4>
+          <p class="mt-2 font-body text-[13px] leading-[1.7] text-gray-dark">
             Meals and snacks provided all day. Fuel your grind, on the house.
           </p>
         </div>
@@ -90,31 +99,18 @@
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
   gsap.registerPlugin(ScrollTrigger);
 
-  // Header animation
   gsap.from('.about-header', {
     scrollTrigger: { trigger: '.about-header', start: 'top 80%' },
-    opacity: 0,
-    y: 30,
-    duration: 0.8,
+    opacity: 0, y: 30, duration: 0.8,
   });
-
-  // Cards stagger
   gsap.from('.about-card', {
     scrollTrigger: { trigger: '.about-card', start: 'top 80%' },
-    opacity: 0,
-    y: 40,
-    stagger: 0.2,
-    duration: 0.8,
+    opacity: 0, y: 40, stagger: 0.2, duration: 0.8,
   });
-
-  // Expect section
   gsap.from('.about-expect', {
     scrollTrigger: { trigger: '.about-expect', start: 'top 80%' },
-    opacity: 0,
-    y: 30,
-    duration: 0.8,
+    opacity: 0, y: 30, duration: 0.8,
   });
 </script>

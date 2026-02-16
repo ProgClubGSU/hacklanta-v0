@@ -48,7 +48,7 @@ export default function ApplicationPage() {
         </p>
         <a
           href="/sign-in"
-          className="mt-4 inline-block border border-neon-green bg-neon-green/10 px-6 py-2 font-mono text-sm text-neon-green transition-all hover:bg-neon-green/20"
+          className="mt-4 inline-block border border-gold bg-gold/10 px-6 py-2 font-mono text-sm text-gold transition-all hover:bg-gold/20"
         >
           $ sign_in
         </a>

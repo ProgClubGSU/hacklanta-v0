@@ -150,13 +150,13 @@ export default function TeamFinder() {
       )}
 
       {myTeam ? (
-        <div className="border border-base-border bg-base-card shadow-[0_0_15px_rgba(0,255,136,0.1)]">
+        <div className="border border-base-border bg-base-card shadow-[0_0_15px_rgba(232,180,79,0.15)]">
           <div className="border-b border-base-border bg-base-dark px-6 py-3">
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs tracking-widest text-text-muted">
                 YOUR TABLE // TEAM
               </span>
-              <span className="font-mono text-xs text-neon-green">
+              <span className="font-mono text-xs text-gold">
                 {myTeam.members.length}/{myTeam.max_size} SEATS
               </span>
             </div>
@@ -211,7 +211,7 @@ export default function TeamFinder() {
                 setShowCreate(true);
                 setShowJoin(false);
               }}
-              className="flex-1 border-2 border-neon-green bg-neon-green/10 px-4 py-3 font-mono text-sm font-bold tracking-wider text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_15px_rgba(0,255,136,0.15)]"
+              className="flex-1 border-2 border-gold bg-gold/10 px-4 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_15px_rgba(232,180,79,0.22)]"
             >
               $ CREATE_TEAM
             </button>
@@ -220,7 +220,7 @@ export default function TeamFinder() {
                 setShowJoin(true);
                 setShowCreate(false);
               }}
-              className="flex-1 border-2 border-gold bg-gold/10 px-4 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_15px_rgba(255,215,0,0.15)]"
+              className="flex-1 border-2 border-gold bg-gold/10 px-4 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_15px_rgba(198,149,63,0.22)]"
             >
               $ JOIN_TEAM
             </button>
@@ -228,7 +228,7 @@ export default function TeamFinder() {
 
           {showCreate && (
             <form onSubmit={handleCreate} className="border-t border-base-border p-6">
-              <p className="mb-4 font-mono text-xs tracking-wider text-neon-green">
+              <p className="mb-4 font-mono text-xs tracking-wider text-gold">
                 {'>'} NEW_TEAM
               </p>
               <div className="space-y-3">
@@ -237,19 +237,19 @@ export default function TeamFinder() {
                   onChange={(e) => setTeamName(e.target.value)}
                   required
                   placeholder="Team name"
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
                 />
                 <textarea
                   value={teamDesc}
                   onChange={(e) => setTeamDesc(e.target.value)}
                   placeholder="Description (skills wanted, project ideas...)"
                   rows={3}
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
                 />
                 <button
                   type="submit"
                   disabled={actionLoading}
-                  className="w-full border border-neon-green bg-neon-green/10 px-4 py-2 font-mono text-sm tracking-wider text-neon-green transition-colors hover:bg-neon-green/20 disabled:opacity-50"
+                  className="w-full border border-gold bg-gold/10 px-4 py-2 font-mono text-sm tracking-wider text-gold transition-colors hover:bg-gold/20 disabled:opacity-50"
                 >
                   {actionLoading ? '// CREATING...' : 'CONFIRM'}
                 </button>
@@ -311,7 +311,7 @@ export default function TeamFinder() {
                 </div>
                 <span
                   className={`font-mono text-xs ${
-                    team.member_count >= team.max_size ? 'text-suit-red' : 'text-neon-green'
+                    team.member_count >= team.max_size ? 'text-suit-red' : 'text-gold'
                   }`}
                 >
                   {team.member_count}/{team.max_size}

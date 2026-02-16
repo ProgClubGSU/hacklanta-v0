@@ -120,7 +120,7 @@ export default function ApplicationForm({ onSubmitted }: Props) {
         <div className="space-y-6 p-6">
           {/* Section: Academic Info */}
           <fieldset>
-            <legend className="mb-4 font-mono text-sm tracking-wider text-neon-green">
+            <legend className="mb-4 font-mono text-sm tracking-wider text-gold">
               {'>'} ACADEMIC_INFO
             </legend>
             <div className="grid gap-4 md:grid-cols-2">
@@ -156,7 +156,7 @@ export default function ApplicationForm({ onSubmitted }: Props) {
 
           {/* Section: Links */}
           <fieldset>
-            <legend className="mb-4 font-mono text-sm tracking-wider text-neon-green">
+            <legend className="mb-4 font-mono text-sm tracking-wider text-gold">
               {'>'} LINKS
             </legend>
             <div className="grid gap-4 md:grid-cols-2">
@@ -168,10 +168,10 @@ export default function ApplicationForm({ onSubmitted }: Props) {
                   type="file"
                   accept=".pdf"
                   onChange={(e) => setResumeFile(e.target.files?.[0] ?? null)}
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none file:mr-3 file:border-0 file:bg-neon-green/10 file:px-3 file:py-1 file:font-mono file:text-xs file:text-neon-green"
+                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none file:mr-3 file:border-0 file:bg-gold/10 file:px-3 file:py-1 file:font-mono file:text-xs file:text-gold"
                 />
                 {resumeFile && (
-                  <p className="mt-1 font-mono text-xs text-neon-green">
+                  <p className="mt-1 font-mono text-xs text-gold">
                     {resumeFile.name}
                   </p>
                 )}
@@ -195,7 +195,7 @@ export default function ApplicationForm({ onSubmitted }: Props) {
 
           {/* Section: About You */}
           <fieldset>
-            <legend className="mb-4 font-mono text-sm tracking-wider text-neon-green">
+            <legend className="mb-4 font-mono text-sm tracking-wider text-gold">
               {'>'} ABOUT_YOU
             </legend>
             <div className="space-y-4">
@@ -213,7 +213,7 @@ export default function ApplicationForm({ onSubmitted }: Props) {
                   value={form.why_attend}
                   onChange={(e) => updateField('why_attend', e.target.value)}
                   rows={4}
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-neon-green"
+                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-gold"
                   placeholder="Tell us what you're hoping to build, learn, or break..."
                 />
               </div>
@@ -222,7 +222,7 @@ export default function ApplicationForm({ onSubmitted }: Props) {
 
           {/* Section: Logistics */}
           <fieldset>
-            <legend className="mb-4 font-mono text-sm tracking-wider text-neon-green">
+            <legend className="mb-4 font-mono text-sm tracking-wider text-gold">
               {'>'} LOGISTICS
             </legend>
             <div className="grid gap-4 md:grid-cols-2">
@@ -254,7 +254,7 @@ export default function ApplicationForm({ onSubmitted }: Props) {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full border-2 border-neon-green bg-neon-green/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_20px_rgba(0,255,136,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full border-2 border-gold bg-gold/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(232,180,79,0.3)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {uploadingResume ? '// UPLOADING RESUME...' : submitting ? '// SUBMITTING...' : '$ DEAL_ME_IN'}
           </button>
@@ -291,7 +291,7 @@ function InputField({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         placeholder={placeholder}
-        className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-neon-green"
+        className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-gold"
       />
     </div>
   );
@@ -320,7 +320,7 @@ function SelectField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors focus:border-neon-green"
+        className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors focus:border-gold"
       >
         <option value="">Select...</option>
         {options.map((opt) => (

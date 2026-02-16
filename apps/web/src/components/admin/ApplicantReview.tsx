@@ -11,9 +11,9 @@ interface Props {
 
 const STATUS_COLORS: Record<string, string> = {
   pending: 'text-gold',
-  accepted: 'text-neon-green',
+  accepted: 'text-gold',
   rejected: 'text-suit-red',
-  waitlisted: 'text-cyan',
+  waitlisted: 'text-teal-light',
 };
 
 export default function ApplicantReview({ application, onClose, onUpdated }: Props) {
@@ -109,13 +109,13 @@ export default function ApplicantReview({ application, onClose, onUpdated }: Pro
             label="$ ACCEPT"
             onClick={() => handleStatusUpdate('accepted')}
             disabled={updating || application.status === 'accepted'}
-            className="border-neon-green bg-neon-green/10 text-neon-green hover:bg-neon-green/20"
+            className="border-gold bg-gold/10 text-gold hover:bg-gold/20"
           />
           <ActionButton
             label="$ WAITLIST"
             onClick={() => handleStatusUpdate('waitlisted')}
             disabled={updating || application.status === 'waitlisted'}
-            className="border-cyan bg-cyan/10 text-cyan hover:bg-cyan/20"
+            className="border-teal bg-teal/10 text-teal-light hover:bg-teal/20"
           />
           <ActionButton
             label="$ REJECT"
@@ -148,7 +148,7 @@ function DetailRow({
           href={value}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-neon-green-dim transition-colors hover:text-neon-green"
+          className="text-gold-dim transition-colors hover:text-gold"
         >
           {value.length > 40 ? value.slice(0, 40) + '...' : value}
         </a>

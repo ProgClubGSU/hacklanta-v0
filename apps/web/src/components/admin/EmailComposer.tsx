@@ -148,10 +148,10 @@ export default function EmailComposer() {
                   className={`border px-3 py-1.5 font-mono text-xs tracking-wider transition-colors ${
                     newStatus === opt.value.replace('application_', '')
                       ? opt.value.includes('accepted')
-                        ? 'border-neon-green bg-neon-green/20 text-neon-green'
+                        ? 'border-gold bg-gold/20 text-gold'
                         : opt.value.includes('rejected')
                           ? 'border-suit-red bg-suit-red/20 text-suit-red'
-                          : 'border-cyan bg-cyan/20 text-cyan'
+                          : 'border-teal bg-teal/20 text-teal-light'
                       : 'border-base-border text-text-muted hover:text-text-primary'
                   }`}
                 >
@@ -184,7 +184,7 @@ export default function EmailComposer() {
           )}
 
           {result && (
-            <div className="border border-neon-green/30 bg-neon-green/10 px-4 py-3 font-mono text-sm text-neon-green">
+            <div className="border border-gold/30 bg-gold/10 px-4 py-3 font-mono text-sm text-gold">
               Done: {result.updated} updated, {result.failed} failed out of {result.total} total.
               Status emails have been queued.
             </div>
@@ -195,7 +195,7 @@ export default function EmailComposer() {
           <button
             onClick={handleBulkAction}
             disabled={sending}
-            className="w-full border-2 border-gold bg-gold/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(255,215,0,0.2)] disabled:opacity-50"
+            className="w-full border-2 border-gold bg-gold/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(198,149,63,0.3)] disabled:opacity-50"
           >
             {sending ? '// PROCESSING...' : `$ BULK_${newStatus.toUpperCase()}`}
           </button>

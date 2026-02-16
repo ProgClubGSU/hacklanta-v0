@@ -1,40 +1,96 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-base-black: #0a0a0a;
-  --color-base-dark: #121212;
-  --color-base-card: #1a1a1a;
-  --color-base-border: #2a2a2a;
+  /* === BLACKS === */
+  --color-black: #050505;
+  --color-black-card: #0F0F10;
+  --color-black-elevated: #161617;
+  --color-border: #1E1E1F;
+  --color-border-light: #2A2A2B;
 
-  --color-neon-green: #00ff88;
-  --color-neon-green-dim: #00cc6a;
-  --color-gold: #ffd700;
-  --color-hot-pink: #ff3366;
-  --color-cyan: #00e5ff;
+  /* === RED — PRIMARY ACCENT === */
+  --color-red: #C41E3A;
+  --color-red-bright: #E63946;
+  --color-red-dark: #7A1024;
+  --color-red-glow: #FF1744;
 
-  --color-suit-red: #e63946;
-  --color-suit-black: #f1faee;
+  /* === GOLD — TERTIARY (sparingly) === */
+  --color-gold: #C9A84C;
+  --color-gold-dim: #8B7635;
 
-  --color-text-primary: #f5f5f5;
-  --color-text-secondary: #a0a0a0;
-  --color-text-muted: #666666;
+  /* === TEXT === */
+  --color-white: #F0EDE8;
+  --color-white-pure: #FFFFFF;
+  --color-gray: #888888;
+  --color-gray-dark: #555555;
+  --color-gray-darker: #333333;
 
+  /* === FONTS === */
+  --font-display: 'Bebas Neue', 'Anton', sans-serif;
+  --font-body: 'Manrope', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
-  --font-display: 'Inter', 'Satoshi', ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
-  background-color: var(--color-base-black);
-  color: var(--color-text-primary);
-  font-family: var(--font-mono);
+  background-color: var(--color-black);
+  color: var(--color-white);
+  font-family: var(--font-body);
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Film grain overlay — analog texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
 }
 
 ::selection {
-  background-color: var(--color-neon-green);
-  color: var(--color-base-black);
+  background-color: var(--color-red);
+  color: var(--color-black);
+}
+
+/* Scrollbar — thin, dark, red accent on hover */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--color-black); }
+::-webkit-scrollbar-thumb { background: var(--color-border-light); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-red); }
+
+/* === ANIMATIONS === */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes card-float {
+  0%, 100% { transform: var(--card-base-transform) translateY(0px); }
+  50% { transform: var(--card-base-transform) translateY(-8px); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

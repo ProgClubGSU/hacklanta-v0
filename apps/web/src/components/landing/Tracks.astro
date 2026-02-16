@@ -1,0 +1,120 @@
+---
+// [02] Tracks — CSS 3D poker chips
+
+const tracks = [
+  {
+    name: 'Web Dev',
+    suit: '&#9824;',
+    label: 'ACE OF SPADES',
+    color: 'red',
+    desc: 'Full-stack web applications, from sleek frontends to powerful APIs.',
+  },
+  {
+    name: 'AI / ML',
+    suit: '&#9829;',
+    label: 'KING OF HEARTS',
+    color: 'red-bright',
+    desc: 'Machine learning models, AI-powered tools, and intelligent automation.',
+  },
+  {
+    name: 'Cybersecurity',
+    suit: '&#9827;',
+    label: 'QUEEN OF CLUBS',
+    color: 'red',
+    desc: 'Security tools, CTF-style challenges, and defensive solutions.',
+  },
+  {
+    name: 'Open Innovation',
+    suit: '&#9830;',
+    label: 'JACK OF DIAMONDS',
+    color: 'gold',
+    desc: 'Anything goes. Hardware hacks, creative tools, wild ideas — surprise us.',
+  },
+];
+---
+
+<section id="tracks" class="relative bg-black px-4 py-24 md:py-32">
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-border-light/60 to-transparent"></div>
+
+  <div class="mx-auto max-w-5xl">
+    <!-- Section header -->
+    <div class="tracks-header mb-16 text-center">
+      <div class="flex items-center justify-center gap-4 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+        <span class="h-px w-12 bg-gradient-to-r from-transparent to-border"></span>
+        <span class="text-red/60">[02]</span>
+        <span>TRACKS</span>
+        <span class="h-px w-12 bg-gradient-to-l from-transparent to-border"></span>
+      </div>
+      <h2 class="mt-5 font-display text-5xl tracking-wide text-white-pure md:text-6xl">
+        PICK YOUR HAND
+      </h2>
+      <p class="mx-auto mt-4 max-w-sm font-body text-sm leading-relaxed text-gray-dark">
+        Four tracks. Four suits. Choose your play.
+      </p>
+    </div>
+
+    <!-- Chips grid -->
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {tracks.map((track) => (
+        <div class="track-chip group" style="perspective: 600px;">
+          <div class="relative flex flex-col items-center">
+            {/* The chip */}
+            <div
+              class="relative h-44 w-44 cursor-pointer transition-transform duration-500 group-hover:scale-105 md:h-48 md:w-48"
+              style="transform-style: preserve-3d;"
+            >
+              {/* Outer ring */}
+              <div class="absolute inset-0 rounded-full border-[6px] border-red/30 bg-black-card shadow-[0_12px_40px_rgba(196,30,58,0.12)] transition-all duration-500 group-hover:border-red/60 group-hover:shadow-[0_20px_60px_rgba(196,30,58,0.25)]"></div>
+
+              {/* Inner dashed ring — poker chip edge pattern */}
+              <div class="absolute inset-3 rounded-full border-2 border-dashed border-red/20 transition-colors duration-500 group-hover:border-red/40"></div>
+
+              {/* Second inner ring */}
+              <div class="absolute inset-6 rounded-full border border-border-light/40 transition-colors duration-500 group-hover:border-border-light/70"></div>
+
+              {/* Center content */}
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span class="text-3xl text-red/60 transition-all duration-500 group-hover:text-red group-hover:scale-110" set:html={track.suit}></span>
+                <span class="mt-1 font-display text-lg tracking-wider text-white-pure">{track.name.toUpperCase()}</span>
+              </div>
+
+              {/* Subtle rotating glow ring on hover */}
+              <div class="absolute -inset-1 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100" style="background: conic-gradient(from 0deg, transparent, rgba(196,30,58,0.08), transparent, rgba(196,30,58,0.08), transparent); animation: spin-slow 8s linear infinite;"></div>
+            </div>
+
+            {/* Label below chip */}
+            <p class="mt-5 font-mono text-[8px] tracking-[0.35em] text-red/50 transition-colors duration-300 group-hover:text-red/80">
+              {track.label}
+            </p>
+
+            {/* Description */}
+            <p class="mt-3 max-w-[200px] text-center font-body text-[12px] leading-[1.7] text-gray-dark">
+              {track.desc}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.tracks-header', {
+    scrollTrigger: { trigger: '.tracks-header', start: 'top 80%' },
+    opacity: 0, y: 30, duration: 0.8,
+  });
+
+  gsap.from('.track-chip', {
+    scrollTrigger: { trigger: '.track-chip', start: 'top 85%' },
+    opacity: 0,
+    y: 60,
+    rotation: gsap.utils.wrap([-8, 5, -5, 8]),
+    stagger: 0.15,
+    duration: 0.9,
+    ease: 'back.out(1.4)',
+  });
+</script>
