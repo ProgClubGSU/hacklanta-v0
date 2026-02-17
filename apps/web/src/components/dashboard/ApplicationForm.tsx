@@ -1,6 +1,9 @@
 import { useAuth } from '@clerk/astro/react';
 import { useState } from 'react';
 import { apiFetch } from '../../lib/api';
+import Turnstile from '../ui/Turnstile';
+
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
 export interface ApplicationData {
   id: string;
@@ -57,6 +60,7 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
   const { getToken } = useAuth();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [uploadingResume, setUploadingResume] = useState(false);
@@ -145,8 +149,14 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
       const endpoint = isEditing ? '/api/v1/applications/me' : '/api/v1/applications';
       const method = isEditing ? 'PATCH' : 'POST';
 
+      const fetchHeaders: Record<string, string> = {};
+      if (!isEditing && turnstileToken) {
+        fetchHeaders['X-Turnstile-Token'] = turnstileToken;
+      }
+
       const result = await apiFetch<ApplicationData>(endpoint, {
         method,
+        headers: fetchHeaders,
         body: JSON.stringify(payload),
       }, token);
 
@@ -402,11 +412,20 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
           </div>
         )}
 
-        {/* Submit */}
+        {/* Turnstile + Submit */}
         <div className="border-t border-base-border bg-base-dark px-6 py-4">
+          {!isEditing && TURNSTILE_SITE_KEY && (
+            <div className="mb-4">
+              <Turnstile
+                siteKey={TURNSTILE_SITE_KEY}
+                onVerify={setTurnstileToken}
+                onExpire={() => setTurnstileToken(null)}
+              />
+            </div>
+          )}
           <button
             type="submit"
-            disabled={submitting}
+            disabled={submitting || (!isEditing && TURNSTILE_SITE_KEY !== '' && !turnstileToken)}
             className="w-full border-2 border-neon-green bg-neon-green/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_20px_rgba(0,255,136,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {uploadingResume ? '// UPLOADING RESUME...' : submitting ? '// SUBMITTING...' : '$ DEAL_ME_IN'}

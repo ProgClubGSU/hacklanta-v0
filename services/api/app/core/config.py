@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     aws_ses_from_email: str = "noreply@hacklanta.com"
     s3_bucket_name: str = "hacklanta-uploads"
 
+    # Cloudflare Turnstile
+    turnstile_secret_key: str = ""
+
     # CORS
     cors_origins: list[str] = ["http://localhost:4321"]
 

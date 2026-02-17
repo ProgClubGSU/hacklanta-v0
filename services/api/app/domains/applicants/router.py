@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_session
 from app.core.security import AdminUser, CurrentUser
+from app.core.turnstile import VerifiedTurnstile
 from app.domains.applicants import service
 from app.domains.applicants.schemas import (
     ApplicationCreate,
@@ -29,6 +30,7 @@ async def submit_application(
     data: ApplicationCreate,
     user: CurrentUser,
     session: Annotated[AsyncSession, Depends(get_session)],
+    _turnstile: VerifiedTurnstile,
 ) -> ApplicationResponse:
     """Submit a new application (authenticated users only)."""
     application = await service.submit_application(session, clerk_id=user["sub"], data=data)
