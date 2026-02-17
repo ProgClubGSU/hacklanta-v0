@@ -33,12 +33,15 @@ def generate_upload_url(*, file_extension: str) -> dict:
 
 
 def generate_download_url(*, key: str) -> str:
-    """Generate a presigned URL for downloading a file from S3."""
+    """Generate a presigned URL for downloading a file from S3.
+
+    URL expires in 15 minutes for security.
+    """
     return s3_client.generate_presigned_url(
         "get_object",
         Params={
             "Bucket": settings.s3_bucket_name,
             "Key": key,
         },
-        ExpiresIn=3600,  # 1 hour
+        ExpiresIn=900,  # 15 minutes
     )

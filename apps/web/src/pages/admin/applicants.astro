@@ -1,9 +1,11 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
 import ApplicantsPage from '../../components/admin/ApplicantsPage';
+import BackButton from '../../components/ui/BackButton';
 ---
 
 <DashboardLayout title="Applicants — Hacklanta Admin">
+  <BackButton client:load />
   <h1 class="font-display text-3xl font-bold text-text-primary">[ADMIN] Applicants</h1>
   <p class="mt-2 font-mono text-sm text-text-muted">// review the deck</p>
   <ApplicantsPage client:load />
