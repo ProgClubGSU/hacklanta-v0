@@ -24,7 +24,7 @@ async def get_current_user(request: Request) -> dict:
     if not request_state.is_signed_in:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=request_state.reason or "Not authenticated",
+            detail=str(request_state.reason) if request_state.reason else "Not authenticated",
         )
 
     return request_state.payload
