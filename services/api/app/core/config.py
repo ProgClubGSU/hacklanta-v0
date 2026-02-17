@@ -22,8 +22,8 @@ class Settings(BaseSettings):
     # Cloudflare Turnstile
     turnstile_secret_key: str = ""
 
-    # CORS
-    cors_origins: list[str] = ["http://localhost:4321"]
+    # CORS — comma-separated string, e.g. "https://hacklanta.com,https://www.hacklanta.com"
+    cors_origins: str = "http://localhost:4321"
 
     # Sentry
     sentry_dsn: str = ""
