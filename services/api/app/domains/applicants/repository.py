@@ -22,18 +22,14 @@ async def create_application(
 async def get_application_by_id(
     session: AsyncSession, application_id: uuid.UUID
 ) -> Application | None:
-    result = await session.execute(
-        select(Application).where(Application.id == application_id)
-    )
+    result = await session.execute(select(Application).where(Application.id == application_id))
     return result.scalar_one_or_none()
 
 
 async def get_application_by_user_id(
     session: AsyncSession, user_id: uuid.UUID
 ) -> Application | None:
-    result = await session.execute(
-        select(Application).where(Application.user_id == user_id)
-    )
+    result = await session.execute(select(Application).where(Application.user_id == user_id))
     return result.scalar_one_or_none()
 
 

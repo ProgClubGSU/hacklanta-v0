@@ -35,9 +35,7 @@ async def create_announcement(
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> AnnouncementResponse:
     """Create a new announcement (admin only)."""
-    announcement = await service.create_announcement(
-        session, clerk_id=admin["sub"], data=data
-    )
+    announcement = await service.create_announcement(session, clerk_id=admin["sub"], data=data)
     return AnnouncementResponse.model_validate(announcement)
 
 

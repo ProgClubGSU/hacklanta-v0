@@ -83,9 +83,7 @@ def send_mass_email(
 
     for recipient in recipients:
         try:
-            subject, html_body = render_template(
-                template_name, name=recipient["name"]
-            )
+            subject, html_body = render_template(template_name, name=recipient["name"])
             send_email(to=recipient["email"], subject=subject, html_body=html_body)
 
             with Session(sync_engine) as session:

@@ -15,9 +15,7 @@ async def create_event(session: AsyncSession, *, data: EventCreate) -> Event:
 async def get_event(session: AsyncSession, event_id: uuid.UUID) -> Event:
     event = await repository.get_event_by_id(session, event_id)
     if event is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Event not found."
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found.")
     return event
 
 
@@ -25,9 +23,7 @@ async def list_events(session: AsyncSession) -> list[Event]:
     return await repository.list_events(session)
 
 
-async def update_event(
-    session: AsyncSession, *, event_id: uuid.UUID, data: EventUpdate
-) -> Event:
+async def update_event(session: AsyncSession, *, event_id: uuid.UUID, data: EventUpdate) -> Event:
     event = await get_event(session, event_id)
     update_data = data.model_dump(exclude_unset=True)
     return await repository.update_event(session, event, data=update_data)

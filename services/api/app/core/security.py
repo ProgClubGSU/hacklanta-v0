@@ -37,11 +37,7 @@ async def require_admin(
     metadata = user.get("metadata", {}) or {}
     public_metadata = user.get("public_metadata", {}) or {}
 
-    role = (
-        metadata.get("role")
-        or public_metadata.get("role")
-        or user.get("org_role")
-    )
+    role = metadata.get("role") or public_metadata.get("role") or user.get("org_role")
 
     if role != "admin":
         raise HTTPException(

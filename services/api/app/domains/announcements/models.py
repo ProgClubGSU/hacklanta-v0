@@ -14,8 +14,6 @@ class Announcement(UUIDMixin, Base):
     body: Mapped[str] = mapped_column(Text, nullable=False)
     priority: Mapped[str] = mapped_column(String, default="normal")
     created_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     author = relationship("User", foreign_keys=[created_by])

@@ -53,9 +53,7 @@ async def get_user_orders(session: AsyncSession, user_id: uuid.UUID) -> list[Foo
     return list(result.scalars().all())
 
 
-async def update_order_status(
-    session: AsyncSession, order: FoodOrder, *, status: str
-) -> FoodOrder:
+async def update_order_status(session: AsyncSession, order: FoodOrder, *, status: str) -> FoodOrder:
     order.status = status
     await session.commit()
     await session.refresh(order)

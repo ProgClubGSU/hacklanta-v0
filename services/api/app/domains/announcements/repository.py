@@ -14,18 +14,14 @@ async def create_announcement(
     priority: str,
     created_by: uuid.UUID,
 ) -> Announcement:
-    announcement = Announcement(
-        title=title, body=body, priority=priority, created_by=created_by
-    )
+    announcement = Announcement(title=title, body=body, priority=priority, created_by=created_by)
     session.add(announcement)
     await session.commit()
     await session.refresh(announcement)
     return announcement
 
 
-async def list_announcements(
-    session: AsyncSession, *, limit: int = 50
-) -> list[Announcement]:
+async def list_announcements(session: AsyncSession, *, limit: int = 50) -> list[Announcement]:
     result = await session.execute(
         select(Announcement).order_by(Announcement.created_at.desc()).limit(limit)
     )

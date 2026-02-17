@@ -31,9 +31,7 @@ async def submit_application(
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> ApplicationResponse:
     """Submit a new application (authenticated users only)."""
-    application = await service.submit_application(
-        session, clerk_id=user["sub"], data=data
-    )
+    application = await service.submit_application(session, clerk_id=user["sub"], data=data)
     return ApplicationResponse.model_validate(application)
 
 
@@ -60,9 +58,10 @@ async def get_download_url(
     - Admins can download any resume
     """
     from fastapi import HTTPException
-    from app.utils.s3 import generate_download_url
+
     from app.domains.applicants import repository
     from app.domains.users.repository import get_user_by_clerk_id
+    from app.utils.s3 import generate_download_url
 
     # Check if user is admin
     metadata = user.get("metadata", {}) or {}
@@ -118,9 +117,7 @@ async def edit_my_application(
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> ApplicationResponse:
     """Edit the current user's application (only if pending or waitlisted)."""
-    application = await service.edit_my_application(
-        session, clerk_id=user["sub"], data=data
-    )
+    application = await service.edit_my_application(session, clerk_id=user["sub"], data=data)
     return ApplicationResponse.model_validate(application)
 
 

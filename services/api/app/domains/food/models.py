@@ -16,9 +16,7 @@ class FoodMenuItem(UUIDMixin, Base):
     dietary_tags: Mapped[list[str] | None] = mapped_column(ARRAY(String))
     available: Mapped[bool] = mapped_column(Boolean, default=True)
     max_quantity: Mapped[int | None] = mapped_column(Integer)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
 class FoodOrder(UUIDMixin, Base):
@@ -29,9 +27,7 @@ class FoodOrder(UUIDMixin, Base):
     )
     status: Mapped[str] = mapped_column(String, default="placed")
     notes: Mapped[str | None] = mapped_column(Text)
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User")
     items = relationship("FoodOrderItem", back_populates="order")

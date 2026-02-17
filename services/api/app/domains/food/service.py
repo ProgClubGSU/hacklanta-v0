@@ -51,9 +51,7 @@ async def get_my_orders(
 # --- Admin functions ---
 
 
-async def create_menu_item(
-    session: AsyncSession, *, data: MenuItemCreate
-) -> FoodMenuItem:
+async def create_menu_item(session: AsyncSession, *, data: MenuItemCreate) -> FoodMenuItem:
     return await repository.create_menu_item(session, data=data.model_dump())
 
 

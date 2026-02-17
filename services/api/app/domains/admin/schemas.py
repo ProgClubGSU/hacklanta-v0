@@ -1,2 +1,1 @@
-
 # TODO: BulkActionRequest, AdminStatsResponse schemas

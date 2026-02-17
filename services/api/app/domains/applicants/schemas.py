@@ -31,18 +31,25 @@ class ApplicationCreate(BaseModel):
 
     # Legal & Agreements (required)
     age_confirmed: bool = Field(default=False, description="Must be 18 or older")
-    code_of_conduct_accepted: bool = Field(default=False, description="Acceptance of code of conduct")
-    liability_waiver_accepted: bool = Field(default=False, description="Acceptance of liability waiver")
+    code_of_conduct_accepted: bool = Field(
+        default=False, description="Acceptance of code of conduct"
+    )
+    liability_waiver_accepted: bool = Field(
+        default=False, description="Acceptance of liability waiver"
+    )
 
     # Marketing
     how_did_you_hear: str | None = Field(None, max_length=200)
-    resume_sharing_opt_in: bool = Field(default=False, description="Opt-in to share resume with sponsors")
+    resume_sharing_opt_in: bool = Field(
+        default=False, description="Opt-in to share resume with sponsors"
+    )
     email_opt_in: bool = Field(default=False, description="Opt-in to receive emails")
     sms_opt_in: bool = Field(default=False, description="Opt-in to receive SMS messages")
 
 
 class ApplicationEdit(BaseModel):
     """Schema for users to edit their own application (all fields optional for partial updates)."""
+
     # Academic Info
     university: str | None = Field(None, min_length=1, max_length=200)
     major: str | None = Field(None, min_length=1, max_length=200)
