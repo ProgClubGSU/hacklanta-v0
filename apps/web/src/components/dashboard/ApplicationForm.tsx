@@ -2,66 +2,59 @@ import { useAuth } from '@clerk/astro/react';
 import { useState } from 'react';
 import { apiFetch } from '../../lib/api';
 
-export interface ApplicationData {
-  id: string;
-  status: string;
-  university: string;
-  major: string;
-  year_of_study: string;
-  graduation_date: string | null;
-  resume_url: string | null;
-  github_url: string | null;
-  linkedin_url: string | null;
-  why_attend: string | null;
-  experience_level: string | null;
-  dietary_restrictions: string | null;
-  tshirt_size: string | null;
-  created_at: string;
-}
+import { STEPS, getInitialFormState } from './application-form/types';
+import { useFormWizard, clearDraft } from './application-form/useFormWizard';
+import ProgressBar from './application-form/ProgressBar';
+import StepWrapper from './application-form/StepWrapper';
+import StepNavigation from './application-form/StepNavigation';
+
+import StepBasics from './application-form/steps/StepBasics';
+import StepContact from './application-form/steps/StepContact';
+import StepProfile from './application-form/steps/StepProfile';
+import StepMotivation from './application-form/steps/StepMotivation';
+import StepLogistics from './application-form/steps/StepLogistics';
+import StepReview from './application-form/steps/StepReview';
+
+// Re-export for backward compatibility (ApplicationStatus.tsx, ApplicationPage.tsx)
+export type { ApplicationData } from './application-form/types';
+import type { ApplicationData } from './application-form/types';
+
+const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 
 interface Props {
+  initialData?: ApplicationData;
+  isEditing?: boolean;
   onSubmitted?: (application: ApplicationData) => void;
 }
 
-const YEAR_OPTIONS = ['Freshman', 'Sophomore', 'Junior', 'Senior', 'Graduate', 'PhD'];
-const EXPERIENCE_OPTIONS = ['beginner', 'intermediate', 'advanced'];
-const TSHIRT_OPTIONS = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-
-export default function ApplicationForm({ onSubmitted }: Props) {
+export default function ApplicationForm({ initialData, isEditing = false, onSubmitted }: Props) {
   const { getToken } = useAuth();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [uploadingResume, setUploadingResume] = useState(false);
 
-  const [form, setForm] = useState({
-    university: '',
-    major: '',
-    year_of_study: '',
-    graduation_date: '',
-    resume_url: '',
-    github_url: '',
-    linkedin_url: '',
-    why_attend: '',
-    experience_level: '',
-    dietary_restrictions: '',
-    tshirt_size: '',
-  });
+  const [form, setForm] = useState(() => getInitialFormState(initialData));
 
-  const updateField = (field: string, value: string) => {
+  const wizard = useFormWizard(form, resumeFile, isEditing, setForm);
+
+  const updateField = (field: string, value: string | boolean) => {
     setForm((prev) => ({ ...prev, [field]: value }));
+    wizard.clearErrors();
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    const failingStep = wizard.validateAllSteps();
+    if (failingStep !== null) return;
+
     setError(null);
     setSubmitting(true);
 
     try {
       const token = await getToken();
 
-      // Upload resume to S3 if a file was selected
       let resumeKey: string | null = form.resume_url || null;
       if (resumeFile) {
         setUploadingResume(true);
@@ -82,6 +75,8 @@ export default function ApplicationForm({ onSubmitted }: Props) {
       const payload = {
         ...form,
         graduation_date: form.graduation_date || null,
+        phone_number: form.phone_number || null,
+        email: form.email || null,
         resume_url: resumeKey,
         github_url: form.github_url || null,
         linkedin_url: form.linkedin_url || null,
@@ -89,13 +84,24 @@ export default function ApplicationForm({ onSubmitted }: Props) {
         experience_level: form.experience_level || null,
         dietary_restrictions: form.dietary_restrictions || null,
         tshirt_size: form.tshirt_size || null,
+        how_did_you_hear: form.how_did_you_hear || null,
       };
 
-      const result = await apiFetch<ApplicationData>('/api/v1/applications', {
-        method: 'POST',
-        body: JSON.stringify(payload),
-      }, token);
+      const endpoint = isEditing ? '/api/v1/applications/me' : '/api/v1/applications';
+      const method = isEditing ? 'PATCH' : 'POST';
 
+      const fetchHeaders: Record<string, string> = {};
+      if (!isEditing && turnstileToken) {
+        fetchHeaders['X-Turnstile-Token'] = turnstileToken;
+      }
+
+      const result = await apiFetch<ApplicationData>(
+        endpoint,
+        { method, headers: fetchHeaders, body: JSON.stringify(payload) },
+        token,
+      );
+
+      clearDraft();
       onSubmitted?.(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -104,11 +110,49 @@ export default function ApplicationForm({ onSubmitted }: Props) {
     }
   };
 
+  const renderStep = () => {
+    const stepProps = { form, updateField, errors: wizard.stepErrors };
+
+    switch (wizard.currentStep) {
+      case 0:
+        return <StepBasics {...stepProps} />;
+      case 1:
+        return <StepContact {...stepProps} />;
+      case 2:
+        return (
+          <StepProfile
+            {...stepProps}
+            resumeFile={resumeFile}
+            setResumeFile={setResumeFile}
+            isEditing={isEditing}
+          />
+        );
+      case 3:
+        return <StepMotivation {...stepProps} />;
+      case 4:
+        return <StepLogistics {...stepProps} />;
+      case 5:
+        return (
+          <StepReview
+            form={form}
+            updateField={updateField}
+            errors={wizard.stepErrors}
+            goToStep={wizard.goToStep}
+            isEditing={isEditing}
+            setTurnstileToken={setTurnstileToken}
+            turnstileSiteKey={TURNSTILE_SITE_KEY}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="mx-auto mt-8 max-w-2xl">
-      {/* Betting slip header */}
-      <div className="border border-base-border bg-base-card">
-        <div className="border-b border-base-border bg-base-dark px-6 py-3">
+    <div className="mt-4 flex min-h-[calc(100vh-12rem)] flex-col">
+      <div className="flex flex-1 flex-col border border-base-border bg-base-card">
+        {/* Betting slip header */}
+        <div className="border-b border-base-border bg-base-dark px-6 py-3 md:px-10">
           <div className="flex items-center justify-between">
             <span className="font-mono text-xs tracking-widest text-text-muted">
               HACKLANTA // APPLICATION SLIP
@@ -117,218 +161,48 @@ export default function ApplicationForm({ onSubmitted }: Props) {
           </div>
         </div>
 
-        <div className="space-y-6 p-6">
-          {/* Section: Academic Info */}
-          <fieldset>
-            <legend className="mb-4 font-mono text-sm tracking-wider text-gold">
-              {'>'} ACADEMIC_INFO
-            </legend>
-            <div className="grid gap-4 md:grid-cols-2">
-              <InputField
-                label="University"
-                value={form.university}
-                onChange={(v) => updateField('university', v)}
-                required
-                placeholder="Georgia State University"
-              />
-              <InputField
-                label="Major"
-                value={form.major}
-                onChange={(v) => updateField('major', v)}
-                required
-                placeholder="Computer Science"
-              />
-              <SelectField
-                label="Year of Study"
-                value={form.year_of_study}
-                onChange={(v) => updateField('year_of_study', v)}
-                options={YEAR_OPTIONS}
-                required
-              />
-              <InputField
-                label="Graduation Date"
-                value={form.graduation_date}
-                onChange={(v) => updateField('graduation_date', v)}
-                type="date"
-              />
-            </div>
-          </fieldset>
+        <ProgressBar currentStep={wizard.currentStep} />
 
-          {/* Section: Links */}
-          <fieldset>
-            <legend className="mb-4 font-mono text-sm tracking-wider text-gold">
-              {'>'} LINKS
-            </legend>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <label className="mb-1 block font-mono text-xs tracking-wider text-text-secondary">
-                  Resume (PDF)
-                </label>
-                <input
-                  type="file"
-                  accept=".pdf"
-                  onChange={(e) => setResumeFile(e.target.files?.[0] ?? null)}
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none file:mr-3 file:border-0 file:bg-gold/10 file:px-3 file:py-1 file:font-mono file:text-xs file:text-gold"
-                />
-                {resumeFile && (
-                  <p className="mt-1 font-mono text-xs text-gold">
-                    {resumeFile.name}
-                  </p>
-                )}
-              </div>
-              <InputField
-                label="GitHub URL"
-                value={form.github_url}
-                onChange={(v) => updateField('github_url', v)}
-                placeholder="https://github.com/username"
-                type="url"
-              />
-              <InputField
-                label="LinkedIn URL"
-                value={form.linkedin_url}
-                onChange={(v) => updateField('linkedin_url', v)}
-                placeholder="https://linkedin.com/in/username"
-                type="url"
-              />
+        {/* Step content — centered with readable max-width */}
+        <div className="flex flex-1 flex-col justify-center px-6 py-10 md:px-10 lg:px-16">
+          <div className="mx-auto w-full max-w-2xl">
+            <div className="mb-8">
+              <span className="font-mono text-base tracking-wider text-neon-green md:text-lg">
+                {STEPS[wizard.currentStep].terminalLabel}
+              </span>
             </div>
-          </fieldset>
 
-          {/* Section: About You */}
-          <fieldset>
-            <legend className="mb-4 font-mono text-sm tracking-wider text-gold">
-              {'>'} ABOUT_YOU
-            </legend>
-            <div className="space-y-4">
-              <SelectField
-                label="Experience Level"
-                value={form.experience_level}
-                onChange={(v) => updateField('experience_level', v)}
-                options={EXPERIENCE_OPTIONS}
-              />
-              <div>
-                <label className="mb-1 block font-mono text-xs tracking-wider text-text-secondary">
-                  Why do you want to attend?
-                </label>
-                <textarea
-                  value={form.why_attend}
-                  onChange={(e) => updateField('why_attend', e.target.value)}
-                  rows={4}
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-gold"
-                  placeholder="Tell us what you're hoping to build, learn, or break..."
-                />
-              </div>
-            </div>
-          </fieldset>
-
-          {/* Section: Logistics */}
-          <fieldset>
-            <legend className="mb-4 font-mono text-sm tracking-wider text-gold">
-              {'>'} LOGISTICS
-            </legend>
-            <div className="grid gap-4 md:grid-cols-2">
-              <InputField
-                label="Dietary Restrictions"
-                value={form.dietary_restrictions}
-                onChange={(v) => updateField('dietary_restrictions', v)}
-                placeholder="Vegetarian, vegan, halal..."
-              />
-              <SelectField
-                label="T-Shirt Size"
-                value={form.tshirt_size}
-                onChange={(v) => updateField('tshirt_size', v)}
-                options={TSHIRT_OPTIONS}
-              />
-            </div>
-          </fieldset>
+            <StepWrapper stepIndex={wizard.currentStep} direction={wizard.direction}>
+              {renderStep()}
+            </StepWrapper>
+          </div>
         </div>
 
         {/* Error display */}
         {error && (
-          <div className="mx-6 mb-4 border border-suit-red/30 bg-suit-red/10 px-4 py-3 font-mono text-sm text-suit-red">
+          <div className="mx-6 mb-4 border border-suit-red/30 bg-suit-red/10 px-5 py-4 font-mono text-sm text-suit-red md:mx-10">
             {error}
           </div>
         )}
 
-        {/* Submit */}
-        <div className="border-t border-base-border bg-base-dark px-6 py-4">
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full border-2 border-gold bg-gold/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(232,180,79,0.3)] disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {uploadingResume ? '// UPLOADING RESUME...' : submitting ? '// SUBMITTING...' : '$ DEAL_ME_IN'}
-          </button>
+        {/* Navigation footer — pinned to bottom */}
+        <div className="border-t border-base-border bg-base-dark px-6 py-5 md:px-10">
+          <div className="mx-auto max-w-2xl">
+            <StepNavigation
+              isFirstStep={wizard.isFirstStep}
+              isLastStep={wizard.isLastStep}
+              onBack={wizard.goBack}
+              onNext={wizard.goNext}
+              onSubmit={handleSubmit}
+              submitting={submitting}
+              uploadingResume={uploadingResume}
+              submitDisabled={
+                submitting || (!isEditing && TURNSTILE_SITE_KEY !== '' && !turnstileToken)
+              }
+            />
+          </div>
         </div>
       </div>
-    </form>
-  );
-}
-
-function InputField({
-  label,
-  value,
-  onChange,
-  required = false,
-  placeholder = '',
-  type = 'text',
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  required?: boolean;
-  placeholder?: string;
-  type?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-1 block font-mono text-xs tracking-wider text-text-secondary">
-        {label}
-        {required && <span className="text-suit-red"> *</span>}
-      </label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required={required}
-        placeholder={placeholder}
-        className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-gold"
-      />
-    </div>
-  );
-}
-
-function SelectField({
-  label,
-  value,
-  onChange,
-  options,
-  required = false,
-}: {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: string[];
-  required?: boolean;
-}) {
-  return (
-    <div>
-      <label className="mb-1 block font-mono text-xs tracking-wider text-text-secondary">
-        {label}
-        {required && <span className="text-suit-red"> *</span>}
-      </label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required={required}
-        className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none transition-colors focus:border-gold"
-      >
-        <option value="">Select...</option>
-        {options.map((opt) => (
-          <option key={opt} value={opt}>
-            {opt}
-          </option>
-        ))}
-      </select>
     </div>
   );
 }

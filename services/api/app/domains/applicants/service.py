@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domains.applicants import repository
 from app.domains.applicants.models import Application
-from app.domains.applicants.schemas import ApplicationCreate
+from app.domains.applicants.schemas import ApplicationCreate, ApplicationEdit
 from app.domains.users.repository import get_user_by_clerk_id, get_user_by_id
 
 logger = logging.getLogger(__name__)
@@ -88,6 +88,38 @@ async def get_application(
             detail="Application not found.",
         )
     return application
+
+
+async def edit_my_application(
+    session: AsyncSession,
+    *,
+    clerk_id: str,
+    data: ApplicationEdit,
+) -> Application:
+    """Edit user's own application (only if status is pending or waitlisted)."""
+    user_id = await resolve_user_id(session, clerk_id)
+
+    application = await repository.get_application_by_user_id(session, user_id)
+    if application is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No application found.",
+        )
+
+    # Only allow editing if application is still pending or waitlisted
+    if application.status not in {"pending", "waitlisted"}:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cannot edit application after it has been accepted or rejected.",
+        )
+
+    # Convert HttpUrl fields to strings for the ORM
+    update_data = data.model_dump(exclude_unset=True)
+    for url_field in ("github_url", "linkedin_url"):
+        if update_data.get(url_field) is not None:
+            update_data[url_field] = str(update_data[url_field])
+
+    return await repository.update_application_data(session, application, data=update_data)
 
 
 async def review_application(

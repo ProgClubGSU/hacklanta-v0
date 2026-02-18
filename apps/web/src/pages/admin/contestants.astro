@@ -1,9 +1,11 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
 import EventManager from '../../components/admin/EventManager';
+import BackButton from '../../components/ui/BackButton';
 ---
 
 <DashboardLayout title="Contestants — Hacklanta Admin">
+  <BackButton client:load />
   <h1 class="font-display text-3xl font-bold text-text-primary">[ADMIN] Event Management</h1>
   <p class="mt-2 font-mono text-sm text-text-muted">// schedule + events</p>
   <EventManager client:load />

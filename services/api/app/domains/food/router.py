@@ -152,9 +152,7 @@ async def admin_update_order_status(
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> OrderResponse:
     """Update an order's status (admin only)."""
-    order = await service.update_order_status(
-        session, order_id=order_id, new_status=data.status
-    )
+    order = await service.update_order_status(session, order_id=order_id, new_status=data.status)
     return OrderResponse.model_validate(order)
 
 

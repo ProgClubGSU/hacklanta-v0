@@ -38,27 +38,21 @@ async def create_team(
     return team
 
 
-async def get_team_by_id(
-    session: AsyncSession, team_id: uuid.UUID
-) -> Team | None:
+async def get_team_by_id(session: AsyncSession, team_id: uuid.UUID) -> Team | None:
     result = await session.execute(
         select(Team).options(selectinload(Team.members)).where(Team.id == team_id)
     )
     return result.scalar_one_or_none()
 
 
-async def get_team_by_invite_code(
-    session: AsyncSession, invite_code: str
-) -> Team | None:
+async def get_team_by_invite_code(session: AsyncSession, invite_code: str) -> Team | None:
     result = await session.execute(
         select(Team).options(selectinload(Team.members)).where(Team.invite_code == invite_code)
     )
     return result.scalar_one_or_none()
 
 
-async def get_user_team(
-    session: AsyncSession, user_id: uuid.UUID
-) -> Team | None:
+async def get_user_team(session: AsyncSession, user_id: uuid.UUID) -> Team | None:
     result = await session.execute(
         select(Team)
         .options(selectinload(Team.members))

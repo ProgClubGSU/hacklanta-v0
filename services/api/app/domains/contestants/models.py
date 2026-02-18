@@ -15,9 +15,7 @@ class Team(UUIDMixin, Base):
     invite_code: Mapped[str] = mapped_column(String, unique=True, nullable=False)
     max_size: Mapped[int] = mapped_column(Integer, default=4)
     created_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     creator = relationship("User", foreign_keys=[created_by])
     members = relationship("TeamMember", back_populates="team")
@@ -34,9 +32,7 @@ class TeamMember(UUIDMixin, Base):
         ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     role: Mapped[str] = mapped_column(String, default="member")
-    joined_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+    joined_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     team = relationship("Team", back_populates="members")
     user = relationship("User")

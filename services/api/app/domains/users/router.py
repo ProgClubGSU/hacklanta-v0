@@ -6,6 +6,7 @@ from svix.webhooks import Webhook, WebhookVerificationError
 
 from app.core.config import settings
 from app.core.database import get_session
+from app.core.security import CurrentUser, clerk_client
 from app.domains.users.repository import upsert_user
 
 router = APIRouter(tags=["webhooks"])
@@ -64,3 +65,42 @@ async def clerk_webhook(
         )
 
     return {"status": "ok"}
+
+
+@router.post("/users/sync", status_code=status.HTTP_200_OK)
+async def sync_current_user(
+    user: CurrentUser,
+    session: Annotated[AsyncSession, Depends(get_session)],
+) -> dict[str, str]:
+    """Manually sync the current authenticated user from Clerk to the database.
+
+    This is useful for local development when webhooks aren't configured.
+    Call this endpoint after signing in to create your user in the database.
+    """
+    clerk_id = user["sub"]
+
+    # Fetch full user data from Clerk
+    clerk_user = clerk_client.users.get(user_id=clerk_id)
+
+    # Extract primary email
+    email = ""
+    for addr in clerk_user.email_addresses:
+        if addr.id == clerk_user.primary_email_address_id:
+            email = addr.email_address
+            break
+
+    # Upsert user to database
+    db_user = await upsert_user(
+        session,
+        clerk_id=clerk_id,
+        email=email,
+        first_name=clerk_user.first_name,
+        last_name=clerk_user.last_name,
+        avatar_url=clerk_user.image_url,
+    )
+
+    return {
+        "status": "synced",
+        "user_id": str(db_user.id),
+        "email": db_user.email,
+    }
