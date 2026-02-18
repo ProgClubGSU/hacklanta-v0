@@ -52,7 +52,7 @@ export default function ApplicantReview({ application, onClose, onUpdated }: Pro
       );
       // Open the presigned URL in a new tab
       window.open(response.download_url, '_blank');
-    } catch (err) {
+    } catch (_err) {
       setError('Failed to download resume');
     }
   };
