@@ -139,7 +139,6 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
             errors={wizard.stepErrors}
             goToStep={wizard.goToStep}
             isEditing={isEditing}
-            turnstileToken={turnstileToken}
             setTurnstileToken={setTurnstileToken}
             turnstileSiteKey={TURNSTILE_SITE_KEY}
           />

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SignUp } from '@clerk/astro/components';
+import { SignUp as ClerkSignUp } from '@clerk/astro/components';
 ---
 
 <BaseLayout title="Sign Up — Hacklanta">
@@ -15,7 +15,7 @@ import { SignUp } from '@clerk/astro/components';
         </p>
       </div>
       <div class="clerk-wrapper">
-        <SignUp afterSignUpUrl="/apply" />
+        <ClerkSignUp fallbackRedirectUrl="/apply" />
       </div>
       <div class="mt-6 text-center">
         <p class="text-sm" style="color: #666666; font-family: 'JetBrains Mono', ui-monospace, monospace;">

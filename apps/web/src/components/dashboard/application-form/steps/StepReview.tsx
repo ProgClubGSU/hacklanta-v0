@@ -9,7 +9,6 @@ interface Props {
   errors: string[];
   goToStep: (step: number) => void;
   isEditing: boolean;
-  turnstileToken: string | null;
   setTurnstileToken: (token: string | null) => void;
   turnstileSiteKey: string;
 }
@@ -20,7 +19,6 @@ export default function StepReview({
   errors,
   goToStep,
   isEditing,
-  turnstileToken,
   setTurnstileToken,
   turnstileSiteKey,
 }: Props) {
