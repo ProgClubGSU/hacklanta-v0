@@ -14,6 +14,7 @@ celery_app.conf.update(
     result_serializer="json",
     timezone="America/New_York",
     enable_utc=True,
+    broker_transport_options={"socket_timeout": 5, "socket_connect_timeout": 5},
 )
 
 celery_app.autodiscover_tasks(["app.workers"])
