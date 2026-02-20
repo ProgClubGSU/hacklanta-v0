@@ -1,3 +1,4 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -24,6 +25,16 @@ class Settings(BaseSettings):
 
     # CORS — comma-separated string, e.g. "https://hacklanta.com,https://www.hacklanta.com"
     cors_origins: str = "http://localhost:4321"
+
+    # Debug (enables /docs in development; disabled in production)
+    debug: bool = False
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def parse_cors_origins(cls, v: object) -> object:
+        if isinstance(v, str) and not v.startswith("["):
+            return [s.strip() for s in v.split(",")]
+        return v
 
     # Debug (enables /docs in development; disabled in production)
     debug: bool = False
