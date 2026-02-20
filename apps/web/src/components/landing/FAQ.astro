@@ -2,14 +2,10 @@
 // [05] FAQ — casino-noir fine print
 
 const faqs = [
-  { q: 'Who can participate?', a: 'Any college student! You don\'t need to be a CS major or have prior hackathon experience. Beginners are absolutely welcome — we\'ll have workshops to get you started.' },
-  { q: 'How much does it cost?', a: 'Nothing. Hacklanta is completely free. We provide food, swag, workspace, WiFi, and good vibes. All you need is a laptop and the drive to build.' },
-  { q: 'Do I need a team?', a: 'Nope! You can come solo and find a team at the event using our team finder, or you can register with a pre-formed team of up to 4 people.' },
-  { q: 'What can I build?', a: 'Anything! Web apps, mobile apps, hardware projects, games, AI tools — if you can demo it, you can submit it. We\'ll announce specific prize tracks closer to the event.' },
-  { q: 'What should I bring?', a: 'Your laptop, charger, and any hardware you want to hack on. We provide everything else — food, drinks, snacks, WiFi, and power outlets.' },
-  { q: 'How does judging work?', a: 'Teams demo their projects to a panel of judges at the end. Projects are evaluated on creativity, technical complexity, design, and impact. Multiple prize categories means more chances to win.' },
-  { q: 'When and where is it?', a: 'Hacklanta takes place at Georgia State University in Atlanta, GA. Check the countdown timer above for the exact date. Doors open at 9 AM, hacking ends at 8 PM.' },
-  { q: 'Is there a code of conduct?', a: 'Yes. We follow the MLH Code of Conduct. Hacklanta is an inclusive, harassment-free event. We\'re here to build, learn, and have fun together.' },
+  { q: 'Who can participate?', a: 'Any college student. No CS degree required, no prior hackathon experience needed. Beginners welcome — we\'ll have workshops to get you up to speed.' },
+  { q: 'How much does it cost?', a: 'Zero. Free entry, free food, free swag. All you need is a laptop and the will to build something.' },
+  { q: 'Do I need a team?', a: 'Nope. Come solo and squad up at the event, or bring a pre-formed team of up to 4. We\'ll have a team finder on the day.' },
+  { q: 'Can I use AI tools?', a: 'Yes — go crazy. ChatGPT, Copilot, whatever. Judges care about what you built, not whether you typed every line yourself.' },
 ];
 ---
 
@@ -113,22 +109,12 @@ const faqs = [
       <div class="mt-4 h-px w-24 bg-gradient-to-r from-red/60 to-transparent"></div>
     </div>
 
-    <div class="faq-list space-y-2">
-      {faqs.map((faq, i) => (
-        <details class="faq-item group border border-border/40 bg-black-card/20 transition-all duration-500 hover:border-border-light/60 open:border-red/25 open:bg-black-card/50">
-          <summary class="flex cursor-pointer items-center justify-between px-6 py-5 select-none [&::-webkit-details-marker]:hidden">
-            <span class="flex items-center gap-4">
-              <span class="font-mono text-[10px] text-gray-500 transition-colors duration-300 group-open:text-red/60">{String(i + 1).padStart(2, '0')}</span>
-              <span class="font-body text-[14px] font-medium text-white/80 transition-colors duration-300 group-hover:text-white group-open:text-white">{faq.q}</span>
-            </span>
-            <span class="ml-4 flex h-6 w-6 shrink-0 items-center justify-center font-mono text-sm text-red/30 transition-all duration-500 group-hover:text-red/60 group-open:rotate-45 group-open:text-red">+</span>
-          </summary>
-          <div class="border-t border-border/20 px-6 py-5">
-            <p class="pl-9 font-body text-[13px] leading-[1.9] text-gray">
-              {faq.a}
-            </p>
-          </div>
-        </details>
+    <div class="faq-list grid gap-4 sm:grid-cols-2">
+      {faqs.map((faq) => (
+        <div class="faq-item border border-border/40 bg-black-card/20 p-6 transition-all duration-300 hover:border-red/25 hover:bg-black-card/40">
+          <h3 class="mb-3 font-display text-xl tracking-wide text-white">{faq.q}</h3>
+          <p class="font-body text-sm leading-[1.9] text-gray-400">{faq.a}</p>
+        </div>
       ))}
     </div>
 
@@ -168,8 +154,9 @@ const faqs = [
     opacity: 0, y: 40, duration: 1, ease: 'power3.out',
   });
   gsap.from('.faq-item', {
-    scrollTrigger: { trigger: '.faq-list', start: 'top 82%' },
-    opacity: 0, y: 20, stagger: 0.07, duration: 0.6, ease: 'power3.out',
+    scrollTrigger: { trigger: '.faq-list', start: 'top bottom', once: true },
+    immediateRender: false,
+    opacity: 0, y: 16, stagger: 0.06, duration: 0.5, ease: 'power3.out',
   });
   gsap.from('.faq-cta', {
     scrollTrigger: { trigger: '.faq-cta', start: 'top 85%' },
