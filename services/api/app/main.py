@@ -24,8 +24,8 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title="Hacklanta API",
         version="0.1.0",
-        docs_url="/docs",
-        openapi_url="/api/v1/openapi.json",
+        docs_url="/docs" if settings.debug else None,
+        openapi_url="/api/v1/openapi.json" if settings.debug else None,
         lifespan=lifespan,
     )
 

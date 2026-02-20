@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     # CORS — comma-separated string, e.g. "https://hacklanta.com,https://www.hacklanta.com"
     cors_origins: str = "http://localhost:4321"
 
+    # Debug (enables /docs in development; disabled in production)
+    debug: bool = False
+
     # Sentry
     sentry_dsn: str = ""
 

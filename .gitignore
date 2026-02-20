@@ -51,6 +51,9 @@ htmlcov/
 # Sentry
 .sentryclirc
 
+# Secrets / infrastructure definitions
+task-def.json
+
 # Misc
 *.log
 .vercel

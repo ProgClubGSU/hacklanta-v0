@@ -14,12 +14,18 @@ async def get_current_user(request: Request) -> dict:
 
     Attaches the user's Clerk ID as payload["sub"].
     """
-    request_state = clerk_client.authenticate_request(
-        request,
-        AuthenticateRequestOptions(
-            secret_key=settings.clerk_secret_key,
-        ),
-    )
+    try:
+        request_state = clerk_client.authenticate_request(
+            request,
+            AuthenticateRequestOptions(
+                secret_key=settings.clerk_secret_key,
+            ),
+        )
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+        ) from None
 
     if not request_state.is_signed_in:
         raise HTTPException(
