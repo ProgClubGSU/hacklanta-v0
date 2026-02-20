@@ -29,8 +29,8 @@ interface Order {
 
 const ORDER_STATUS_CONFIG: Record<string, { color: string; label: string }> = {
   placed: { color: 'text-gold', label: 'PLACED' },
-  preparing: { color: 'text-cyan', label: 'PREPARING' },
-  ready: { color: 'text-neon-green', label: 'READY' },
+  preparing: { color: 'text-teal-light', label: 'PREPARING' },
+  ready: { color: 'text-gold', label: 'READY' },
   picked_up: { color: 'text-text-muted', label: 'PICKED UP' },
 };
 
@@ -160,7 +160,7 @@ export default function FoodOrder() {
           onClick={() => setTab('menu')}
           className={`px-4 py-2 font-mono text-xs tracking-wider transition-colors ${
             tab === 'menu'
-              ? 'border-b-2 border-neon-green text-neon-green'
+              ? 'border-b-2 border-gold text-gold'
               : 'text-text-muted hover:text-text-primary'
           }`}
         >
@@ -232,7 +232,7 @@ export default function FoodOrder() {
                               >
                                 -
                               </button>
-                              <span className="w-6 text-center font-mono text-sm text-neon-green">
+                              <span className="w-6 text-center font-mono text-sm text-gold">
                                 {cart[item.id]}
                               </span>
                               <button
@@ -245,7 +245,7 @@ export default function FoodOrder() {
                           ) : (
                             <button
                               onClick={() => addToCart(item.id)}
-                              className="border border-neon-green/50 bg-neon-green/10 px-3 py-1 font-mono text-xs text-neon-green transition-colors hover:bg-neon-green/20"
+                              className="border border-gold/50 bg-gold/10 px-3 py-1 font-mono text-xs text-gold transition-colors hover:bg-gold/20"
                             >
                               ADD
                             </button>
@@ -259,9 +259,9 @@ export default function FoodOrder() {
 
               {/* Cart footer */}
               {cartCount > 0 && (
-                <div className="border border-neon-green/30 bg-base-card shadow-[0_0_15px_rgba(0,255,136,0.1)]">
+                <div className="border border-gold/30 bg-base-card shadow-[0_0_15px_rgba(232,180,79,0.15)]">
                   <div className="border-b border-base-border bg-base-dark px-5 py-2">
-                    <span className="font-mono text-xs tracking-widest text-neon-green">
+                    <span className="font-mono text-xs tracking-widest text-gold">
                       YOUR ORDER // {cartCount} ITEMS
                     </span>
                   </div>
@@ -271,12 +271,12 @@ export default function FoodOrder() {
                       onChange={(e) => setNotes(e.target.value)}
                       placeholder="Special requests or notes..."
                       rows={2}
-                      className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+                      className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
                     />
                     <button
                       onClick={handlePlaceOrder}
                       disabled={placing}
-                      className="w-full border-2 border-neon-green bg-neon-green/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_20px_rgba(0,255,136,0.2)] disabled:opacity-50"
+                      className="w-full border-2 border-gold bg-gold/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(232,180,79,0.3)] disabled:opacity-50"
                     >
                       {placing ? '// PLACING ORDER...' : '$ PLACE_ORDER'}
                     </button>

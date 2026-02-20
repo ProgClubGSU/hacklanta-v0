@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import Nav from '../components/landing/Nav.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -10,6 +11,7 @@ const { title = 'Hacklanta — Go All In' } = Astro.props;
 ---
 
 <BaseLayout title={title}>
+  <Nav />
   <main>
     <slot />
   </main>

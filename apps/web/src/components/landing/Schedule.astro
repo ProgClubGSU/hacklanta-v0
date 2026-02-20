@@ -1,113 +1,234 @@
 ---
-// [02] Schedule / Timeline section
+// [03] Schedule — dealer board lineup
 
-const schedule = [
-  { time: '9:00 AM', title: 'Doors Open + Check-in', type: 'general', desc: 'Grab your badge, find your table, settle in.' },
-  { time: '9:30 AM', title: 'Opening Ceremony', type: 'ceremony', desc: 'Welcome, rules, and the official start.' },
-  { time: '10:00 AM', title: 'Hacking Begins', type: 'general', desc: 'The clock starts. Go all in.' },
-  { time: '11:00 AM', title: 'Workshop: Intro to APIs', type: 'workshop', desc: 'Build your first REST API from scratch.' },
-  { time: '12:30 PM', title: 'Lunch', type: 'meal', desc: 'Food provided — recharge and network.' },
-  { time: '1:30 PM', title: 'Workshop: AI/ML Crash Course', type: 'workshop', desc: 'Get hands-on with machine learning.' },
-  { time: '3:00 PM', title: 'Mini-game: Speed Debug', type: 'minigame', desc: 'Fix bugs against the clock. Prizes for the fastest.' },
-  { time: '5:00 PM', title: 'Dinner', type: 'meal', desc: 'Refuel for the home stretch.' },
-  { time: '6:00 PM', title: 'Mini-game: UI Roulette', type: 'minigame', desc: 'Random UI challenge. Spin the wheel of CSS.' },
-  { time: '8:00 PM', title: 'Submissions Due', type: 'general', desc: 'Final commits. Push it or lose it.' },
-  { time: '8:30 PM', title: 'Demo & Judging', type: 'ceremony', desc: 'Show what you built. Impress the judges.' },
-  { time: '9:30 PM', title: 'Awards Ceremony', type: 'ceremony', desc: 'Winners announced. Prizes dealt.' },
+const phases = [
+  {
+    name: 'THE OPENING',
+    subtitle: 'ANTE UP',
+    time: '9:00 – 10:00 AM',
+    suit: '♠',
+    color: '#C41E3A',
+    rgb: '196,30,58',
+    events: [
+      { time: '9:00 AM', title: 'Doors Open + Check-in', type: 'general' },
+      { time: '9:30 AM', title: 'Opening Ceremony', type: 'ceremony' },
+      { time: '10:00 AM', title: 'Hacking Begins', type: 'general' },
+    ],
+  },
+  {
+    name: 'THE GRIND',
+    subtitle: 'PLAYING THE HAND',
+    time: '11:00 AM – 5:00 PM',
+    suit: '♥',
+    color: '#E63946',
+    rgb: '230,57,70',
+    events: [
+      { time: '11:00 AM', title: 'Workshop: Intro to APIs', type: 'workshop' },
+      { time: '12:30 PM', title: 'Lunch', type: 'meal' },
+      { time: '1:30 PM', title: 'Workshop: AI/ML Crash Course', type: 'workshop' },
+      { time: '3:00 PM', title: 'Mini-game: Speed Debug', type: 'minigame' },
+      { time: '5:00 PM', title: 'Dinner', type: 'meal' },
+    ],
+  },
+  {
+    name: 'THE FINAL HAND',
+    subtitle: 'ALL IN',
+    time: '6:00 – 9:30 PM',
+    suit: '♦',
+    color: '#C9A84C',
+    rgb: '201,168,76',
+    events: [
+      { time: '6:00 PM', title: 'Mini-game: UI Roulette', type: 'minigame' },
+      { time: '8:00 PM', title: 'Submissions Due', type: 'general' },
+      { time: '8:30 PM', title: 'Demo & Judging', type: 'ceremony' },
+      { time: '9:30 PM', title: 'Awards Ceremony', type: 'ceremony' },
+    ],
+  },
 ];
 
-const typeConfig: Record<string, { color: string; border: string; label: string }> = {
-  workshop: { color: 'text-neon-green', border: 'border-neon-green/40', label: 'WORKSHOP' },
-  minigame: { color: 'text-hot-pink', border: 'border-hot-pink/40', label: 'MINI-GAME' },
-  ceremony: { color: 'text-gold', border: 'border-gold/40', label: 'CEREMONY' },
-  meal: { color: 'text-cyan', border: 'border-cyan/40', label: 'MEAL' },
-  general: { color: 'text-text-secondary', border: 'border-base-border', label: 'GENERAL' },
+const typeColor: Record<string, string> = {
+  workshop: '#C41E3A',
+  minigame: '#ff3366',
+  ceremony: '#C9A84C',
+  meal: '#4a9a7a',
+  general: '#444',
 };
+
+const typeLabel: Record<string, string> = {
+  workshop: 'WORKSHOP',
+  minigame: 'MINI-GAME',
+  ceremony: 'CEREMONY',
+  meal: 'MEAL',
+  general: 'GENERAL',
+};
+
 ---
 
-<section id="schedule" class="relative bg-base-black px-4 py-24 md:py-32">
-  <div class="mx-auto max-w-4xl">
-    <!-- Section header -->
-    <div class="schedule-header mb-12">
-      <div class="flex items-center gap-3 font-mono text-xs tracking-widest text-text-muted">
-        <span class="text-neon-green">[02]</span>
-        <span class="h-px flex-1 bg-base-border"></span>
-        <span>// schedule</span>
+<section id="schedule" class="relative overflow-hidden bg-black px-4 py-28 md:py-40">
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
+
+  <!-- Ambient glows -->
+  <div
+    class="pointer-events-none absolute left-[-8%] top-[18%] h-[680px] w-[680px] rounded-full"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.06) 0%, rgba(196,30,58,0.02) 42%, transparent 68%);"
+  ></div>
+  <div
+    class="pointer-events-none absolute right-[-5%] bottom-[-10%] h-[500px] w-[500px] rounded-full opacity-[0.06] blur-[80px]"
+    style="background: radial-gradient(circle, rgba(201,168,76,0.45) 0%, transparent 70%);"
+  ></div>
+
+  <!-- Ghosted suit marks -->
+  <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
+    <span class="lineup-suit absolute left-[2%] top-[10%] font-display text-[12rem] text-white/[0.018] md:text-[16rem]">♠</span>
+    <span class="lineup-suit absolute right-[4%] top-[26%] font-display text-[11rem] text-red/[0.03] md:text-[15rem]">♥</span>
+    <span class="lineup-suit absolute left-[12%] bottom-[6%] font-display text-[10rem] text-gold/[0.04] md:text-[14rem]">♦</span>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-6xl">
+    <!-- Header -->
+    <div class="lineup-header mb-14 md:mb-20">
+      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-500">
+        <span class="text-red/60">[03]</span>
+        <span class="h-px flex-1 bg-gradient-to-r from-border/80 to-transparent"></span>
+        <span>LINEUP</span>
       </div>
-      <h2 class="mt-4 font-display text-4xl font-black text-text-primary md:text-5xl">
-        The <span class="text-hot-pink">lineup</span>
-      </h2>
-      <p class="mt-3 font-mono text-sm text-text-muted">
-        12 hours. One shot. Here's the deal.
-      </p>
+      <div class="mt-6 grid gap-6 lg:grid-cols-[1.15fr_1fr] lg:items-end">
+        <h2 class="font-display text-5xl tracking-wide text-white-pure md:text-7xl">
+          THE LINEUP
+        </h2>
+      
+      </div>
     </div>
 
-    <!-- Timeline -->
-    <div class="relative">
-      <!-- Vertical line -->
-      <div class="absolute left-[72px] top-0 hidden h-full w-px bg-gradient-to-b from-neon-green/30 via-base-border to-base-border md:block"></div>
+    <!-- Main lineup cards -->
+    <div class="lineup-board mx-auto max-w-6xl space-y-5">
+      {phases.map((phase, pi) => (
+        <article
+          class="phase-card group relative overflow-hidden border border-border/60 bg-black-card/70 p-5 md:p-7"
+          style={`--phase-rgb: ${phase.rgb};`}
+        >
+          <div
+            class="pointer-events-none absolute inset-x-0 top-0 h-px opacity-70"
+            style={`background: linear-gradient(90deg, transparent, rgba(${phase.rgb},0.46), transparent);`}
+          ></div>
+          <div
+            class="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full opacity-0 blur-[1px] transition-opacity duration-500 group-hover:opacity-100"
+            style={`background: radial-gradient(circle, rgba(${phase.rgb}, 0.2) 0%, rgba(${phase.rgb},0.05) 40%, transparent 68%);`}
+          ></div>
 
-      <div class="space-y-3">
-        {schedule.map((event) => {
-          const cfg = typeConfig[event.type] || typeConfig.general;
-          return (
-            <div class={`schedule-item group flex gap-4 md:gap-6`}>
-              {/* Time */}
-              <div class="hidden w-[72px] shrink-0 pt-4 text-right md:block">
-                <span class="font-mono text-xs text-text-muted">{event.time}</span>
-              </div>
-
-              {/* Dot */}
-              <div class="relative hidden shrink-0 md:block">
-                <div class={`mt-4 h-3 w-3 rounded-full border-2 ${cfg.border} bg-base-black transition-colors group-hover:bg-base-card`}></div>
-              </div>
-
-              {/* Card */}
-              <div class={`flex-1 border ${cfg.border} bg-base-card p-4 transition-all group-hover:shadow-[0_0_15px_rgba(0,0,0,0.3)]`}>
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class={`font-mono text-[10px] tracking-widest ${cfg.color}`}>{cfg.label}</span>
-                  <span class="font-mono text-[10px] text-text-muted md:hidden">{event.time}</span>
-                </div>
-                <h3 class="mt-1 font-display text-sm font-bold text-text-primary">{event.title}</h3>
-                <p class="mt-1 font-mono text-xs text-text-muted">{event.desc}</p>
-              </div>
+          <header class="mb-5 flex flex-wrap items-start justify-between gap-4 border-b border-border/60 pb-4">
+            <div>
+              <p
+                class="font-mono text-[8px] tracking-[0.38em] uppercase"
+                style={`color: rgba(${phase.rgb}, 0.65);`}
+              >
+                {phase.subtitle}
+              </p>
+              <h3 class="mt-1 font-display text-2xl tracking-wide text-white md:text-[2rem]">
+                {phase.name}
+              </h3>
+              <p class="mt-1 font-mono text-[10px] tracking-[0.2em] text-gray-dark">
+                {phase.time}
+              </p>
             </div>
-          );
-        })}
-      </div>
-    </div>
 
-    <!-- Type legend -->
-    <div class="mt-8 flex flex-wrap justify-center gap-4">
-      {Object.entries(typeConfig).map(([, cfg]) => (
-        <span class={`font-mono text-[10px] tracking-wider ${cfg.color}`}>
-          <span class="mr-1 inline-block h-2 w-2 rounded-full" style={`background: currentColor;`}></span>
-          {cfg.label}
-        </span>
+            <div class="text-right">
+              <p class="font-display text-4xl leading-none" style={`color: ${phase.color};`}>
+                {phase.suit}
+              </p>
+              <p class="mt-1 font-mono text-[8px] tracking-[0.22em] text-gray-500">
+                PHASE {pi + 1}
+              </p>
+            </div>
+          </header>
+
+          <div class="divide-y divide-border/40">
+            {phase.events.map((event) => (
+              <div class="event-row flex items-center gap-4 py-3">
+                <span class="w-20 shrink-0 font-mono text-[11px] tracking-[0.08em] text-white/55">
+                  {event.time}
+                </span>
+
+                <span
+                  class="h-1.5 w-1.5 shrink-0 rounded-full"
+                  style={`background: ${typeColor[event.type] || '#444'}; box-shadow: 0 0 8px ${typeColor[event.type] || '#444'};`}
+                ></span>
+
+                <p class="flex-1 font-body text-sm text-white/85">
+                  {event.title}
+                </p>
+
+                <span
+                  class="w-24 shrink-0 border py-1 text-center font-mono text-[8px] tracking-[0.18em]"
+                  style={`border-color: rgba(${phase.rgb}, 0.3); color: rgba(${phase.rgb},0.75); background: rgba(${phase.rgb},0.07);`}
+                >
+                  {typeLabel[event.type] || 'GENERAL'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </article>
       ))}
     </div>
+
   </div>
 </section>
 
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
   gsap.registerPlugin(ScrollTrigger);
 
-  gsap.from('.schedule-header', {
-    scrollTrigger: { trigger: '.schedule-header', start: 'top 80%' },
+  gsap.from('.lineup-header', {
+    scrollTrigger: { trigger: '.lineup-header', start: 'top 82%' },
     opacity: 0,
-    y: 30,
-    duration: 0.8,
+    y: 28,
+    duration: 0.9,
+    ease: 'power3.out',
   });
 
-  gsap.from('.schedule-item', {
-    scrollTrigger: { trigger: '.schedule-item', start: 'top 85%' },
+  gsap.from('.phase-card', {
+    scrollTrigger: { trigger: '.lineup-board', start: 'top 80%' },
     opacity: 0,
-    x: -30,
-    stagger: 0.08,
-    duration: 0.6,
+    y: 28,
+    stagger: 0.13,
+    duration: 0.75,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.event-row', {
+    scrollTrigger: { trigger: '.lineup-board', start: 'top 75%' },
+    opacity: 0,
+    x: -10,
+    stagger: 0.025,
+    duration: 0.42,
     ease: 'power2.out',
+    delay: 0.2,
+    immediateRender: false,
+  });
+
+  const suits = Array.from(document.querySelectorAll('.lineup-suit'));
+  const lineupSection = document.getElementById('schedule');
+  const suitAnims = suits.map((el) => ({
+    x: gsap.quickTo(el, 'x', { duration: 0.8, ease: 'power2.out' }),
+    y: gsap.quickTo(el, 'y', { duration: 0.8, ease: 'power2.out' }),
+  }));
+
+  lineupSection?.addEventListener('mousemove', (e) => {
+    const rect = lineupSection.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    suitAnims.forEach((anim, i) => {
+      const speed = 16 + i * 8;
+      anim.x(nx * speed);
+      anim.y(ny * speed * 0.5);
+    });
+  });
+
+  lineupSection?.addEventListener('mouseleave', () => {
+    suitAnims.forEach((anim) => {
+      anim.x(0);
+      anim.y(0);
+    });
   });
 </script>

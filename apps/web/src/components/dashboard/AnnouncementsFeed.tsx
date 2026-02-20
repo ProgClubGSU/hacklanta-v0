@@ -14,13 +14,13 @@ interface Announcement {
 const PRIORITY_CONFIG: Record<string, { color: string; glow: string; badge: string }> = {
   urgent: {
     color: 'border-l-suit-red',
-    glow: 'shadow-[0_0_10px_rgba(230,57,70,0.15)]',
+    glow: 'shadow-[0_0_10px_rgba(196,36,74,0.22)]',
     badge: 'bg-suit-red/20 text-suit-red',
   },
   normal: {
-    color: 'border-l-neon-green',
+    color: 'border-l-gold',
     glow: '',
-    badge: 'bg-neon-green/20 text-neon-green',
+    badge: 'bg-gold/20 text-gold',
   },
   low: {
     color: 'border-l-text-muted',
@@ -105,7 +105,7 @@ export default function AnnouncementsFeed() {
       <div className="flex items-center gap-2 font-mono text-xs">
         <span
           className={`inline-block h-2 w-2 rounded-full ${
-            connected ? 'bg-neon-green animate-pulse' : 'bg-suit-red'
+            connected ? 'bg-gold animate-pulse' : 'bg-suit-red'
           }`}
         />
         <span className="text-text-muted">

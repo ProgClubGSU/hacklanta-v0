@@ -34,6 +34,10 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const handleResumeFile = (file: File | null) => {
+    setResumeFile(file);
+    wizard.clearErrors();
+  };
   const [uploadingResume, setUploadingResume] = useState(false);
 
   const [form, setForm] = useState(() => getInitialFormState(initialData));
@@ -123,7 +127,7 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
           <StepProfile
             {...stepProps}
             resumeFile={resumeFile}
-            setResumeFile={setResumeFile}
+            setResumeFile={handleResumeFile}
             isEditing={isEditing}
           />
         );
@@ -150,26 +154,27 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
 
   return (
     <div className="mt-4 flex min-h-[calc(100vh-12rem)] flex-col">
-      <div className="flex flex-1 flex-col border border-base-border bg-base-card">
+      <div className="flex flex-1 flex-col border border-border bg-black">
         {/* Betting slip header */}
-        <div className="border-b border-base-border bg-base-dark px-6 py-3 md:px-10">
+        <div className="border-b border-border bg-black px-4 py-3.5 sm:px-6 md:px-10">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-xs tracking-widest text-text-muted">
-              HACKLANTA // APPLICATION SLIP
+            <span className="font-mono text-[10px] tracking-[0.3em] text-gray-500 uppercase">
+              HACKLANTA — APPLICATION
             </span>
-            <span className="font-mono text-xs text-gold">&#9824; &#9830; &#9827; &#9829;</span>
+            <span className="font-mono text-xs text-gold/60">♠ ♦ ♣ ♥</span>
           </div>
         </div>
 
         <ProgressBar currentStep={wizard.currentStep} />
 
         {/* Step content — centered with readable max-width */}
-        <div className="flex flex-1 flex-col justify-center px-6 py-10 md:px-10 lg:px-16">
+        <div className="flex flex-1 flex-col justify-center px-4 py-10 sm:px-6 md:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-2xl">
             <div className="mb-8">
-              <span className="font-mono text-base tracking-wider text-neon-green md:text-lg">
-                {STEPS[wizard.currentStep].terminalLabel}
-              </span>
+              <h2 className="font-display text-3xl tracking-widest text-white md:text-4xl">
+                {STEPS[wizard.currentStep].title}
+              </h2>
+              <div className="mt-1 h-px w-10 bg-red/50" />
             </div>
 
             <StepWrapper stepIndex={wizard.currentStep} direction={wizard.direction}>
@@ -180,13 +185,13 @@ export default function ApplicationForm({ initialData, isEditing = false, onSubm
 
         {/* Error display */}
         {error && (
-          <div className="mx-6 mb-4 border border-suit-red/30 bg-suit-red/10 px-5 py-4 font-mono text-sm text-suit-red md:mx-10">
+          <div className="mx-6 mb-4 border border-red/40 bg-red/10 px-5 py-4 font-mono text-sm text-red-bright md:mx-10">
             {error}
           </div>
         )}
 
         {/* Navigation footer — pinned to bottom */}
-        <div className="border-t border-base-border bg-base-dark px-6 py-5 md:px-10">
+        <div className="border-t border-border-light bg-black px-4 py-5 sm:px-6 md:px-10">
           <div className="mx-auto max-w-2xl">
             <StepNavigation
               isFirstStep={wizard.isFirstStep}

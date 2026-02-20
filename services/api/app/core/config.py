@@ -23,8 +23,8 @@ class Settings(BaseSettings):
     # Cloudflare Turnstile
     turnstile_secret_key: str = ""
 
-    # CORS — comma-separated string, e.g. "https://hacklanta.com,https://www.hacklanta.com"
-    cors_origins: str = "http://localhost:4321"
+    # CORS — comma-separated string or list
+    cors_origins: list[str] = ["http://localhost:4321"]
 
     # Debug (enables /docs in development; disabled in production)
     debug: bool = False

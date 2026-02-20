@@ -17,10 +17,10 @@ interface EventData {
 const EVENT_TYPES = ['workshop', 'minigame', 'ceremony', 'meal', 'general'] as const;
 
 const TYPE_COLORS: Record<string, string> = {
-  workshop: 'text-neon-green',
-  minigame: 'text-hot-pink',
+  workshop: 'text-gold',
+  minigame: 'text-burgundy-light',
   ceremony: 'text-gold',
-  meal: 'text-cyan',
+  meal: 'text-teal-light',
   general: 'text-text-secondary',
 };
 
@@ -149,7 +149,7 @@ export default function EventManager() {
         </span>
         <button
           onClick={openCreate}
-          className="border border-neon-green bg-neon-green/10 px-4 py-2 font-mono text-xs tracking-wider text-neon-green transition-colors hover:bg-neon-green/20"
+          className="border border-gold bg-gold/10 px-4 py-2 font-mono text-xs tracking-wider text-gold transition-colors hover:bg-gold/20"
         >
           + ADD EVENT
         </button>
@@ -170,7 +170,7 @@ export default function EventManager() {
               onChange={(e) => updateField('title', e.target.value)}
               required
               placeholder="Event title"
-              className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+              className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
             />
 
             <textarea
@@ -178,7 +178,7 @@ export default function EventManager() {
               onChange={(e) => updateField('description', e.target.value)}
               placeholder="Description"
               rows={2}
-              className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+              className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
             />
 
             <div className="grid gap-4 md:grid-cols-2">
@@ -189,7 +189,7 @@ export default function EventManager() {
                 <select
                   value={form.event_type}
                   onChange={(e) => updateField('event_type', e.target.value)}
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none focus:border-neon-green"
+                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none focus:border-gold"
                 >
                   {EVENT_TYPES.map((t) => (
                     <option key={t} value={t}>
@@ -203,7 +203,7 @@ export default function EventManager() {
                 value={form.location}
                 onChange={(e) => updateField('location', e.target.value)}
                 placeholder="Location"
-                className="border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+                className="border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
               />
 
               <div>
@@ -215,7 +215,7 @@ export default function EventManager() {
                   value={form.starts_at}
                   onChange={(e) => updateField('starts_at', e.target.value)}
                   required
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none focus:border-neon-green"
+                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none focus:border-gold"
                 />
               </div>
 
@@ -228,7 +228,7 @@ export default function EventManager() {
                   value={form.ends_at}
                   onChange={(e) => updateField('ends_at', e.target.value)}
                   required
-                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none focus:border-neon-green"
+                  className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none focus:border-gold"
                 />
               </div>
 
@@ -237,7 +237,7 @@ export default function EventManager() {
                 value={form.capacity}
                 onChange={(e) => updateField('capacity', e.target.value)}
                 placeholder="Capacity (optional)"
-                className="border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+                className="border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
               />
             </div>
           </div>
@@ -246,7 +246,7 @@ export default function EventManager() {
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 border border-neon-green bg-neon-green/10 px-4 py-2 font-mono text-sm tracking-wider text-neon-green transition-colors hover:bg-neon-green/20 disabled:opacity-50"
+              className="flex-1 border border-gold bg-gold/10 px-4 py-2 font-mono text-sm tracking-wider text-gold transition-colors hover:bg-gold/20 disabled:opacity-50"
             >
               {saving ? '// SAVING...' : editingId ? 'UPDATE' : 'CREATE'}
             </button>

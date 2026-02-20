@@ -1,73 +1,189 @@
 ---
-// Hero section — full viewport, GSAP animated, casino glow
+// Hero — cinematic dark casino with floating 3D cards + high-roller countdown
 ---
 
 <section
   id="hero"
-  class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-base-black px-4 text-center"
+  class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black px-4 text-center"
 >
-  <!-- Ambient glow effects -->
+  <!-- Red ambient light -->
   <div
-    class="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-[120px]"
-    style="background: radial-gradient(circle, rgba(0,255,136,0.4) 0%, transparent 70%);"
+    class="pointer-events-none absolute left-1/2 top-[40%] h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.14) 0%, rgba(196,30,58,0.04) 35%, transparent 65%);"
   ></div>
+  <!-- Subtle gold glow -->
   <div
-    class="pointer-events-none absolute right-0 top-0 h-[400px] w-[400px] rounded-full opacity-10 blur-[100px]"
-    style="background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, transparent 70%);"
+    class="pointer-events-none absolute left-[60%] top-[30%] h-[400px] w-[400px] rounded-full opacity-[0.04] blur-[100px]"
+    style="background: radial-gradient(circle, rgba(201,168,76,0.6) 0%, transparent 70%);"
+  ></div>
+  <!-- Vignette -->
+  <div
+    class="pointer-events-none absolute inset-0"
+    style="background: radial-gradient(ellipse 65% 60% at 50% 45%, transparent 15%, rgba(5,5,5,0.5) 60%, rgba(5,5,5,0.92) 100%);"
   ></div>
 
-  <!-- Decorative card suits floating -->
-  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-    <span class="hero-suit absolute left-[10%] top-[15%] text-4xl text-suit-red/10">♥</span>
-    <span class="hero-suit absolute right-[12%] top-[20%] text-5xl text-gold/10">♠</span>
-    <span class="hero-suit absolute left-[20%] bottom-[25%] text-3xl text-neon-green/10">♣</span>
-    <span class="hero-suit absolute right-[18%] bottom-[20%] text-4xl text-suit-red/10">♦</span>
-    <span class="hero-suit absolute left-[5%] top-[50%] text-6xl text-gold/5">♠</span>
-    <span class="hero-suit absolute right-[8%] top-[45%] text-5xl text-hot-pink/5">♥</span>
-  </div>
+  <!-- CSS 3D Floating Cards -->
+  <!-- Wrapper = GSAP target (translate + tilt). Inner div = CSS float animation (untouched). -->
+  <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true" style="perspective: 1200px;">
 
-  <div class="relative z-10">
-    <!-- Terminal line -->
-    <p class="hero-line mb-6 font-mono text-sm tracking-widest text-text-muted opacity-0">
-      <span class="text-neon-green">$</span> presented_by <span class="text-gold">progsu</span>
-    </p>
-
-    <!-- Main title -->
-    <h1 class="hero-title font-display text-7xl font-black tracking-tight text-text-primary opacity-0 md:text-9xl">
-      HACK<span class="text-neon-green" style="text-shadow: 0 0 80px rgba(0,255,136,0.3), 0 0 40px rgba(0,255,136,0.1);">LANTA</span>
-    </h1>
-
-    <!-- Subtitle -->
-    <div class="hero-subtitle mt-6 flex flex-wrap items-center justify-center gap-3 font-mono text-lg text-text-secondary opacity-0">
-      <span class="text-suit-red">♦</span>
-      <span>12-hour hackathon</span>
-      <span class="text-suit-red">♥</span>
-      <span>atlanta, ga</span>
-      <span class="text-gold">♠</span>
+    <div class="hero-card absolute left-[5%] top-[8%]">
+      <div class="h-[180px] w-[120px] rounded-lg md:h-[220px] md:w-[150px]"
+        style="--card-base-transform: rotateY(-18deg) rotateX(8deg) rotateZ(-6deg); transform: var(--card-base-transform); animation: card-float 7s ease-in-out infinite;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/20 bg-gradient-to-br from-red-dark/80 via-red/60 to-red-dark/90 shadow-[0_20px_60px_rgba(196,30,58,0.15)]">
+          <span class="text-4xl text-black/40 md:text-5xl">&#9824;</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Countdown placeholder -->
+    <div class="hero-card absolute right-[6%] top-[12%]">
+      <div class="h-[160px] w-[110px] rounded-lg md:h-[200px] md:w-[135px]"
+        style="--card-base-transform: rotateY(22deg) rotateX(-5deg) rotateZ(8deg); transform: var(--card-base-transform); animation: card-float 8.5s ease-in-out infinite 1s;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/20 bg-gradient-to-br from-red-dark/80 via-red/50 to-red-dark/90 shadow-[0_20px_60px_rgba(196,30,58,0.12)]">
+          <span class="text-4xl text-black/40 md:text-5xl">&#9829;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card absolute bottom-[12%] left-[10%]">
+      <div class="h-[140px] w-[95px] rounded-lg md:h-[180px] md:w-[120px]"
+        style="--card-base-transform: rotateY(12deg) rotateX(15deg) rotateZ(10deg); transform: var(--card-base-transform); animation: card-float 6.5s ease-in-out infinite 0.5s;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/70 via-red/40 to-red-dark/80 shadow-[0_20px_60px_rgba(196,30,58,0.1)]">
+          <span class="text-3xl text-black/30 md:text-4xl">&#9830;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card absolute -right-[3%] bottom-[5%]">
+      <div class="h-[200px] w-[135px] rounded-lg md:h-[240px] md:w-[160px]"
+        style="--card-base-transform: rotateY(-25deg) rotateX(10deg) rotateZ(-12deg); transform: var(--card-base-transform); animation: card-float 9s ease-in-out infinite 2s;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/70 via-red/35 to-red-dark/80 shadow-[0_20px_60px_rgba(196,30,58,0.08)]">
+          <span class="text-5xl text-black/30 md:text-6xl">&#9827;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-card absolute left-[25%] top-[55%] hidden lg:block">
+      <div class="h-[120px] w-[80px] rounded-lg"
+        style="--card-base-transform: rotateY(-8deg) rotateX(20deg) rotateZ(4deg); transform: var(--card-base-transform); animation: card-float 7.5s ease-in-out infinite 1.5s;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/10 bg-gradient-to-br from-red-dark/60 via-red/30 to-red-dark/70 shadow-[0_15px_40px_rgba(196,30,58,0.06)]">
+          <span class="text-2xl text-black/25">&#9824;</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main content -->
+  <div class="relative z-10 max-w-4xl">
+    <!-- Presented by -->
+    <p class="hero-line font-mono text-[10px] tracking-[0.4em] text-gray-dark opacity-0 uppercase">
+      presented by <span class="text-red/70">progsu</span>
+    </p>
+
+    <!-- Title -->
+    <h1
+      class="hero-title mt-6 font-display leading-[0.85] text-white-pure opacity-0"
+      style="font-size: clamp(4.5rem, 14vw, 11rem); letter-spacing: 0.04em;"
+    >
+      HACKLANTA
+    </h1>
+
+    <!-- Red rule -->
+    <div class="hero-rule mx-auto mt-4 h-px w-48 opacity-0" style="background: linear-gradient(90deg, transparent, #C41E3A, transparent);"></div>
+
+    <!-- Event details -->
+    <div class="hero-details mt-6 flex flex-wrap items-center justify-center gap-3 opacity-0 md:gap-5">
+      <span class="font-body text-[11px] font-medium tracking-[0.2em] text-gray uppercase md:text-xs">12-hour hackathon</span>
+      <span class="text-[10px] text-red/40">&#9670;</span>
+      <span class="font-body text-[11px] font-medium tracking-[0.2em] text-gray uppercase md:text-xs">april 1, 2026</span>
+      <span class="text-[10px] text-red/40">&#9670;</span>
+      <span class="font-body text-[11px] font-medium tracking-[0.2em] text-gray uppercase md:text-xs">atlanta, ga</span>
+    </div>
+
+    <!-- ========== HIGH ROLLER COUNTDOWN ========== -->
     <div class="hero-countdown mt-10 opacity-0">
       <div class="flex items-center justify-center gap-4 md:gap-6">
-        <div class="flex flex-col items-center">
-          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
-          <span class="font-mono text-[10px] tracking-widest text-text-muted">DAYS</span>
+
+        <!-- DAYS -->
+        <div class="timer-unit">
+          <div class="timer-card group">
+            <div class="timer-card-inner">
+              <span class="timer-value" data-unit="days">00</span>
+            </div>
+            <!-- Glow line on top -->
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/40 to-transparent"></div>
+            <!-- Corner accents -->
+            <div class="absolute left-0 top-0 h-3 w-px bg-red/30"></div>
+            <div class="absolute left-0 top-0 h-px w-3 bg-red/30"></div>
+            <div class="absolute bottom-0 right-0 h-3 w-px bg-red/20"></div>
+            <div class="absolute bottom-0 right-0 h-px w-3 bg-red/20"></div>
+          </div>
+          <span class="timer-label">DAYS</span>
         </div>
-        <span class="font-display text-3xl text-text-muted/40">:</span>
-        <div class="flex flex-col items-center">
-          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
-          <span class="font-mono text-[10px] tracking-widest text-text-muted">HOURS</span>
+
+        <!-- Separator -->
+        <div class="timer-sep">
+          <span class="timer-sep-dot"></span>
+          <span class="timer-sep-dot"></span>
         </div>
-        <span class="font-display text-3xl text-text-muted/40">:</span>
-        <div class="flex flex-col items-center">
-          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
-          <span class="font-mono text-[10px] tracking-widest text-text-muted">MINS</span>
+
+        <!-- HOURS -->
+        <div class="timer-unit">
+          <div class="timer-card group">
+            <div class="timer-card-inner">
+              <span class="timer-value" data-unit="hours">00</span>
+            </div>
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/40 to-transparent"></div>
+            <div class="absolute left-0 top-0 h-3 w-px bg-red/30"></div>
+            <div class="absolute left-0 top-0 h-px w-3 bg-red/30"></div>
+            <div class="absolute bottom-0 right-0 h-3 w-px bg-red/20"></div>
+            <div class="absolute bottom-0 right-0 h-px w-3 bg-red/20"></div>
+          </div>
+          <span class="timer-label">HRS</span>
         </div>
-        <span class="font-display text-3xl text-text-muted/40">:</span>
-        <div class="flex flex-col items-center">
-          <span class="countdown-num font-display text-4xl font-black text-neon-green md:text-5xl" data-target="00">00</span>
-          <span class="font-mono text-[10px] tracking-widest text-text-muted">SECS</span>
+
+        <!-- Separator -->
+        <div class="timer-sep">
+          <span class="timer-sep-dot"></span>
+          <span class="timer-sep-dot"></span>
         </div>
+
+        <!-- MINUTES -->
+        <div class="timer-unit">
+          <div class="timer-card group">
+            <div class="timer-card-inner">
+              <span class="timer-value" data-unit="mins">00</span>
+            </div>
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/40 to-transparent"></div>
+            <div class="absolute left-0 top-0 h-3 w-px bg-red/30"></div>
+            <div class="absolute left-0 top-0 h-px w-3 bg-red/30"></div>
+            <div class="absolute bottom-0 right-0 h-3 w-px bg-red/20"></div>
+            <div class="absolute bottom-0 right-0 h-px w-3 bg-red/20"></div>
+          </div>
+          <span class="timer-label">MIN</span>
+        </div>
+
+        <!-- Separator -->
+        <div class="timer-sep">
+          <span class="timer-sep-dot"></span>
+          <span class="timer-sep-dot"></span>
+        </div>
+
+        <!-- SECONDS -->
+        <div class="timer-unit">
+          <div class="timer-card group">
+            <div class="timer-card-inner">
+              <span class="timer-value timer-value--sec" data-unit="secs">00</span>
+            </div>
+            <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/40 to-transparent"></div>
+            <div class="absolute left-0 top-0 h-3 w-px bg-red/30"></div>
+            <div class="absolute left-0 top-0 h-px w-3 bg-red/30"></div>
+            <div class="absolute bottom-0 right-0 h-3 w-px bg-red/20"></div>
+            <div class="absolute bottom-0 right-0 h-px w-3 bg-red/20"></div>
+          </div>
+          <span class="timer-label">SEC</span>
+        </div>
+
       </div>
     </div>
 
@@ -75,82 +191,290 @@
     <div class="hero-cta mt-12 opacity-0">
       <a
         href="/apply"
-        class="group inline-block border-2 border-neon-green bg-neon-green/10 px-8 py-4 font-mono text-lg font-bold text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_30px_rgba(0,255,136,0.3)]"
+        class="group relative inline-flex items-center gap-3 overflow-hidden bg-red px-10 py-4 font-body text-sm font-bold tracking-[0.15em] text-white-pure transition-all duration-300 hover:bg-red-bright hover:shadow-[0_0_50px_rgba(196,30,58,0.35)] hover:scale-[1.03]"
       >
-        <span class="mr-2 text-text-muted transition-colors group-hover:text-neon-green">$</span>DEAL_ME_IN
+        <span class="relative z-10 uppercase">Apply</span>
+
+        <span class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
       </a>
     </div>
-
-    <!-- Bottom suits -->
-    <p class="hero-suits mt-10 font-mono text-xs text-text-muted opacity-0">
-      ♠ ♦ ♣ ♥ &mdash; go all in &mdash; ♥ ♣ ♦ ♠
-    </p>
   </div>
 
   <!-- Scroll indicator -->
   <div class="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0">
-    <div class="flex flex-col items-center gap-2">
-      <span class="font-mono text-[10px] tracking-widest text-text-muted">SCROLL</span>
-      <div class="h-8 w-px animate-pulse bg-gradient-to-b from-neon-green/50 to-transparent"></div>
+    <div class="flex flex-col items-center gap-3">
+      <span class="font-mono text-[7px] tracking-[0.5em] text-gray-500 uppercase">Scroll</span>
+      <div class="h-8 w-px bg-gradient-to-b from-red/30 to-transparent"></div>
     </div>
   </div>
 </section>
 
-<script>
-  import { gsap } from 'gsap';
+<style>
+  /* ── High Roller Countdown ── */
+  .timer-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
 
-  // Hero entrance timeline
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  .timer-card {
+    position: relative;
+    background: linear-gradient(165deg, rgba(15,15,16,0.95), rgba(8,8,9,0.98));
+    border: 1px solid rgba(196,30,58,0.12);
+    border-radius: 8px;
+    padding: 2px;
+    box-shadow:
+      0 4px 20px rgba(0,0,0,0.6),
+      0 0 40px rgba(196,30,58,0.03),
+      inset 0 1px 0 rgba(255,255,255,0.03);
+    transition: border-color 0.5s, box-shadow 0.5s;
+  }
+  .timer-card:hover {
+    border-color: rgba(196,30,58,0.25);
+    box-shadow:
+      0 4px 20px rgba(0,0,0,0.6),
+      0 0 50px rgba(196,30,58,0.06);
+  }
 
-  tl.to('.hero-line', { opacity: 1, y: 0, duration: 0.6 }, 0.2)
-    .to('.hero-title', { opacity: 1, y: 0, duration: 0.8 }, 0.4)
-    .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.6 }, 0.8)
-    .to('.hero-countdown', { opacity: 1, y: 0, duration: 0.6 }, 1.0)
-    .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 1.2)
-    .to('.hero-suits', { opacity: 1, duration: 0.4 }, 1.4)
-    .to('.hero-scroll', { opacity: 1, duration: 0.4 }, 1.6);
+  .timer-card-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 64px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(10,10,11,1) 0%, rgba(5,5,5,1) 100%);
+    overflow: hidden;
+    position: relative;
+  }
+  .timer-card-inner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(196,30,58,0.08), transparent);
+    pointer-events: none;
+  }
 
-  // Floating suit animation
-  gsap.utils.toArray<HTMLElement>('.hero-suit').forEach((suit, i) => {
-    gsap.to(suit, {
-      y: `${15 + i * 5}`,
-      x: `${(i % 2 === 0 ? 1 : -1) * 10}`,
-      rotation: (i % 2 === 0 ? 1 : -1) * 15,
-      duration: 3 + i * 0.5,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-    });
-  });
-
-  // Countdown timer — set your event date here
-  const EVENT_DATE = new Date('2026-04-01T09:00:00-04:00'); // Example date, adjust as needed
-
-  function updateCountdown() {
-    const now = new Date();
-    const diff = EVENT_DATE.getTime() - now.getTime();
-
-    if (diff <= 0) {
-      document.querySelectorAll('.countdown-num').forEach((el) => {
-        el.textContent = '00';
-      });
-      return;
-    }
-
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const mins = Math.floor((diff / (1000 * 60)) % 60);
-    const secs = Math.floor((diff / 1000) % 60);
-
-    const nums = document.querySelectorAll('.countdown-num');
-    if (nums.length >= 4) {
-      nums[0].textContent = String(days).padStart(2, '0');
-      nums[1].textContent = String(hours).padStart(2, '0');
-      nums[2].textContent = String(mins).padStart(2, '0');
-      nums[3].textContent = String(secs).padStart(2, '0');
+  @media (min-width: 768px) {
+    .timer-card-inner {
+      width: 76px;
+      height: 84px;
     }
   }
 
-  updateCountdown();
+  .timer-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    letter-spacing: 0.06em;
+    color: #C41E3A;
+    text-shadow: 0 0 30px rgba(196,30,58,0.25);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s;
+    line-height: 1;
+  }
+  .timer-value--sec {
+    color: rgba(196,30,58,0.7);
+    text-shadow: 0 0 20px rgba(196,30,58,0.15);
+  }
+
+  @media (min-width: 768px) {
+    .timer-value {
+      font-size: 56px;
+    }
+  }
+
+  /* Tick animation */
+  .timer-value.tick {
+    animation: digit-tick 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes digit-tick {
+    0% { transform: translateY(8px); opacity: 0.4; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  .timer-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.4em;
+    color: var(--color-gray-darker);
+  }
+  @media (min-width: 768px) {
+    .timer-label {
+      font-size: 9px;
+    }
+  }
+
+  /* Separator dots */
+  .timer-sep {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 22px;
+  }
+  .timer-sep-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(196,30,58,0.35);
+    box-shadow: 0 0 8px rgba(196,30,58,0.15);
+    animation: sep-pulse 2s ease-in-out infinite;
+  }
+  .timer-sep-dot:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+
+  @keyframes sep-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* ── Deal Me In CTA ── */
+  .cta-deal {
+    box-shadow:
+      0 4px 24px rgba(196, 30, 58, 0.35),
+      0 0 40px rgba(196, 30, 58, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  .cta-deal:hover {
+    box-shadow:
+      0 8px 32px rgba(196, 30, 58, 0.5),
+      0 0 60px rgba(196, 30, 58, 0.3),
+      0 0 100px rgba(196, 30, 58, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  .cta-suit {
+    font-size: 1rem;
+    line-height: 1;
+    filter: drop-shadow(0 0 6px rgba(196, 30, 58, 0.4));
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  // ===== Hero entrance =====
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.to('.hero-line', { opacity: 1, y: 0, duration: 0.6 }, 0.3)
+    .to('.hero-title', { opacity: 1, y: 0, duration: 1.4, ease: 'power2.out' }, 0.5)
+    .to('.hero-rule', { opacity: 1, scaleX: 1, duration: 0.8 }, 1.2)
+    .to('.hero-details', { opacity: 1, y: 0, duration: 0.6 }, 1.5)
+    .to('.hero-countdown', { opacity: 1, y: 0, duration: 0.8 }, 1.8)
+    .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 2.4)
+    .to('.hero-scroll', { opacity: 1, duration: 0.6 }, 3.0);
+
+  gsap.from('.hero-card', {
+    opacity: 0,
+    scale: 0.6,
+    stagger: 0.2,
+    duration: 1.5,
+    delay: 0.8,
+    ease: 'power2.out',
+  });
+
+  // ===== Mouse parallax + tilt on hero card wrappers =====
+  const hero = document.getElementById('hero')!;
+  const cards = document.querySelectorAll<HTMLElement>('.hero-card');
+
+  // Translation speeds — negative = opposite direction
+  const translateSpeeds = [0.09, -0.07, 0.055, -0.12, 0.045];
+  // Rotation tilt in degrees — cards lean toward/away from cursor
+  const tiltSpeeds = [6, -5, 4, -8, 3];
+
+  const cardAnims = Array.from(cards).map((el) => ({
+    x:  gsap.quickTo(el, 'x',       { duration: 0.6, ease: 'power2.out' }),
+    y:  gsap.quickTo(el, 'y',       { duration: 0.6, ease: 'power2.out' }),
+    ry: gsap.quickTo(el, 'rotateY', { duration: 0.6, ease: 'power2.out' }),
+    rx: gsap.quickTo(el, 'rotateX', { duration: 0.6, ease: 'power2.out' }),
+  }));
+
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const nx = ((e.clientX - rect.left) / rect.width  - 0.5) * 2; // -1 → 1
+    const ny = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+
+    cardAnims.forEach((anim, i) => {
+      const ts = translateSpeeds[i];
+      const tl = tiltSpeeds[i];
+      anim.x(nx  * rect.width  * Math.abs(ts) * Math.sign(ts));
+      anim.y(ny  * rect.height * Math.abs(ts) * 0.5 * Math.sign(ts));
+      anim.ry(nx * tl);
+      anim.rx(-ny * tl * 0.45);
+    });
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    cardAnims.forEach((a) => { a.x(0); a.y(0); a.ry(0); a.rx(0); });
+  });
+
+  // ===== Scroll parallax + rotation on hero card wrappers =====
+  const scrollY     = [120, -90, 75, -150, 55];
+  const scrollRotZ  = [25,  -20, 15,  -35, 12];
+
+  cards.forEach((card, i) => {
+    gsap.to(card, {
+      yPercent: scrollY[i],
+      rotateZ:  scrollRotZ[i],
+      ease: 'none',
+      scrollTrigger: {
+        trigger: hero,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      },
+    });
+  });
+
+  // ===== Countdown =====
+  const EVENT_DATE = new Date('2026-04-01T09:00:00-04:00');
+
+  const unitEls = {
+    days: document.querySelector<HTMLElement>('[data-unit="days"]')!,
+    hours: document.querySelector<HTMLElement>('[data-unit="hours"]')!,
+    mins: document.querySelector<HTMLElement>('[data-unit="mins"]')!,
+    secs: document.querySelector<HTMLElement>('[data-unit="secs"]')!,
+  };
+
+  const prev = { days: '', hours: '', mins: '', secs: '' };
+
+  function pad(n: number) {
+    return String(n).padStart(2, '0');
+  }
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = Math.max(0, EVENT_DATE.getTime() - now.getTime());
+
+    const days = pad(Math.floor(diff / (1000 * 60 * 60 * 24)));
+    const hours = pad(Math.floor((diff / (1000 * 60 * 60)) % 24));
+    const mins = pad(Math.floor((diff / (1000 * 60)) % 60));
+    const secs = pad(Math.floor((diff / 1000) % 60));
+
+    const vals = { days, hours, mins, secs } as const;
+
+    for (const [key, val] of Object.entries(vals) as [keyof typeof vals, string][]) {
+      const el = unitEls[key];
+      if (val !== prev[key]) {
+        el.textContent = val;
+        el.classList.remove('tick');
+        void el.offsetWidth; // reflow to restart animation
+        el.classList.add('tick');
+        prev[key] = val;
+      }
+    }
+  }
+
+  // Initial dramatic reveal — numbers count up from 00 to actual value
+  setTimeout(() => {
+    updateCountdown();
+  }, 2000);
+
+  // Tick every second
   setInterval(updateCountdown, 1000);
 </script>

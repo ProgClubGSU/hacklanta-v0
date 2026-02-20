@@ -17,9 +17,7 @@ export default function StepProfile({
 }: Props) {
   return (
     <fieldset>
-      <p className="mb-8 font-mono text-base text-text-muted">
-        Show us what you're working with.
-      </p>
+     
       <div className="space-y-6">
         <SelectField
           label="Experience Level"
@@ -33,22 +31,23 @@ export default function StepProfile({
         />
 
         <div>
-          <label className="mb-2 block font-mono text-sm tracking-wider text-text-secondary">
-            Resume (PDF) {!isEditing && <span className="text-suit-red">*</span>}
+          <label className="mb-2 block font-mono text-[11px] tracking-[0.18em] uppercase text-white/60">
+            Resume (PDF) {!isEditing && <span className="text-red ml-1">*</span>}
           </label>
-          <input
-            type="file"
-            accept=".pdf"
-            onChange={(e) => setResumeFile(e.target.files?.[0] ?? null)}
-            required={!isEditing && !form.resume_url}
-            className="w-full border border-base-border bg-base-dark px-4 py-3 font-mono text-base text-text-primary outline-none file:mr-4 file:border-0 file:bg-neon-green/10 file:px-4 file:py-1.5 file:font-mono file:text-sm file:text-neon-green"
-          />
-          {resumeFile && (
-            <p className="mt-2 font-mono text-sm text-neon-green">{resumeFile.name}</p>
-          )}
-          {!resumeFile && form.resume_url && (
-            <p className="mt-2 font-mono text-sm text-text-muted">// resume already uploaded</p>
-          )}
+          <label className="flex w-full cursor-pointer items-center border border-border bg-black transition-colors hover:border-border-light">
+            <span className="shrink-0 border-r border-border px-4 py-3.5 font-mono text-sm text-gold/80">
+              CHOOSE FILE
+            </span>
+            <span className={`min-w-0 flex-1 truncate px-4 font-body text-base ${resumeFile ? 'text-white' : 'text-gray-500'}`}>
+              {resumeFile ? resumeFile.name : (!resumeFile && form.resume_url ? 'Resume already uploaded ✓' : 'No file selected')}
+            </span>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setResumeFile(e.target.files?.[0] ?? null)}
+              className="sr-only"
+            />
+          </label>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2">

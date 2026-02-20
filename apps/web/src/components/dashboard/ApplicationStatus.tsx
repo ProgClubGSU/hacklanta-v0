@@ -6,25 +6,25 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; glow: string
   pending: {
     label: 'PENDING',
     color: 'text-gold',
-    glow: 'shadow-[0_0_15px_rgba(255,215,0,0.15)]',
+    glow: 'shadow-[0_0_15px_rgba(198,149,63,0.22)]',
     icon: '\u23F3',
   },
   accepted: {
     label: 'ACCEPTED',
-    color: 'text-neon-green',
-    glow: 'shadow-[0_0_15px_rgba(0,255,136,0.15)]',
+    color: 'text-gold',
+    glow: 'shadow-[0_0_15px_rgba(232,180,79,0.22)]',
     icon: '\u2713',
   },
   rejected: {
     label: 'REJECTED',
     color: 'text-suit-red',
-    glow: 'shadow-[0_0_15px_rgba(230,57,70,0.15)]',
+    glow: 'shadow-[0_0_15px_rgba(196,36,74,0.22)]',
     icon: '\u2717',
   },
   waitlisted: {
     label: 'WAITLISTED',
-    color: 'text-cyan',
-    glow: 'shadow-[0_0_15px_rgba(0,229,255,0.15)]',
+    color: 'text-teal-light',
+    glow: 'shadow-[0_0_15px_rgba(20,168,138,0.22)]',
     icon: '\u2026',
   },
 };

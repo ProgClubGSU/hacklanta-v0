@@ -4,9 +4,7 @@ import { InputField, SelectField, StepErrors } from '../fields';
 export default function StepBasics({ form, updateField, errors }: StepProps) {
   return (
     <fieldset>
-      <p className="mb-8 font-mono text-base text-text-muted">
-        Let's start with the essentials.
-      </p>
+  
       <div className="grid gap-6 md:grid-cols-2">
         <InputField
           label="University"

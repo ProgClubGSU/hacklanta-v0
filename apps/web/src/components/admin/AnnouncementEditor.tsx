@@ -78,7 +78,7 @@ export default function AnnouncementEditor() {
             onChange={(e) => setTitle(e.target.value)}
             required
             placeholder="Announcement title"
-            className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+            className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
           />
 
           <textarea
@@ -87,7 +87,7 @@ export default function AnnouncementEditor() {
             required
             placeholder="Message body..."
             rows={4}
-            className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-neon-green"
+            className="w-full border border-base-border bg-base-dark px-3 py-2 font-mono text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-gold"
           />
 
           <div className="flex items-center gap-4">
@@ -102,7 +102,7 @@ export default function AnnouncementEditor() {
                     ? p === 'urgent'
                       ? 'border-suit-red bg-suit-red/20 text-suit-red'
                       : p === 'normal'
-                        ? 'border-neon-green bg-neon-green/20 text-neon-green'
+                        ? 'border-gold bg-gold/20 text-gold'
                         : 'border-text-muted bg-base-dark text-text-muted'
                     : 'border-base-border text-text-muted hover:text-text-primary'
                 }`}
@@ -123,7 +123,7 @@ export default function AnnouncementEditor() {
           <button
             type="submit"
             disabled={sending}
-            className="w-full border-2 border-neon-green bg-neon-green/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_20px_rgba(0,255,136,0.2)] disabled:opacity-50"
+            className="w-full border-2 border-gold bg-gold/10 px-6 py-3 font-mono text-sm font-bold tracking-wider text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(232,180,79,0.3)] disabled:opacity-50"
           >
             {sending ? '// BROADCASTING...' : '$ BROADCAST'}
           </button>
@@ -155,7 +155,7 @@ export default function AnnouncementEditor() {
                       a.priority === 'urgent'
                         ? 'text-suit-red'
                         : a.priority === 'normal'
-                          ? 'text-neon-green'
+                          ? 'text-gold'
                           : 'text-text-muted'
                     }`}
                   >

@@ -9,7 +9,17 @@ export default defineConfig({
     react(),
     clerk({
       appearance: {
-        baseTheme: 'dark',
+        variables: {
+          colorPrimary: '#c41e3a',
+          colorBackground: '#000000',
+          colorInputBackground: '#0a0a0a',
+          colorText: '#f5f5f5',
+          colorTextSecondary: '#666666',
+          colorDanger: '#ff3366',
+          colorSuccess: '#00ff88',
+          borderRadius: '0px',
+          fontFamily: 'inherit',
+        },
       },
     }),
   ],

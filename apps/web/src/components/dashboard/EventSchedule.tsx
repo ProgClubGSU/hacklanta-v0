@@ -15,10 +15,10 @@ interface Event {
 }
 
 const TYPE_CONFIG: Record<string, { color: string; glow: string; label: string }> = {
-  workshop: { color: 'text-neon-green', glow: 'border-l-neon-green', label: 'WORKSHOP' },
-  minigame: { color: 'text-hot-pink', glow: 'border-l-hot-pink', label: 'MINIGAME' },
+  workshop: { color: 'text-gold', glow: 'border-l-gold', label: 'WORKSHOP' },
+  minigame: { color: 'text-burgundy-light', glow: 'border-l-burgundy', label: 'MINIGAME' },
   ceremony: { color: 'text-gold', glow: 'border-l-gold', label: 'CEREMONY' },
-  meal: { color: 'text-cyan', glow: 'border-l-cyan', label: 'MEAL' },
+  meal: { color: 'text-teal-light', glow: 'border-l-teal', label: 'MEAL' },
   general: { color: 'text-text-secondary', glow: 'border-l-text-secondary', label: 'GENERAL' },
 };
 
