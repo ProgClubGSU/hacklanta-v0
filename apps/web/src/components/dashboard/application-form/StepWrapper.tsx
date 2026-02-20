@@ -36,7 +36,7 @@ export default function StepWrapper({ stepIndex, direction, children }: Props) {
   const duration = prefersReducedMotion ? 0.1 : 0.25;
 
   return (
-    <div ref={containerRef} className="overflow-hidden">
+    <div ref={containerRef} className="overflow-x-hidden overflow-y-visible">
       <AnimatePresence mode="wait" custom={direction}>
         <motion.div
           key={stepIndex}

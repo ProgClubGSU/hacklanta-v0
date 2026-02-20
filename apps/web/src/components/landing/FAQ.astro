@@ -102,7 +102,7 @@ const faqs = [
 
   <div class="relative z-10 mx-auto max-w-3xl">
     <div class="faq-header mb-14">
-      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-500">
         <span class="text-red/60">[05]</span>
         <span class="h-px flex-1 bg-gradient-to-r from-border/80 to-transparent"></span>
         <span>FAQ</span>
@@ -118,7 +118,7 @@ const faqs = [
         <details class="faq-item group border border-border/40 bg-black-card/20 transition-all duration-500 hover:border-border-light/60 open:border-red/25 open:bg-black-card/50">
           <summary class="flex cursor-pointer items-center justify-between px-6 py-5 select-none [&::-webkit-details-marker]:hidden">
             <span class="flex items-center gap-4">
-              <span class="font-mono text-[10px] text-gray-darker transition-colors duration-300 group-open:text-red/60">{String(i + 1).padStart(2, '0')}</span>
+              <span class="font-mono text-[10px] text-gray-500 transition-colors duration-300 group-open:text-red/60">{String(i + 1).padStart(2, '0')}</span>
               <span class="font-body text-[14px] font-medium text-white/80 transition-colors duration-300 group-hover:text-white group-open:text-white">{faq.q}</span>
             </span>
             <span class="ml-4 flex h-6 w-6 shrink-0 items-center justify-center font-mono text-sm text-red/30 transition-all duration-500 group-hover:text-red/60 group-open:rotate-45 group-open:text-red">+</span>
@@ -140,7 +140,7 @@ const faqs = [
           class="group relative inline-flex items-center gap-2 overflow-hidden border border-red/30 bg-red/[0.06] px-6 py-3 font-body text-[10px] font-semibold tracking-[0.15em] text-red/80 transition-all duration-500 hover:border-red/50 hover:text-red hover:shadow-[0_0_24px_rgba(196,30,58,0.08)]"
         >
           <span class="relative z-10">EMAIL</span>
-          <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span>
+          <!-- <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span> -->
           <span class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-red/[0.06] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
         </a>
         <a
@@ -150,7 +150,7 @@ const faqs = [
           class="group relative inline-flex items-center gap-2 overflow-hidden border border-border/80 bg-black-card/30 px-6 py-3 font-body text-[10px] font-semibold tracking-[0.15em] text-gray transition-all duration-500 hover:border-border-light hover:text-white hover:shadow-[0_0_24px_rgba(0,0,0,0.2)]"
         >
           <span class="relative z-10">DISCORD</span>
-          <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span>
+          <!-- <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-0.5">&rarr;</span> -->
           <span class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.02] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
         </a>
       </div>

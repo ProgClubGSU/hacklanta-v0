@@ -87,10 +87,11 @@
     </div>
   </div>
 
-  <div class="relative z-10 mx-auto max-w-6xl">
-    <!-- Section header -->
+  <div class="relative z-10 mx-auto max-w-5xl">
+
+    <!-- Section label -->
     <div class="about-header mb-16">
-      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+      <div class="flex items-center gap-3 font-mono text-[10px] tracking-[0.3em] text-gray-500">
         <span class="text-red/60">[01]</span>
         <span class="h-px flex-1 bg-gradient-to-r from-border/80 to-transparent"></span>
         <span>ABOUT</span>
@@ -98,152 +99,74 @@
       <h2 class="mt-6 font-display text-5xl tracking-wide text-white-pure md:text-7xl">
         WHAT'S THE PLAY
       </h2>
-      <div class="mt-4 h-px w-24 bg-gradient-to-r from-red/60 to-transparent"></div>
+      <div class="mt-4 h-px w-16 bg-red/50"></div>
     </div>
 
-    <!-- ===== BENTO GRID ===== -->
-    <div class="about-grid grid gap-3 md:grid-cols-3 md:grid-rows-[auto_auto]">
+    <!-- Description -->
+    <div class="about-body">
+      <p class="max-w-2xl font-body text-lg leading-relaxed text-white/70 md:text-xl md:leading-relaxed">
+        Hacklanta is a <span class="text-white font-medium">12-hour hackathon</span> hosted by <span class="text-red">progsu</span> — the Programming Club at Georgia State University. Whether you're shipping your tenth project or writing your first line of code, this is your table.
+      </p>
+      <p class="mt-5 max-w-xl font-body text-base leading-relaxed text-white/40">
+        Build something wild. Learn something new. Break something on purpose. No buy-in required.
+      </p>
+    </div>
 
-      <!-- TILE 1: Hero description — spans 2 cols -->
-      <div class="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-black-card via-black-card/80 to-black/60 p-8 md:col-span-2 md:p-10">
-        <!-- Decorative oversized suit -->
-        <div class="pointer-events-none absolute -right-6 -top-6 text-[220px] leading-none text-red/[0.025] transition-all duration-1000 group-hover:text-red/[0.045] md:text-[280px]" aria-hidden="true">&#9824;</div>
-
-        <!-- Top-left corner accent -->
-        <div class="absolute left-0 top-0 h-16 w-px bg-gradient-to-b from-red/40 to-transparent"></div>
-        <div class="absolute left-0 top-0 h-px w-16 bg-gradient-to-r from-red/40 to-transparent"></div>
-
-        <div class="relative max-w-xl">
-          <p class="font-mono text-[9px] tracking-[0.3em] text-red/50">// THE PITCH</p>
-          <p class="mt-5 font-body text-[17px] leading-[1.9] text-gray md:text-lg md:leading-[1.9]">
-            Hacklanta is a <span class="font-semibold text-white">12-hour hackathon</span> hosted
-            by <span class="text-red">progsu</span> — the Programming Club at Georgia State University.
-            Whether you're a seasoned dev or writing your first line of code, this is your table.
-          </p>
-          <p class="mt-5 font-body text-[15px] leading-[1.9] text-gray-dark">
-            Build something wild. Learn something new. Break something on purpose.
-            No buy-in required — just pure creative energy
-            and the willingness to go all in.
-          </p>
-        </div>
+    <!-- Stats strip -->
+    <div class="about-stats mt-14 flex flex-wrap items-end gap-x-12 gap-y-6 border-t border-border/50 pt-10">
+      <div>
+        <p class="font-display text-6xl text-red md:text-7xl">12</p>
+        <p class="mt-1 font-mono text-[9px] tracking-[0.3em] text-white/30 uppercase">Hours</p>
       </div>
-
-      <!-- TILE 2: Pull quote -->
-      <div class="group relative flex items-center overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-black-card to-black/60 p-8 md:row-span-2 md:p-10">
-        <!-- Decorative -->
-        <div class="absolute right-4 top-4 font-display text-[140px] leading-none text-red/[0.04] md:text-[180px]" aria-hidden="true">&ldquo;</div>
-
-        <!-- Corner accents -->
-        <div class="absolute left-0 top-0 h-12 w-px bg-gradient-to-b from-gold/30 to-transparent"></div>
-        <div class="absolute left-0 top-0 h-px w-12 bg-gradient-to-r from-gold/30 to-transparent"></div>
-        <div class="absolute bottom-0 right-0 h-12 w-px bg-gradient-to-t from-gold/20 to-transparent"></div>
-        <div class="absolute bottom-0 right-0 h-px w-12 bg-gradient-to-l from-gold/20 to-transparent"></div>
-
-        <div class="relative">
-          <p class="font-display text-[26px] leading-[1.25] tracking-wide text-white/90 md:text-3xl">
-            THE HOUSE ALWAYS WINS —
-            <span class="text-red">UNLESS YOU'RE THE ONE BUILDING THE HOUSE.</span>
-          </p>
-          <div class="mt-6 h-px w-12 bg-gradient-to-r from-red/40 to-transparent"></div>
-          <p class="mt-4 font-mono text-[8px] tracking-[0.35em] text-gray-darker">HACKLANTA MANIFESTO</p>
-        </div>
+      <div class="h-10 w-px bg-border/50 hidden md:block"></div>
+      <div>
+        <p class="font-display text-6xl text-red md:text-7xl">4</p>
+        <p class="mt-1 font-mono text-[9px] tracking-[0.3em] text-white/30 uppercase">Per Team</p>
       </div>
-
-      <!-- TILE 3: Stats row — spans 2 cols -->
-      <div class="grid grid-cols-4 gap-3 md:col-span-2">
-        <!-- 12 HOURS -->
-        <div class="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-black-card/90 to-black/60 p-5 text-center md:p-6">
-          <div class="absolute inset-0 bg-gradient-to-b from-red/[0.03] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <p class="relative font-display text-4xl text-red sm:text-5xl md:text-6xl">12</p>
-          <p class="relative mt-1.5 font-mono text-[7px] tracking-[0.3em] text-gray-dark md:text-[8px]">HOURS</p>
-        </div>
-
-        <!-- 4 PER TEAM -->
-        <div class="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-black-card/90 to-black/60 p-5 text-center md:p-6">
-          <div class="absolute inset-0 bg-gradient-to-b from-red/[0.03] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <p class="relative font-display text-4xl text-red sm:text-5xl md:text-6xl">4</p>
-          <p class="relative mt-1.5 font-mono text-[7px] tracking-[0.3em] text-gray-dark md:text-[8px]">PER TEAM</p>
-        </div>
-
-        <!-- INFINITY -->
-        <div class="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-black-card/90 to-black/60 p-5 text-center md:p-6">
-          <div class="absolute inset-0 bg-gradient-to-b from-gold/[0.03] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-dim/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <p class="relative font-display text-4xl text-gold sm:text-5xl md:text-6xl">&#8734;</p>
-          <p class="relative mt-1.5 font-mono text-[7px] tracking-[0.3em] text-gray-dark md:text-[8px]">IDEAS</p>
-        </div>
-
-        <!-- $0 -->
-        <div class="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-black-card/90 to-black/60 p-5 text-center md:p-6">
-          <div class="absolute inset-0 bg-gradient-to-b from-white/[0.015] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <p class="relative font-display text-4xl text-white-pure sm:text-5xl md:text-6xl">$0</p>
-          <p class="relative mt-1.5 font-mono text-[7px] tracking-[0.3em] text-gray-dark md:text-[8px]">TO ENTER</p>
-        </div>
+      <div class="h-10 w-px bg-border/50 hidden md:block"></div>
+      <div>
+        <p class="font-display text-6xl text-gold md:text-7xl">∞</p>
+        <p class="mt-1 font-mono text-[9px] tracking-[0.3em] text-white/30 uppercase">Ideas</p>
+      </div>
+      <div class="h-10 w-px bg-border/50 hidden md:block"></div>
+      <div>
+        <p class="font-display text-6xl text-white-pure md:text-7xl">$0</p>
+        <p class="mt-1 font-mono text-[9px] tracking-[0.3em] text-white/30 uppercase">To Enter</p>
       </div>
     </div>
 
-    <!-- ===== WHAT TO EXPECT ===== -->
-    <div class="about-expect mt-20">
-      <h3 class="mb-10 text-center font-mono text-[9px] tracking-[0.4em] text-gray-darker">WHAT TO EXPECT</h3>
-      <div class="grid gap-3 md:grid-cols-3">
+    <!-- What to expect -->
+    <div class="about-expect mt-20 border-t border-border/50 pt-16">
+      <p class="mb-10 font-mono text-[9px] tracking-[0.4em] text-white/25 uppercase">What to Expect</p>
+      <div class="grid gap-10 md:grid-cols-3">
 
-        <!-- Workshops -->
-        <div class="group relative overflow-hidden rounded-2xl border border-border/40 bg-gradient-to-b from-black-card/60 to-black/40 p-8 transition-all duration-500 hover:border-red/20">
-          <div class="absolute inset-0 bg-gradient-to-b from-red/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <!-- Large suit background -->
-          <div class="pointer-events-none absolute -bottom-2 -right-2 text-[120px] leading-none text-red/[0.025] transition-all duration-700 group-hover:text-red/[0.05]" aria-hidden="true">&#9824;</div>
-
-          <div class="relative">
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-red/15 bg-red/[0.06]">
-              <span class="text-lg text-red/70">&#9824;</span>
-            </div>
-            <h4 class="mt-5 font-display text-xl tracking-wide text-white">WORKSHOPS</h4>
-            <p class="mt-3 font-body text-[13px] leading-[1.8] text-gray-dark">
-              Hands-on sessions from industry pros. Level up your stack before you build.
-            </p>
-          </div>
+        <div>
+          <p class="font-display text-3xl text-red/70 mb-3">♠</p>
+          <h4 class="font-display text-xl tracking-wide text-white">Workshops</h4>
+          <p class="mt-3 font-body text-sm leading-relaxed text-white/45">
+            Hands-on sessions from industry pros. Level up your stack before you build.
+          </p>
         </div>
 
-        <!-- Mini-Games -->
-        <div class="group relative overflow-hidden rounded-2xl border border-border/40 bg-gradient-to-b from-black-card/60 to-black/40 p-8 transition-all duration-500 hover:border-red/20">
-          <div class="absolute inset-0 bg-gradient-to-b from-red/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="pointer-events-none absolute -bottom-2 -right-2 text-[120px] leading-none text-red/[0.025] transition-all duration-700 group-hover:text-red/[0.05]" aria-hidden="true">&#9830;</div>
-
-          <div class="relative">
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-red/15 bg-red/[0.06]">
-              <span class="text-lg text-red/70">&#9830;</span>
-            </div>
-            <h4 class="mt-5 font-display text-xl tracking-wide text-white">MINI-GAMES</h4>
-            <p class="mt-3 font-body text-[13px] leading-[1.8] text-gray-dark">
-              Side quests and challenges throughout the event. Prizes for the bold.
-            </p>
-          </div>
+        <div>
+          <p class="font-display text-3xl text-red/70 mb-3">♦</p>
+          <h4 class="font-display text-xl tracking-wide text-white">Mini-Games</h4>
+          <p class="mt-3 font-body text-sm leading-relaxed text-white/45">
+            Side quests and challenges throughout the event. Prizes for the bold.
+          </p>
         </div>
 
-        <!-- Free Food -->
-        <div class="group relative overflow-hidden rounded-2xl border border-border/40 bg-gradient-to-b from-black-card/60 to-black/40 p-8 transition-all duration-500 hover:border-red/20">
-          <div class="absolute inset-0 bg-gradient-to-b from-red/[0.02] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-          <div class="pointer-events-none absolute -bottom-2 -right-2 text-[120px] leading-none text-red/[0.025] transition-all duration-700 group-hover:text-red/[0.05]" aria-hidden="true">&#9829;</div>
-
-          <div class="relative">
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg border border-red/15 bg-red/[0.06]">
-              <span class="text-lg text-red/70">&#9829;</span>
-            </div>
-            <h4 class="mt-5 font-display text-xl tracking-wide text-white">FREE FOOD</h4>
-            <p class="mt-3 font-body text-[13px] leading-[1.8] text-gray-dark">
-              Meals and snacks provided all day. Fuel your grind, on the house.
-            </p>
-          </div>
+        <div>
+          <p class="font-display text-3xl text-red/70 mb-3">♥</p>
+          <h4 class="font-display text-xl tracking-wide text-white">Free Food</h4>
+          <p class="mt-3 font-body text-sm leading-relaxed text-white/45">
+            Meals and snacks all day. Fuel your grind, on the house.
+          </p>
         </div>
 
       </div>
     </div>
+
   </div>
 </section>
 
@@ -257,15 +180,19 @@
     opacity: 0, y: 40, duration: 1, ease: 'power3.out',
   });
 
-  // Stagger the bento tiles
-  gsap.from('.about-grid > *', {
-    scrollTrigger: { trigger: '.about-grid', start: 'top 80%' },
-    opacity: 0, y: 50, stagger: 0.12, duration: 0.9, ease: 'power3.out',
+  gsap.from('.about-body', {
+    scrollTrigger: { trigger: '.about-body', start: 'top 82%' },
+    opacity: 0, y: 28, duration: 0.9, ease: 'power3.out',
+  });
+
+  gsap.from('.about-stats', {
+    scrollTrigger: { trigger: '.about-stats', start: 'top 84%' },
+    opacity: 0, y: 24, duration: 0.9, ease: 'power3.out',
   });
 
   gsap.from('.about-expect', {
-    scrollTrigger: { trigger: '.about-expect', start: 'top 82%' },
-    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.about-expect', start: 'top 84%' },
+    opacity: 0, y: 28, duration: 0.9, ease: 'power3.out',
   });
 
   // ===== Parallax on floating elements =====
@@ -307,7 +234,6 @@
     });
   });
 </script>
-
 <style>
   /* ── 3D Poker Chips ── */
   .chip {
@@ -420,3 +346,4 @@
     .chip-suit--xl { font-size: 32px; }
   }
 </style>
+

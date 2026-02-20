@@ -80,7 +80,7 @@ export const STEPS: StepConfig[] = [
   {
     id: 'basics',
     title: 'The Basics',
-    terminalLabel: '> ACADEMIC_INFO',
+    terminalLabel: 'ACADEMIC INFO',
     suitIcon: '\u2660',
     validate: (form) => {
       const errors: string[] = [];
@@ -93,7 +93,7 @@ export const STEPS: StepConfig[] = [
   {
     id: 'contact',
     title: 'Contact Info',
-    terminalLabel: '> CONTACT_INFO',
+    terminalLabel: 'CONTACT INFO',
     suitIcon: '\u2666',
     validate: (form) => {
       const errors: string[] = [];
@@ -107,7 +107,7 @@ export const STEPS: StepConfig[] = [
   {
     id: 'profile',
     title: 'Your Profile',
-    terminalLabel: '> YOUR_PROFILE',
+    terminalLabel: 'YOUR PROFILE',
     suitIcon: '\u2663',
     validate: (form, resumeFile, isEditing) => {
       const errors: string[] = [];
@@ -124,7 +124,7 @@ export const STEPS: StepConfig[] = [
   {
     id: 'motivation',
     title: 'Tell Us More',
-    terminalLabel: '> TELL_US_MORE',
+    terminalLabel: 'TELL US MORE',
     suitIcon: '\u2665',
     validate: (form) => {
       const errors: string[] = [];
@@ -139,7 +139,7 @@ export const STEPS: StepConfig[] = [
   {
     id: 'logistics',
     title: 'Almost Done',
-    terminalLabel: '> LOGISTICS_&_PREFERENCES',
+    terminalLabel: 'LOGISTICS & PREFERENCES',
     suitIcon: '\u2660',
     validate: (form) => {
       const errors: string[] = [];
@@ -150,7 +150,7 @@ export const STEPS: StepConfig[] = [
   {
     id: 'review',
     title: 'Review & Submit',
-    terminalLabel: '> REVIEW_&_SUBMIT',
+    terminalLabel: 'REVIEW & SUBMIT',
     suitIcon: '\u2666',
     validate: (form) => {
       const errors: string[] = [];

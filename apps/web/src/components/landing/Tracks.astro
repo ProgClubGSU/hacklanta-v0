@@ -65,7 +65,7 @@ const tracks = [
   <div class="relative z-10 mx-auto max-w-6xl">
     <!-- Header -->
     <div class="tracks-header mb-20 text-center">
-      <div class="flex items-center justify-center gap-4 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+      <div class="flex items-center justify-center gap-4 font-mono text-[10px] tracking-[0.3em] text-gray-500">
         <span class="h-px w-16 bg-gradient-to-r from-transparent to-border/80"></span>
         <span class="text-red/60">[02]</span>
         <span>TRACKS</span>
@@ -74,9 +74,7 @@ const tracks = [
       <h2 class="mt-6 font-display text-5xl tracking-wide text-white-pure md:text-7xl">
         PICK YOUR HAND
       </h2>
-      <p class="mx-auto mt-5 max-w-sm font-body text-sm leading-relaxed text-gray-dark">
-        Four tracks. Four suits. Choose your play.
-      </p>
+   
     </div>
 
     <!-- Cards -->
@@ -183,21 +181,50 @@ const tracks = [
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
+  // Header fades in when it enters view
   gsap.from('.tracks-header', {
-    scrollTrigger: { trigger: '.tracks-header', start: 'top 80%' },
-    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
+    scrollTrigger: { trigger: '.tracks-header', start: 'top 85%' },
+    opacity: 0, y: 30, duration: 1, ease: 'power3.out',
   });
 
-  gsap.from('.track-card', {
-    scrollTrigger: { trigger: '.track-card', start: 'top 85%' },
-    opacity: 0,
-    y: 80,
-    stagger: 0.12,
-    duration: 0.9,
-    ease: 'power3.out',
+  // ── Deal animation ────────────────────────────────────────────────────────
+  // Scrub-based: the user's scroll pace IS the deal pace — can never fly past.
+  // Cards start below in a loose fan (as if held in a dealer's hand) and each
+  // one slides up to its grid position sequentially as the section scrolls in.
+  const trackCards = gsap.utils.toArray<HTMLElement>('.track-card');
+
+  // Each card's "held in hand" starting state — slightly fanned, below viewport
+  const dealFrom = [
+    { x: -18, y: 320, rotateZ: -22, rotateY: -18, scale: 0.78, opacity: 0 },
+    { x:  -5, y: 340, rotateZ:  -7, rotateY:  -6, scale: 0.78, opacity: 0 },
+    { x:   5, y: 340, rotateZ:   7, rotateY:   6, scale: 0.78, opacity: 0 },
+    { x:  18, y: 320, rotateZ:  22, rotateY:  18, scale: 0.78, opacity: 0 },
+  ];
+
+  const dealTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#tracks',
+      start: 'top 65%',         // fires when section is well into view
+      toggleActions: 'play none none none', // play once, stay dealt forever
+    },
   });
 
-  // 3D tilt on hover
+  trackCards.forEach((card, i) => {
+    dealTl.fromTo(
+      card,
+      dealFrom[i],
+      {
+        x: 0, y: 0, rotateZ: 0, rotateY: 0, scale: 1, opacity: 1,
+        duration: 0.9,
+        ease: 'power3.out',
+      },
+      i * 0.35, // 0.35s between each card — sequential but not sluggish
+    );
+  });
+
+  // ── 3D tilt on hover ─────────────────────────────────────────────────────
+  // Tilt is applied to the inner .playing-card; deal animates the outer
+  // .track-card — completely separate elements, no transform conflict.
   document.querySelectorAll<HTMLElement>('.playing-card').forEach((card) => {
     const parent = card.closest('.track-card') as HTMLElement;
     if (!parent) return;
@@ -208,15 +235,15 @@ const tracks = [
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
 
-      const rotateY = ((x - centerX) / centerX) * 8;
-      const rotateX = ((centerY - y) / centerY) * 6;
+      const ry = ((x - cx) / cx) * 8;
+      const rx = ((cy - y) / cy) * 6;
 
-      card.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+      card.style.transform = `rotateY(${ry}deg) rotateX(${rx}deg)`;
       card.style.boxShadow = `
-        ${-rotateY * 2}px ${rotateX * 2 + 20}px 60px rgba(0,0,0,0.5),
+        ${-ry * 2}px ${rx * 2 + 20}px 60px rgba(0,0,0,0.5),
         0 0 40px rgba(${accentRgb}, 0.06),
         0 0 0 1px rgba(255,255,255,0.03) inset
       `;

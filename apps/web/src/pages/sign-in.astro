@@ -4,138 +4,190 @@ import { SignIn as ClerkSignIn } from '@clerk/astro/components';
 ---
 
 <BaseLayout title="Sign In — Hacklanta">
-  <div class="min-h-screen flex items-center justify-center px-4">
-    <div class="w-full max-w-md">
-      <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold mb-2" style="color: #00ff88; font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;">
-          $ sign_in
-        </h1>
-        <p class="text-sm" style="color: #666666; font-family: 'JetBrains Mono', ui-monospace, monospace;">
-          // authenticate to place your bet
+  <div class="min-h-screen bg-black flex flex-col">
+
+    <!-- Ambient glows -->
+    <div
+      class="pointer-events-none fixed right-0 top-0 h-[500px] w-[500px] opacity-60"
+      style="background: radial-gradient(ellipse at top right, rgba(196,30,58,0.07) 0%, transparent 65%);"
+    ></div>
+    <div
+      class="pointer-events-none fixed bottom-0 left-0 h-[400px] w-[400px] opacity-50"
+      style="background: radial-gradient(ellipse at bottom left, rgba(201,168,76,0.05) 0%, transparent 65%);"
+    ></div>
+
+    <!-- Faint suit watermarks -->
+    <span class="pointer-events-none fixed right-6 top-20 select-none font-display text-[18rem] leading-none" style="color: rgba(255,255,255,0.012);" aria-hidden="true">♠</span>
+    <span class="pointer-events-none fixed -bottom-8 left-4 select-none font-display text-[14rem] leading-none" style="color: rgba(201,168,76,0.025);" aria-hidden="true">♦</span>
+
+    <div class="relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-12">
+
+      <!-- Header label -->
+      <div class="mb-6 text-center">
+        <p class="font-mono text-[10px] tracking-[0.35em] uppercase" style="color: #4a4a4a;">
+          HACKLANTA — APPLICATION
         </p>
       </div>
-      <div class="clerk-wrapper">
+
+      <!-- Title -->
+      <div class="mb-8 text-center">
+        <h1 class="font-display text-4xl tracking-widest text-white mb-3">
+          SIGN IN
+        </h1>
+        <div class="mx-auto h-px w-10" style="background: rgba(196,30,58,0.5);"></div>
+        <p class="mt-4 font-body text-base" style="color: #555;">
+          Welcome back. Pick up where you left off.
+        </p>
+      </div>
+
+      <!-- Clerk component -->
+      <div class="w-full max-w-md clerk-wrapper">
         <ClerkSignIn fallbackRedirectUrl="/apply" />
       </div>
-      <div class="mt-6 text-center">
-        <p class="text-sm" style="color: #666666; font-family: 'JetBrains Mono', ui-monospace, monospace;">
-          // new player? <a href="/sign-up" class="hover:underline" style="color: #00ff88;">$ create_account</a>
-        </p>
-      </div>
+
+      <!-- Back link -->
+      <p class="mt-8 font-mono text-xs" style="color: #3a3a3a;">
+        <a href="/" class="transition-colors hover:text-white/40">← back to home</a>
+      </p>
+
     </div>
   </div>
 </BaseLayout>
 
 <style is:global>
-  /* Clerk component overrides for casino theme */
   .cl-rootBox {
     width: 100%;
+    display: flex;
+    justify-content: center;
   }
 
   .cl-card {
-    background-color: #1a1a1a !important;
-    border: 1px solid #2a2a2a !important;
-    box-shadow: 0 10px 40px rgba(0, 255, 136, 0.1) !important;
+    width: 100%;
+    background: #000 !important;
+    background-image: none !important;
+    border: 1px solid #1e1e1e !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
   }
 
   .cl-headerTitle {
     color: #f5f5f5 !important;
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    font-family: var(--font-display, 'Georgia'), serif !important;
+    letter-spacing: 0.1em !important;
   }
 
   .cl-headerSubtitle {
-    color: #666666 !important;
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: #555 !important;
     font-size: 0.875rem !important;
   }
 
   .cl-socialButtonsBlockButton {
-    background-color: #0a0a0a !important;
-    border: 1px solid #2a2a2a !important;
+    background: #000 !important;
+    background-image: none !important;
+    border: 1px solid #1e1e1e !important;
+    border-radius: 0 !important;
     color: #f5f5f5 !important;
     transition: all 0.2s !important;
   }
 
   .cl-socialButtonsBlockButton:hover {
-    border-color: #00ff88 !important;
-    background-color: #121212 !important;
+    border-color: rgba(196, 30, 58, 0.5) !important;
+    background: rgba(196, 30, 58, 0.05) !important;
   }
 
   .cl-formButtonPrimary {
-    background-color: #00ff88 !important;
-    color: #0a0a0a !important;
+    background: rgba(196, 30, 58, 0.12) !important;
+    background-image: none !important;
+    border: 1px solid rgba(196, 30, 58, 0.6) !important;
+    border-radius: 0 !important;
+    color: #e8e8e8 !important;
+    font-family: var(--font-mono, monospace) !important;
+    font-size: 0.7rem !important;
     font-weight: 600 !important;
-    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3) !important;
+    letter-spacing: 0.2em !important;
+    text-transform: uppercase !important;
+    box-shadow: none !important;
     transition: all 0.2s !important;
   }
 
   .cl-formButtonPrimary:hover {
-    background-color: #00cc6a !important;
-    box-shadow: 0 15px 40px rgba(0, 255, 136, 0.5) !important;
+    background: rgba(196, 30, 58, 0.22) !important;
+    border-color: #c41e3a !important;
+    box-shadow: 0 0 16px rgba(196, 30, 58, 0.15) !important;
   }
 
   .cl-formFieldInput {
-    background-color: #0a0a0a !important;
-    border: 1px solid #2a2a2a !important;
+    background: #000 !important;
+    background-image: none !important;
+    border: 1px solid #1e1e1e !important;
+    border-radius: 0 !important;
     color: #f5f5f5 !important;
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
   }
 
   .cl-formFieldInput:focus {
-    border-color: #00ff88 !important;
-    box-shadow: 0 0 0 1px #00ff88 !important;
+    border-color: rgba(196, 30, 58, 0.6) !important;
+    box-shadow: 0 0 0 1px rgba(196, 30, 58, 0.12) !important;
   }
 
   .cl-formFieldLabel {
-    color: #a0a0a0 !important;
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
-    font-size: 0.875rem !important;
+    color: #888 !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
   }
 
   .cl-footerActionLink {
-    color: #00ff88 !important;
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: #c41e3a !important;
   }
 
   .cl-footerActionLink:hover {
-    color: #00cc6a !important;
+    color: #e0304a !important;
   }
 
   .cl-footerActionText {
-    color: #666666 !important;
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    color: #555 !important;
+  }
+
+  .cl-dividerLine {
+    background-color: #1e1e1e !important;
+  }
+
+  .cl-dividerText {
+    color: #555 !important;
   }
 
   .cl-identityPreviewText {
     color: #f5f5f5 !important;
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
   }
 
   .cl-formResendCodeLink {
-    color: #00ff88 !important;
-  }
-
-  .cl-formResendCodeLink:hover {
-    color: #00cc6a !important;
+    color: #c41e3a !important;
   }
 
   .cl-otpCodeFieldInput {
-    background-color: #0a0a0a !important;
-    border: 1px solid #2a2a2a !important;
-    color: #00ff88 !important;
-    font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+    background: #000 !important;
+    background-image: none !important;
+    border: 1px solid #1e1e1e !important;
+    border-radius: 0 !important;
+    color: #c41e3a !important;
     font-size: 1.25rem !important;
   }
 
   .cl-otpCodeFieldInput:focus {
-    border-color: #00ff88 !important;
+    border-color: #c41e3a !important;
   }
 
-  .cl-dividerRow {
-    color: #666666 !important;
+  /* Kill cardBox shadow that creates the faint 1px outline */
+  .cl-cardBox {
+    box-shadow: none !important;
   }
 
-  .cl-internal-b3fm6y {
-    color: #666666 !important;
+  /* Hide Secured by Clerk + Development mode footer section */
+  .cl-footer > *:last-child,
+  .cl-internal-1dauvpw,
+  .cl-internal-b3fm6y,
+  .cl-badge,
+  [data-localization-key="badge__devMode"] {
+    display: none !important;
   }
 </style>

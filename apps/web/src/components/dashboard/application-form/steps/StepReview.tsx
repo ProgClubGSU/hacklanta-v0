@@ -26,7 +26,7 @@ export default function StepReview({
     <div className="space-y-6">
       <ReviewSummary form={form} goToStep={goToStep} />
 
-      <div className="space-y-4 border-t border-base-border pt-6">
+      <div className="space-y-4 border-t border-border pt-6">
         <CheckboxField
           label="I confirm I am 18 years of age or older"
           checked={form.age_confirmed}

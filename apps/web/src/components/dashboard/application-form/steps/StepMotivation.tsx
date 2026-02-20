@@ -4,12 +4,10 @@ import { StepErrors } from '../fields';
 export default function StepMotivation({ form, updateField, errors }: StepProps) {
   return (
     <fieldset>
-      <p className="mb-8 font-mono text-base text-text-muted">
-        One question. Take your time.
-      </p>
+   
       <div>
-        <label className="mb-2 block font-mono text-sm tracking-wider text-text-secondary">
-          Why do you want to attend? <span className="text-suit-red">*</span>
+        <label className="mb-2 block font-mono text-xs tracking-[0.18em] uppercase text-white/60">
+          Why do you want to attend? <span className="text-red">*</span>
         </label>
         <textarea
           value={form.why_attend}
@@ -19,18 +17,20 @@ export default function StepMotivation({ form, updateField, errors }: StepProps)
           minLength={50}
           maxLength={1000}
           autoFocus
-          className="w-full border border-base-border bg-base-dark px-5 py-4 font-mono text-base leading-relaxed text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-neon-green"
+          className="w-full border border-border bg-black px-5 py-4 font-body text-base leading-relaxed text-white outline-none transition-colors placeholder:text-gray-500 focus:border-red/70 focus:shadow-[0_0_0_1px_rgba(196,30,58,0.15)] resize-none"
           placeholder="What are you hoping to build, learn, or break? No wrong answers."
         />
-        <p className="mt-2 font-mono text-sm text-text-muted">
-          {form.why_attend.length}/1000 characters
+        <div className="mt-2 flex items-center gap-2">
+          <span className="font-mono text-xs text-gray-500">
+            {form.why_attend.length}/1000
+          </span>
           {form.why_attend.length > 0 && form.why_attend.length < 50 && (
-            <span className="text-gold"> (minimum 50)</span>
+            <span className="font-mono text-xs text-gold">— need {50 - form.why_attend.length} more</span>
           )}
           {form.why_attend.length >= 50 && (
-            <span className="text-neon-green"> &#10003;</span>
+            <span className="font-mono text-xs text-red/70">✓ good to go</span>
           )}
-        </p>
+        </div>
       </div>
       {errors.length > 0 && <StepErrors errors={errors} />}
     </fieldset>

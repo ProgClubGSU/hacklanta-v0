@@ -8,7 +8,7 @@ const tiers = [
     border: 'border-gold-dim/25',
     hoverBorder: 'hover:border-gold/40',
     hoverGlow: 'hover:shadow-[0_8px_40px_rgba(201,168,76,0.08)]',
-    sponsors: [{ name: 'Your Company Here', logo: null }],
+    sponsors: [{ name: 'TO BE ANNOUNCED', logo: null }],
   },
   {
     name: 'GOLD',
@@ -16,7 +16,7 @@ const tiers = [
     border: 'border-red/15',
     hoverBorder: 'hover:border-red/35',
     hoverGlow: 'hover:shadow-[0_8px_40px_rgba(196,30,58,0.06)]',
-    sponsors: [{ name: 'Sponsor 1', logo: null }, { name: 'Sponsor 2', logo: null }],
+    sponsors: [{ name: 'TO BE ANNOUNCED', logo: null }, { name: 'TO BE ANNOUNCED', logo: null }],
   },
   {
     name: 'SILVER',
@@ -24,7 +24,7 @@ const tiers = [
     border: 'border-border/80',
     hoverBorder: 'hover:border-border-light',
     hoverGlow: 'hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)]',
-    sponsors: [{ name: 'Sponsor 3', logo: null }, { name: 'Sponsor 4', logo: null }, { name: 'Sponsor 5', logo: null }],
+    sponsors: [{ name: 'TO BE ANNOUNCED', logo: null }, { name: 'TO BE ANNOUNCED', logo: null }, { name: 'TO BE ANNOUNCED', logo: null }],
   },
 ];
 ---
@@ -127,7 +127,7 @@ const tiers = [
 
   <div class="relative z-10 mx-auto max-w-5xl">
     <div class="sponsors-header mb-16 text-center">
-      <div class="flex items-center justify-center gap-4 font-mono text-[10px] tracking-[0.3em] text-gray-darker">
+      <div class="flex items-center justify-center gap-4 font-mono text-[10px] tracking-[0.3em] text-gray-500">
         <span class="h-px w-16 bg-gradient-to-r from-transparent to-border/80"></span>
         <span class="text-red/60">[04]</span>
         <span>SPONSORS</span>
@@ -165,7 +165,7 @@ const tiers = [
                   <img src={sponsor.logo} alt={sponsor.name} class="relative h-10 max-w-[160px] object-contain opacity-40 grayscale transition-all duration-500 group-hover:opacity-70 group-hover:grayscale-0" />
                 ) : (
                   <div class="relative flex items-center justify-center">
-                    <span class="font-body text-sm text-gray-darker transition-colors duration-500 group-hover:text-gray-dark">{sponsor.name}</span>
+                    <span class="font-body text-sm text-gray-500 transition-colors duration-500 group-hover:text-gray-dark">{sponsor.name}</span>
                   </div>
                 )}
               </div>
@@ -182,7 +182,7 @@ const tiers = [
         class="group relative mt-5 inline-flex items-center gap-2.5 overflow-hidden border border-red/30 bg-red/[0.06] px-8 py-3 font-body text-[11px] font-semibold tracking-[0.15em] text-red/80 transition-all duration-500 hover:border-red/50 hover:text-red hover:shadow-[0_0_30px_rgba(196,30,58,0.1)]"
       >
         <span class="relative z-10">CONTACT US</span>
-        <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+        <!-- <span class="relative z-10 transition-transform duration-300 group-hover:translate-x-1">&rarr;</span> -->
         <span class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-red/[0.06] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
       </a>
     </div>

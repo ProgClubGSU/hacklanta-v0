@@ -23,47 +23,54 @@
   ></div>
 
   <!-- CSS 3D Floating Cards -->
+  <!-- Wrapper = GSAP target (translate + tilt). Inner div = CSS float animation (untouched). -->
   <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true" style="perspective: 1200px;">
-    <div
-      class="hero-card absolute left-[5%] top-[8%] h-[180px] w-[120px] rounded-lg md:h-[220px] md:w-[150px]"
-      style="--card-base-transform: rotateY(-18deg) rotateX(8deg) rotateZ(-6deg); transform: var(--card-base-transform); animation: card-float 7s ease-in-out infinite;"
-    >
-      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/20 bg-gradient-to-br from-red-dark/80 via-red/60 to-red-dark/90 shadow-[0_20px_60px_rgba(196,30,58,0.15)]">
-        <span class="text-4xl text-black/40 md:text-5xl">&#9824;</span>
+
+    <div class="hero-card absolute left-[5%] top-[8%]">
+      <div class="h-[180px] w-[120px] rounded-lg md:h-[220px] md:w-[150px]"
+        style="--card-base-transform: rotateY(-18deg) rotateX(8deg) rotateZ(-6deg); transform: var(--card-base-transform); animation: card-float 7s ease-in-out infinite;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/20 bg-gradient-to-br from-red-dark/80 via-red/60 to-red-dark/90 shadow-[0_20px_60px_rgba(196,30,58,0.15)]">
+          <span class="text-4xl text-black/40 md:text-5xl">&#9824;</span>
+        </div>
       </div>
     </div>
-    <div
-      class="hero-card absolute right-[6%] top-[12%] h-[160px] w-[110px] rounded-lg md:h-[200px] md:w-[135px]"
-      style="--card-base-transform: rotateY(22deg) rotateX(-5deg) rotateZ(8deg); transform: var(--card-base-transform); animation: card-float 8.5s ease-in-out infinite 1s;"
-    >
-      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/20 bg-gradient-to-br from-red-dark/80 via-red/50 to-red-dark/90 shadow-[0_20px_60px_rgba(196,30,58,0.12)]">
-        <span class="text-4xl text-black/40 md:text-5xl">&#9829;</span>
+
+    <div class="hero-card absolute right-[6%] top-[12%]">
+      <div class="h-[160px] w-[110px] rounded-lg md:h-[200px] md:w-[135px]"
+        style="--card-base-transform: rotateY(22deg) rotateX(-5deg) rotateZ(8deg); transform: var(--card-base-transform); animation: card-float 8.5s ease-in-out infinite 1s;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/20 bg-gradient-to-br from-red-dark/80 via-red/50 to-red-dark/90 shadow-[0_20px_60px_rgba(196,30,58,0.12)]">
+          <span class="text-4xl text-black/40 md:text-5xl">&#9829;</span>
+        </div>
       </div>
     </div>
-    <div
-      class="hero-card absolute bottom-[12%] left-[10%] h-[140px] w-[95px] rounded-lg md:h-[180px] md:w-[120px]"
-      style="--card-base-transform: rotateY(12deg) rotateX(15deg) rotateZ(10deg); transform: var(--card-base-transform); animation: card-float 6.5s ease-in-out infinite 0.5s;"
-    >
-      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/70 via-red/40 to-red-dark/80 shadow-[0_20px_60px_rgba(196,30,58,0.1)]">
-        <span class="text-3xl text-black/30 md:text-4xl">&#9830;</span>
+
+    <div class="hero-card absolute bottom-[12%] left-[10%]">
+      <div class="h-[140px] w-[95px] rounded-lg md:h-[180px] md:w-[120px]"
+        style="--card-base-transform: rotateY(12deg) rotateX(15deg) rotateZ(10deg); transform: var(--card-base-transform); animation: card-float 6.5s ease-in-out infinite 0.5s;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/70 via-red/40 to-red-dark/80 shadow-[0_20px_60px_rgba(196,30,58,0.1)]">
+          <span class="text-3xl text-black/30 md:text-4xl">&#9830;</span>
+        </div>
       </div>
     </div>
-    <div
-      class="hero-card absolute -right-[3%] bottom-[5%] h-[200px] w-[135px] rounded-lg md:h-[240px] md:w-[160px]"
-      style="--card-base-transform: rotateY(-25deg) rotateX(10deg) rotateZ(-12deg); transform: var(--card-base-transform); animation: card-float 9s ease-in-out infinite 2s;"
-    >
-      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/70 via-red/35 to-red-dark/80 shadow-[0_20px_60px_rgba(196,30,58,0.08)]">
-        <span class="text-5xl text-black/30 md:text-6xl">&#9827;</span>
+
+    <div class="hero-card absolute -right-[3%] bottom-[5%]">
+      <div class="h-[200px] w-[135px] rounded-lg md:h-[240px] md:w-[160px]"
+        style="--card-base-transform: rotateY(-25deg) rotateX(10deg) rotateZ(-12deg); transform: var(--card-base-transform); animation: card-float 9s ease-in-out infinite 2s;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/15 bg-gradient-to-br from-red-dark/70 via-red/35 to-red-dark/80 shadow-[0_20px_60px_rgba(196,30,58,0.08)]">
+          <span class="text-5xl text-black/30 md:text-6xl">&#9827;</span>
+        </div>
       </div>
     </div>
-    <div
-      class="hero-card absolute left-[25%] top-[55%] hidden h-[120px] w-[80px] rounded-lg lg:block"
-      style="--card-base-transform: rotateY(-8deg) rotateX(20deg) rotateZ(4deg); transform: var(--card-base-transform); animation: card-float 7.5s ease-in-out infinite 1.5s;"
-    >
-      <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/10 bg-gradient-to-br from-red-dark/60 via-red/30 to-red-dark/70 shadow-[0_15px_40px_rgba(196,30,58,0.06)]">
-        <span class="text-2xl text-black/25">&#9824;</span>
+
+    <div class="hero-card absolute left-[25%] top-[55%] hidden lg:block">
+      <div class="h-[120px] w-[80px] rounded-lg"
+        style="--card-base-transform: rotateY(-8deg) rotateX(20deg) rotateZ(4deg); transform: var(--card-base-transform); animation: card-float 7.5s ease-in-out infinite 1.5s;">
+        <div class="flex h-full w-full items-center justify-center rounded-lg border border-red/10 bg-gradient-to-br from-red-dark/60 via-red/30 to-red-dark/70 shadow-[0_15px_40px_rgba(196,30,58,0.06)]">
+          <span class="text-2xl text-black/25">&#9824;</span>
+        </div>
       </div>
     </div>
+
   </div>
 
   <!-- Main content -->
@@ -186,7 +193,7 @@
         href="/apply"
         class="group relative inline-flex items-center gap-3 overflow-hidden bg-red px-10 py-4 font-body text-sm font-bold tracking-[0.15em] text-white-pure transition-all duration-300 hover:bg-red-bright hover:shadow-[0_0_50px_rgba(196,30,58,0.35)] hover:scale-[1.03]"
       >
-        <span class="relative z-10">DEAL ME IN</span>
+        <span class="relative z-10 uppercase">Apply</span>
 
         <span class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
       </a>
@@ -196,7 +203,7 @@
   <!-- Scroll indicator -->
   <div class="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0">
     <div class="flex flex-col items-center gap-3">
-      <span class="font-mono text-[7px] tracking-[0.5em] text-gray-darker uppercase">Scroll</span>
+      <span class="font-mono text-[7px] tracking-[0.5em] text-gray-500 uppercase">Scroll</span>
       <div class="h-8 w-px bg-gradient-to-b from-red/30 to-transparent"></div>
     </div>
   </div>
@@ -371,35 +378,49 @@
     ease: 'power2.out',
   });
 
-  // ===== Mouse parallax on hero cards =====
+  // ===== Mouse parallax + tilt on hero card wrappers =====
   const hero = document.getElementById('hero')!;
   const cards = document.querySelectorAll<HTMLElement>('.hero-card');
-  const speeds = [0.1, -0.08, 0.065, -0.12, 0.05];
 
-  const cardAnimations = Array.from(cards).map((el) => ({
-    x: gsap.quickTo(el, 'x', { duration: 0.5, ease: 'power2.out' }),
-    y: gsap.quickTo(el, 'y', { duration: 0.5, ease: 'power2.out' }),
+  // Translation speeds — negative = opposite direction
+  const translateSpeeds = [0.09, -0.07, 0.055, -0.12, 0.045];
+  // Rotation tilt in degrees — cards lean toward/away from cursor
+  const tiltSpeeds = [6, -5, 4, -8, 3];
+
+  const cardAnims = Array.from(cards).map((el) => ({
+    x:  gsap.quickTo(el, 'x',       { duration: 0.6, ease: 'power2.out' }),
+    y:  gsap.quickTo(el, 'y',       { duration: 0.6, ease: 'power2.out' }),
+    ry: gsap.quickTo(el, 'rotateY', { duration: 0.6, ease: 'power2.out' }),
+    rx: gsap.quickTo(el, 'rotateX', { duration: 0.6, ease: 'power2.out' }),
   }));
 
   hero.addEventListener('mousemove', (e) => {
     const rect = hero.getBoundingClientRect();
-    const nx = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    const ny = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-    cardAnimations.forEach((anim, i) => {
-      const s = speeds[i];
-      anim.x(nx * rect.width * Math.abs(s) * Math.sign(s));
-      anim.y(ny * rect.height * Math.abs(s) * 0.6 * Math.sign(s));
+    const nx = ((e.clientX - rect.left) / rect.width  - 0.5) * 2; // -1 → 1
+    const ny = ((e.clientY - rect.top)  / rect.height - 0.5) * 2;
+
+    cardAnims.forEach((anim, i) => {
+      const ts = translateSpeeds[i];
+      const tl = tiltSpeeds[i];
+      anim.x(nx  * rect.width  * Math.abs(ts) * Math.sign(ts));
+      anim.y(ny  * rect.height * Math.abs(ts) * 0.5 * Math.sign(ts));
+      anim.ry(nx * tl);
+      anim.rx(-ny * tl * 0.45);
     });
   });
+
   hero.addEventListener('mouseleave', () => {
-    cardAnimations.forEach((anim) => { anim.x(0); anim.y(0); });
+    cardAnims.forEach((a) => { a.x(0); a.y(0); a.ry(0); a.rx(0); });
   });
 
-  // ===== Scroll parallax on hero cards =====
-  const scrollSpeeds = [80, -60, 50, -100, 40];
+  // ===== Scroll parallax + rotation on hero card wrappers =====
+  const scrollY     = [120, -90, 75, -150, 55];
+  const scrollRotZ  = [25,  -20, 15,  -35, 12];
+
   cards.forEach((card, i) => {
     gsap.to(card, {
-      yPercent: scrollSpeeds[i],
+      yPercent: scrollY[i],
+      rotateZ:  scrollRotZ[i],
       ease: 'none',
       scrollTrigger: {
         trigger: hero,

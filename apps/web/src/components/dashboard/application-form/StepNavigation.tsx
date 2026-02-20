@@ -20,41 +20,46 @@ export default function StepNavigation({
   submitDisabled,
 }: Props) {
   return (
-    <div className="flex items-center gap-4">
-      {!isFirstStep && (
+    <div className="flex items-center justify-between">
+      {isFirstStep ? (
+        <a
+          href="/"
+          className="border border-border bg-black px-8 py-3.5 font-display text-base tracking-widest text-gray transition-all hover:border-border-light hover:text-white"
+        >
+          BACK TO HOME
+        </a>
+      ) : (
         <button
           type="button"
           onClick={onBack}
           aria-label="Go to previous step"
-          className="border border-base-border bg-base-dark px-6 py-3.5 font-mono text-base text-text-muted transition-all hover:border-text-muted hover:text-text-primary"
+          className="border border-border bg-black px-8 py-3.5 font-display text-base tracking-widest text-gray transition-all hover:border-border-light hover:text-white"
         >
-          &lt;&lt; FOLD_BACK
+          BACK
         </button>
       )}
-
-      <div className="flex-1" />
 
       {isLastStep ? (
         <button
           type="button"
           onClick={onSubmit}
           disabled={submitDisabled}
-          className="border-2 border-neon-green bg-neon-green/10 px-8 py-3.5 font-mono text-base font-bold tracking-wider text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_20px_rgba(0,255,136,0.2)] disabled:cursor-not-allowed disabled:opacity-50"
+          className="border-2 border-gold bg-gold/10 px-8 py-3.5 font-display text-base tracking-widest text-gold transition-all hover:bg-gold/20 hover:shadow-[0_0_20px_rgba(201,168,76,0.22)] disabled:cursor-not-allowed disabled:opacity-50"
         >
           {uploadingResume
-            ? '// UPLOADING...'
+            ? 'UPLOADING...'
             : submitting
-              ? '// SUBMITTING...'
-              : '$ DEAL_ME_IN'}
+              ? 'SUBMITTING...'
+              : 'DEAL ME IN'}
         </button>
       ) : (
         <button
           type="button"
           onClick={onNext}
           aria-label="Go to next step"
-          className="border-2 border-neon-green bg-neon-green/10 px-8 py-3.5 font-mono text-base font-bold tracking-wider text-neon-green transition-all hover:bg-neon-green/20 hover:shadow-[0_0_20px_rgba(0,255,136,0.2)]"
+          className="border-2 border-red bg-red/10 px-8 py-3.5 font-display text-base tracking-widest text-red transition-all hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.22)]"
         >
-          $ NEXT_HAND &gt;&gt;
+          NEXT HAND
         </button>
       )}
     </div>

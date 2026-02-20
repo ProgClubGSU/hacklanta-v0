@@ -4,9 +4,7 @@ import { InputField, StepErrors } from '../fields';
 export default function StepContact({ form, updateField, errors }: StepProps) {
   return (
     <fieldset>
-      <p className="mb-8 font-mono text-base text-text-muted">
-        How can we reach you?
-      </p>
+  
       <div className="grid gap-6 md:grid-cols-2">
         <InputField
           label="Phone Number"

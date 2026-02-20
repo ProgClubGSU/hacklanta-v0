@@ -1,70 +1,59 @@
 ---
-// Footer — luxury casino noir
 const currentYear = new Date().getFullYear();
 ---
 
 <footer id="footer" class="relative overflow-hidden bg-black px-4 pb-10 pt-20">
-  <!-- Top accent line -->
   <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
 
-  <!-- Ambient glow -->
-  <div
-    class="pointer-events-none absolute left-1/2 top-[20%] h-[400px] w-[600px] -translate-x-1/2 rounded-full"
-    style="background: radial-gradient(circle, rgba(196,30,58,0.04) 0%, transparent 65%);"
-  ></div>
-
   <div class="relative z-10 mx-auto max-w-5xl">
-    <div class="grid gap-12 md:grid-cols-3">
+
+    <!-- Top row: brand + nav -->
+    <div class="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+
       <!-- Brand -->
       <div>
-        <a href="/" class="font-display text-3xl tracking-wider text-white-pure transition-opacity duration-300 hover:opacity-70">
+        <a href="/" class="font-display text-4xl tracking-widest text-white transition-opacity hover:opacity-70">
           HACKLANTA
         </a>
-        <p class="mt-4 font-body text-[12px] leading-[1.9] text-gray-dark">
-          A 12-hour hackathon by progsu.<br />
-          Go all in. Build something wild.
+        <p class="mt-3 font-body text-sm text-white/35">
+          A 12-hour hackathon by <span class="text-white/55">progsu</span> at Georgia State University.
         </p>
-        <div class="mt-5 flex gap-3 text-sm">
-          <span class="text-red/25 transition-all duration-500 hover:text-red/60 hover:drop-shadow-[0_0_6px_rgba(196,30,58,0.3)]">&#9829;</span>
-          <span class="text-white/15 transition-all duration-500 hover:text-white/50">&#9824;</span>
-          <span class="text-white/15 transition-all duration-500 hover:text-white/50">&#9827;</span>
-          <span class="text-red/25 transition-all duration-500 hover:text-red/60 hover:drop-shadow-[0_0_6px_rgba(196,30,58,0.3)]">&#9830;</span>
+      </div>
+
+      <!-- Nav + Social side by side -->
+      <div class="flex gap-16">
+        <div>
+          <p class="mb-4 font-mono text-[9px] tracking-[0.35em] text-white/25 uppercase">Navigate</p>
+          <ul class="space-y-2.5">
+            <li><a href="/apply" class="font-body text-sm text-white/45 transition-colors hover:text-white">Apply</a></li>
+            <li><a href="#schedule" class="font-body text-sm text-white/45 transition-colors hover:text-white">Schedule</a></li>
+            <li><a href="#faq" class="font-body text-sm text-white/45 transition-colors hover:text-white">FAQ</a></li>
+            <li><a href="#sponsors" class="font-body text-sm text-white/45 transition-colors hover:text-white">Sponsors</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="mb-4 font-mono text-[9px] tracking-[0.35em] text-white/25 uppercase">Connect</p>
+          <ul class="space-y-2.5">
+            <li><a href="https://instagram.com/progsu" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-white/45 transition-colors hover:text-red">Instagram</a></li>
+            <li><a href="https://discord.gg/progsu" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-white/45 transition-colors hover:text-white">Discord</a></li>
+            <li><a href="https://github.com/progsu" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-white/45 transition-colors hover:text-white">GitHub</a></li>
+            <li><a href="mailto:hello@hacklanta.com" class="font-body text-sm text-white/45 transition-colors hover:text-red">Email</a></li>
+          </ul>
         </div>
       </div>
 
-      <!-- Links -->
-      <div>
-        <p class="mb-4 font-mono text-[8px] tracking-[0.4em] text-gray-darker">LINKS</p>
-        <ul class="space-y-3">
-          <li><a href="/apply" class="font-body text-[12px] text-gray-dark transition-all duration-300 hover:text-red hover:translate-x-0.5 inline-block">Apply</a></li>
-          <li><a href="#schedule" class="font-body text-[12px] text-gray-dark transition-all duration-300 hover:text-red hover:translate-x-0.5 inline-block">Schedule</a></li>
-          <li><a href="#faq" class="font-body text-[12px] text-gray-dark transition-all duration-300 hover:text-red hover:translate-x-0.5 inline-block">FAQ</a></li>
-          <li><a href="#sponsors" class="font-body text-[12px] text-gray-dark transition-all duration-300 hover:text-red hover:translate-x-0.5 inline-block">Sponsors</a></li>
-        </ul>
-      </div>
-
-      <!-- Social -->
-      <div>
-        <p class="mb-4 font-mono text-[8px] tracking-[0.4em] text-gray-darker">CONNECT</p>
-        <ul class="space-y-3">
-          <li><a href="https://instagram.com/progsu" target="_blank" rel="noopener noreferrer" class="font-body text-[12px] text-gray-dark transition-all duration-300 hover:text-red hover:translate-x-0.5 inline-block">Instagram</a></li>
-          <li><a href="https://discord.gg/progsu" target="_blank" rel="noopener noreferrer" class="font-body text-[12px] text-gray-dark transition-all duration-300 hover:text-white hover:translate-x-0.5 inline-block">Discord</a></li>
-          <li><a href="https://github.com/progsu" target="_blank" rel="noopener noreferrer" class="font-body text-[12px] text-gray-dark transition-all duration-300 hover:text-white hover:translate-x-0.5 inline-block">GitHub</a></li>
-          <li><a href="mailto:hello@hacklanta.com" class="font-body text-[12px] text-gray-dark transition-all duration-300 hover:text-red hover:translate-x-0.5 inline-block">Email</a></li>
-        </ul>
-      </div>
     </div>
 
     <!-- Bottom bar -->
-    <div class="mt-16 border-t border-border/25 pt-7">
-      <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <p class="font-mono text-[9px] tracking-wider text-gray-darker">
-          &copy; {currentYear} progsu &mdash; Programming Club @ Georgia State University
-        </p>
-        <p class="font-mono text-[9px] tracking-wider text-gray-darker">
-          built with <span class="text-red/40">&#9829;</span> and too much caffeine
-        </p>
-      </div>
+    <div class="mt-16 border-t border-white/[0.06] pt-7 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+      <p class="font-mono text-[10px] tracking-widest text-white/20 uppercase">
+        &copy; {currentYear} progsu · Programming Club @ Georgia State University
+      </p>
+      <p class="font-mono text-[10px] tracking-widest text-white/20 uppercase">
+        built with <span class="text-red/40">♥</span> and too much caffeine
+      </p>
     </div>
+
   </div>
 </footer>
