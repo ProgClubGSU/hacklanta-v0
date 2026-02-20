@@ -1,4 +1,3 @@
-from pydantic import field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -23,15 +22,18 @@ class Settings(BaseSettings):
     # Cloudflare Turnstile
     turnstile_secret_key: str = ""
 
-    # CORS — comma-separated string or list
-    cors_origins: list[str] = ["http://localhost:4321"]
+    # CORS — comma-separated or JSON array string
+    cors_origins: str = "http://localhost:4321"
 
-    @field_validator("cors_origins", mode="before")
-    @classmethod
-    def parse_cors_origins(cls, v: object) -> object:
-        if isinstance(v, str) and not v.startswith("["):
-            return [s.strip() for s in v.split(",")]
-        return v
+    @property
+    def cors_origins_list(self) -> list[str]:
+        """Parse cors_origins into a list for CORSMiddleware."""
+        raw = self.cors_origins.strip()
+        if raw.startswith("["):
+            import json
+
+            return json.loads(raw)
+        return [s.strip() for s in raw.split(",")]
 
     # Debug (enables /docs in development; disabled in production)
     debug: bool = False
