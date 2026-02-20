@@ -16,9 +16,12 @@ export default function ApplicationPage() {
       return;
     }
 
-    const fetchApplication = async () => {
+    const init = async () => {
       try {
         const token = await getToken();
+        // Ensure user exists in DB before fetching application.
+        // This covers the case where the Clerk webhook hasn't fired yet.
+        await apiFetch('/api/v1/users/sync', { method: 'POST' }, token).catch(() => {});
         const data = await apiFetch<ApplicationData>('/api/v1/applications/me', {}, token);
         setApplication(data);
       } catch {
@@ -29,7 +32,7 @@ export default function ApplicationPage() {
       }
     };
 
-    fetchApplication();
+    init();
   }, [isLoaded, isSignedIn, getToken]);
 
   if (!isLoaded || loading) {

@@ -8,6 +8,7 @@ export default defineConfig({
   integrations: [
     react(),
     clerk({
+      proxyUrl: import.meta.env.PUBLIC_CLERK_PROXY_URL || undefined,
       appearance: {
         variables: {
           colorPrimary: '#c41e3a',
