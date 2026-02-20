@@ -441,7 +441,7 @@
     secs: document.querySelector<HTMLElement>('[data-unit="secs"]')!,
   };
 
-  let prev = { days: '', hours: '', mins: '', secs: '' };
+  const prev = { days: '', hours: '', mins: '', secs: '' };
 
   function pad(n: number) {
     return String(n).padStart(2, '0');
