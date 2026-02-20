@@ -11,7 +11,7 @@ const app = new cdk.App();
 
 const env = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION ?? 'us-east-1',
+  region: process.env.CDK_DEFAULT_REGION ?? 'us-east-2',
 };
 
 const network = new NetworkStack(app, 'HacklantaNetwork', { env });
@@ -20,3 +20,6 @@ const storage = new StorageStack(app, 'HacklantaStorage', { env });
 const email = new EmailStack(app, 'HacklantaEmail', { env });
 const api = new ApiStack(app, 'HacklantaApi', { env });
 const monitoring = new MonitoringStack(app, 'HacklantaMonitoring', { env });
+
+// Storage stack depends on database stack (backup vault must exist first)
+storage.addDependency(database);
