@@ -53,6 +53,7 @@ htmlcov/
 
 # Secrets / infrastructure definitions
 task-def.json
+reports/
 
 # Misc
 *.log
