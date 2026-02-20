@@ -13,7 +13,7 @@
         "PUBLIC_SENTRY_DSN",
         "CLERK_SECRET_KEY"
       ],
-      "outputs": ["dist/**", ".astro/**"]
+      "outputs": ["dist/**", ".astro/**", ".vercel/output/**"]
     },
     "lint": {
       "dependsOn": ["^build"]
