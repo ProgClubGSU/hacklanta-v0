@@ -65,25 +65,6 @@ const tracks = [
     style="background: radial-gradient(ellipse 65% 60% at 50% 45%, transparent 15%, rgba(26,10,14,0.5) 60%, rgba(10,4,6,0.95) 100%);"
   ></div>
 
-  <!-- Floating poker chip silhouettes -->
-  <div class="pointer-events-none absolute inset-0 overflow-hidden hero-floaters" aria-hidden="true">
-    <div class="hero-floater absolute left-[8%] top-[15%] hidden md:block"
-         style="animation: chip-float 8s ease-in-out infinite;">
-      <div class="hero-chip hero-chip--red hero-chip--md"
-           style="--chip-base-transform: rotateX(55deg) rotateY(-15deg); transform: var(--chip-base-transform);"></div>
-    </div>
-    <div class="hero-floater absolute right-[10%] top-[20%] hidden md:block"
-         style="animation: chip-float 7s ease-in-out infinite 1s;">
-      <div class="hero-chip hero-chip--gold hero-chip--sm"
-           style="--chip-base-transform: rotateX(50deg) rotateY(20deg); transform: var(--chip-base-transform);"></div>
-    </div>
-    <div class="hero-floater absolute left-[15%] bottom-[30%] hidden lg:block"
-         style="animation: chip-float 9s ease-in-out infinite 0.5s;">
-      <div class="hero-chip hero-chip--red hero-chip--sm"
-           style="--chip-base-transform: rotateX(52deg) rotateY(10deg); transform: var(--chip-base-transform);"></div>
-    </div>
-  </div>
-
   <!-- Ghosted suit symbols -->
   <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
     <span class="hero-suit absolute left-[3%] top-[18%] font-display text-[10rem] text-white/[0.015] md:text-[14rem]">&#9824;</span>
@@ -91,9 +72,6 @@ const tracks = [
     <span class="hero-suit absolute left-[20%] bottom-[25%] font-display text-[8rem] text-gold/[0.03] md:text-[11rem]">&#9830;</span>
     <span class="hero-suit absolute right-[15%] bottom-[35%] font-display text-[7rem] text-white/[0.012] md:text-[10rem]">&#9827;</span>
   </div>
-
-  <!-- Particle canvas -->
-  <canvas id="hero-particles" class="pointer-events-none absolute inset-0 z-[5]" aria-hidden="true"></canvas>
 
   <!-- Main content -->
   <div class="relative z-10 max-w-4xl">
@@ -589,28 +567,6 @@ const tracks = [
   }
 
   /* ======================================================
-     HERO FLOATING CHIPS — simplified silhouettes
-     ====================================================== */
-  .hero-chip {
-    border-radius: 50%;
-    transform-style: preserve-3d;
-    transform: var(--chip-base-transform);
-    opacity: 0.15;
-  }
-  .hero-chip--md { width: 80px; height: 80px; }
-  .hero-chip--sm { width: 55px; height: 55px; }
-  .hero-chip--red {
-    background: radial-gradient(ellipse at 40% 35%, #d42a46, #C41E3A 40%, #7a1024);
-    border: 2px solid rgba(196,30,58,0.2);
-    box-shadow: 0 0 20px rgba(196,30,58,0.1);
-  }
-  .hero-chip--gold {
-    background: radial-gradient(ellipse at 40% 35%, #d4b55c, #C9A84C 40%, #8B7635);
-    border: 2px solid rgba(201,168,76,0.2);
-    box-shadow: 0 0 20px rgba(201,168,76,0.1);
-  }
-
-  /* ======================================================
      TRACK CARDS — large, Bicycle-style
      ====================================================== */
   .track-card-wrapper {
@@ -956,19 +912,13 @@ const tracks = [
     }, 1200);
   }, 1400);
 
-  // ===== Mouse parallax for suits + floating chips =====
+  // ===== Mouse parallax for suit symbols =====
   const heroSection = document.getElementById('hero')!;
   const heroSuits = document.querySelectorAll<HTMLElement>('.hero-suit');
-  const heroFloaters = document.querySelectorAll<HTMLElement>('.hero-floater');
 
   const suitAnims = Array.from(heroSuits).map((el) => ({
     x: gsap.quickTo(el, 'x', { duration: 0.8, ease: 'power2.out' }),
     y: gsap.quickTo(el, 'y', { duration: 0.8, ease: 'power2.out' }),
-  }));
-
-  const chipAnims = Array.from(heroFloaters).map((el) => ({
-    x: gsap.quickTo(el, 'x', { duration: 0.6, ease: 'power2.out' }),
-    y: gsap.quickTo(el, 'y', { duration: 0.6, ease: 'power2.out' }),
   }));
 
   heroSection.addEventListener('mousemove', (e) => {
@@ -981,122 +931,9 @@ const tracks = [
       anim.x(nx * speed);
       anim.y(ny * speed * 0.5);
     });
-
-    const chipSpeeds = [0.06, -0.05, 0.04];
-    chipAnims.forEach((anim, i) => {
-      const s = chipSpeeds[i] || 0.04;
-      anim.x(nx * 2 * rect.width * Math.abs(s) * Math.sign(s));
-      anim.y(ny * 2 * rect.height * Math.abs(s) * 0.5 * Math.sign(s));
-    });
   });
 
   heroSection.addEventListener('mouseleave', () => {
     suitAnims.forEach((a) => { a.x(0); a.y(0); });
-    chipAnims.forEach((a) => { a.x(0); a.y(0); });
   });
-
-  // ===== Canvas Particle Sparks =====
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!reducedMotion) {
-    const canvas = document.getElementById('hero-particles') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d')!;
-
-    function resizeCanvas() {
-      const h = heroSection;
-      const dpr = Math.min(devicePixelRatio, 2);
-      canvas.width = h.offsetWidth * dpr;
-      canvas.height = h.offsetHeight * dpr;
-      canvas.style.width = h.offsetWidth + 'px';
-      canvas.style.height = h.offsetHeight + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    interface Particle {
-      x: number; y: number; vx: number; vy: number;
-      radius: number; color: string; life: number; maxLife: number;
-    }
-
-    const PARTICLE_COUNT = 40;
-    const particles: Particle[] = [];
-    const colors = [
-      'rgba(196, 30, 58, ',
-      'rgba(201, 168, 76, ',
-      'rgba(196, 30, 58, ',
-    ];
-
-    function spawnParticle(randomStart = false): Particle {
-      const w = heroSection.offsetWidth;
-      const h = heroSection.offsetHeight;
-      const maxLife = 120 + Math.random() * 180;
-      return {
-        x: Math.random() * w,
-        y: h * 0.3 + Math.random() * h * 0.5,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: -0.2 - Math.random() * 0.5,
-        radius: 1 + Math.random() * 2,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        life: randomStart ? Math.random() * maxLife : 0,
-        maxLife,
-      };
-    }
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      particles.push(spawnParticle(true));
-    }
-
-    let running = true;
-
-    function animateParticles() {
-      if (!running) return;
-      const w = heroSection.offsetWidth;
-      const h = heroSection.offsetHeight;
-      ctx.clearRect(0, 0, w, h);
-
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.life++;
-        p.x += p.vx;
-        p.y += p.vy;
-
-        const progress = p.life / p.maxLife;
-        let alpha: number;
-        if (progress < 0.2) alpha = progress / 0.2;
-        else if (progress > 0.8) alpha = (1 - progress) / 0.2;
-        else alpha = 1;
-
-        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 3);
-        gradient.addColorStop(0, p.color + (alpha * 0.6) + ')');
-        gradient.addColorStop(0.5, p.color + (alpha * 0.2) + ')');
-        gradient.addColorStop(1, p.color + '0)');
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color + (alpha * 0.8) + ')';
-        ctx.fill();
-
-        if (p.life >= p.maxLife) {
-          particles[i] = spawnParticle();
-        }
-      }
-
-      requestAnimationFrame(animateParticles);
-    }
-
-    // Start after hero entrance animation
-    setTimeout(animateParticles, 2500);
-
-    const observer = new IntersectionObserver(([entry]) => {
-      running = entry.isIntersecting;
-      if (running) requestAnimationFrame(animateParticles);
-    }, { threshold: 0.1 });
-    observer.observe(heroSection);
-  }
 </script>

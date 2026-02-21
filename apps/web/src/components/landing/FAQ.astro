@@ -1,36 +1,11 @@
 ---
 // [05] FAQ — casino fine print
-import PokerChip3D from './PokerChip3D.tsx';
 
 const faqs = [
   { q: 'Who can participate?', a: 'Any college student. No CS degree required, no prior hackathon experience needed. Beginners welcome — we\'ll have workshops to get you up to speed.' },
   { q: 'How much does it cost?', a: 'Zero. Free entry, free food, free swag. All you need is a laptop and the will to build something.' },
   { q: 'Do I need a team?', a: 'Nope. Come solo and squad up at the event, or bring a pre-formed team of up to 4. We\'ll have a team finder on the day.' },
   { q: 'Can I use AI tools?', a: 'Yes — go crazy. ChatGPT, Copilot, whatever. Judges care about what you built, not whether you typed every line yourself.' },
-];
-
-const chipConfig = [
-  {
-    color: 'red' as const,
-    denomination: '25',
-    position: [0.92, 0.15] as [number, number],
-    rotation: [-20, 55, -8] as [number, number, number],
-    size: 1.1,
-  },
-  {
-    color: 'gold' as const,
-    denomination: '50',
-    position: [0.08, 0.45] as [number, number],
-    rotation: [18, 50, 10] as [number, number, number],
-    size: 0.9,
-  },
-  {
-    color: 'red' as const,
-    denomination: '25',
-    position: [0.9, 0.78] as [number, number],
-    rotation: [14, 58, 6] as [number, number, number],
-    size: 0.75,
-  },
 ];
 ---
 
@@ -48,11 +23,6 @@ const chipConfig = [
     class="pointer-events-none absolute right-[15%] bottom-[10%] h-[300px] w-[300px] rounded-full opacity-[0.03] blur-[80px]"
     style="background: radial-gradient(circle, rgba(201,168,76,0.5) 0%, transparent 70%);"
   ></div>
-
-  <!-- Three.js 3D Poker Chips -->
-  <div class="pointer-events-none absolute inset-0 hidden md:block" aria-hidden="true" style="z-index: 0;">
-    <PokerChip3D client:visible chips={chipConfig} />
-  </div>
 
   <div class="relative z-10 mx-auto max-w-3xl">
     <div class="faq-header mb-14">
