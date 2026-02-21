@@ -24,6 +24,8 @@ venv/
 .env
 .env.local
 .env.*.local
+env
+env.local
 
 # IDE
 .vscode/

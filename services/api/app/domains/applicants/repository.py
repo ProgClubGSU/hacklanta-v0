@@ -96,6 +96,24 @@ async def list_applications(
     return applications, total
 
 
+async def get_application_by_email(
+    session: AsyncSession, email: str
+) -> Application | None:
+    result = await session.execute(select(Application).where(Application.email == email))
+    return result.scalar_one_or_none()
+
+
+async def link_application_to_user(
+    session: AsyncSession,
+    application: Application,
+    user_id: uuid.UUID,
+) -> Application:
+    application.user_id = user_id
+    await session.commit()
+    await session.refresh(application)
+    return application
+
+
 async def update_application_status(
     session: AsyncSession,
     application: Application,

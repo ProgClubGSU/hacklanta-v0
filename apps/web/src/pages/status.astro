@@ -1,0 +1,38 @@
+---
+import LandingLayout from '../layouts/LandingLayout.astro';
+import ApplicationStatus from '../components/status/ApplicationStatus.tsx';
+---
+
+<LandingLayout title="Application Status — Hacklanta">
+  <section class="relative min-h-screen bg-black px-4 pb-20 pt-24 md:pt-32">
+    <!-- Ambient glow -->
+    <div
+      class="pointer-events-none absolute left-1/2 top-[10%] h-[800px] w-[800px] -translate-x-1/2 rounded-full"
+      style="background: radial-gradient(circle, rgba(196,30,58,0.06) 0%, transparent 55%);"
+    ></div>
+
+    <!-- Suit watermarks -->
+    <div
+      class="pointer-events-none absolute left-[10%] top-[20%] select-none text-[120px] leading-none"
+      style="color: rgba(196, 30, 58, 0.03);"
+    >&spades;</div>
+    <div
+      class="pointer-events-none absolute right-[10%] bottom-[20%] select-none text-[120px] leading-none"
+      style="color: rgba(196, 30, 58, 0.03);"
+    >&hearts;</div>
+
+    <div class="relative z-10 mx-auto max-w-2xl">
+      <!-- Section header -->
+      <div class="mb-10 text-center">
+        <div class="mb-2 font-mono text-[10px] tracking-[0.4em] text-white/30 uppercase">
+          [01] // your hand
+        </div>
+        <h1 class="font-display text-4xl tracking-wide text-white md:text-5xl">
+          APPLICATION STATUS
+        </h1>
+      </div>
+
+      <ApplicationStatus client:load />
+    </div>
+  </section>
+</LandingLayout>

@@ -91,4 +91,18 @@ import LandingLayout from '../layouts/LandingLayout.astro';
     s.onerror = v;
     d.body.appendChild(s);
   }
+
+  // Redirect to /status after Tally form submission
+  window.addEventListener("message", function (e) {
+    try {
+      var data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+      if (data && data.event === "Tally.FormSubmitted") {
+        setTimeout(function () {
+          window.location.href = "/status";
+        }, 1500);
+      }
+    } catch (_) {
+      // Not a JSON message, ignore
+    }
+  });
 </script>

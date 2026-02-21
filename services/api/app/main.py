@@ -13,12 +13,8 @@ if settings.sentry_dsn:
         traces_sample_rate=1.0,
         environment="production" if not settings.debug else "development",
     )
-from app.domains.announcements.router import router as announcements_router
 from app.domains.applicants.router import router as applicants_router
 from app.domains.applicants.webhook import router as tally_webhook_router
-from app.domains.contestants.router import router as teams_router
-from app.domains.events.router import router as events_router
-from app.domains.food.router import router as food_router
 from app.domains.users.router import router as users_router
 
 
@@ -53,11 +49,6 @@ def create_app() -> FastAPI:
     app.include_router(users_router, prefix="/api/v1")
     app.include_router(applicants_router, prefix="/api/v1")
     app.include_router(tally_webhook_router, prefix="/api/v1")
-    app.include_router(teams_router, prefix="/api/v1")
-    app.include_router(events_router, prefix="/api/v1")
-    app.include_router(announcements_router, prefix="/api/v1")
-    app.include_router(food_router, prefix="/api/v1")
-    # app.include_router(admin_router, prefix="/api/v1")
 
     return app
 
