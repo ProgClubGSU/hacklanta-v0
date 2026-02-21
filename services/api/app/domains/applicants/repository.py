@@ -96,9 +96,7 @@ async def list_applications(
     return applications, total
 
 
-async def get_application_by_email(
-    session: AsyncSession, email: str
-) -> Application | None:
+async def get_application_by_email(session: AsyncSession, email: str) -> Application | None:
     result = await session.execute(select(Application).where(Application.email == email))
     return result.scalar_one_or_none()
 

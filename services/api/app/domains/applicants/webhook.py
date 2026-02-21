@@ -38,33 +38,33 @@ router = APIRouter(tags=["webhooks"])
 # ---------------------------------------------------------------------------
 FIELD_MAP: list[tuple[str, str]] = [
     # ── Contact (Page 1) ──────────────────────────────────────────────
-    ("first name", "_first_name"),              # virtual — for user lookup
-    ("last name", "_last_name"),                # virtual — for user lookup
-    ("school email", "email"),                  # "School email address (.edu)" → primary email
-    ("personal email", "_personal_email"),      # "Personal email address" → virtual, used for user lookup fallback
-    ("phone", "phone_number"),                  # "Phone number"
-
+    ("first name", "_first_name"),  # virtual — for user lookup
+    ("last name", "_last_name"),  # virtual — for user lookup
+    ("school email", "email"),  # "School email address (.edu)" → primary email
+    (
+        "personal email",
+        "_personal_email",
+    ),  # "Personal email address" → virtual, used for user lookup fallback
+    ("phone", "phone_number"),  # "Phone number"
     # ── Logistics (Page 1) ────────────────────────────────────────────
-    ("t-shirt", "tshirt_size"),                 # "T-Shirt Size"
-    ("dietary", "dietary_restrictions"),         # "Dietary Restrictions"
-
+    ("t-shirt", "tshirt_size"),  # "T-Shirt Size"
+    ("dietary", "dietary_restrictions"),  # "Dietary Restrictions"
     # ── Academic (Page 2) — "school/university" must come AFTER "school email"
-    ("school/university", "university"),         # "School/University"
-    ("major", "major"),                          # "Major(s)"
-    ("year of study", "year_of_study"),          # "Year of Study"
-    ("graduation", "graduation_date"),           # "Graduation Date (Expected or Actual)"
-
+    ("school/university", "university"),  # "School/University"
+    ("major", "major"),  # "Major(s)"
+    ("year of study", "year_of_study"),  # "Year of Study"
+    ("graduation", "graduation_date"),  # "Graduation Date (Expected or Actual)"
     # ── Candidate Profile (Page 3) ────────────────────────────────────
     ("hackathon experience", "experience_level"),  # "What's your level of hackathon experience?"
     # "How would you rate your programming abilities…" → no model column, skipped
-    ("resume", "resume_url"),                    # "Resume" (file upload — Tally sends a URL)
-    ("github", "github_url"),                    # "GitHub Profile"
-    ("linkedin", "linkedin_url"),                # "LinkedIn Profile"
+    ("resume", "resume_url"),  # "Resume" (file upload — Tally sends a URL)
+    ("github", "github_url"),  # "GitHub Profile"
+    ("linkedin", "linkedin_url"),  # "LinkedIn Profile"
     # "Personal Site/Portfolio" → no model column, skipped
     # "What's your favorite AI tool…" → no model column, skipped
     # "What's been your favorite class…" → no model column, skipped
-    ("what excites you", "why_attend"),           # "What excites you?" → closest to why_attend
-    ("hear about", "how_did_you_hear"),           # "How did you hear about Hacklanta?"
+    ("what excites you", "why_attend"),  # "What excites you?" → closest to why_attend
+    ("hear about", "how_did_you_hear"),  # "How did you hear about Hacklanta?"
     # "Anything else you'd like us to know?" → no model column, skipped
 ]
 
@@ -180,12 +180,11 @@ async def tally_webhook(
 
     # ── Verify signature ──────────────────────────────────────────────
     signature = request.headers.get("tally-signature", "")
-    if settings.tally_signing_secret and signature:
-        if not _verify_tally_signature(body, signature):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid webhook signature",
-            )
+    if settings.tally_signing_secret and signature and not _verify_tally_signature(body, signature):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid webhook signature",
+        )
 
     # ── Parse payload ─────────────────────────────────────────────────
     payload = await request.json()

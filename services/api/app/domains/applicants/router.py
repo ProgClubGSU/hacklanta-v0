@@ -58,9 +58,7 @@ async def get_my_application(
     if application is None and db_user.email:
         application = await get_application_by_email(session, db_user.email)
         if application is not None:
-            application = await link_application_to_user(
-                session, application, db_user.id
-            )
+            application = await link_application_to_user(session, application, db_user.id)
 
     if application is None:
         raise HTTPException(

@@ -72,20 +72,23 @@ import LandingLayout from '../layouts/LandingLayout.astro';
 
 <script is:inline>
   // Load Tally embed widget
-  var d = document,
-    w = "https://tally.so/widgets/embed.js",
-    v = function () {
-      "undefined" != typeof Tally
-        ? Tally.loadEmbeds()
-        : d
-            .querySelectorAll("iframe[data-tally-src]:not([src])")
-            .forEach(function (e) {
-              e.src = e.dataset.tallySrc;
-            });
-    };
-  if ("undefined" != typeof Tally) v();
-  else if (d.querySelector('script[src="' + w + '"]') == null) {
-    var s = d.createElement("script");
+  const d = document;
+  const w = "https://tally.so/widgets/embed.js";
+  const v = function () {
+    if (typeof Tally !== "undefined") {
+      Tally.loadEmbeds();
+    } else {
+      d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(
+        function (e) {
+          e.src = e.dataset.tallySrc;
+        }
+      );
+    }
+  };
+  if (typeof Tally !== "undefined") {
+    v();
+  } else if (d.querySelector('script[src="' + w + '"]') == null) {
+    const s = d.createElement("script");
     s.src = w;
     s.onload = v;
     s.onerror = v;
@@ -95,13 +98,13 @@ import LandingLayout from '../layouts/LandingLayout.astro';
   // Redirect to /status after Tally form submission
   window.addEventListener("message", function (e) {
     try {
-      var data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+      const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
       if (data && data.event === "Tally.FormSubmitted") {
         setTimeout(function () {
           window.location.href = "/status";
         }, 1500);
       }
-    } catch (_) {
+    } catch (_err) {
       // Not a JSON message, ignore
     }
   });
