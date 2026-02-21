@@ -18,12 +18,12 @@
   --color-gold: #C9A84C;
   --color-gold-dim: #8B7635;
 
-  /* === TEXT === */
+  /* === TEXT — higher contrast for readability === */
   --color-white: #F5F2ED;
   --color-white-pure: #FFFFFF;
-  --color-gray: #A09A92;
-  --color-gray-dark: #6E665E;
-  --color-gray-darker: #4A443E;
+  --color-gray: #B8B2AA;
+  --color-gray-dark: #8A837B;
+  --color-gray-darker: #5C564F;
 
   /* === FONTS === */
   --font-display: 'Bebas Neue', 'Anton', sans-serif;
@@ -95,22 +95,3 @@ body::after {
   to { transform: rotate(360deg); }
 }
 
-@keyframes chip-float {
-  0%, 100% { transform: var(--chip-base-transform) translateY(0px); }
-  50% { transform: var(--chip-base-transform) translateY(-10px); }
-}
-
-@keyframes dice-float {
-  0%, 100% { transform: var(--dice-base-transform) translateY(0px); }
-  50% { transform: var(--dice-base-transform) translateY(-10px); }
-}
-
-@keyframes coin-float {
-  0%, 100% { transform: var(--coin-base-transform) translateY(0px); }
-  50% { transform: var(--coin-base-transform) translateY(-8px); }
-}
-
-@keyframes cardback-float {
-  0%, 100% { transform: var(--cardback-base-transform) translateY(0px); }
-  50% { transform: var(--cardback-base-transform) translateY(-9px); }
-}

@@ -98,8 +98,9 @@ class BulkStatusResponse(BaseModel):
 
 class ApplicationResponse(BaseModel):
     id: uuid.UUID
-    user_id: uuid.UUID
+    user_id: uuid.UUID | None
     status: str
+    tally_response_id: str | None = None
 
     # Academic Info
     university: str

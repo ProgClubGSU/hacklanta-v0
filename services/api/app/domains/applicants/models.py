@@ -10,10 +10,13 @@ from app.core.database import Base, TimestampMixin, UUIDMixin
 class Application(UUIDMixin, TimestampMixin, Base):
     __tablename__ = "applications"
 
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    user_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=True
     )
     status: Mapped[str] = mapped_column(String, default="pending")
+
+    # Tally webhook tracking (null for API-submitted applications)
+    tally_response_id: Mapped[str | None] = mapped_column(String, unique=True)
 
     # Academic Info
     university: Mapped[str] = mapped_column(String, nullable=False)

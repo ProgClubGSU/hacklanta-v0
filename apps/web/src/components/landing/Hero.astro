@@ -1,54 +1,10 @@
 ---
-// Hero — slot machine countdown + dealt track cards overflowing into next section
-
-const tracks = [
-  {
-    name: 'Web Dev',
-    suit: '&#9824;',
-    suitChar: '♠',
-    rank: 'A',
-    label: 'ACE OF SPADES',
-    desc: 'Full-stack web applications, from sleek frontends to powerful APIs.',
-    accentRgb: '196,30,58',
-    suitColor: '#C41E3A',
-  },
-  {
-    name: 'AI / ML',
-    suit: '&#9829;',
-    suitChar: '♥',
-    rank: 'K',
-    label: 'KING OF HEARTS',
-    desc: 'Machine learning models, AI-powered tools, and intelligent automation.',
-    accentRgb: '230,57,70',
-    suitColor: '#E63946',
-  },
-  {
-    name: 'Cybersecurity',
-    suit: '&#9827;',
-    suitChar: '♣',
-    rank: 'Q',
-    label: 'QUEEN OF CLUBS',
-    desc: 'Security tools, CTF-style challenges, and defensive solutions.',
-    accentRgb: '196,30,58',
-    suitColor: '#C41E3A',
-  },
-  {
-    name: 'Open Innovation',
-    suit: '&#9830;',
-    suitChar: '♦',
-    rank: 'J',
-    label: 'JACK OF DIAMONDS',
-    desc: 'Anything goes. Hardware hacks, creative tools, wild ideas — surprise us.',
-    accentRgb: '201,168,76',
-    suitColor: '#C9A84C',
-  },
-];
+// Hero — slot machine countdown + dealt card hand
 ---
 
 <section
   id="hero"
   class="relative flex min-h-screen flex-col items-center justify-center bg-black px-4 text-center"
-  style="overflow: visible;"
 >
   <!-- Deep red ambient glow -->
   <div
@@ -205,65 +161,6 @@ const tracks = [
     </div>
   </div>
 
-  <!-- ===== TRACK CARDS — overflow bottom ===== -->
-  <div id="track-cards" class="absolute bottom-0 left-0 right-0 z-20 flex items-end justify-center gap-4 px-4 md:gap-6" style="transform: translateY(55%); perspective: 1200px;">
-    {tracks.map((track, i) => (
-      <div
-        class="track-card-wrapper"
-        data-index={i}
-      >
-        <div class="track-card-flipper" data-flip="false">
-          <!-- BACK FACE — Bicycle rider back -->
-          <div class="card-back">
-            <div class="card-back-inner">
-              <div class="card-back-pattern"></div>
-              <div class="card-back-border-1"></div>
-              <div class="card-back-border-2"></div>
-              <div class="card-back-center">
-                <div class="card-back-diamond">
-                  <span class="card-back-diamond-suit">&#9824;</span>
-                </div>
-              </div>
-              <span class="card-back-corner card-back-corner--tl">&#9830;</span>
-              <span class="card-back-corner card-back-corner--tr">&#9827;</span>
-              <span class="card-back-corner card-back-corner--bl">&#9829;</span>
-              <span class="card-back-corner card-back-corner--br">&#9824;</span>
-            </div>
-          </div>
-
-          <!-- FRONT FACE — Track info on cream card -->
-          <div class="card-front" style={`--card-accent: ${track.suitColor}; --card-accent-rgb: ${track.accentRgb};`}>
-            <div class="card-front-inner">
-              <div class="card-front-tl">
-                <span class="card-rank" set:html={track.rank}></span>
-                <span class="card-suit-sm" set:html={track.suit}></span>
-              </div>
-              <div class="card-front-br">
-                <span class="card-rank" set:html={track.rank}></span>
-                <span class="card-suit-sm" set:html={track.suit}></span>
-              </div>
-              <div class="card-center">
-                <span class="card-suit-lg" set:html={track.suit}></span>
-                <span class="card-track-name">{track.name.toUpperCase()}</span>
-                <div class="card-divider"></div>
-                <span class="card-track-desc">{track.desc}</span>
-              </div>
-              <span class="card-label">{track.label}</span>
-              <div class="card-inner-border"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-
-  <!-- Scroll indicator -->
-  <!-- <div class="hero-scroll absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0" style="z-index: 30;"> -->
-  <!--   <div class="flex flex-col items-center gap-3"> -->
-  <!--     <span class="font-mono text-[7px] tracking-[0.5em] text-gray-500 uppercase">Scroll</span> -->
-  <!--     <div class="h-8 w-px bg-gradient-to-b from-red/30 to-transparent"></div> -->
-  <!--   </div> -->
-  <!-- </div> -->
 </section>
 
 <style>
@@ -566,232 +463,6 @@ const tracks = [
     letter-spacing: 0.4em;
   }
 
-  /* ======================================================
-     TRACK CARDS — large, Bicycle-style
-     ====================================================== */
-  .track-card-wrapper {
-    width: clamp(150px, 24vw, 260px);
-    flex-shrink: 0;
-    pointer-events: none;
-  }
-
-  .track-card-flipper {
-    width: 100%;
-    aspect-ratio: 5 / 7;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  .track-card-flipper[data-flip="true"] {
-    transform: rotateY(180deg);
-  }
-
-  /* ── Card Back — Bicycle Rider Back ── */
-  .card-back {
-    position: absolute;
-    inset: 0;
-    border-radius: 10px;
-    overflow: hidden;
-    backface-visibility: hidden;
-    box-shadow:
-      0 8px 30px rgba(0,0,0,0.6),
-      0 2px 8px rgba(0,0,0,0.4);
-  }
-  .card-back-inner {
-    width: 100%;
-    height: 100%;
-    background: #B22234;
-    border: 3px solid #f0e8d8;
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
-  }
-  .card-back-pattern {
-    position: absolute;
-    inset: 0;
-    background:
-      repeating-linear-gradient(
-        45deg,
-        rgba(255,255,255,0.08) 0px,
-        rgba(255,255,255,0.08) 1px,
-        transparent 1px,
-        transparent 8px
-      ),
-      repeating-linear-gradient(
-        -45deg,
-        rgba(255,255,255,0.08) 0px,
-        rgba(255,255,255,0.08) 1px,
-        transparent 1px,
-        transparent 8px
-      );
-  }
-  .card-back-border-1 {
-    position: absolute;
-    inset: 7%;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-radius: 6px;
-  }
-  .card-back-border-2 {
-    position: absolute;
-    inset: 10%;
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 4px;
-  }
-  .card-back-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .card-back-diamond {
-    width: 30px;
-    height: 30px;
-    transform: rotate(45deg);
-    background: rgba(255,255,255,0.12);
-    border: 1.5px solid rgba(255,255,255,0.28);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .card-back-diamond-suit {
-    transform: rotate(-45deg);
-    font-size: 14px;
-    color: rgba(255,255,255,0.45);
-    line-height: 1;
-  }
-  .card-back-corner {
-    position: absolute;
-    font-size: 9px;
-    color: rgba(255,255,255,0.2);
-    line-height: 1;
-  }
-  .card-back-corner--tl { top: 12%; left: 14%; }
-  .card-back-corner--tr { top: 12%; right: 14%; }
-  .card-back-corner--bl { bottom: 12%; left: 14%; }
-  .card-back-corner--br { bottom: 12%; right: 14%; }
-
-  /* ── Card Front — cream face ── */
-  .card-front {
-    position: absolute;
-    inset: 0;
-    border-radius: 10px;
-    overflow: hidden;
-    backface-visibility: hidden;
-    transform: rotateY(180deg);
-    box-shadow:
-      0 8px 30px rgba(0,0,0,0.6),
-      0 2px 8px rgba(0,0,0,0.4);
-  }
-  .card-front-inner {
-    width: 100%;
-    height: 100%;
-    background: #F2EDE4;
-    border: 2.5px solid #ddd;
-    border-radius: 10px;
-    position: relative;
-    overflow: hidden;
-    /* subtle linen */
-    background-image:
-      repeating-linear-gradient(
-        0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 3px
-      ),
-      repeating-linear-gradient(
-        90deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 3px
-      ),
-      linear-gradient(180deg, #F5F0E8, #E8E2D8);
-  }
-
-  .card-front-tl {
-    position: absolute;
-    top: 6%;
-    left: 8%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 2;
-  }
-  .card-front-br {
-    position: absolute;
-    bottom: 6%;
-    right: 8%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transform: rotate(180deg);
-    z-index: 2;
-  }
-  .card-rank {
-    font-family: 'Bebas Neue', serif;
-    font-size: clamp(20px, 4vw, 32px);
-    font-weight: 700;
-    line-height: 1;
-    color: var(--card-accent);
-  }
-  .card-suit-sm {
-    font-size: clamp(12px, 2.4vw, 20px);
-    line-height: 1;
-    color: var(--card-accent);
-    opacity: 0.8;
-  }
-
-  .card-center {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20% 8%;
-    text-align: center;
-    gap: 5px;
-  }
-  .card-suit-lg {
-    font-size: clamp(28px, 6vw, 48px);
-    line-height: 1;
-    color: var(--card-accent);
-    opacity: 0.5;
-  }
-  .card-track-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(13px, 3vw, 22px);
-    letter-spacing: 0.12em;
-    color: #1a1a1a;
-    line-height: 1.1;
-  }
-  .card-divider {
-    width: 50%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(var(--card-accent-rgb), 0.25), transparent);
-    margin: 2px 0;
-  }
-  .card-track-desc {
-    font-family: var(--font-body);
-    font-size: clamp(7px, 1.6vw, 12px);
-    color: #777;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  .card-label {
-    position: absolute;
-    bottom: 5%;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: var(--font-mono);
-    font-size: clamp(5px, 1.2vw, 9px);
-    letter-spacing: 0.18em;
-    color: rgba(var(--card-accent-rgb), 0.35);
-    white-space: nowrap;
-  }
-  .card-inner-border {
-    position: absolute;
-    inset: 7%;
-    border: 1px solid rgba(var(--card-accent-rgb), 0.06);
-    border-radius: 5px;
-    pointer-events: none;
-  }
 </style>
 
 <script>
@@ -806,49 +477,9 @@ const tracks = [
     .to('.hero-title', { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out' }, 0.5)
     .to('.hero-rule', { opacity: 1, scaleX: 1, duration: 0.6 }, 1.0)
     .to('.hero-slot', { opacity: 1, y: 0, duration: 0.8 }, 1.2)
-    .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 1.8)
-    .to('.hero-scroll', { opacity: 1, duration: 0.6 }, 2.2);
+    .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 1.8);
 
-  // ===== Deal cards in after slot machine appears =====
-  const cards = gsap.utils.toArray<HTMLElement>('.track-card-wrapper');
-  const rotations = [-10, -3, 3, 10];
-
-  // Set initial state
-  cards.forEach((card, i) => {
-    gsap.set(card, { y: 80, opacity: 0, rotation: rotations[i] * 2 });
-  });
-
-  // Animate in
-  gsap.to(cards, {
-    y: 0,
-    opacity: 1,
-    rotation: (i: number) => rotations[i],
-    duration: 0.8,
-    stagger: 0.12,
-    ease: 'back.out(1.2)',
-    delay: 2.0,
-  });
-
-  // ===== Scroll-triggered card flip =====
-  const hero = document.getElementById('hero')!;
-  const flippers = document.querySelectorAll<HTMLElement>('.track-card-flipper');
-
-  ScrollTrigger.create({
-    trigger: hero,
-    start: 'bottom 85%',
-    onEnter: () => {
-      flippers.forEach((flipper, i) => {
-        setTimeout(() => {
-          flipper.setAttribute('data-flip', 'true');
-        }, i * 100);
-      });
-    },
-    onLeaveBack: () => {
-      flippers.forEach((flipper) => {
-        flipper.setAttribute('data-flip', 'false');
-      });
-    },
-  });
+  const heroEl = document.getElementById('hero')!;
 
   // ===== Countdown =====
   const EVENT_DATE = new Date('2026-03-28T09:00:00-04:00');
@@ -866,17 +497,18 @@ const tracks = [
     return String(n).padStart(2, '0');
   }
 
+  function getCountdownVals() {
+    const diff = Math.max(0, EVENT_DATE.getTime() - Date.now());
+    return {
+      days: pad(Math.floor(diff / 86_400_000)),
+      hours: pad(Math.floor((diff / 3_600_000) % 24)),
+      mins: pad(Math.floor((diff / 60_000) % 60)),
+      secs: pad(Math.floor((diff / 1000) % 60)),
+    };
+  }
+
   function updateCountdown() {
-    const now = new Date();
-    const diff = Math.max(0, EVENT_DATE.getTime() - now.getTime());
-
-    const days = pad(Math.floor(diff / (1000 * 60 * 60 * 24)));
-    const hours = pad(Math.floor((diff / (1000 * 60 * 60)) % 24));
-    const mins = pad(Math.floor((diff / (1000 * 60)) % 60));
-    const secs = pad(Math.floor((diff / 1000) % 60));
-
-    const vals = { days, hours, mins, secs } as const;
-
+    const vals = getCountdownVals();
     for (const [key, val] of Object.entries(vals) as [keyof typeof vals, string][]) {
       const el = reels[key];
       if (val !== prev[key]) {
@@ -889,11 +521,14 @@ const tracks = [
     }
   }
 
-  // Initial spin effect then start ticking
+  // Show real values immediately (no blank 00s), then spin effect
+  updateCountdown();
+
+  // Slot-machine spin: briefly scramble digits, then land back on real values
   setTimeout(() => {
-    // Quick spin through random numbers before landing
-    const allDigits = Object.values(reels);
-    allDigits.forEach((el, i) => {
+    const keys = ['days', 'hours', 'mins', 'secs'] as const;
+    keys.forEach((key, i) => {
+      const el = reels[key];
       let count = 0;
       const max = 6 + i * 3;
       const interval = setInterval(() => {
@@ -901,19 +536,22 @@ const tracks = [
         count++;
         if (count >= max) {
           clearInterval(interval);
-          updateCountdown();
+          // Land on real value
+          const real = getCountdownVals();
+          el.textContent = real[key];
+          prev[key] = real[key];
+          el.classList.remove('tick');
+          void el.offsetWidth;
+          el.classList.add('tick');
         }
       }, 50);
     });
-
-    // Start ticking after spin settles
-    setTimeout(() => {
-      setInterval(updateCountdown, 1000);
-    }, 1200);
   }, 1400);
 
+  // Tick every second
+  setInterval(updateCountdown, 1000);
+
   // ===== Mouse parallax for suit symbols =====
-  const heroSection = document.getElementById('hero')!;
   const heroSuits = document.querySelectorAll<HTMLElement>('.hero-suit');
 
   const suitAnims = Array.from(heroSuits).map((el) => ({
@@ -921,8 +559,8 @@ const tracks = [
     y: gsap.quickTo(el, 'y', { duration: 0.8, ease: 'power2.out' }),
   }));
 
-  heroSection.addEventListener('mousemove', (e) => {
-    const rect = heroSection.getBoundingClientRect();
+  heroEl.addEventListener('mousemove', (e) => {
+    const rect = heroEl.getBoundingClientRect();
     const nx = (e.clientX - rect.left) / rect.width - 0.5;
     const ny = (e.clientY - rect.top) / rect.height - 0.5;
 
@@ -933,7 +571,7 @@ const tracks = [
     });
   });
 
-  heroSection.addEventListener('mouseleave', () => {
+  heroEl.addEventListener('mouseleave', () => {
     suitAnims.forEach((a) => { a.x(0); a.y(0); });
   });
 </script>

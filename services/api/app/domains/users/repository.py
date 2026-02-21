@@ -16,6 +16,11 @@ async def get_user_by_clerk_id(session: AsyncSession, clerk_id: str) -> User | N
     return result.scalar_one_or_none()
 
 
+async def get_user_by_email(session: AsyncSession, email: str) -> User | None:
+    result = await session.execute(select(User).where(User.email == email))
+    return result.scalar_one_or_none()
+
+
 async def upsert_user(
     session: AsyncSession,
     *,

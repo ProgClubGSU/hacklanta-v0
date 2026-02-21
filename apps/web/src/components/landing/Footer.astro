@@ -2,61 +2,41 @@
 const currentYear = new Date().getFullYear();
 ---
 
-<footer id="footer" class="relative overflow-hidden bg-black px-4 pb-10 pt-20">
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
+<footer id="footer" class="relative bg-black px-4 pb-8 pt-16">
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/20 to-transparent"></div>
 
   <div class="relative z-10 mx-auto max-w-5xl">
 
-    <!-- Top row: brand + nav -->
-    <div class="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+    <div class="flex flex-col items-center gap-6 text-center">
+      <a href="/" class="inline-block transition-opacity hover:opacity-70">
+        <img
+          src="/logo_trimmed.png"
+          alt="Hacklanta"
+          class="h-7 w-auto opacity-80 select-none pointer-events-none"
+          draggable="false"
+          width="40"
+          height="15"
+        />
+      </a>
 
-      <!-- Brand -->
-      <div>
-        <a href="/" class="relative inline-block transition-opacity hover:opacity-70">
-          <img
-            src="/logo_trimmed.png"
-            alt="Hacklanta"
-            class="h-8 w-auto opacity-90 select-none pointer-events-none"
-            draggable="false"
-            width="40"
-            height="15"
-          />
-          <span class="absolute inset-0 z-10"></span>
-        </a>
-        <p class="mt-3 font-body text-sm text-white/50">
-          Brought to you by <a href="https://progsu.com/" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-white/65 transition-colors hover:text-red">progsu</a>.
-        </p>
+      <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+        <a href="/apply" class="font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase transition-colors hover:text-white">Apply</a>
+        <span class="text-white/15">|</span>
+        <a href="#schedule" class="font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase transition-colors hover:text-white">Schedule</a>
+        <span class="text-white/15">|</span>
+        <a href="#faq" class="font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase transition-colors hover:text-white">FAQ</a>
+        <span class="text-white/15">|</span>
+        <a href="https://discord.com/invite/BgKg9gskM2" target="_blank" rel="noopener noreferrer" class="font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase transition-colors hover:text-white">Discord</a>
+        <span class="text-white/15">|</span>
+        <a href="https://instagram.com/progclubgsu" target="_blank" rel="noopener noreferrer" class="font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase transition-colors hover:text-white">Instagram</a>
+        <span class="text-white/15">|</span>
+        <a href="mailto:hello@hacklanta.com" class="font-mono text-[11px] tracking-[0.2em] text-white/50 uppercase transition-colors hover:text-red">Contact</a>
       </div>
-
-      <!-- Nav + Social side by side -->
-      <div class="flex gap-16">
-        <div>
-          <p class="mb-4 font-mono text-[10px] tracking-[0.35em] text-white/35 uppercase">Navigate</p>
-          <ul class="space-y-2.5">
-            <li><a href="/apply" class="font-body text-sm text-white/55 transition-colors hover:text-white">Apply</a></li>
-            <li><a href="#schedule" class="font-body text-sm text-white/55 transition-colors hover:text-white">Schedule</a></li>
-            <li><a href="#faq" class="font-body text-sm text-white/55 transition-colors hover:text-white">FAQ</a></li>
-            <li><a href="#sponsors" class="font-body text-sm text-white/55 transition-colors hover:text-white">Sponsors</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <p class="mb-4 font-mono text-[10px] tracking-[0.35em] text-white/35 uppercase">Connect</p>
-          <ul class="space-y-2.5">
-            <li><a href="https://luma.com/progsu" class="font-body text-sm text-white/55 transition-colors hover:text-red">Luma</a></li>
-            <li><a href="https://instagram.com/progclubgsu" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-white/55 transition-colors hover:text-red">Instagram</a></li>
-            <li><a href="https://discord.gg/progsu" target="_blank" rel="noopener noreferrer" class="font-body text-sm text-white/55 transition-colors hover:text-white">Discord</a></li>
-            <li><a href="mailto:hello@hacklanta.com" class="font-body text-sm text-white/55 transition-colors hover:text-red">Email</a></li>
-          </ul>
-        </div>
-      </div>
-
     </div>
 
-    <!-- Bottom bar -->
-    <div class="mt-16 border-t border-white/[0.06] pt-7">
-      <p class="font-mono text-[11px] tracking-widest text-white/30 uppercase">
-        &copy; {currentYear} progsu &middot; Programming Club @ Georgia State University
+    <div class="mt-10 border-t border-white/[0.06] pt-5 text-center">
+      <p class="font-mono text-[10px] tracking-[0.2em] text-white/25">
+        &copy; {currentYear} <a href="https://progsu.com/" target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-white/50">progsu</a> &middot; Georgia State University
       </p>
     </div>
 

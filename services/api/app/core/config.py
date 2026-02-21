@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # Cloudflare Turnstile
     turnstile_secret_key: str = ""
 
+    # Tally
+    tally_signing_secret: str = ""
+
     # CORS — comma-separated or JSON array string
     cors_origins: str = "http://localhost:4321"
 
