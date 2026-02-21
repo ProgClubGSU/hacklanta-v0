@@ -1,12 +1,12 @@
 @import 'tailwindcss';
 
 @theme {
-  /* === BLACKS === */
-  --color-black: #050505;
-  --color-black-card: #0F0F10;
-  --color-black-elevated: #161617;
-  --color-border: #1E1E1F;
-  --color-border-light: #2A2A2B;
+  /* === DARK RED BASE === */
+  --color-black: #1a0a0e;
+  --color-black-card: #1f0e13;
+  --color-black-elevated: #261418;
+  --color-border: #3a1a22;
+  --color-border-light: #4a2430;
 
   /* === RED — PRIMARY ACCENT === */
   --color-red: #C41E3A;
@@ -19,11 +19,11 @@
   --color-gold-dim: #8B7635;
 
   /* === TEXT === */
-  --color-white: #F0EDE8;
+  --color-white: #F5F2ED;
   --color-white-pure: #FFFFFF;
-  --color-gray: #888888;
-  --color-gray-dark: #555555;
-  --color-gray-darker: #333333;
+  --color-gray: #A09A92;
+  --color-gray-dark: #6E665E;
+  --color-gray-darker: #4A443E;
 
   /* === FONTS === */
   --font-display: 'Bebas Neue', 'Anton', sans-serif;
@@ -52,14 +52,14 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.045;
+  opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 256px 256px;
 }
 
 ::selection {
   background-color: var(--color-red);
-  color: var(--color-black);
+  color: var(--color-white-pure);
 }
 
 /* Scrollbar — thin, dark, red accent on hover */

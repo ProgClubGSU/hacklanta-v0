@@ -127,7 +127,7 @@ const tiers = [
 
   <div class="relative z-10 mx-auto max-w-5xl">
     <div class="sponsors-header mb-16 text-center">
-      <div class="flex items-center justify-center gap-4 font-mono text-[10px] tracking-[0.3em] text-gray-500">
+      <div class="flex items-center justify-center gap-4 font-mono text-[11px] tracking-[0.3em] text-gray-500">
         <span class="h-px w-16 bg-gradient-to-r from-transparent to-border/80"></span>
         <span class="text-red/60">[04]</span>
         <span>SPONSORS</span>
@@ -141,38 +141,41 @@ const tiers = [
       </p>
     </div>
 
-    <div class="sponsors-grid space-y-12">
-      {tiers.map((tier, tierIdx) => (
-        <div>
-          <div class="mb-5 flex items-center justify-center gap-3">
-            <span class="h-px w-8 bg-gradient-to-r from-transparent to-border/60"></span>
-            <p class={`text-center font-mono text-[8px] tracking-[0.4em] ${tier.color}/50`}>
-              &#9670; {tier.name} TIER &#9670;
-            </p>
-            <span class="h-px w-8 bg-gradient-to-l from-transparent to-border/60"></span>
-          </div>
-          <div class={`grid gap-3 ${
-            tier.sponsors.length === 1 ? 'grid-cols-1 max-w-lg mx-auto' :
-            tier.sponsors.length === 2 ? 'grid-cols-2 max-w-2xl mx-auto' :
-            'grid-cols-2 md:grid-cols-3'
-          }`}>
-            {tier.sponsors.map((sponsor) => (
-              <div class={`group relative overflow-hidden border ${tier.border} bg-black/50 transition-all duration-500 ${tier.hoverBorder} ${tier.hoverGlow} hover:bg-black-card/80 ${tierIdx === 0 ? 'p-14' : tierIdx === 1 ? 'p-10' : 'p-8'}`}>
-                {/* Subtle gradient overlay on hover */}
-                <div class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" style={`background: linear-gradient(135deg, ${tierIdx === 0 ? 'rgba(201,168,76,0.03)' : 'rgba(196,30,58,0.02)'}, transparent 60%);`}></div>
-
-                {sponsor.logo ? (
-                  <img src={sponsor.logo} alt={sponsor.name} class="relative h-10 max-w-[160px] object-contain opacity-40 grayscale transition-all duration-500 group-hover:opacity-70 group-hover:grayscale-0" />
-                ) : (
+    <!-- Blurred sponsors with coming soon overlay -->
+    <div class="relative">
+      <div class="sponsors-grid space-y-12" style="filter: blur(8px); pointer-events: none;">
+        {tiers.map((tier, tierIdx) => (
+          <div>
+            <div class="mb-5 flex items-center justify-center gap-3">
+              <span class="h-px w-8 bg-gradient-to-r from-transparent to-border/60"></span>
+              <p class={`text-center font-mono text-[10px] tracking-[0.4em] ${tier.color}/50`}>
+                &#9670; {tier.name} TIER &#9670;
+              </p>
+              <span class="h-px w-8 bg-gradient-to-l from-transparent to-border/60"></span>
+            </div>
+            <div class={`grid gap-3 ${
+              tier.sponsors.length === 1 ? 'grid-cols-1 max-w-lg mx-auto' :
+              tier.sponsors.length === 2 ? 'grid-cols-2 max-w-2xl mx-auto' :
+              'grid-cols-2 md:grid-cols-3'
+            }`}>
+              {tier.sponsors.map((sponsor) => (
+                <div class={`group relative overflow-hidden border ${tier.border} bg-black/50 ${tierIdx === 0 ? 'p-14' : tierIdx === 1 ? 'p-10' : 'p-8'}`}>
                   <div class="relative flex items-center justify-center">
-                    <span class="font-body text-sm text-gray-500 transition-colors duration-500 group-hover:text-gray-dark">{sponsor.name}</span>
+                    <span class="font-body text-sm text-gray-500">{sponsor.name}</span>
                   </div>
-                )}
-              </div>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
+        ))}
+      </div>
+      <!-- Coming soon overlay -->
+      <div class="absolute inset-0 flex items-center justify-center">
+        <div class="text-center">
+          <p class="font-display text-3xl tracking-wide text-white/60 md:text-4xl">COMING SOON</p>
+          <p class="mt-2 font-mono text-[10px] tracking-[0.3em] text-gray-dark uppercase">sponsors to be announced</p>
         </div>
-      ))}
+      </div>
     </div>
 
     <div class="sponsors-cta mt-16 text-center">

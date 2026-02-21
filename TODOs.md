@@ -1,17 +1,23 @@
 # TODOs
 
+## for release:
+- [ ] fork repo
+- [ ] change target repo/branch to hacklantav0
+- [ ] try integrating tally with clerk (if possible)
+- [ ] nuke and fuck the landing page (minimal design, few components)
+- [ ] tally questions lowest friction as possible (bc we're desparate)
+
 ## landing page
-
 - [ ] add hacklanta logo
-- [ ] update color scheme to use official hacklanta colors (black, red, emerald green, and gold)
-- [ ] add playing cards w/ each of the tracks
+- [ ] remove about section
+- [ ] add animation for track cards to be “dealt” in on init page load, with the top part (~15-30% of card height) of each card visible in hero section
+- [ ] style the countdown timer/event info in hero section to mimic a slot machine
+- [ ] schedule/lineup should be TBA’d out for now
+- [ ] blur the sponsors (not TBA’d) to make it suspenseful
+- [ ] improved text readability/overall site visibility
+- [ ] ensure all links are correct & functional
 
-
-## application form
-
-(post-scaffold):
-- [ ] make app form more dynamic/cool & similar to other hackathon app forms
-- [ ] stand up API on ECS Fargate to test application form against live deployment
-- [ ] ask joey/determine where we want to store applicant data besides admin dashboard
-
+## app form
+- [ ] create tally form
+- [ ] integrate tally form w/ current application setup
 
