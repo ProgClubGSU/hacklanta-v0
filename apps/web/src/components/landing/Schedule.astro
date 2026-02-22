@@ -1,12 +1,18 @@
 ---
 // [03] Schedule — dealer board lineup (TBA)
 
+const suitSvg = {
+  spade: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg>',
+  heart: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg>',
+  diamond: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5L5 50 50 95 95 50z"/></svg>',
+};
+
 const phases = [
   {
     name: 'THE OPENING',
     subtitle: 'ANTE UP',
     time: 'TBA',
-    suit: '♠',
+    suit: suitSvg.spade,
     color: '#C41E3A',
     rgb: '196,30,58',
     events: ['Check-In', 'Opening Ceremony', 'Poker Tables', 'Blackjack Table', 'Lunch'],
@@ -15,7 +21,7 @@ const phases = [
     name: 'THE GRIND',
     subtitle: 'PLAYING THE HAND',
     time: 'TBA',
-    suit: '♥',
+    suit: suitSvg.heart,
     color: '#E63946',
     rgb: '230,57,70',
     events: ['Workshops', 'Monkeytype Contest', 'Dinner', 'Snacks'],
@@ -24,10 +30,10 @@ const phases = [
     name: 'THE FINAL HAND',
     subtitle: 'ALL IN',
     time: 'TBA',
-    suit: '♦',
+    suit: suitSvg.diamond,
     color: '#C9A84C',
     rgb: '201,168,76',
-    events: ['200-Can Red Bull Competition', 'Closing Ceremony'],
+    events: ['200-Can Red Bull Competition', 'Rainbet Competition', 'Closing Ceremony'],
   },
 ];
 ---
@@ -47,9 +53,9 @@ const phases = [
 
   <!-- Ghosted suit marks -->
   <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
-    <span class="lineup-suit absolute left-[2%] top-[10%] font-display text-[12rem] text-white/[0.018] md:text-[16rem]">♠</span>
-    <span class="lineup-suit absolute right-[4%] top-[26%] font-display text-[11rem] text-red/[0.03] md:text-[15rem]">♥</span>
-    <span class="lineup-suit absolute left-[12%] bottom-[6%] font-display text-[10rem] text-gold/[0.04] md:text-[14rem]">♦</span>
+    <span class="lineup-suit absolute left-[2%] top-[10%] text-white/[0.018] md:w-[16rem] w-[12rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span>
+    <span class="lineup-suit absolute right-[4%] top-[26%] text-red/[0.03] md:w-[15rem] w-[11rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg></span>
+    <span class="lineup-suit absolute left-[12%] bottom-[6%] text-gold/[0.04] md:w-[14rem] w-[10rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 5L5 50 50 95 95 50z"/></svg></span>
   </div>
 
   <div class="relative z-10 mx-auto max-w-6xl">
@@ -98,7 +104,7 @@ const phases = [
 
             <div class="text-right">
               <p class="font-display text-4xl leading-none" style={`color: ${phase.color};`}>
-                {phase.suit}
+                <Fragment set:html={phase.suit} />
               </p>
               <p class="mt-1 font-mono text-[9px] tracking-[0.22em] text-gray-500">
                 PHASE {pi + 1}
@@ -112,7 +118,7 @@ const phases = [
                 <span
                   class="text-sm leading-none select-none"
                   style={`color: ${phase.color};`}
-                >{phase.suit}</span>
+                ><Fragment set:html={phase.suit} /></span>
                 <span class="font-display text-base tracking-wide text-white/90 md:text-lg">{evt}</span>
                 <span
                   class="ml-auto h-px flex-1 max-w-[120px]"

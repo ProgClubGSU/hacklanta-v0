@@ -23,10 +23,10 @@
 
   <!-- Ghosted suit symbols -->
   <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
-    <span class="hero-suit absolute left-[3%] top-[18%] font-display text-[10rem] text-white/[0.015] md:text-[14rem]">&#9824;</span>
-    <span class="hero-suit absolute right-[5%] top-[35%] font-display text-[9rem] text-red/[0.025] md:text-[12rem]">&#9829;</span>
-    <span class="hero-suit absolute left-[20%] bottom-[25%] font-display text-[8rem] text-gold/[0.03] md:text-[11rem]">&#9830;</span>
-    <span class="hero-suit absolute right-[15%] bottom-[35%] font-display text-[7rem] text-white/[0.012] md:text-[10rem]">&#9827;</span>
+    <span class="hero-suit absolute left-[3%] top-[18%] text-white/[0.015] md:w-[14rem] w-[10rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span>
+    <span class="hero-suit absolute right-[5%] top-[35%] text-red/[0.025] md:w-[12rem] w-[9rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg></span>
+    <span class="hero-suit absolute left-[20%] bottom-[25%] text-gold/[0.03] md:w-[11rem] w-[8rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 5L5 50 50 95 95 50z"/></svg></span>
+    <span class="hero-suit absolute right-[15%] bottom-[35%] text-white/[0.012] md:w-[10rem] w-[7rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 50m-16 0a16 16 0 1 1 32 0 16 16 0 1 1-32 0M50 5a20 20 0 0 1 0 40A20 20 0 0 1 50 5M22 30a20 20 0 0 0 18 35A20 20 0 0 0 22 30M60 65a20 20 0 0 0 18-35A20 20 0 0 0 60 65M44 85h12V65H44z"/></svg></span>
   </div>
 
   <!-- Poker chips — scattered across table edges -->
@@ -120,7 +120,7 @@
       <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
     </div>
     <div class="hero-deco-card absolute right-[3%] top-[1%] md:right-[5%] md:top-[2%]" style="transform: rotate(14deg);">
-      <div class="deco-card deco-card--front deco-card--red"><span class="deco-card-rank">Q</span><span class="deco-card-suit deco-card-suit--red">&#9830;</span></div>
+      <div class="deco-card deco-card--front deco-card--red"><span class="deco-card-rank">Q</span><span class="deco-card-suit deco-card-suit--red"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5L5 50 50 95 95 50z"/></svg></span></div>
     </div>
     <div class="hero-deco-card absolute left-[0%] top-[55%] md:left-[1%] md:top-[52%]" style="transform: rotate(-63deg);">
       <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
@@ -129,7 +129,7 @@
       <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
     </div>
     <div class="hero-deco-card absolute bottom-[3%] left-[2%] md:bottom-[5%] md:left-[3%]" style="transform: rotate(38deg);">
-      <div class="deco-card deco-card--front"><span class="deco-card-rank">K</span><span class="deco-card-suit deco-card-suit--dark">&#9824;</span></div>
+      <div class="deco-card deco-card--front"><span class="deco-card-rank">K</span><span class="deco-card-suit deco-card-suit--dark"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span></div>
     </div>
     <div class="hero-deco-card absolute bottom-[0%] right-[5%] md:bottom-[1%] md:right-[7%]" style="transform: rotate(-44deg);">
       <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
@@ -199,6 +199,15 @@
           <div class="marquee-bulb"></div>
           <div class="marquee-bulb"></div>
           <div class="marquee-bulb"></div>
+        </div>
+
+        <!-- Info strip -->
+        <div class="slot-info">
+          <span class="slot-info-cell">12HRS</span>
+          <span class="slot-info-dot"><svg width="6" height="6" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M5 0L0 5 5 10 10 5z"/></svg></span>
+          <span class="slot-info-cell">ATL</span>
+          <span class="slot-info-dot"><svg width="6" height="6" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M5 0L0 5 5 10 10 5z"/></svg></span>
+          <span class="slot-info-cell">MAR 28</span>
         </div>
 
         <!-- Reel housing -->
@@ -509,8 +518,9 @@
     text-transform: uppercase;
   }
   .slot-info-dot {
-    font-size: 6px;
     color: rgba(196, 30, 58, 0.3);
+    display: flex;
+    align-items: center;
   }
   @media (min-width: 768px) {
     .slot-info-cell { font-size: 12px; }
@@ -818,14 +828,14 @@
      REEL SYMBOLS — inline SVG icons (classic slot machine)
      ====================================================== */
   .reel-icon {
-    width: 17px;
-    height: 17px;
+    width: 32px;
+    height: 32px;
     display: block;
     margin: 0 auto;
     filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(196,30,58,0.2));
   }
   @media (min-width: 768px) {
-    .reel-icon { width: 22px; height: 22px; }
+    .reel-icon { width: 44px; height: 44px; }
   }
 
 

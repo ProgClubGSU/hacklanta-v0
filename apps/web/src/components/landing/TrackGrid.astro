@@ -1,10 +1,17 @@
 ---
 // Track cards — poker table grid with Bicycle-style cards
 
+const suitSvg = {
+  spade: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg>',
+  heart: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg>',
+  club: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 50m-16 0a16 16 0 1 1 32 0 16 16 0 1 1-32 0M50 5a20 20 0 0 1 0 40A20 20 0 0 1 50 5M22 30a20 20 0 0 0 18 35A20 20 0 0 0 22 30M60 65a20 20 0 0 0 18-35A20 20 0 0 0 60 65M44 85h12V65H44z"/></svg>',
+  diamond: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5L5 50 50 95 95 50z"/></svg>',
+};
+
 const tracks = [
   {
-    name: 'Web Dev',
-    suit: '&#9824;',
+    name: 'Bluff Track',
+    suit: suitSvg.spade,
     rank: 'A',
     label: 'ACE OF SPADES',
     desc: 'Full-stack web applications, from sleek frontends to powerful APIs.',
@@ -12,8 +19,8 @@ const tracks = [
     suitColor: '#C41E3A',
   },
   {
-    name: 'AI / ML',
-    suit: '&#9829;',
+    name: 'Jackpot Track',
+    suit: suitSvg.heart,
     rank: 'K',
     label: 'KING OF HEARTS',
     desc: 'Machine learning models, AI-powered tools, and intelligent automation.',
@@ -21,8 +28,8 @@ const tracks = [
     suitColor: '#E63946',
   },
   {
-    name: 'Cybersecurity',
-    suit: '&#9827;',
+    name: 'Highroller',
+    suit: suitSvg.club,
     rank: 'Q',
     label: 'QUEEN OF CLUBS',
     desc: 'Security tools, CTF-style challenges, and defensive solutions.',
@@ -30,8 +37,8 @@ const tracks = [
     suitColor: '#C41E3A',
   },
   {
-    name: 'Open Innovation',
-    suit: '&#9830;',
+    name: 'House Pick',
+    suit: suitSvg.diamond,
     rank: 'J',
     label: 'JACK OF DIAMONDS',
     desc: 'Anything goes. Hardware hacks, creative tools, wild ideas — surprise us.',
@@ -76,13 +83,13 @@ const tracks = [
                   <div class="card-back-border-2"></div>
                   <div class="card-back-center">
                     <div class="card-back-diamond">
-                      <span class="card-back-diamond-suit">&#9824;</span>
+                      <span class="card-back-diamond-suit"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span>
                     </div>
                   </div>
-                  <span class="card-back-corner card-back-corner--tl">&#9830;</span>
-                  <span class="card-back-corner card-back-corner--tr">&#9827;</span>
-                  <span class="card-back-corner card-back-corner--bl">&#9829;</span>
-                  <span class="card-back-corner card-back-corner--br">&#9824;</span>
+                  <span class="card-back-corner card-back-corner--tl"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5L5 50 50 95 95 50z"/></svg></span>
+                  <span class="card-back-corner card-back-corner--tr"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 50m-16 0a16 16 0 1 1 32 0 16 16 0 1 1-32 0M50 5a20 20 0 0 1 0 40A20 20 0 0 1 50 5M22 30a20 20 0 0 0 18 35A20 20 0 0 0 22 30M60 65a20 20 0 0 0 18-35A20 20 0 0 0 60 65M44 85h12V65H44z"/></svg></span>
+                  <span class="card-back-corner card-back-corner--bl"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg></span>
+                  <span class="card-back-corner card-back-corner--br"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span>
                 </div>
               </div>
 
@@ -308,6 +315,8 @@ const tracks = [
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    filter: blur(4px);
+    user-select: none;
   }
   .card-label {
     position: absolute;
