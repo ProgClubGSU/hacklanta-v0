@@ -4,160 +4,480 @@
 
 <section
   id="hero"
-  class="relative flex min-h-screen flex-col items-center justify-start bg-black px-4 pt-16 text-center md:pt-24"
+  class="relative flex min-h-[80vh] flex-col items-center justify-start bg-black px-4 pt-12 text-center md:min-h-screen md:pt-24"
 >
   <!-- Deep red ambient glow -->
   <div
     class="pointer-events-none absolute left-1/2 top-[40%] h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full"
     style="background: radial-gradient(circle, rgba(196,30,58,0.12) 0%, rgba(140,20,40,0.05) 35%, transparent 60%);"
-  ></div>
+  >
+  </div>
   <div
-    class="pointer-events-none absolute left-[60%] top-[30%] h-[400px] w-[400px] rounded-full opacity-[0.04] blur-[100px]"
+    class="pointer-events-none absolute left-[60%] top-[30%] hidden h-[400px] w-[400px] rounded-full opacity-[0.04] blur-[100px] md:block"
     style="background: radial-gradient(circle, rgba(201,168,76,0.6) 0%, transparent 70%);"
-  ></div>
+  >
+  </div>
   <!-- Vignette -->
   <div
     class="pointer-events-none absolute inset-0"
     style="background: radial-gradient(ellipse 65% 60% at 50% 45%, transparent 15%, rgba(26,10,14,0.5) 60%, rgba(10,4,6,0.95) 100%);"
-  ></div>
+  >
+  </div>
 
   <!-- Ghosted suit symbols -->
   <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
-    <span class="hero-suit absolute left-[3%] top-[18%] text-white/[0.015] md:w-[14rem] w-[10rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span>
-    <span class="hero-suit absolute right-[5%] top-[35%] text-red/[0.025] md:w-[12rem] w-[9rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg></span>
-    <span class="hero-suit absolute left-[20%] bottom-[25%] text-gold/[0.03] md:w-[11rem] w-[8rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 5L5 50 50 95 95 50z"/></svg></span>
-    <span class="hero-suit absolute right-[15%] bottom-[35%] text-white/[0.012] md:w-[10rem] w-[7rem]"><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M50 50m-16 0a16 16 0 1 1 32 0 16 16 0 1 1-32 0M50 5a20 20 0 0 1 0 40A20 20 0 0 1 50 5M22 30a20 20 0 0 0 18 35A20 20 0 0 0 22 30M60 65a20 20 0 0 0 18-35A20 20 0 0 0 60 65M44 85h12V65H44z"/></svg></span>
+    <span class="hero-suit absolute left-[3%] top-[18%] text-white/[0.015] md:w-[14rem] w-[10rem]"
+      ><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"
+        ><path
+          d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"
+        ></path></svg
+      ></span
+    >
+    <span class="hero-suit absolute right-[5%] top-[35%] text-red/[0.025] md:w-[12rem] w-[9rem]"
+      ><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"
+        ><path
+          d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"
+        ></path></svg
+      ></span
+    >
+    <span class="hero-suit absolute left-[20%] bottom-[25%] text-gold/[0.03] md:w-[11rem] w-[8rem]"
+      ><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"
+        ><path d="M50 5L5 50 50 95 95 50z"></path></svg
+      ></span
+    >
+    <span
+      class="hero-suit absolute right-[15%] bottom-[35%] text-white/[0.012] md:w-[10rem] w-[7rem]"
+      ><svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"
+        ><path
+          d="M50 50m-16 0a16 16 0 1 1 32 0 16 16 0 1 1-32 0M50 5a20 20 0 0 1 0 40A20 20 0 0 1 50 5M22 30a20 20 0 0 0 18 35A20 20 0 0 0 22 30M60 65a20 20 0 0 0 18-35A20 20 0 0 0 60 65M44 85h12V65H44z"
+        ></path></svg
+      ></span
+    >
   </div>
 
   <!-- Poker chips — scattered across table edges -->
   <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
     <!-- ====== TOP-LEFT ====== -->
     <div class="hero-chip hero-chip--2 absolute left-[3%] top-[1%] md:left-[5%] md:top-[2%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--3 absolute left-[6%] top-[14%] md:left-[8%] md:top-[16%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--dark">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--4 absolute left-[10%] top-[4%] md:left-[12%] md:top-[5%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
 
     <!-- ====== TOP-RIGHT ====== -->
     <div class="hero-chip hero-chip--5 absolute right-[0%] top-[4%] md:right-[1%] md:top-[6%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--6 absolute right-[4%] top-[0%] md:right-[6%] md:top-[1%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--7 absolute right-[7%] top-[12%] md:right-[9%] md:top-[14%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--dark">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--8 absolute right-[11%] top-[3%] md:right-[13%] md:top-[4%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
 
     <!-- ====== TOP-CENTER EDGES ====== -->
     <div class="hero-chip hero-chip--9 absolute left-[17%] top-[0%] md:left-[19%] md:top-[1%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--dark">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--10 absolute right-[17%] top-[0%] md:right-[19%] md:top-[1%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
 
     <!-- ====== LEFT EDGE ====== -->
     <div class="hero-chip hero-chip--11 absolute left-[0%] top-[28%] md:left-[1%] md:top-[26%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--12 absolute left-[0%] top-[38%] md:left-[1%] md:top-[36%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--13 absolute left-[1%] top-[48%] md:left-[2%] md:top-[46%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--dark">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
 
     <!-- ====== RIGHT EDGE ====== -->
     <div class="hero-chip hero-chip--15 absolute right-[0%] top-[26%] md:right-[1%] md:top-[24%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--dark">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--17 absolute right-[1%] top-[47%] md:right-[2%] md:top-[45%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--18 absolute right-[0%] top-[57%] md:right-[1%] md:top-[55%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
 
     <!-- ====== BOTTOM-LEFT ====== -->
     <div class="hero-chip hero-chip--19 absolute bottom-[0%] left-[0%] md:bottom-[1%] md:left-[1%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
-    <div class="hero-chip hero-chip--21 absolute bottom-[1%] left-[8%] md:bottom-[3%] md:left-[10%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    <div
+      class="hero-chip hero-chip--21 absolute bottom-[1%] left-[8%] md:bottom-[3%] md:left-[10%]"
+    >
+      <div class="poker-chip poker-chip--dark">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
-    <div class="hero-chip hero-chip--22 absolute bottom-[8%] left-[0%] md:bottom-[10%] md:left-[1%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    <div
+      class="hero-chip hero-chip--22 absolute bottom-[8%] left-[0%] md:bottom-[10%] md:left-[1%]"
+    >
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
 
     <!-- ====== BOTTOM-RIGHT ====== -->
-    <div class="hero-chip hero-chip--23 absolute bottom-[0%] right-[0%] md:bottom-[1%] md:right-[1%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    <div
+      class="hero-chip hero-chip--23 absolute bottom-[0%] right-[0%] md:bottom-[1%] md:right-[1%]"
+    >
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
-    <div class="hero-chip hero-chip--24 absolute bottom-[5%] right-[2%] md:bottom-[7%] md:right-[4%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    <div
+      class="hero-chip hero-chip--24 absolute bottom-[5%] right-[2%] md:bottom-[7%] md:right-[4%]"
+    >
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
-    <div class="hero-chip hero-chip--26 absolute bottom-[9%] right-[0%] md:bottom-[11%] md:right-[1%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    <div
+      class="hero-chip hero-chip--26 absolute bottom-[9%] right-[0%] md:bottom-[11%] md:right-[1%]"
+    >
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
 
     <!-- ====== BOTTOM-CENTER EDGES ====== -->
-    <div class="hero-chip hero-chip--28 absolute bottom-[0%] right-[16%] md:bottom-[1%] md:right-[18%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    <div
+      class="hero-chip hero-chip--28 absolute bottom-[0%] right-[16%] md:bottom-[1%] md:right-[18%]"
+    >
+      <div class="poker-chip poker-chip--dark">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
   </div>
 
   <!-- Scattered playing cards — asymmetric, subtle, edges only -->
   <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
-    <div class="hero-deco-card absolute left-[0%] top-[5%] md:left-[2%] md:top-[6%]" style="transform: rotate(-27deg);">
-      <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
+    <div
+      class="hero-deco-card absolute left-[0%] top-[5%] md:left-[2%] md:top-[6%]"
+      style="transform: rotate(-27deg);"
+    >
+      <div class="deco-card deco-card--back">
+        <div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div>
+      </div>
     </div>
-    <div class="hero-deco-card absolute right-[3%] top-[1%] md:right-[5%] md:top-[2%]" style="transform: rotate(14deg);">
-      <div class="deco-card deco-card--front deco-card--red"><span class="deco-card-rank">Q</span><span class="deco-card-suit deco-card-suit--red"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5L5 50 50 95 95 50z"/></svg></span></div>
+    <div
+      class="hero-deco-card absolute right-[3%] top-[1%] md:right-[5%] md:top-[2%]"
+      style="transform: rotate(14deg);"
+    >
+      <div class="deco-card deco-card--front deco-card--red">
+        <span class="deco-card-rank">Q</span><span class="deco-card-suit deco-card-suit--red"
+          ><svg
+            viewBox="0 0 100 100"
+            fill="currentColor"
+            width="1em"
+            height="1em"
+            aria-hidden="true"><path d="M50 5L5 50 50 95 95 50z"></path></svg
+          ></span
+        >
+      </div>
     </div>
-    <div class="hero-deco-card absolute left-[0%] top-[55%] md:left-[1%] md:top-[52%]" style="transform: rotate(-63deg);">
-      <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
+    <div
+      class="hero-deco-card absolute left-[0%] top-[55%] md:left-[1%] md:top-[52%]"
+      style="transform: rotate(-63deg);"
+    >
+      <div class="deco-card deco-card--back">
+        <div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div>
+      </div>
     </div>
-    <div class="hero-deco-card absolute right-[0%] top-[35%] md:right-[1%] md:top-[33%]" style="transform: rotate(52deg);">
-      <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
+    <div
+      class="hero-deco-card absolute right-[0%] top-[35%] md:right-[1%] md:top-[33%]"
+      style="transform: rotate(52deg);"
+    >
+      <div class="deco-card deco-card--back">
+        <div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div>
+      </div>
     </div>
-    <div class="hero-deco-card absolute bottom-[3%] left-[2%] md:bottom-[5%] md:left-[3%]" style="transform: rotate(38deg);">
-      <div class="deco-card deco-card--front"><span class="deco-card-rank">K</span><span class="deco-card-suit deco-card-suit--dark"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span></div>
+    <div
+      class="hero-deco-card absolute bottom-[3%] left-[2%] md:bottom-[5%] md:left-[3%]"
+      style="transform: rotate(38deg);"
+    >
+      <div class="deco-card deco-card--front">
+        <span class="deco-card-rank">K</span><span class="deco-card-suit deco-card-suit--dark"
+          ><svg
+            viewBox="0 0 100 100"
+            fill="currentColor"
+            width="1em"
+            height="1em"
+            aria-hidden="true"
+            ><path
+              d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"
+            ></path></svg
+          ></span
+        >
+      </div>
     </div>
-    <div class="hero-deco-card absolute bottom-[0%] right-[5%] md:bottom-[1%] md:right-[7%]" style="transform: rotate(-44deg);">
-      <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
+    <div
+      class="hero-deco-card absolute bottom-[0%] right-[5%] md:bottom-[1%] md:right-[7%]"
+      style="transform: rotate(-44deg);"
+    >
+      <div class="deco-card deco-card--back">
+        <div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div>
+      </div>
     </div>
-    <div class="hero-deco-card absolute bottom-[0%] left-[14%] md:bottom-[1%] md:left-[16%]" style="transform: rotate(71deg);">
-      <div class="deco-card deco-card--back"><div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div></div>
+    <div
+      class="hero-deco-card absolute bottom-[0%] left-[14%] md:bottom-[1%] md:left-[16%]"
+      style="transform: rotate(71deg);"
+    >
+      <div class="deco-card deco-card--back">
+        <div class="deco-card-back-inner"><div class="deco-card-back-pattern"></div></div>
+      </div>
     </div>
   </div>
 
   <!-- Poker chips ON TOP of cards — layered overlap -->
   <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
     <div class="hero-chip hero-chip--1 absolute left-[0%] top-[6%] md:left-[1%] md:top-[8%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--14 absolute left-[0%] top-[58%] md:left-[1%] md:top-[56%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--16 absolute right-[0%] top-[36%] md:right-[1%] md:top-[34%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
     <div class="hero-chip hero-chip--20 absolute bottom-[5%] left-[3%] md:bottom-[7%] md:left-[5%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+      <div class="poker-chip poker-chip--red">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
-    <div class="hero-chip hero-chip--25 absolute bottom-[1%] right-[7%] md:bottom-[3%] md:right-[9%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    <div
+      class="hero-chip hero-chip--25 absolute bottom-[1%] right-[7%] md:bottom-[3%] md:right-[9%]"
+    >
+      <div class="poker-chip poker-chip--dark">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
-    <div class="hero-chip hero-chip--27 absolute bottom-[0%] left-[16%] md:bottom-[1%] md:left-[18%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    <div
+      class="hero-chip hero-chip--27 absolute bottom-[0%] left-[16%] md:bottom-[1%] md:left-[18%]"
+    >
+      <div class="poker-chip poker-chip--gold">
+        <div class="chip-base">
+          <div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1">
+          </div><div class="chip-stripe chip-stripe--2"></div><div
+            class="chip-stripe chip-stripe--3"
+          >
+          </div>
+        </div><div class="chip-infield"><div class="chip-inner-ring"></div></div>
+      </div>
     </div>
   </div>
 
@@ -165,7 +485,14 @@
   <div class="relative z-10 max-w-4xl">
     <!-- Presented by -->
     <p class="hero-line font-mono text-[12px] tracking-[0.4em] text-white opacity-0 uppercase">
-    presented by <span class="text-red/100"> <a href="https://progsu.com/" target="_blank" rel="noopener noreferrer" class="text-red/90 transition-colors hover:text-white">progsu</a></span>
+      presented by <span class="text-red/100">
+        <a
+          href="https://progsu.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-red/90 transition-colors hover:text-white">progsu</a
+        ></span
+      >
     </p>
 
     <!-- Logo — tighter spacing -->
@@ -185,7 +512,11 @@
     </h1>
 
     <!-- Red rule — tight -->
-    <div class="hero-rule mx-auto mt-0 h-px w-48 opacity-0" style="background: linear-gradient(90deg, transparent, #C41E3A, transparent);"></div>
+    <div
+      class="hero-rule mx-auto mt-0 h-px w-48 opacity-0"
+      style="background: linear-gradient(90deg, transparent, #C41E3A, transparent);"
+    >
+    </div>
 
     <!-- ========== SLOT MACHINE ========== -->
     <div class="hero-slot mt-2 opacity-0">
@@ -204,9 +535,17 @@
         <!-- Info strip -->
         <div class="slot-info">
           <span class="slot-info-cell">12HRS</span>
-          <span class="slot-info-dot"><svg width="6" height="6" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M5 0L0 5 5 10 10 5z"/></svg></span>
+          <span class="slot-info-dot"
+            ><svg width="6" height="6" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"
+              ><path d="M5 0L0 5 5 10 10 5z"></path></svg
+            ></span
+          >
           <span class="slot-info-cell">ATL</span>
-          <span class="slot-info-dot"><svg width="6" height="6" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"><path d="M5 0L0 5 5 10 10 5z"/></svg></span>
+          <span class="slot-info-dot"
+            ><svg width="6" height="6" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true"
+              ><path d="M5 0L0 5 5 10 10 5z"></path></svg
+            ></span
+          >
           <span class="slot-info-cell">MAR 28</span>
         </div>
 
@@ -271,7 +610,6 @@
             <div class="lever-knob"></div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -282,11 +620,12 @@
         class="group relative inline-flex items-center gap-3 overflow-hidden bg-red px-10 py-4 font-body text-sm font-bold tracking-[0.15em] text-white-pure transition-all duration-300 hover:bg-red-bright hover:shadow-[0_0_50px_rgba(196,30,58,0.35)] hover:scale-[1.03]"
       >
         <span class="relative z-10 uppercase">Apply</span>
-        <span class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
+        <span
+          class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+        ></span>
       </a>
     </div>
   </div>
-
 </section>
 
 <style>
@@ -299,7 +638,7 @@
 
   .poker-chip {
     --chip-size: 60px;
-    --chip-color: #B22234;
+    --chip-color: #b22234;
     --chip-color-dark: #8a1a28;
     --chip-stripe: #e8dcc8;
     width: var(--chip-size);
@@ -309,7 +648,9 @@
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
   }
   @media (min-width: 768px) {
-    .poker-chip { --chip-size: 80px; }
+    .poker-chip {
+      --chip-size: 80px;
+    }
   }
 
   /* Outer chip body — solid colored circle */
@@ -346,13 +687,25 @@
     border-left: 1px solid rgba(0, 0, 0, 0.06);
     border-right: 1px solid rgba(0, 0, 0, 0.06);
   }
-  .chip-stripe::before { top: 0; }
-  .chip-stripe::after { bottom: 0; }
+  .chip-stripe::before {
+    top: 0;
+  }
+  .chip-stripe::after {
+    bottom: 0;
+  }
 
-  .chip-stripe--0 { transform: rotate(0deg); }
-  .chip-stripe--1 { transform: rotate(45deg); }
-  .chip-stripe--2 { transform: rotate(90deg); }
-  .chip-stripe--3 { transform: rotate(135deg); }
+  .chip-stripe--0 {
+    transform: rotate(0deg);
+  }
+  .chip-stripe--1 {
+    transform: rotate(45deg);
+  }
+  .chip-stripe--2 {
+    transform: rotate(90deg);
+  }
+  .chip-stripe--3 {
+    transform: rotate(135deg);
+  }
 
   /* Inner colored infield — sits on top of stripes, reveals them only at edge */
   .chip-infield {
@@ -381,7 +734,7 @@
   /* ── Color variants ── */
 
   .poker-chip--red {
-    --chip-color: #B22234;
+    --chip-color: #b22234;
     --chip-color-dark: #8a1a28;
     --chip-stripe: #e8dcc8;
   }
@@ -399,34 +752,90 @@
   }
 
   /* Stagger rotations for natural scatter */
-  .hero-chip--1 .poker-chip { transform: rotate(-15deg); }
-  .hero-chip--2 .poker-chip { transform: rotate(8deg); }
-  .hero-chip--3 .poker-chip { transform: rotate(-5deg); }
-  .hero-chip--4 .poker-chip { transform: rotate(22deg); }
-  .hero-chip--5 .poker-chip { transform: rotate(-10deg); }
-  .hero-chip--6 .poker-chip { transform: rotate(35deg); }
-  .hero-chip--7 .poker-chip { transform: rotate(-28deg); }
-  .hero-chip--8 .poker-chip { transform: rotate(18deg); }
-  .hero-chip--9 .poker-chip { transform: rotate(-42deg); }
-  .hero-chip--10 .poker-chip { transform: rotate(14deg); }
-  .hero-chip--11 .poker-chip { transform: rotate(-20deg); }
-  .hero-chip--12 .poker-chip { transform: rotate(30deg); }
-  .hero-chip--13 .poker-chip { transform: rotate(-8deg); }
-  .hero-chip--14 .poker-chip { transform: rotate(25deg); }
-  .hero-chip--15 .poker-chip { transform: rotate(-35deg); }
-  .hero-chip--16 .poker-chip { transform: rotate(12deg); }
-  .hero-chip--17 .poker-chip { transform: rotate(-18deg); }
-  .hero-chip--18 .poker-chip { transform: rotate(40deg); }
-  .hero-chip--19 .poker-chip { transform: rotate(-12deg); }
-  .hero-chip--20 .poker-chip { transform: rotate(28deg); }
-  .hero-chip--21 .poker-chip { transform: rotate(-38deg); }
-  .hero-chip--22 .poker-chip { transform: rotate(6deg); }
-  .hero-chip--23 .poker-chip { transform: rotate(-22deg); }
-  .hero-chip--24 .poker-chip { transform: rotate(32deg); }
-  .hero-chip--25 .poker-chip { transform: rotate(-15deg); }
-  .hero-chip--26 .poker-chip { transform: rotate(20deg); }
-  .hero-chip--27 .poker-chip { transform: rotate(-30deg); }
-  .hero-chip--28 .poker-chip { transform: rotate(45deg); }
+  .hero-chip--1 .poker-chip {
+    transform: rotate(-15deg);
+  }
+  .hero-chip--2 .poker-chip {
+    transform: rotate(8deg);
+  }
+  .hero-chip--3 .poker-chip {
+    transform: rotate(-5deg);
+  }
+  .hero-chip--4 .poker-chip {
+    transform: rotate(22deg);
+  }
+  .hero-chip--5 .poker-chip {
+    transform: rotate(-10deg);
+  }
+  .hero-chip--6 .poker-chip {
+    transform: rotate(35deg);
+  }
+  .hero-chip--7 .poker-chip {
+    transform: rotate(-28deg);
+  }
+  .hero-chip--8 .poker-chip {
+    transform: rotate(18deg);
+  }
+  .hero-chip--9 .poker-chip {
+    transform: rotate(-42deg);
+  }
+  .hero-chip--10 .poker-chip {
+    transform: rotate(14deg);
+  }
+  .hero-chip--11 .poker-chip {
+    transform: rotate(-20deg);
+  }
+  .hero-chip--12 .poker-chip {
+    transform: rotate(30deg);
+  }
+  .hero-chip--13 .poker-chip {
+    transform: rotate(-8deg);
+  }
+  .hero-chip--14 .poker-chip {
+    transform: rotate(25deg);
+  }
+  .hero-chip--15 .poker-chip {
+    transform: rotate(-35deg);
+  }
+  .hero-chip--16 .poker-chip {
+    transform: rotate(12deg);
+  }
+  .hero-chip--17 .poker-chip {
+    transform: rotate(-18deg);
+  }
+  .hero-chip--18 .poker-chip {
+    transform: rotate(40deg);
+  }
+  .hero-chip--19 .poker-chip {
+    transform: rotate(-12deg);
+  }
+  .hero-chip--20 .poker-chip {
+    transform: rotate(28deg);
+  }
+  .hero-chip--21 .poker-chip {
+    transform: rotate(-38deg);
+  }
+  .hero-chip--22 .poker-chip {
+    transform: rotate(6deg);
+  }
+  .hero-chip--23 .poker-chip {
+    transform: rotate(-22deg);
+  }
+  .hero-chip--24 .poker-chip {
+    transform: rotate(32deg);
+  }
+  .hero-chip--25 .poker-chip {
+    transform: rotate(-15deg);
+  }
+  .hero-chip--26 .poker-chip {
+    transform: rotate(20deg);
+  }
+  .hero-chip--27 .poker-chip {
+    transform: rotate(-30deg);
+  }
+  .hero-chip--28 .poker-chip {
+    transform: rotate(45deg);
+  }
 
   /* ======================================================
      SLOT MACHINE — physical cabinet design
@@ -462,7 +871,8 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg,
+    background: linear-gradient(
+      90deg,
       rgba(196, 30, 58, 0.08),
       rgba(196, 30, 58, 0.02) 30%,
       rgba(196, 30, 58, 0.02) 70%,
@@ -474,19 +884,40 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, rgba(255, 200, 100, 0.9), rgba(196, 30, 58, 0.6));
+    background: radial-gradient(
+      circle at 40% 35%,
+      rgba(255, 200, 100, 0.9),
+      rgba(196, 30, 58, 0.6)
+    );
     box-shadow: 0 0 6px rgba(255, 200, 100, 0.4);
     animation: bulb-blink 2s ease-in-out infinite;
   }
-  .marquee-bulb:nth-child(2) { animation-delay: 0.3s; }
-  .marquee-bulb:nth-child(3) { animation-delay: 0.6s; }
-  .marquee-bulb:nth-child(5) { animation-delay: 0.9s; }
-  .marquee-bulb:nth-child(6) { animation-delay: 1.2s; }
-  .marquee-bulb:nth-child(7) { animation-delay: 1.5s; }
+  .marquee-bulb:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  .marquee-bulb:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  .marquee-bulb:nth-child(5) {
+    animation-delay: 0.9s;
+  }
+  .marquee-bulb:nth-child(6) {
+    animation-delay: 1.2s;
+  }
+  .marquee-bulb:nth-child(7) {
+    animation-delay: 1.5s;
+  }
 
   @keyframes bulb-blink {
-    0%, 100% { opacity: 0.4; box-shadow: 0 0 4px rgba(255, 200, 100, 0.2); }
-    50% { opacity: 1; box-shadow: 0 0 10px rgba(255, 200, 100, 0.6); }
+    0%,
+    100% {
+      opacity: 0.4;
+      box-shadow: 0 0 4px rgba(255, 200, 100, 0.2);
+    }
+    50% {
+      opacity: 1;
+      box-shadow: 0 0 10px rgba(255, 200, 100, 0.6);
+    }
   }
 
   .marquee-text {
@@ -523,8 +954,12 @@
     align-items: center;
   }
   @media (min-width: 768px) {
-    .slot-info-cell { font-size: 12px; }
-    .slot-info { gap: 16px; }
+    .slot-info-cell {
+      font-size: 12px;
+    }
+    .slot-info {
+      gap: 16px;
+    }
   }
 
   /* ── Reel body ── */
@@ -536,11 +971,14 @@
     border-bottom: 1px solid rgba(196, 30, 58, 0.08);
   }
   @media (min-width: 768px) {
-    .slot-body { padding: 10px 28px 8px; }
+    .slot-body {
+      padding: 10px 28px 8px;
+    }
   }
 
   /* Payline arrows */
-  .slot-payline-left, .slot-payline-right {
+  .slot-payline-left,
+  .slot-payline-right {
     position: absolute;
     top: 50%;
     transform: translateY(-60%);
@@ -549,11 +987,19 @@
     text-shadow: 0 0 6px rgba(196, 30, 58, 0.3);
     z-index: 2;
   }
-  .slot-payline-left { left: 8px; }
-  .slot-payline-right { right: 8px; }
+  .slot-payline-left {
+    left: 8px;
+  }
+  .slot-payline-right {
+    right: 8px;
+  }
   @media (min-width: 768px) {
-    .slot-payline-left { left: 12px; }
-    .slot-payline-right { right: 12px; }
+    .slot-payline-left {
+      left: 12px;
+    }
+    .slot-payline-right {
+      right: 12px;
+    }
   }
 
   /* Reels container */
@@ -564,7 +1010,9 @@
     gap: 6px;
   }
   @media (min-width: 768px) {
-    .slot-reels { gap: 10px; }
+    .slot-reels {
+      gap: 10px;
+    }
   }
 
   .slot-reel-group {
@@ -592,7 +1040,11 @@
       0 -2px 0 rgba(196, 30, 58, 0.05);
   }
   @media (min-width: 768px) {
-    .slot-reel-window { width: 76px; height: 72px; border-radius: 8px; }
+    .slot-reel-window {
+      width: 76px;
+      height: 72px;
+      border-radius: 8px;
+    }
   }
 
   /* Glass shine overlay */
@@ -602,13 +1054,13 @@
     pointer-events: none;
     z-index: 3;
     border-radius: 5px;
-    background:
-      linear-gradient(180deg,
-        rgba(255, 255, 255, 0.06) 0%,
-        transparent 30%,
-        transparent 70%,
-        rgba(0, 0, 0, 0.3) 100%
-      );
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
   }
 
   /* Reel strip (the scrolling digit) */
@@ -625,7 +1077,7 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 38px;
     letter-spacing: 0.06em;
-    color: #C41E3A;
+    color: #c41e3a;
     text-shadow:
       0 0 20px rgba(196, 30, 58, 0.4),
       0 0 40px rgba(196, 30, 58, 0.15);
@@ -641,7 +1093,9 @@
     text-shadow: 0 0 15px rgba(196, 30, 58, 0.2);
   }
   @media (min-width: 768px) {
-    .reel-digit { font-size: 52px; }
+    .reel-digit {
+      font-size: 52px;
+    }
   }
 
   /* Tick animation */
@@ -649,10 +1103,23 @@
     animation: reel-tick 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
   @keyframes reel-tick {
-    0% { transform: translateY(-110%); opacity: 0; filter: blur(3px); }
-    60% { filter: blur(0); }
-    75% { transform: translateY(4px); opacity: 0.85; }
-    100% { transform: translateY(0); opacity: 1; filter: blur(0); }
+    0% {
+      transform: translateY(-110%);
+      opacity: 0;
+      filter: blur(3px);
+    }
+    60% {
+      filter: blur(0);
+    }
+    75% {
+      transform: translateY(4px);
+      opacity: 0.85;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+      filter: blur(0);
+    }
   }
 
   /* Colon separator */
@@ -666,11 +1133,19 @@
     animation: sep-pulse 2s ease-in-out infinite;
   }
   @media (min-width: 768px) {
-    .reel-sep { font-size: 44px; padding-top: 14px; }
+    .reel-sep {
+      font-size: 44px;
+      padding-top: 14px;
+    }
   }
   @keyframes sep-pulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
   }
 
   .reel-label {
@@ -680,7 +1155,9 @@
     color: var(--color-gray-darker);
   }
   @media (min-width: 768px) {
-    .reel-label { font-size: 9px; }
+    .reel-label {
+      font-size: 9px;
+    }
   }
 
   /* ── Lever ── */
@@ -699,19 +1176,23 @@
     background: linear-gradient(90deg, #4a2a30, #6a3a42, #4a2a30);
     border-radius: 3px;
     border: 1px solid rgba(196, 30, 58, 0.15);
-    box-shadow: 1px 0 4px rgba(0,0,0,0.4);
+    box-shadow: 1px 0 4px rgba(0, 0, 0, 0.4);
   }
   .lever-knob {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #C41E3A, #7A1024);
+    background: radial-gradient(circle at 40% 35%, #c41e3a, #7a1024);
     border: 2px solid rgba(196, 30, 58, 0.3);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.15);
+    box-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.5),
+      inset 0 1px 2px rgba(255, 255, 255, 0.15);
     margin-top: -2px;
   }
   @media (max-width: 767px) {
-    .slot-lever { display: none; }
+    .slot-lever {
+      display: none;
+    }
   }
 
   /* ── Bottom tray ── */
@@ -720,7 +1201,7 @@
     background: linear-gradient(180deg, #1a0a0e 0%, #120608 100%);
   }
   .tray-inner {
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 0 0 8px 8px;
     padding: 6px;
     border: 1px solid rgba(196, 30, 58, 0.06);
@@ -749,7 +1230,10 @@
     filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.7));
   }
   @media (min-width: 768px) {
-    .deco-card { --deco-card-w: 130px; border-radius: 8px; }
+    .deco-card {
+      --deco-card-w: 130px;
+      border-radius: 8px;
+    }
   }
 
   /* Face-down (Bicycle back) — darker than track cards */
@@ -796,7 +1280,9 @@
     gap: 0;
   }
   @media (min-width: 768px) {
-    .deco-card--front { padding: 8px 10px; }
+    .deco-card--front {
+      padding: 8px 10px;
+    }
   }
 
   .deco-card-rank {
@@ -810,7 +1296,9 @@
     color: #4e0e16;
   }
   @media (min-width: 768px) {
-    .deco-card-rank { font-size: 24px; }
+    .deco-card-rank {
+      font-size: 24px;
+    }
   }
 
   .deco-card-suit {
@@ -818,10 +1306,16 @@
     line-height: 1;
     margin-top: -1px;
   }
-  .deco-card-suit--dark { color: #111; }
-  .deco-card-suit--red { color: #4e0e16; }
+  .deco-card-suit--dark {
+    color: #111;
+  }
+  .deco-card-suit--red {
+    color: #4e0e16;
+  }
   @media (min-width: 768px) {
-    .deco-card-suit { font-size: 20px; }
+    .deco-card-suit {
+      font-size: 20px;
+    }
   }
 
   /* ======================================================
@@ -832,14 +1326,39 @@
     height: 32px;
     display: block;
     margin: 0 auto;
-    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(196,30,58,0.2));
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 8px rgba(196, 30, 58, 0.2));
   }
   @media (min-width: 768px) {
-    .reel-icon { width: 44px; height: 44px; }
+    .reel-icon {
+      width: 44px;
+      height: 44px;
+    }
   }
 
-
-
+  /* ── Mobile performance: reduce decorative elements ── */
+  @media (max-width: 767px) {
+    .hero-chip--3,
+    .hero-chip--6,
+    .hero-chip--7,
+    .hero-chip--8,
+    .hero-chip--9,
+    .hero-chip--10,
+    .hero-chip--12,
+    .hero-chip--15,
+    .hero-chip--24,
+    .hero-chip--28 {
+      display: none;
+    }
+    .hero-deco-card:nth-child(2),
+    .hero-deco-card:nth-child(5),
+    .hero-deco-card:nth-child(7) {
+      display: none;
+    }
+    .hero-suit:nth-child(3),
+    .hero-suit:nth-child(4) {
+      display: none;
+    }
+  }
 </style>
 
 <script>
@@ -865,10 +1384,22 @@
   };
 
   const reelLabels = {
-    days: document.querySelector<HTMLElement>('[data-unit="days"]')!.closest('.slot-reel-group')!.querySelector('.reel-label')!,
-    hours: document.querySelector<HTMLElement>('[data-unit="hours"]')!.closest('.slot-reel-group')!.querySelector('.reel-label')!,
-    mins: document.querySelector<HTMLElement>('[data-unit="mins"]')!.closest('.slot-reel-group')!.querySelector('.reel-label')!,
-    secs: document.querySelector<HTMLElement>('[data-unit="secs"]')!.closest('.slot-reel-group')!.querySelector('.reel-label')!,
+    days: document
+      .querySelector<HTMLElement>('[data-unit="days"]')!
+      .closest('.slot-reel-group')!
+      .querySelector('.reel-label')!,
+    hours: document
+      .querySelector<HTMLElement>('[data-unit="hours"]')!
+      .closest('.slot-reel-group')!
+      .querySelector('.reel-label')!,
+    mins: document
+      .querySelector<HTMLElement>('[data-unit="mins"]')!
+      .closest('.slot-reel-group')!
+      .querySelector('.reel-label')!,
+    secs: document
+      .querySelector<HTMLElement>('[data-unit="secs"]')!
+      .closest('.slot-reel-group')!
+      .querySelector('.reel-label')!,
   };
 
   const prev = { days: '', hours: '', mins: '', secs: '' };
@@ -908,7 +1439,8 @@
 
   const ICONS = {
     // Classic cherry — two glossy red cherries with a curved stem
-    cherry: SVG(`
+    cherry: SVG(
+      `
       <defs>
         <radialGradient id="ch" cx="0.35" cy="0.3"><stop offset="0" stop-color="#ff4d5e"/><stop offset="0.6" stop-color="#c41e3a"/><stop offset="1" stop-color="#7a1024"/></radialGradient>
       </defs>
@@ -919,10 +1451,13 @@
       <ellipse cx="6.2" cy="8.5" rx="1.5" ry="2" fill="rgba(255,255,255,0.22)" transform="rotate(-15 6.2 8.5)"/>
       <ellipse cx="15" cy="9" rx="5" ry="5.2" fill="url(#ch)" stroke="#7a1024" stroke-width="0.6"/>
       <ellipse cx="13.7" cy="7.5" rx="1.5" ry="2" fill="rgba(255,255,255,0.22)" transform="rotate(-15 13.7 7.5)"/>
-    `, '0 -1 22 17'),
+    `,
+      '0 -1 22 17',
+    ),
 
     // Classic diamond gem — faceted blue-white gem
-    diamond: SVG(`
+    diamond: SVG(
+      `
       <defs>
         <linearGradient id="dm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8d8ff"/><stop offset="0.5" stop-color="#4da6ff"/><stop offset="1" stop-color="#1a6bc4"/></linearGradient>
       </defs>
@@ -932,10 +1467,13 @@
       <line x1="8" y1="8" x2="12" y2="1" stroke="rgba(255,255,255,0.2)" stroke-width="0.4"/>
       <line x1="16" y1="8" x2="12" y2="1" stroke="rgba(255,255,255,0.2)" stroke-width="0.4"/>
       <polygon points="3,8 8,8 12,1" fill="rgba(255,255,255,0.12)"/>
-    `, '0 -1 24 25'),
+    `,
+      '0 -1 24 25',
+    ),
 
     // Lucky 7 — Bodoni Black vector trace, red/gold
-    seven: SVG(`
+    seven: SVG(
+      `
       <defs>
         <linearGradient id="sv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff4d5e"/><stop offset="1" stop-color="#8a1024"/></linearGradient>
       </defs>
@@ -950,7 +1488,9 @@
       <path d="
         M 8 4 L 42 4 L 42 6 L 8 6 Z
       " fill="rgba(255,255,255,0.15)"/>
-    `, '-10 -10 70 70'),
+    `,
+      '-10 -10 70 70',
+    ),
 
     // BAR — classic slot bar symbol
     bar: SVG(`
@@ -989,7 +1529,8 @@
     `),
 
     // Watermelon — classic fruit machine symbol
-    melon: SVG(`
+    melon: SVG(
+      `
       <defs>
         <radialGradient id="ml" cx="0.5" cy="0.6"><stop offset="0" stop-color="#4ade80"/><stop offset="0.7" stop-color="#16a34a"/><stop offset="1" stop-color="#0a5c28"/></radialGradient>
       </defs>
@@ -1002,10 +1543,13 @@
       <ellipse cx="15" cy="12.5" rx="0.6" ry="0.9" fill="#1a0a0e" transform="rotate(10 15 12.5)"/>
       <ellipse cx="10.5" cy="13.5" rx="0.5" ry="0.7" fill="#1a0a0e" transform="rotate(-5 10.5 13.5)"/>
       <ellipse cx="13.5" cy="13.5" rx="0.5" ry="0.7" fill="#1a0a0e" transform="rotate(5 13.5 13.5)"/>
-    `, '0 3 24 14'),
+    `,
+      '0 3 24 14',
+    ),
 
     // Orange — classic citrus fruit
-    orange: SVG(`
+    orange: SVG(
+      `
       <defs>
         <radialGradient id="og" cx="0.38" cy="0.35"><stop offset="0" stop-color="#ffb347"/><stop offset="0.6" stop-color="#ff8c00"/><stop offset="1" stop-color="#c45e00"/></radialGradient>
       </defs>
@@ -1013,10 +1557,13 @@
       <ellipse cx="10" cy="10" rx="2.5" ry="3.2" fill="rgba(255,255,255,0.18)" transform="rotate(-20 10 10)"/>
       <path d="M12 4.5c0-1.5.8-2.5 1.5-3" stroke="#2d8a4e" stroke-width="1.3" stroke-linecap="round" fill="none"/>
       <path d="M12.8 3c.8.3 2 .2 2.5-.5" stroke="#3aab62" stroke-width="1" stroke-linecap="round" fill="none"/>
-    `, '0 0 24 22'),
+    `,
+      '0 0 24 22',
+    ),
 
     // Plum — classic purple fruit
-    plum: SVG(`
+    plum: SVG(
+      `
       <defs>
         <radialGradient id="pl" cx="0.38" cy="0.35"><stop offset="0" stop-color="#c084fc"/><stop offset="0.5" stop-color="#9333ea"/><stop offset="1" stop-color="#581c87"/></radialGradient>
       </defs>
@@ -1024,20 +1571,26 @@
       <ellipse cx="10" cy="10" rx="2.2" ry="3" fill="rgba(255,255,255,0.18)" transform="rotate(-20 10 10)"/>
       <path d="M12 4.5c-.3-1.5.3-2.8 1-3.2" stroke="#2d8a4e" stroke-width="1.3" stroke-linecap="round" fill="none"/>
       <path d="M12.5 2.8c.6.4 1.8.5 2.4 0" stroke="#3aab62" stroke-width="0.9" stroke-linecap="round" fill="none"/>
-    `, '0 0 24 22'),
+    `,
+      '0 0 24 22',
+    ),
 
     // Lemon — classic yellow fruit
-    lemon: SVG(`
+    lemon: SVG(
+      `
       <defs>
         <radialGradient id="lm" cx="0.38" cy="0.35"><stop offset="0" stop-color="#fef08a"/><stop offset="0.5" stop-color="#facc15"/><stop offset="1" stop-color="#a16207"/></radialGradient>
       </defs>
       <ellipse cx="12" cy="11" rx="7" ry="8.5" fill="url(#lm)" stroke="#a16207" stroke-width="0.6" transform="rotate(-15 12 11)"/>
       <ellipse cx="10.5" cy="9" rx="2" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-25 10.5 9)"/>
       <path d="M14 3c.5-1 1.5-1.5 2-1.2" stroke="#65a30d" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-    `, '0 0 24 22'),
+    `,
+      '0 0 24 22',
+    ),
 
     // 6 — Bodoni Black vector, neon green
-    sixGreen: SVG(`
+    sixGreen: SVG(
+      `
       <defs>
         <linearGradient id="s6g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#15803d"/></linearGradient>
       </defs>
@@ -1061,10 +1614,13 @@
         C 21 39.5 18 35.5 18 31
         C 18 26.5 21 23 25 23 Z
       " fill="url(#s6g)" fill-rule="evenodd"/>
-    `, '-4 -10 58 68'),
+    `,
+      '-4 -10 58 68',
+    ),
 
     // 9 — Bodoni Black vector, cyan
-    nineCyan: SVG(`
+    nineCyan: SVG(
+      `
       <defs>
         <linearGradient id="s9c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#0e7490"/></linearGradient>
       </defs>
@@ -1088,10 +1644,13 @@
         C 29 10.5 32 14.5 32 19
         C 32 23.5 29 27 25 27 Z
       " fill="url(#s9c)" fill-rule="evenodd"/>
-    `, '-4 -8 58 68'),
+    `,
+      '-4 -8 58 68',
+    ),
 
     // 6 — Bodoni Black vector, gold
-    sixGold: SVG(`
+    sixGold: SVG(
+      `
       <defs>
         <linearGradient id="s6d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd700"/><stop offset="0.6" stop-color="#d4a012"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
       </defs>
@@ -1115,10 +1674,13 @@
         C 21 39.5 18 35.5 18 31
         C 18 26.5 21 23 25 23 Z
       " fill="url(#s6d)" fill-rule="evenodd"/>
-    `, '-4 -10 58 68'),
+    `,
+      '-4 -10 58 68',
+    ),
 
     // 9 — Bodoni Black vector, hot pink
-    ninePink: SVG(`
+    ninePink: SVG(
+      `
       <defs>
         <linearGradient id="s9p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b9d"/><stop offset="1" stop-color="#9d174d"/></linearGradient>
       </defs>
@@ -1142,12 +1704,22 @@
         C 29 10.5 32 14.5 32 19
         C 32 23.5 29 27 25 27 Z
       " fill="url(#s9p)" fill-rule="evenodd"/>
-    `, '-4 -8 58 68'),
+    `,
+      '-4 -8 58 68',
+    ),
   };
 
   const symbolDefs = [
-    ICONS.cherry, ICONS.diamond, ICONS.seven, ICONS.bar, ICONS.bell,
-    ICONS.horseshoe, ICONS.melon, ICONS.orange, ICONS.plum, ICONS.lemon,
+    ICONS.cherry,
+    ICONS.diamond,
+    ICONS.seven,
+    ICONS.bar,
+    ICONS.bell,
+    ICONS.horseshoe,
+    ICONS.melon,
+    ICONS.orange,
+    ICONS.plum,
+    ICONS.lemon,
   ];
   const WIN_REELS = [ICONS.sixGreen, ICONS.seven, ICONS.sixGold, ICONS.nineCyan];
   const reelEls = [reels.days, reels.hours, reels.mins, reels.secs] as HTMLElement[];
@@ -1163,66 +1735,103 @@
   }
 
   // Hide labels during spin phase
-  Object.values(reelLabels).forEach(l => (l as HTMLElement).style.opacity = '0');
+  Object.values(reelLabels).forEach((l) => ((l as HTMLElement).style.opacity = '0'));
 
   // Start all reels spinning with symbols
-  reelEls.forEach(el => {
+  reelEls.forEach((el) => {
     setSymbol(el, randSym());
   });
 
-  // Spin speed: fast at start
-  const spinIntervals: number[] = [];
-  const spinSpeeds = [60, 55, 65, 50]; // slightly different speeds per reel
+  // GSAP-based smooth vertical scroll spinning
+  const stopFns: (() => void)[] = [];
 
   function startSpinning() {
     reelEls.forEach((el, i) => {
-      spinIntervals[i] = window.setInterval(() => {
-        setSymbol(el, randSym());
-        el.classList.remove('tick');
-        void el.offsetWidth;
-        el.classList.add('tick');
-      }, spinSpeeds[i]);
+      const targetSpeed = 0.04 + i * 0.004;
+      let speed = 0.12;
+      let running = true;
+
+      function cycle() {
+        if (!running) return;
+        speed = Math.max(targetSpeed, speed * 0.6);
+        gsap.to(el, {
+          y: '-110%',
+          duration: speed,
+          ease: 'none',
+          onComplete: () => {
+            if (!running) return;
+            setSymbol(el, randSym());
+            gsap.set(el, { y: '110%' });
+            gsap.to(el, { y: '0%', duration: speed, ease: 'none', onComplete: cycle });
+          },
+        });
+      }
+
+      stopFns[i] = () => {
+        running = false;
+        gsap.killTweensOf(el);
+      };
+      cycle();
     });
   }
 
-  // Stop reels left-to-right with staggered delays, land on winning symbol
-  function stopReel(index: number, target: string): Promise<void> {
-    return new Promise(resolve => {
-      clearInterval(spinIntervals[index]);
-      const el = reelEls[index];
+  // Stop reel with smooth deceleration + bounce landing
+  async function stopReel(index: number, target: string): Promise<void> {
+    stopFns[index]();
+    const el = reelEls[index];
 
-      // Slow down phase: gradually increase interval before stopping
-      let slowSpeed = spinSpeeds[index];
-      let slowCount = 0;
-      const slowMax = 6;
+    // Deceleration: progressively slower cycles
+    const durs = [0.07, 0.12, 0.18];
+    for (const dur of durs) {
+      await new Promise<void>((res) => {
+        gsap.to(el, {
+          y: '-110%',
+          duration: dur,
+          ease: 'none',
+          onComplete: () => {
+            setSymbol(el, randSym());
+            gsap.set(el, { y: '110%' });
+            gsap.to(el, { y: '0%', duration: dur, ease: 'none', onComplete: res });
+          },
+        });
+      });
+    }
 
-      const slowInterval = setInterval(() => {
-        setSymbol(el, randSym());
-        el.classList.remove('tick');
-        void el.offsetWidth;
-        el.classList.add('tick');
-        slowCount++;
-        slowSpeed += 25; // decelerate
-
-        if (slowCount >= slowMax) {
-          clearInterval(slowInterval);
-          // Land on winning symbol
+    // Final landing: ease-in exit, bounce-in entry
+    await new Promise<void>((res) => {
+      gsap.to(el, {
+        y: '-110%',
+        duration: 0.14,
+        ease: 'power2.in',
+        onComplete: () => {
           setSymbol(el, target);
-          el.classList.remove('tick');
-          void el.offsetWidth;
-          el.classList.add('tick');
-
-          // Flash the reel window on lock
-          const reelWindow = el.closest('.slot-reel-window') as HTMLElement;
-          if (reelWindow) {
-            gsap.fromTo(reelWindow,
-              { boxShadow: 'inset 0 4px 16px rgba(0,0,0,1), inset 0 -4px 16px rgba(0,0,0,1), 0 0 20px rgba(196,30,58,0.6)' },
-              { boxShadow: 'inset 0 4px 16px rgba(0,0,0,1), inset 0 -4px 16px rgba(0,0,0,1), 0 0 0px rgba(196,30,58,0)', duration: 0.5, ease: 'power2.out' }
-            );
-          }
-          resolve();
-        }
-      }, slowSpeed);
+          gsap.set(el, { y: '110%' });
+          gsap.to(el, {
+            y: '0%',
+            duration: 0.28,
+            ease: 'back.out(1.4)',
+            onComplete: () => {
+              const reelWindow = el.closest('.slot-reel-window') as HTMLElement;
+              if (reelWindow) {
+                gsap.fromTo(
+                  reelWindow,
+                  {
+                    boxShadow:
+                      'inset 0 4px 16px rgba(0,0,0,1), inset 0 -4px 16px rgba(0,0,0,1), 0 0 20px rgba(196,30,58,0.6)',
+                  },
+                  {
+                    boxShadow:
+                      'inset 0 4px 16px rgba(0,0,0,1), inset 0 -4px 16px rgba(0,0,0,1), 0 0 0px rgba(196,30,58,0)',
+                    duration: 0.5,
+                    ease: 'power2.out',
+                  },
+                );
+              }
+              res();
+            },
+          });
+        },
+      });
     });
   }
 
@@ -1231,25 +1840,24 @@
     // Reveal Hacklanta logo early, while slot machine spins
     gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1.4, ease: 'power2.out' });
 
-    // Start spinning all reels
     startSpinning();
 
-    // Wait a beat so the spin is visible
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1000));
 
     // Stop reels left to right with stagger
     await stopReel(0, WIN_REELS[0]);
-    await new Promise(r => setTimeout(r, 400));
+    await new Promise((r) => setTimeout(r, 100));
     await stopReel(1, WIN_REELS[1]);
-    await new Promise(r => setTimeout(r, 400));
+    await new Promise((r) => setTimeout(r, 100));
     await stopReel(2, WIN_REELS[2]);
-    await new Promise(r => setTimeout(r, 400));
+    await new Promise((r) => setTimeout(r, 100));
     await stopReel(3, WIN_REELS[3]);
 
     // === JACKPOT! ===
     // Flash the whole cabinet
     gsap.to(cabinet, {
-      boxShadow: '0 0 60px rgba(196,30,58,0.5), 0 0 120px rgba(196,30,58,0.2), inset 0 1px 0 rgba(255,255,255,0.06)',
+      boxShadow:
+        '0 0 60px rgba(196,30,58,0.5), 0 0 120px rgba(196,30,58,0.2), inset 0 1px 0 rgba(255,255,255,0.06)',
       duration: 0.3,
       yoyo: true,
       repeat: 3,
@@ -1278,7 +1886,7 @@
     });
 
     // Wait for jackpot celebration
-    await new Promise(r => setTimeout(r, 1600));
+    await new Promise((r) => setTimeout(r, 1600));
 
     // Signal other components that jackpot has landed
     window.dispatchEvent(new CustomEvent('jackpot'));
@@ -1294,12 +1902,29 @@
       .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 0.6);
 
     // === Transition to countdown ===
-    // Reset marquee
-    marqueeText.textContent = 'TIME REMAINING';
-    gsap.to(marqueeText, {
-      color: 'rgba(196,30,58,0.6)',
-      textShadow: '0 0 10px rgba(196,30,58,0.2)',
-      duration: 0.4,
+    // Fade out jackpot text, swap, fade in as "TIME REMAINING"
+    await new Promise<void>((res) => {
+      gsap.to(marqueeText, {
+        opacity: 0,
+        y: -4,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => {
+          marqueeText.textContent = 'TIME REMAINING';
+          gsap.set(marqueeText, {
+            color: 'rgba(196,30,58,0.6)',
+            textShadow: '0 0 10px rgba(196,30,58,0.2)',
+            y: 4,
+          });
+          gsap.to(marqueeText, {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: 'power2.out',
+            onComplete: res,
+          });
+        },
+      });
     });
 
     // Reset payline arrows
@@ -1311,53 +1936,66 @@
 
     // Reset cabinet glow
     gsap.to(cabinet, {
-      boxShadow: '0 12px 50px rgba(0,0,0,0.8), 0 0 100px rgba(196,30,58,0.05), inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.3)',
+      boxShadow:
+        '0 12px 50px rgba(0,0,0,0.8), 0 0 100px rgba(196,30,58,0.05), inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.3)',
       duration: 0.5,
     });
 
-    // Swap symbols to countdown numbers — left to right again
+    // Swap symbols to countdown numbers — smooth scroll transition
     const real = getCountdownVals();
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const el = reels[key];
       const label = reelLabels[key] as HTMLElement;
 
-      // Reset font size for numbers
       el.style.fontSize = '';
 
-      // Quick scramble of numbers then land
-      let count = 0;
-      const max = 4;
-      await new Promise<void>(resolve => {
-        const interval = setInterval(() => {
-          el.textContent = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-          el.classList.remove('tick');
-          void el.offsetWidth;
-          el.classList.add('tick');
-          count++;
-          if (count >= max) {
-            clearInterval(interval);
+      // Quick scramble with smooth vertical scrolling
+      for (let s = 0; s < 3; s++) {
+        await new Promise<void>((res) => {
+          gsap.to(el, {
+            y: '-110%',
+            duration: 0.08,
+            ease: 'none',
+            onComplete: () => {
+              el.textContent = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+              gsap.set(el, { y: '110%' });
+              gsap.to(el, { y: '0%', duration: 0.08, ease: 'none', onComplete: res });
+            },
+          });
+        });
+      }
+
+      // Final land on real value with bounce
+      await new Promise<void>((res) => {
+        gsap.to(el, {
+          y: '-110%',
+          duration: 0.12,
+          ease: 'power1.in',
+          onComplete: () => {
             el.textContent = real[key];
             prev[key] = real[key];
-            el.classList.remove('tick');
-            void el.offsetWidth;
-            el.classList.add('tick');
-
-            // Fade in label
-            gsap.to(label, { opacity: 1, duration: 0.3 });
-            resolve();
-          }
-        }, 60);
+            gsap.set(el, { y: '110%' });
+            gsap.to(el, {
+              y: '0%',
+              duration: 0.3,
+              ease: 'back.out(1.2)',
+              onComplete: () => {
+                gsap.set(el, { clearProps: 'transform' });
+                gsap.to(label, { opacity: 1, duration: 0.3 });
+                res();
+              },
+            });
+          },
+        });
       });
 
-      // Small stagger between each reel transition
       if (i < keys.length - 1) {
-        await new Promise(r => setTimeout(r, 150));
+        await new Promise((r) => setTimeout(r, 100));
       }
     }
 
     // Start live countdown
     setInterval(updateCountdown, 1000);
-  }, 1500);
-
+  }, 800);
 </script>

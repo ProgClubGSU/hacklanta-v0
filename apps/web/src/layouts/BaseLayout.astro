@@ -1,12 +1,14 @@
 ---
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'Hacklanta — A 12-hour hackathon by progsu. Go all in.' } = Astro.props;
+const { title, description = 'Hacklanta — A 12-hour hackathon by progsu. Go all in.' } =
+  Astro.props;
 ---
 
 <!doctype html>
@@ -30,7 +32,9 @@ const { title, description = 'Hacklanta — A 12-hour hackathon by progsu. Go al
 
     <title>{title}</title>
   </head>
+  <Analytics />
   <body>
     <slot />
   </body>
+
 </html>
