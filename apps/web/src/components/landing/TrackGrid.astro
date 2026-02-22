@@ -351,54 +351,72 @@ const tracks = [
   const fanRotations = [-12, -4, 4, 12];
 
   // Calculate offsets from each card's natural grid position to the hero fan
+  // IMPORTANT: measure rects BEFORE any gsap.set moves them
   const heroRect = hero.getBoundingClientRect();
   const heroCenterX = heroRect.left + heroRect.width / 2;
   const heroBottomY = heroRect.bottom - 80; // 80px above hero bottom edge
 
-  cards.forEach((card, i) => {
+  const fanPositions = cards.map((card, i) => {
     const rect = card.getBoundingClientRect();
     const cardCenterX = rect.left + rect.width / 2;
     const cardCenterY = rect.top + rect.height / 2;
-
-    // Fan spread: cluster cards at hero center with slight horizontal offset
     const fanSpreadX = (i - 1.5) * rect.width * 0.3;
-
-    const dx = heroCenterX + fanSpreadX - cardCenterX;
-    const dy = heroBottomY - cardCenterY;
-
-    // Initial state: fan position at hero bottom, invisible
-    gsap.set(card, {
-      x: dx,
-      y: dy,
+    return {
+      x: heroCenterX + fanSpreadX - cardCenterX,
+      y: heroBottomY - cardCenterY,
       rotation: fanRotations[i],
+    };
+  });
+
+  // Initial state: off-screen right, invisible — ready to be dealt in
+  const dealOffsetX = window.innerWidth * 0.7;
+  cards.forEach((card, i) => {
+    gsap.set(card, {
+      x: fanPositions[i].x + dealOffsetX,
+      y: fanPositions[i].y - 60,
+      rotation: fanPositions[i].rotation + 25,
+      scale: 0.8,
       transformOrigin: '50% 100%',
       opacity: 0,
     });
   });
 
-  // Fade cards in after hero entrance animation (~1.8s)
-  gsap.to(cards, {
-    opacity: 1,
-    duration: 0.8,
-    stagger: 0.06,
-    delay: 1.8,
-    ease: 'power2.out',
-  });
+  // Deal cards one by one after jackpot win, then set up scroll scrub
+  window.addEventListener('jackpot', () => {
+    const lastIndex = cards.length - 1;
 
-  // Scrub cards from fan → grid as user scrolls
-  cards.forEach((card) => {
-    gsap.to(card, {
-      x: 0,
-      y: 0,
-      rotation: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: hero,
-        start: 'bottom bottom',
-        endTrigger: '.track-grid',
-        end: 'top 60%',
-        scrub: true,
-      },
+    cards.forEach((card, i) => {
+      const pos = fanPositions[i];
+      const dealTl = gsap.timeline({ delay: i * 0.22 });
+      dealTl
+        .to(card, { opacity: 1, duration: 0.1, ease: 'power1.out' })
+        .to(card, {
+          x: pos.x,
+          y: pos.y,
+          rotation: pos.rotation,
+          scale: 1,
+          duration: 0.45,
+          ease: 'power3.out',
+          onComplete: i === lastIndex ? () => {
+            // After all cards are dealt, set up the scroll scrub from fan → grid
+            cards.forEach((c) => {
+              gsap.to(c, {
+                x: 0,
+                y: 0,
+                rotation: 0,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: hero,
+                  start: 'bottom bottom',
+                  endTrigger: '.track-grid',
+                  end: 'top 60%',
+                  scrub: true,
+                },
+              });
+            });
+            ScrollTrigger.refresh();
+          } : undefined,
+        }, '<');
     });
   });
 
