@@ -4,7 +4,7 @@
 
 <section
   id="hero"
-  class="relative flex min-h-screen flex-col items-center justify-center bg-black px-4 text-center"
+  class="relative flex min-h-screen flex-col items-center justify-start bg-black px-4 pt-16 text-center md:pt-24"
 >
   <!-- Deep red ambient glow -->
   <div
@@ -32,9 +32,6 @@
   <!-- Poker chips — scattered across table edges -->
   <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
     <!-- ====== TOP-LEFT ====== -->
-    <div class="hero-chip hero-chip--1 absolute left-[0%] top-[6%] md:left-[1%] md:top-[8%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
-    </div>
     <div class="hero-chip hero-chip--2 absolute left-[3%] top-[1%] md:left-[5%] md:top-[2%]">
       <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
     </div>
@@ -77,16 +74,10 @@
     <div class="hero-chip hero-chip--13 absolute left-[1%] top-[48%] md:left-[2%] md:top-[46%]">
       <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
     </div>
-    <div class="hero-chip hero-chip--14 absolute left-[0%] top-[58%] md:left-[1%] md:top-[56%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
-    </div>
 
     <!-- ====== RIGHT EDGE ====== -->
     <div class="hero-chip hero-chip--15 absolute right-[0%] top-[26%] md:right-[1%] md:top-[24%]">
       <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
-    </div>
-    <div class="hero-chip hero-chip--16 absolute right-[0%] top-[36%] md:right-[1%] md:top-[34%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
     </div>
     <div class="hero-chip hero-chip--17 absolute right-[1%] top-[47%] md:right-[2%] md:top-[45%]">
       <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
@@ -98,9 +89,6 @@
     <!-- ====== BOTTOM-LEFT ====== -->
     <div class="hero-chip hero-chip--19 absolute bottom-[0%] left-[0%] md:bottom-[1%] md:left-[1%]">
       <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
-    </div>
-    <div class="hero-chip hero-chip--20 absolute bottom-[5%] left-[3%] md:bottom-[7%] md:left-[5%]">
-      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
     </div>
     <div class="hero-chip hero-chip--21 absolute bottom-[1%] left-[8%] md:bottom-[3%] md:left-[10%]">
       <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
@@ -116,17 +104,11 @@
     <div class="hero-chip hero-chip--24 absolute bottom-[5%] right-[2%] md:bottom-[7%] md:right-[4%]">
       <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
     </div>
-    <div class="hero-chip hero-chip--25 absolute bottom-[1%] right-[7%] md:bottom-[3%] md:right-[9%]">
-      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
-    </div>
     <div class="hero-chip hero-chip--26 absolute bottom-[9%] right-[0%] md:bottom-[11%] md:right-[1%]">
       <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
     </div>
 
     <!-- ====== BOTTOM-CENTER EDGES ====== -->
-    <div class="hero-chip hero-chip--27 absolute bottom-[0%] left-[16%] md:bottom-[1%] md:left-[18%]">
-      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
-    </div>
     <div class="hero-chip hero-chip--28 absolute bottom-[0%] right-[16%] md:bottom-[1%] md:right-[18%]">
       <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
     </div>
@@ -157,6 +139,28 @@
     </div>
   </div>
 
+  <!-- Poker chips ON TOP of cards — layered overlap -->
+  <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
+    <div class="hero-chip hero-chip--1 absolute left-[0%] top-[6%] md:left-[1%] md:top-[8%]">
+      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    </div>
+    <div class="hero-chip hero-chip--14 absolute left-[0%] top-[58%] md:left-[1%] md:top-[56%]">
+      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    </div>
+    <div class="hero-chip hero-chip--16 absolute right-[0%] top-[36%] md:right-[1%] md:top-[34%]">
+      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    </div>
+    <div class="hero-chip hero-chip--20 absolute bottom-[5%] left-[3%] md:bottom-[7%] md:left-[5%]">
+      <div class="poker-chip poker-chip--red"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    </div>
+    <div class="hero-chip hero-chip--25 absolute bottom-[1%] right-[7%] md:bottom-[3%] md:right-[9%]">
+      <div class="poker-chip poker-chip--dark"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    </div>
+    <div class="hero-chip hero-chip--27 absolute bottom-[0%] left-[16%] md:bottom-[1%] md:left-[18%]">
+      <div class="poker-chip poker-chip--gold"><div class="chip-base"><div class="chip-stripe chip-stripe--0"></div><div class="chip-stripe chip-stripe--1"></div><div class="chip-stripe chip-stripe--2"></div><div class="chip-stripe chip-stripe--3"></div></div><div class="chip-infield"><div class="chip-inner-ring"></div></div></div>
+    </div>
+  </div>
+
   <!-- Main content -->
   <div class="relative z-10 max-w-4xl">
     <!-- Presented by -->
@@ -181,10 +185,10 @@
     </h1>
 
     <!-- Red rule — tight -->
-    <div class="hero-rule mx-auto mt-2 h-px w-48 opacity-0" style="background: linear-gradient(90deg, transparent, #C41E3A, transparent);"></div>
+    <div class="hero-rule mx-auto mt-0 h-px w-48 opacity-0" style="background: linear-gradient(90deg, transparent, #C41E3A, transparent);"></div>
 
     <!-- ========== SLOT MACHINE ========== -->
-    <div class="hero-slot mt-5 opacity-0">
+    <div class="hero-slot mt-2 opacity-0">
       <div class="slot-cabinet">
         <!-- Top marquee -->
         <div class="slot-marquee">
@@ -195,15 +199,6 @@
           <div class="marquee-bulb"></div>
           <div class="marquee-bulb"></div>
           <div class="marquee-bulb"></div>
-        </div>
-
-        <!-- Event info strip -->
-        <div class="slot-info">
-          <span class="slot-info-cell">12-hours</span>
-          <span class="slot-info-dot">&#9670;</span>
-          <span class="slot-info-cell">march 28, 2026</span>
-          <span class="slot-info-dot">&#9670;</span>
-          <span class="slot-info-cell">atlanta, ga</span>
         </div>
 
         <!-- Reel housing -->
@@ -268,17 +263,11 @@
           </div>
         </div>
 
-        <!-- Bottom tray -->
-        <div class="slot-tray">
-          <div class="tray-inner">
-            <span class="tray-text">&#9824; &#9829; &#9827; &#9830;</span>
-          </div>
-        </div>
       </div>
     </div>
 
     <!-- CTA -->
-    <div class="hero-cta mt-6 opacity-0">
+    <div class="hero-cta mt-3 opacity-0">
       <a
         href="/apply"
         class="group relative inline-flex items-center gap-3 overflow-hidden bg-red px-10 py-4 font-body text-sm font-bold tracking-[0.15em] text-white-pure transition-all duration-300 hover:bg-red-bright hover:shadow-[0_0_50px_rgba(196,30,58,0.35)] hover:scale-[1.03]"
@@ -437,7 +426,7 @@
     max-width: 520px;
     width: 100%;
     margin: 0 auto;
-    border-radius: 18px;
+    border-radius: 14px;
     background: linear-gradient(180deg, #2a1218 0%, #1a0a0e 40%, #120609 100%);
     border: 2px solid rgba(196, 30, 58, 0.2);
     box-shadow:
@@ -531,13 +520,13 @@
   /* ── Reel body ── */
   .slot-body {
     position: relative;
-    padding: 10px 20px 8px;
+    padding: 8px 20px 6px;
     background: linear-gradient(180deg, rgba(15, 7, 10, 0.9) 0%, rgba(10, 4, 6, 0.95) 100%);
     border-top: 1px solid rgba(196, 30, 58, 0.08);
     border-bottom: 1px solid rgba(196, 30, 58, 0.08);
   }
   @media (min-width: 768px) {
-    .slot-body { padding: 14px 28px 10px; }
+    .slot-body { padding: 10px 28px 8px; }
   }
 
   /* Payline arrows */
@@ -631,6 +620,11 @@
       0 0 20px rgba(196, 30, 58, 0.4),
       0 0 40px rgba(196, 30, 58, 0.15);
     line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
   .reel-strip--sec .reel-digit {
     color: rgba(196, 30, 58, 0.65);
@@ -748,16 +742,16 @@
     .deco-card { --deco-card-w: 130px; border-radius: 8px; }
   }
 
-  /* Face-down (Bicycle back) */
+  /* Face-down (Bicycle back) — darker than track cards */
   .deco-card--back {
-    background: #B22234;
-    border: 2px solid #f0e8d8;
-    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+    background: #4e0e16;
+    border: 2px solid #9a8e78;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
   }
   .deco-card-back-inner {
     position: absolute;
     inset: 3px;
-    border: 1px solid rgba(240, 232, 216, 0.35);
+    border: 1px solid rgba(154, 142, 120, 0.2);
     border-radius: 2px;
     overflow: hidden;
   }
@@ -769,22 +763,22 @@
         45deg,
         transparent,
         transparent 3px,
-        rgba(240, 232, 216, 0.1) 3px,
-        rgba(240, 232, 216, 0.1) 4px
+        rgba(154, 142, 120, 0.06) 3px,
+        rgba(154, 142, 120, 0.06) 4px
       ),
       repeating-linear-gradient(
         -45deg,
         transparent,
         transparent 3px,
-        rgba(240, 232, 216, 0.1) 3px,
-        rgba(240, 232, 216, 0.1) 4px
+        rgba(154, 142, 120, 0.06) 3px,
+        rgba(154, 142, 120, 0.06) 4px
       );
   }
 
-  /* Face-up (cream front) */
+  /* Face-up (aged/darker cream front) */
   .deco-card--front {
-    background: #F2EDE4;
-    border: 1px solid #d8d0c4;
+    background: #b0a890;
+    border: 1px solid #8a8270;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -800,10 +794,10 @@
     font-size: 16px;
     font-weight: 700;
     line-height: 1;
-    color: #1a1a1a;
+    color: #111;
   }
   .deco-card--red .deco-card-rank {
-    color: #B22234;
+    color: #4e0e16;
   }
   @media (min-width: 768px) {
     .deco-card-rank { font-size: 24px; }
@@ -814,11 +808,26 @@
     line-height: 1;
     margin-top: -1px;
   }
-  .deco-card-suit--dark { color: #1a1a1a; }
-  .deco-card-suit--red { color: #B22234; }
+  .deco-card-suit--dark { color: #111; }
+  .deco-card-suit--red { color: #4e0e16; }
   @media (min-width: 768px) {
     .deco-card-suit { font-size: 20px; }
   }
+
+  /* ======================================================
+     REEL SYMBOLS — inline SVG icons (classic slot machine)
+     ====================================================== */
+  .reel-icon {
+    width: 17px;
+    height: 17px;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.5)) drop-shadow(0 0 8px rgba(196,30,58,0.2));
+  }
+  @media (min-width: 768px) {
+    .reel-icon { width: 22px; height: 22px; }
+  }
+
 
 
 </style>
@@ -829,8 +838,6 @@
   gsap.registerPlugin(ScrollTrigger);
 
   // ===== Hide everything except slot machine on load =====
-  const nav = document.querySelector('nav');
-  if (nav) gsap.set(nav, { opacity: 0 });
   gsap.set('.hero-suit', { opacity: 0 });
 
   // Slot machine fades in first
@@ -885,20 +892,272 @@
   }
 
   // ===== Slot machine intro animation =====
-  const SYMBOLS = ['🍒', '💎', '7️⃣', '🎰', '♠', '♦', '♣', '♥', '⭐', '🃏'];
-  const WIN_SYMBOL = '7️⃣';
+  // Inline SVG icons for reel symbols — crisp at any size, no emoji
+  const SVG = (inner: string, vb = '0 0 24 24') =>
+    `<svg class="reel-icon" viewBox="${vb}" fill="none" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+
+  const ICONS = {
+    // Classic cherry — two glossy red cherries with a curved stem
+    cherry: SVG(`
+      <defs>
+        <radialGradient id="ch" cx="0.35" cy="0.3"><stop offset="0" stop-color="#ff4d5e"/><stop offset="0.6" stop-color="#c41e3a"/><stop offset="1" stop-color="#7a1024"/></radialGradient>
+      </defs>
+      <path d="M11 5c1-3 3-4 5-3.5" stroke="#2d8a4e" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      <path d="M11 5c-1-3-3.5-3.5-5-2.5" stroke="#2d8a4e" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      <path d="M13.5 2.5c.6-.2 1.8 0 2 1.2" stroke="#3aab62" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+      <ellipse cx="7.5" cy="10" rx="5" ry="5.2" fill="url(#ch)" stroke="#7a1024" stroke-width="0.6"/>
+      <ellipse cx="6.2" cy="8.5" rx="1.5" ry="2" fill="rgba(255,255,255,0.22)" transform="rotate(-15 6.2 8.5)"/>
+      <ellipse cx="15" cy="9" rx="5" ry="5.2" fill="url(#ch)" stroke="#7a1024" stroke-width="0.6"/>
+      <ellipse cx="13.7" cy="7.5" rx="1.5" ry="2" fill="rgba(255,255,255,0.22)" transform="rotate(-15 13.7 7.5)"/>
+    `, '0 -1 22 17'),
+
+    // Classic diamond gem — faceted blue-white gem
+    diamond: SVG(`
+      <defs>
+        <linearGradient id="dm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8d8ff"/><stop offset="0.5" stop-color="#4da6ff"/><stop offset="1" stop-color="#1a6bc4"/></linearGradient>
+      </defs>
+      <polygon points="12,1 3,8 12,22 21,8" fill="url(#dm)" stroke="#1a6bc4" stroke-width="0.7"/>
+      <polygon points="12,1 8,8 12,22 16,8" fill="rgba(255,255,255,0.18)"/>
+      <line x1="3" y1="8" x2="21" y2="8" stroke="rgba(255,255,255,0.35)" stroke-width="0.6"/>
+      <line x1="8" y1="8" x2="12" y2="1" stroke="rgba(255,255,255,0.2)" stroke-width="0.4"/>
+      <line x1="16" y1="8" x2="12" y2="1" stroke="rgba(255,255,255,0.2)" stroke-width="0.4"/>
+      <polygon points="3,8 8,8 12,1" fill="rgba(255,255,255,0.12)"/>
+    `, '0 -1 24 25'),
+
+    // Lucky 7 — Bodoni Black vector trace, red/gold
+    seven: SVG(`
+      <defs>
+        <linearGradient id="sv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff4d5e"/><stop offset="1" stop-color="#8a1024"/></linearGradient>
+      </defs>
+      <path d="
+        M 8 4 L 42 4 L 42 8
+        C 38 8 35 10 32 16
+        L 22 42 C 21 44.5 20 46 19 46
+        L 15 46 C 14 46 13.5 45 14.5 42.5
+        L 26 16 C 28 12 29 10 30 8.5
+        L 8 8.5 L 8 8 C 8 6.5 8 5 8 4 Z
+      " fill="url(#sv)"/>
+      <path d="
+        M 8 4 L 42 4 L 42 6 L 8 6 Z
+      " fill="rgba(255,255,255,0.15)"/>
+    `, '-10 -10 70 70'),
+
+    // BAR — classic slot bar symbol
+    bar: SVG(`
+      <defs>
+        <linearGradient id="br" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d48c"/><stop offset="0.5" stop-color="#c9a84c"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
+      </defs>
+      <rect x="1" y="7" width="22" height="10" rx="2.5" fill="url(#br)" stroke="#6b5518" stroke-width="0.8"/>
+      <rect x="1" y="7" width="22" height="5" rx="2.5" fill="rgba(255,255,255,0.12)"/>
+      <text x="12" y="14.8" text-anchor="middle" font-family="Georgia,serif" font-weight="900" font-size="7" fill="#2a1a08" letter-spacing="1.5">BAR</text>
+    `),
+
+    // Liberty bell — classic golden bell with clapper
+    bell: SVG(`
+      <defs>
+        <linearGradient id="bl" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0" stop-color="#ffe680"/><stop offset="0.4" stop-color="#d4a832"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
+      </defs>
+      <path d="M12 2a1.2 1.2 0 1 1 0 2.4A1.2 1.2 0 0 1 12 2z" fill="#d4a832"/>
+      <path d="M12 4c-1 0-2 .8-3 2.5C7.5 9 6 12 5.5 14.5c-.3 1.5.5 2.5 2 3h9c1.5-.5 2.3-1.5 2-3C18 12 16.5 9 15 6.5 14 4.8 13 4 12 4z" fill="url(#bl)" stroke="#6b5518" stroke-width="0.6"/>
+      <path d="M9 6.5C7.5 9 6 12 5.5 14.5c-.1.6 0 1.1.2 1.5h5C10 14 9.5 10 9 6.5z" fill="rgba(255,255,255,0.15)"/>
+      <ellipse cx="12" cy="18.5" rx="1.2" ry="1.5" fill="#8a6e1e" stroke="#6b5518" stroke-width="0.4"/>
+      <line x1="5.5" y1="17.2" x2="18.5" y2="17.2" stroke="#6b5518" stroke-width="0.5"/>
+    `),
+
+    // Horseshoe — traditional lucky horseshoe
+    horseshoe: SVG(`
+      <defs>
+        <linearGradient id="hs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8d48c"/><stop offset="0.5" stop-color="#c9a84c"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
+      </defs>
+      <path d="M6.5 20V10.5a5.5 5.5 0 0 1 11 0V20" stroke="url(#hs)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <path d="M6.5 20V10.5a5.5 5.5 0 0 1 11 0V20" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+      <circle cx="6.5" cy="20" r="1.8" fill="#d4a832" stroke="#6b5518" stroke-width="0.5"/>
+      <circle cx="17.5" cy="20" r="1.8" fill="#d4a832" stroke="#6b5518" stroke-width="0.5"/>
+      <circle cx="9" cy="7.5" r="0.6" fill="#6b5518"/>
+      <circle cx="12" cy="6" r="0.6" fill="#6b5518"/>
+      <circle cx="15" cy="7.5" r="0.6" fill="#6b5518"/>
+    `),
+
+    // Watermelon — classic fruit machine symbol
+    melon: SVG(`
+      <defs>
+        <radialGradient id="ml" cx="0.5" cy="0.6"><stop offset="0" stop-color="#4ade80"/><stop offset="0.7" stop-color="#16a34a"/><stop offset="1" stop-color="#0a5c28"/></radialGradient>
+      </defs>
+      <path d="M3 14A9 9 0 0 1 21 14z" fill="url(#ml)" stroke="#0a5c28" stroke-width="0.7"/>
+      <path d="M4.5 14A7.5 7.5 0 0 1 19.5 14z" fill="#ff3b5c"/>
+      <path d="M6 14A6 6 0 0 1 18 14z" fill="#e8354f"/>
+      <path d="M6 14a6 6 0 0 1 3-5.2" stroke="rgba(255,255,255,0.15)" stroke-width="0.5" fill="none"/>
+      <ellipse cx="9" cy="12.5" rx="0.6" ry="0.9" fill="#1a0a0e" transform="rotate(-10 9 12.5)"/>
+      <ellipse cx="12" cy="11.5" rx="0.6" ry="0.9" fill="#1a0a0e"/>
+      <ellipse cx="15" cy="12.5" rx="0.6" ry="0.9" fill="#1a0a0e" transform="rotate(10 15 12.5)"/>
+      <ellipse cx="10.5" cy="13.5" rx="0.5" ry="0.7" fill="#1a0a0e" transform="rotate(-5 10.5 13.5)"/>
+      <ellipse cx="13.5" cy="13.5" rx="0.5" ry="0.7" fill="#1a0a0e" transform="rotate(5 13.5 13.5)"/>
+    `, '0 3 24 14'),
+
+    // Orange — classic citrus fruit
+    orange: SVG(`
+      <defs>
+        <radialGradient id="og" cx="0.38" cy="0.35"><stop offset="0" stop-color="#ffb347"/><stop offset="0.6" stop-color="#ff8c00"/><stop offset="1" stop-color="#c45e00"/></radialGradient>
+      </defs>
+      <circle cx="12" cy="12.5" r="8" fill="url(#og)" stroke="#a04d00" stroke-width="0.6"/>
+      <ellipse cx="10" cy="10" rx="2.5" ry="3.2" fill="rgba(255,255,255,0.18)" transform="rotate(-20 10 10)"/>
+      <path d="M12 4.5c0-1.5.8-2.5 1.5-3" stroke="#2d8a4e" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+      <path d="M12.8 3c.8.3 2 .2 2.5-.5" stroke="#3aab62" stroke-width="1" stroke-linecap="round" fill="none"/>
+    `, '0 0 24 22'),
+
+    // Plum — classic purple fruit
+    plum: SVG(`
+      <defs>
+        <radialGradient id="pl" cx="0.38" cy="0.35"><stop offset="0" stop-color="#c084fc"/><stop offset="0.5" stop-color="#9333ea"/><stop offset="1" stop-color="#581c87"/></radialGradient>
+      </defs>
+      <ellipse cx="12" cy="12.5" rx="7.5" ry="8" fill="url(#pl)" stroke="#4a1272" stroke-width="0.6"/>
+      <ellipse cx="10" cy="10" rx="2.2" ry="3" fill="rgba(255,255,255,0.18)" transform="rotate(-20 10 10)"/>
+      <path d="M12 4.5c-.3-1.5.3-2.8 1-3.2" stroke="#2d8a4e" stroke-width="1.3" stroke-linecap="round" fill="none"/>
+      <path d="M12.5 2.8c.6.4 1.8.5 2.4 0" stroke="#3aab62" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+    `, '0 0 24 22'),
+
+    // Lemon — classic yellow fruit
+    lemon: SVG(`
+      <defs>
+        <radialGradient id="lm" cx="0.38" cy="0.35"><stop offset="0" stop-color="#fef08a"/><stop offset="0.5" stop-color="#facc15"/><stop offset="1" stop-color="#a16207"/></radialGradient>
+      </defs>
+      <ellipse cx="12" cy="11" rx="7" ry="8.5" fill="url(#lm)" stroke="#a16207" stroke-width="0.6" transform="rotate(-15 12 11)"/>
+      <ellipse cx="10.5" cy="9" rx="2" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-25 10.5 9)"/>
+      <path d="M14 3c.5-1 1.5-1.5 2-1.2" stroke="#65a30d" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+    `, '0 0 24 22'),
+
+    // 6 — Bodoni Black vector, neon green
+    sixGreen: SVG(`
+      <defs>
+        <linearGradient id="s6g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#15803d"/></linearGradient>
+      </defs>
+      <path d="
+        M 30 4 C 28.5 4 27 4.5 26 5.5
+        C 22 9 16 18 14 24
+        C 13 27 12.5 30 13 33
+        C 14 38 18 43 25 43
+        C 32 43 37 38 37 31
+        C 37 24 32.5 20 26 20
+        C 22 20 19 22 17 25
+        C 18 21 20 16 23 12
+        C 25 9 27 7 29 6
+        C 31 5 32.5 4.5 33 4.5
+        C 34 4.5 34.5 5 34 6
+        C 33.5 6.5 33 7 32 7.5
+        C 31 7.5 30.5 7 31 6
+        C 31.5 5 31 4 30 4 Z
+        M 25 23 C 29 23 32 26.5 32 31
+        C 32 35.5 29 39.5 25 39.5
+        C 21 39.5 18 35.5 18 31
+        C 18 26.5 21 23 25 23 Z
+      " fill="url(#s6g)" fill-rule="evenodd"/>
+    `, '-4 -10 58 68'),
+
+    // 9 — Bodoni Black vector, cyan
+    nineCyan: SVG(`
+      <defs>
+        <linearGradient id="s9c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#0e7490"/></linearGradient>
+      </defs>
+      <path d="
+        M 20 46 C 21.5 46 23 45.5 24 44.5
+        C 28 41 34 32 36 26
+        C 37 23 37.5 20 37 17
+        C 36 12 32 7 25 7
+        C 18 7 13 12 13 19
+        C 13 26 17.5 30 24 30
+        C 28 30 31 28 33 25
+        C 32 29 30 34 27 38
+        C 25 41 23 43 21 44
+        C 19 45 17.5 45.5 17 45.5
+        C 16 45.5 15.5 45 16 44
+        C 16.5 43.5 17 43 18 42.5
+        C 19 42.5 19.5 43 19 44
+        C 18.5 45 19 46 20 46 Z
+        M 25 27 C 21 27 18 23.5 18 19
+        C 18 14.5 21 10.5 25 10.5
+        C 29 10.5 32 14.5 32 19
+        C 32 23.5 29 27 25 27 Z
+      " fill="url(#s9c)" fill-rule="evenodd"/>
+    `, '-4 -8 58 68'),
+
+    // 6 — Bodoni Black vector, gold
+    sixGold: SVG(`
+      <defs>
+        <linearGradient id="s6d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd700"/><stop offset="0.6" stop-color="#d4a012"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
+      </defs>
+      <path d="
+        M 30 4 C 28.5 4 27 4.5 26 5.5
+        C 22 9 16 18 14 24
+        C 13 27 12.5 30 13 33
+        C 14 38 18 43 25 43
+        C 32 43 37 38 37 31
+        C 37 24 32.5 20 26 20
+        C 22 20 19 22 17 25
+        C 18 21 20 16 23 12
+        C 25 9 27 7 29 6
+        C 31 5 32.5 4.5 33 4.5
+        C 34 4.5 34.5 5 34 6
+        C 33.5 6.5 33 7 32 7.5
+        C 31 7.5 30.5 7 31 6
+        C 31.5 5 31 4 30 4 Z
+        M 25 23 C 29 23 32 26.5 32 31
+        C 32 35.5 29 39.5 25 39.5
+        C 21 39.5 18 35.5 18 31
+        C 18 26.5 21 23 25 23 Z
+      " fill="url(#s6d)" fill-rule="evenodd"/>
+    `, '-4 -10 58 68'),
+
+    // 9 — Bodoni Black vector, hot pink
+    ninePink: SVG(`
+      <defs>
+        <linearGradient id="s9p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b9d"/><stop offset="1" stop-color="#9d174d"/></linearGradient>
+      </defs>
+      <path d="
+        M 20 46 C 21.5 46 23 45.5 24 44.5
+        C 28 41 34 32 36 26
+        C 37 23 37.5 20 37 17
+        C 36 12 32 7 25 7
+        C 18 7 13 12 13 19
+        C 13 26 17.5 30 24 30
+        C 28 30 31 28 33 25
+        C 32 29 30 34 27 38
+        C 25 41 23 43 21 44
+        C 19 45 17.5 45.5 17 45.5
+        C 16 45.5 15.5 45 16 44
+        C 16.5 43.5 17 43 18 42.5
+        C 19 42.5 19.5 43 19 44
+        C 18.5 45 19 46 20 46 Z
+        M 25 27 C 21 27 18 23.5 18 19
+        C 18 14.5 21 10.5 25 10.5
+        C 29 10.5 32 14.5 32 19
+        C 32 23.5 29 27 25 27 Z
+      " fill="url(#s9p)" fill-rule="evenodd"/>
+    `, '-4 -8 58 68'),
+  };
+
+  const symbolDefs = [
+    ICONS.cherry, ICONS.diamond, ICONS.seven, ICONS.bar, ICONS.bell,
+    ICONS.horseshoe, ICONS.melon, ICONS.orange, ICONS.plum, ICONS.lemon,
+  ];
+  const WIN_REELS = [ICONS.sixGreen, ICONS.seven, ICONS.sixGold, ICONS.nineCyan];
   const reelEls = [reels.days, reels.hours, reels.mins, reels.secs] as HTMLElement[];
   const keys = ['days', 'hours', 'mins', 'secs'] as const;
   const marqueeText = document.querySelector<HTMLElement>('.marquee-text')!;
   const cabinet = document.querySelector<HTMLElement>('.slot-cabinet')!;
+
+  function randSym() {
+    return symbolDefs[Math.floor(Math.random() * symbolDefs.length)];
+  }
+  function setSymbol(el: HTMLElement, svg: string) {
+    el.innerHTML = svg;
+  }
 
   // Hide labels during spin phase
   Object.values(reelLabels).forEach(l => (l as HTMLElement).style.opacity = '0');
 
   // Start all reels spinning with symbols
   reelEls.forEach(el => {
-    el.style.fontSize = '28px';
-    el.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+    setSymbol(el, randSym());
   });
 
   // Spin speed: fast at start
@@ -908,7 +1167,7 @@
   function startSpinning() {
     reelEls.forEach((el, i) => {
       spinIntervals[i] = window.setInterval(() => {
-        el.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+        setSymbol(el, randSym());
         el.classList.remove('tick');
         void el.offsetWidth;
         el.classList.add('tick');
@@ -917,7 +1176,7 @@
   }
 
   // Stop reels left-to-right with staggered delays, land on winning symbol
-  function stopReel(index: number): Promise<void> {
+  function stopReel(index: number, target: string): Promise<void> {
     return new Promise(resolve => {
       clearInterval(spinIntervals[index]);
       const el = reelEls[index];
@@ -928,7 +1187,7 @@
       const slowMax = 6;
 
       const slowInterval = setInterval(() => {
-        el.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+        setSymbol(el, randSym());
         el.classList.remove('tick');
         void el.offsetWidth;
         el.classList.add('tick');
@@ -938,7 +1197,7 @@
         if (slowCount >= slowMax) {
           clearInterval(slowInterval);
           // Land on winning symbol
-          el.textContent = WIN_SYMBOL;
+          setSymbol(el, target);
           el.classList.remove('tick');
           void el.offsetWidth;
           el.classList.add('tick');
@@ -959,6 +1218,9 @@
 
   // Main sequence
   setTimeout(async () => {
+    // Reveal Hacklanta logo early, while slot machine spins
+    gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1.4, ease: 'power2.out' });
+
     // Start spinning all reels
     startSpinning();
 
@@ -966,13 +1228,13 @@
     await new Promise(r => setTimeout(r, 1200));
 
     // Stop reels left to right with stagger
-    await stopReel(0);
+    await stopReel(0, WIN_REELS[0]);
     await new Promise(r => setTimeout(r, 400));
-    await stopReel(1);
+    await stopReel(1, WIN_REELS[1]);
     await new Promise(r => setTimeout(r, 400));
-    await stopReel(2);
+    await stopReel(2, WIN_REELS[2]);
     await new Promise(r => setTimeout(r, 400));
-    await stopReel(3);
+    await stopReel(3, WIN_REELS[3]);
 
     // === JACKPOT! ===
     // Flash the whole cabinet
@@ -985,7 +1247,7 @@
     });
 
     // Flash marquee text
-    marqueeText.textContent = '⭐ JACKPOT ⭐';
+    marqueeText.textContent = '★ JACKPOT ★';
     gsap.to(marqueeText, {
       color: 'rgba(255,200,100,0.95)',
       textShadow: '0 0 15px rgba(255,200,100,0.6)',
@@ -1014,9 +1276,7 @@
     // === Reveal all hero elements ===
     const revealTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
     revealTl
-      .to(nav, { opacity: 1, duration: 0.8 }, 0)
       .to('.hero-line', { opacity: 1, y: 0, duration: 0.6 }, 0)
-      .to('.hero-title', { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out' }, 0.1)
       .to('.hero-rule', { opacity: 1, scaleX: 1, duration: 0.6 }, 0.4)
       .to('.hero-suit', { opacity: 1, duration: 1.2 }, 0.2)
       .to('.hero-deco-card', { opacity: 1, duration: 1, stagger: 0.04, ease: 'power2.out' }, 0.2)

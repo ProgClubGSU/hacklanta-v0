@@ -9,6 +9,7 @@ const phases = [
     suit: '♠',
     color: '#C41E3A',
     rgb: '196,30,58',
+    events: ['Check-In', 'Opening Ceremony', 'Poker Tables', 'Blackjack Table', 'Lunch'],
   },
   {
     name: 'THE GRIND',
@@ -17,6 +18,7 @@ const phases = [
     suit: '♥',
     color: '#E63946',
     rgb: '230,57,70',
+    events: ['Workshops', 'Monkeytype Contest', 'Dinner', 'Snacks'],
   },
   {
     name: 'THE FINAL HAND',
@@ -25,6 +27,7 @@ const phases = [
     suit: '♦',
     color: '#C9A84C',
     rgb: '201,168,76',
+    events: ['200-Can Red Bull Competition', 'Closing Ceremony'],
   },
 ];
 ---
@@ -103,13 +106,20 @@ const phases = [
             </div>
           </header>
 
-          <!-- TBA placeholder -->
-          <div class="mt-5 border-t border-border/40 pt-5">
-            <div class="flex items-center justify-center gap-3 py-6">
-              <span class="h-px w-8 bg-gradient-to-r from-transparent to-border/60"></span>
-              <span class="font-mono text-[11px] tracking-[0.4em] text-gray-dark uppercase">Coming Soon</span>
-              <span class="h-px w-8 bg-gradient-to-l from-transparent to-border/60"></span>
-            </div>
+          <div class="mt-5 border-t border-border/40 pt-5 space-y-3">
+            {phase.events.map((evt) => (
+              <div class="flex items-center gap-3">
+                <span
+                  class="text-sm leading-none select-none"
+                  style={`color: ${phase.color};`}
+                >{phase.suit}</span>
+                <span class="font-display text-base tracking-wide text-white/90 md:text-lg">{evt}</span>
+                <span
+                  class="ml-auto h-px flex-1 max-w-[120px]"
+                  style={`background: linear-gradient(90deg, rgba(${phase.rgb},0.3), transparent);`}
+                ></span>
+              </div>
+            ))}
           </div>
         </article>
       ))}
