@@ -4,32 +4,39 @@ import ApplicationStatus from '../components/status/ApplicationStatus.tsx';
 ---
 
 <LandingLayout title="Application Status — Hacklanta">
-  <section class="relative min-h-screen bg-black px-4 pb-20 pt-24 md:pt-32">
+  <section class="relative min-h-screen overflow-hidden bg-black px-4 pb-20 pt-24 md:pt-32">
     <!-- Ambient glow -->
     <div
       class="pointer-events-none absolute left-1/2 top-[10%] h-[800px] w-[800px] -translate-x-1/2 rounded-full"
       style="background: radial-gradient(circle, rgba(196,30,58,0.06) 0%, transparent 55%);"
     ></div>
+    <!-- Gold accent glow -->
+    <div
+      class="pointer-events-none absolute right-[10%] top-[20%] h-[400px] w-[400px] rounded-full opacity-[0.04] blur-[100px]"
+      style="background: radial-gradient(circle, rgba(201,168,76,0.5) 0%, transparent 70%);"
+    ></div>
 
-    <!-- Suit watermarks -->
-    <div
-      class="pointer-events-none absolute left-[10%] top-[20%] select-none text-[120px] leading-none"
-      style="color: rgba(196, 30, 58, 0.03);"
-    >&spades;</div>
-    <div
-      class="pointer-events-none absolute right-[10%] bottom-[20%] select-none text-[120px] leading-none"
-      style="color: rgba(196, 30, 58, 0.03);"
-    >&hearts;</div>
+    <!-- Ghosted suit watermarks -->
+    <div class="pointer-events-none absolute left-[5%] top-[15%] select-none text-[140px] leading-none" style="color: rgba(196,30,58,0.02);" aria-hidden="true">&spades;</div>
+    <div class="pointer-events-none absolute right-[8%] top-[55%] select-none text-[120px] leading-none" style="color: rgba(196,30,58,0.02);" aria-hidden="true">&hearts;</div>
+    <div class="pointer-events-none absolute left-[15%] bottom-[10%] select-none text-[100px] leading-none" style="color: rgba(201,168,76,0.015);" aria-hidden="true">&diams;</div>
+
+    <!-- Top gradient border -->
+    <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
 
     <div class="relative z-10 mx-auto max-w-2xl">
-      <!-- Section header -->
-      <div class="mb-10 text-center">
-        <div class="mb-2 font-mono text-[10px] tracking-[0.4em] text-white/30 uppercase">
-          [01] // your hand
+      <!-- Section header — matches landing page pattern -->
+      <div class="status-header mb-12 text-center">
+        <div class="flex items-center justify-center gap-3 font-mono text-[11px] tracking-[0.3em] text-gray-500">
+          <span class="text-red/60">[01]</span>
+          <span class="h-px w-12 bg-gradient-to-r from-transparent to-border/80"></span>
+          <span>YOUR HAND</span>
+          <span class="h-px w-12 bg-gradient-to-l from-transparent to-border/80"></span>
         </div>
-        <h1 class="font-display text-4xl tracking-wide text-white md:text-5xl">
+        <h1 class="mt-6 font-display text-5xl tracking-wide text-white-pure md:text-7xl">
           APPLICATION STATUS
         </h1>
+        <div class="mx-auto mt-4 h-px w-24 bg-gradient-to-r from-transparent via-red/60 to-transparent"></div>
       </div>
 
       <ApplicationStatus client:load />

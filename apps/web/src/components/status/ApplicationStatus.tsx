@@ -12,43 +12,55 @@ interface ApplicationData {
   reviewed_at: string | null;
 }
 
+type PageState =
+  | { kind: 'loading' }
+  | { kind: 'submitted'; data?: ApplicationData }
+  | { kind: 'not_found' }
+  | { kind: 'error'; message: string };
+
 const STATUS_CONFIG = {
   pending: {
     label: 'UNDER REVIEW',
     color: '#C9A84C',
-    glow: 'rgba(201, 168, 76, 0.15)',
+    glow: 'rgba(201, 168, 76, 0.12)',
     suit: '\u2666',
     icon: '\u23F3',
+    message: 'Your application is being reviewed by the Hacklanta team. Sit tight \u2014 we\u2019ll update your status soon.',
   },
   accepted: {
     label: 'ACCEPTED',
     color: '#00ff88',
-    glow: 'rgba(0, 255, 136, 0.15)',
+    glow: 'rgba(0, 255, 136, 0.12)',
     suit: '\u2665',
     icon: '\u2713',
+    message: 'You\u2019re in. Welcome to the table. Check your email for next steps.',
   },
   rejected: {
     label: 'NOT SELECTED',
     color: '#E63946',
-    glow: 'rgba(230, 57, 70, 0.15)',
+    glow: 'rgba(230, 57, 70, 0.12)',
     suit: '\u2660',
     icon: '\u2717',
+    message: 'Unfortunately we couldn\u2019t offer you a spot this time. We appreciate your interest.',
   },
   waitlisted: {
     label: 'WAITLISTED',
     color: '#C9A84C',
-    glow: 'rgba(201, 168, 76, 0.15)',
+    glow: 'rgba(201, 168, 76, 0.12)',
     suit: '\u2666',
     icon: '\u23F3',
+    message: 'You\u2019re on the waitlist. We\u2019ll reach out if a spot opens up.',
   },
 } as const;
 
 export default function ApplicationStatus() {
   const { getToken, isLoaded } = useAuth();
-  const [application, setApplication] = useState<ApplicationData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<PageState>({ kind: 'loading' });
+
+  // Check for Tally respondent ID in URL
+  const rid = typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search).get('rid')
+    : null;
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -62,8 +74,12 @@ export default function ApplicationStatus() {
         });
 
         if (res.status === 404) {
-          setNotFound(true);
-          setLoading(false);
+          // No application in backend — fall back to rid check
+          if (rid) {
+            setState({ kind: 'submitted' });
+          } else {
+            setState({ kind: 'not_found' });
+          }
           return;
         }
 
@@ -72,89 +88,107 @@ export default function ApplicationStatus() {
         }
 
         const data: ApplicationData = await res.json();
-        setApplication(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Something went wrong');
-      } finally {
-        setLoading(false);
+        setState({ kind: 'submitted', data });
+      } catch {
+        // Backend unreachable — fall back to rid check
+        if (rid) {
+          setState({ kind: 'submitted' });
+        } else {
+          setState({ kind: 'not_found' });
+        }
       }
     }
 
     fetchStatus();
-  }, [isLoaded, getToken]);
+  }, [isLoaded, getToken, rid]);
 
-  if (!isLoaded || loading) {
+  if (state.kind === 'loading' || !isLoaded) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="font-mono text-xs tracking-[0.3em] text-white/40 uppercase">
-          // loading...
+        <div className="font-mono text-xs tracking-[0.3em] text-white/40 uppercase animate-pulse">
+          // dealing cards...
         </div>
       </div>
     );
   }
 
-  if (error) {
+  if (state.kind === 'error') {
     return (
       <div className="mx-auto max-w-md text-center">
         <div
-          className="rounded-sm border px-6 py-8"
+          className="border px-6 py-8"
           style={{
-            borderColor: 'rgba(230, 57, 70, 0.3)',
-            background: 'rgba(230, 57, 70, 0.05)',
+            borderColor: 'rgba(230, 57, 70, 0.2)',
+            background: 'rgba(230, 57, 70, 0.03)',
           }}
         >
-          <div className="mb-2 font-mono text-xs tracking-[0.3em] text-[#E63946] uppercase">
+          <div className="mb-3 text-2xl" style={{ color: 'rgba(230, 57, 70, 0.4)' }}>
+            {'\u2660'}
+          </div>
+          <div className="mb-2 font-mono text-[10px] tracking-[0.3em] text-[#E63946]/60 uppercase">
             // error
           </div>
-          <p className="text-sm text-white/60">{error}</p>
+          <p className="text-sm text-white/50">{state.message}</p>
         </div>
       </div>
     );
   }
 
-  if (notFound) {
+  if (state.kind === 'not_found') {
     return (
       <div className="mx-auto max-w-md text-center">
         <div
-          className="rounded-sm border px-6 py-10"
+          className="border px-6 py-12"
           style={{
-            borderColor: 'rgba(196, 30, 58, 0.15)',
-            background: 'rgba(196, 30, 58, 0.03)',
+            borderColor: 'rgba(196, 30, 58, 0.12)',
+            background: 'linear-gradient(180deg, rgba(196,30,58,0.03) 0%, rgba(10,4,6,0.5) 100%)',
           }}
         >
-          <div className="mb-3 text-3xl text-white/20">{'\u2660'}</div>
-          <div className="mb-2 font-mono text-xs tracking-[0.3em] text-white/40 uppercase">
+          <div className="mb-4 text-4xl" style={{ color: 'rgba(196, 30, 58, 0.15)' }}>
+            {'\u2660'}
+          </div>
+          <div className="mb-2 font-mono text-[10px] tracking-[0.3em] text-white/30 uppercase">
             // no application found
           </div>
-          <p className="mb-6 text-sm text-white/50">
+          <p className="mb-8 text-sm leading-relaxed text-white/40">
             You haven't submitted an application yet.
           </p>
           <a
             href="/apply"
-            className="inline-flex items-center gap-2 border px-6 py-2 font-mono text-[11px] font-semibold tracking-[0.15em] uppercase transition-all duration-300"
+            className="group relative inline-flex items-center gap-2 overflow-hidden border px-8 py-3 font-body text-[11px] font-semibold tracking-[0.15em] uppercase transition-all duration-500"
             style={{
-              borderColor: 'rgba(196, 30, 58, 0.4)',
-              background: 'rgba(196, 30, 58, 0.1)',
+              borderColor: 'rgba(196, 30, 58, 0.35)',
+              background: 'rgba(196, 30, 58, 0.08)',
               color: '#E63946',
             }}
           >
-            $ ante up
+            <span className="relative z-10">$ ante up</span>
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[rgba(196,30,58,0.08)] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full" />
           </a>
         </div>
       </div>
     );
   }
 
-  if (!application) return null;
+  // state.kind === 'submitted'
+  const data = state.data;
+  const status = data?.status ?? 'pending';
+  const config = STATUS_CONFIG[status];
 
-  const config = STATUS_CONFIG[application.status];
-  const submittedDate = new Date(application.created_at).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-  const reviewedDate = application.reviewed_at
-    ? new Date(application.reviewed_at).toLocaleDateString('en-US', {
+  const submittedDate = data?.created_at
+    ? new Date(data.created_at).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : new Date().toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      });
+
+  const reviewedDate = data?.reviewed_at
+    ? new Date(data.reviewed_at).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric',
@@ -165,38 +199,43 @@ export default function ApplicationStatus() {
     <div className="mx-auto max-w-md">
       {/* Betting slip card */}
       <div
-        className="relative overflow-hidden rounded-sm border"
+        className="relative overflow-hidden border"
         style={{
-          borderColor: `color-mix(in srgb, ${config.color} 25%, transparent)`,
-          background: '#0d0507',
-          boxShadow: `0 0 60px ${config.glow}, 0 20px 60px rgba(0,0,0,0.5)`,
+          borderColor: `color-mix(in srgb, ${config.color} 20%, transparent)`,
+          background: 'linear-gradient(180deg, #0d0507 0%, #080304 100%)',
+          boxShadow: `0 0 80px ${config.glow}, 0 25px 60px rgba(0,0,0,0.6)`,
         }}
       >
         {/* Top accent bar */}
-        <div className="h-[2px]" style={{ background: config.color }} />
+        <div
+          className="h-[2px]"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${config.color}, transparent)`,
+          }}
+        />
 
         {/* Header */}
-        <div className="px-6 pt-6 pb-4">
+        <div className="px-6 pt-6 pb-5">
           <div className="mb-1 flex items-center justify-between">
             <span
               className="font-mono text-[10px] tracking-[0.3em] uppercase"
-              style={{ color: 'rgba(255,255,255,0.35)' }}
+              style={{ color: 'rgba(255,255,255,0.25)' }}
             >
               // application slip
             </span>
-            <span style={{ color: config.color, fontSize: '18px' }}>
+            <span style={{ color: config.color, fontSize: '20px', opacity: 0.6 }}>
               {config.suit}
             </span>
           </div>
 
           {/* Status badge */}
-          <div className="mt-4 flex items-center gap-3">
+          <div className="mt-5 flex items-center gap-4">
             <span
-              className="flex h-8 w-8 items-center justify-center rounded-sm text-sm"
+              className="flex h-10 w-10 items-center justify-center text-lg"
               style={{
-                background: `color-mix(in srgb, ${config.color} 15%, transparent)`,
+                background: `color-mix(in srgb, ${config.color} 12%, transparent)`,
                 color: config.color,
-                border: `1px solid color-mix(in srgb, ${config.color} 30%, transparent)`,
+                border: `1px solid color-mix(in srgb, ${config.color} 25%, transparent)`,
               }}
             >
               {config.icon}
@@ -208,40 +247,60 @@ export default function ApplicationStatus() {
               >
                 {config.label}
               </div>
-              <div className="font-mono text-[10px] text-white/30">
+              <div className="mt-0.5 font-mono text-[10px] text-white/25">
                 Submitted {submittedDate}
               </div>
             </div>
           </div>
+
+          {/* Status message */}
+          <p className="mt-4 text-sm leading-relaxed text-white/40">
+            {config.message}
+          </p>
         </div>
 
         {/* Perforated divider */}
-        <div className="relative my-1 flex items-center px-3">
-          <div className="h-3 w-3 rounded-full" style={{ background: '#1a0a0e', marginLeft: '-18px' }} />
+        <div className="relative flex items-center px-3">
+          <div
+            className="h-4 w-4 rounded-full"
+            style={{ background: '#080304', marginLeft: '-22px', boxShadow: '2px 0 8px rgba(0,0,0,0.5)' }}
+          />
           <div
             className="flex-1 border-t"
-            style={{ borderStyle: 'dashed', borderColor: 'rgba(255,255,255,0.08)' }}
+            style={{ borderStyle: 'dashed', borderColor: 'rgba(255,255,255,0.06)' }}
           />
-          <div className="h-3 w-3 rounded-full" style={{ background: '#1a0a0e', marginRight: '-18px' }} />
+          <div
+            className="h-4 w-4 rounded-full"
+            style={{ background: '#080304', marginRight: '-22px', boxShadow: '-2px 0 8px rgba(0,0,0,0.5)' }}
+          />
         </div>
 
         {/* Details */}
-        <div className="space-y-3 px-6 pt-4 pb-6">
-          <DetailRow label="University" value={application.university} />
-          <DetailRow label="Major" value={application.major} />
-          <DetailRow label="Year" value={application.year_of_study} />
-          {application.experience_level && (
-            <DetailRow label="Level" value={application.experience_level} />
+        <div className="space-y-3 px-6 pt-5 pb-6">
+          {data ? (
+            <>
+              <DetailRow label="University" value={data.university} />
+              <DetailRow label="Major" value={data.major} />
+              <DetailRow label="Year" value={data.year_of_study} />
+              {data.experience_level && (
+                <DetailRow label="Level" value={data.experience_level} />
+              )}
+              {reviewedDate && <DetailRow label="Reviewed" value={reviewedDate} />}
+            </>
+          ) : (
+            <>
+              <DetailRow label="Status" value="Pending Review" />
+              <DetailRow label="Reference" value={rid ? `#${rid.slice(0, 8).toUpperCase()}` : '---'} />
+            </>
           )}
-          {reviewedDate && <DetailRow label="Reviewed" value={reviewedDate} />}
         </div>
 
         {/* Footer suits */}
         <div
-          className="flex items-center justify-center gap-4 py-3 font-mono text-[10px]"
+          className="flex items-center justify-center gap-6 py-3 font-mono text-[10px]"
           style={{
-            borderTop: '1px solid rgba(255,255,255,0.05)',
-            color: 'rgba(255,255,255,0.15)',
+            borderTop: '1px solid rgba(255,255,255,0.04)',
+            color: 'rgba(255,255,255,0.1)',
           }}
         >
           <span>{'\u2660'}</span>
@@ -250,6 +309,16 @@ export default function ApplicationStatus() {
           <span>{'\u2663'}</span>
         </div>
       </div>
+
+      {/* Back to home link */}
+      <div className="mt-8 text-center">
+        <a
+          href="/"
+          className="font-mono text-[10px] tracking-[0.2em] text-white/20 uppercase transition-colors duration-300 hover:text-white/40"
+        >
+          &larr; back to table
+        </a>
+      </div>
     </div>
   );
 }
@@ -257,10 +326,10 @@ export default function ApplicationStatus() {
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="font-mono text-[10px] tracking-[0.2em] text-white/30 uppercase">
+      <span className="font-mono text-[10px] tracking-[0.2em] text-white/25 uppercase">
         {label}
       </span>
-      <span className="text-right font-mono text-xs text-white/70">{value}</span>
+      <span className="text-right font-mono text-xs text-white/60">{value}</span>
     </div>
   );
 }
