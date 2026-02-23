@@ -1098,13 +1098,13 @@
     }
   }
 
-  /* Tick animation */
+  /* Tick animation — uses px instead of % to avoid Safari SVG rendering bugs */
   .reel-digit.tick {
     animation: reel-tick 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
   @keyframes reel-tick {
     0% {
-      transform: translateY(-110%);
+      transform: translateY(-62px);
       opacity: 0;
       filter: blur(3px);
     }
@@ -1322,16 +1322,15 @@
      REEL SYMBOLS — inline SVG icons (classic slot machine)
      ====================================================== */
   .reel-icon {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     display: block;
     margin: 0 auto;
-    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 8px rgba(196, 30, 58, 0.2));
   }
   @media (min-width: 768px) {
     .reel-icon {
-      width: 44px;
-      height: 44px;
+      width: 66px;
+      height: 66px;
     }
   }
 
@@ -1434,22 +1433,34 @@
 
   // ===== Slot machine intro animation =====
   // Inline SVG icons for reel symbols — crisp at any size, no emoji
-  const SVG = (inner: string, vb = '0 0 24 24') =>
-    `<svg class="reel-icon" viewBox="${vb}" fill="none" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+  // Use factory functions instead of static strings to ensure unique gradient IDs per
+  // injection — Safari resolves SVG gradient url(#id) globally, so duplicate IDs across
+  // multiple inline SVGs cause fills to disappear.
+  let _svgUid = 0;
+  // Safari requires explicit width/height attributes on <svg> elements —
+  // it won't infer dimensions from CSS alone when injected via innerHTML.
+  const _isMd = window.matchMedia('(min-width: 768px)').matches;
+  const _iconSize = _isMd ? 66 : 48;
+  const SVG = (innerFn: (uid: string) => string, vb = '0 0 24 24') => {
+    return () => {
+      const uid = `s${_svgUid++}`;
+      return `<svg class="reel-icon" width="${_iconSize}" height="${_iconSize}" viewBox="${vb}" fill="none" xmlns="http://www.w3.org/2000/svg">${innerFn(uid)}</svg>`;
+    };
+  };
 
   const ICONS = {
     // Classic cherry — two glossy red cherries with a curved stem
     cherry: SVG(
-      `
+      (u) => `
       <defs>
-        <radialGradient id="ch" cx="0.35" cy="0.3"><stop offset="0" stop-color="#ff4d5e"/><stop offset="0.6" stop-color="#c41e3a"/><stop offset="1" stop-color="#7a1024"/></radialGradient>
+        <radialGradient id="${u}" cx="0.35" cy="0.3"><stop offset="0" stop-color="#ff4d5e"/><stop offset="0.6" stop-color="#c41e3a"/><stop offset="1" stop-color="#7a1024"/></radialGradient>
       </defs>
       <path d="M11 5c1-3 3-4 5-3.5" stroke="#2d8a4e" stroke-width="1.8" stroke-linecap="round" fill="none"/>
       <path d="M11 5c-1-3-3.5-3.5-5-2.5" stroke="#2d8a4e" stroke-width="1.8" stroke-linecap="round" fill="none"/>
       <path d="M13.5 2.5c.6-.2 1.8 0 2 1.2" stroke="#3aab62" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-      <ellipse cx="7.5" cy="10" rx="5" ry="5.2" fill="url(#ch)" stroke="#7a1024" stroke-width="0.6"/>
+      <ellipse cx="7.5" cy="10" rx="5" ry="5.2" fill="url(#${u})" stroke="#7a1024" stroke-width="0.6"/>
       <ellipse cx="6.2" cy="8.5" rx="1.5" ry="2" fill="rgba(255,255,255,0.22)" transform="rotate(-15 6.2 8.5)"/>
-      <ellipse cx="15" cy="9" rx="5" ry="5.2" fill="url(#ch)" stroke="#7a1024" stroke-width="0.6"/>
+      <ellipse cx="15" cy="9" rx="5" ry="5.2" fill="url(#${u})" stroke="#7a1024" stroke-width="0.6"/>
       <ellipse cx="13.7" cy="7.5" rx="1.5" ry="2" fill="rgba(255,255,255,0.22)" transform="rotate(-15 13.7 7.5)"/>
     `,
       '0 -1 22 17',
@@ -1457,11 +1468,11 @@
 
     // Classic diamond gem — faceted blue-white gem
     diamond: SVG(
-      `
+      (u) => `
       <defs>
-        <linearGradient id="dm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8d8ff"/><stop offset="0.5" stop-color="#4da6ff"/><stop offset="1" stop-color="#1a6bc4"/></linearGradient>
+        <linearGradient id="${u}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8d8ff"/><stop offset="0.5" stop-color="#4da6ff"/><stop offset="1" stop-color="#1a6bc4"/></linearGradient>
       </defs>
-      <polygon points="12,1 3,8 12,22 21,8" fill="url(#dm)" stroke="#1a6bc4" stroke-width="0.7"/>
+      <polygon points="12,1 3,8 12,22 21,8" fill="url(#${u})" stroke="#1a6bc4" stroke-width="0.7"/>
       <polygon points="12,1 8,8 12,22 16,8" fill="rgba(255,255,255,0.18)"/>
       <line x1="3" y1="8" x2="21" y2="8" stroke="rgba(255,255,255,0.35)" stroke-width="0.6"/>
       <line x1="8" y1="8" x2="12" y2="1" stroke="rgba(255,255,255,0.2)" stroke-width="0.4"/>
@@ -1473,9 +1484,9 @@
 
     // Lucky 7 — Bodoni Black vector trace, red/gold
     seven: SVG(
-      `
+      (u) => `
       <defs>
-        <linearGradient id="sv" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff4d5e"/><stop offset="1" stop-color="#8a1024"/></linearGradient>
+        <linearGradient id="${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff4d5e"/><stop offset="1" stop-color="#8a1024"/></linearGradient>
       </defs>
       <path d="
         M 8 4 L 42 4 L 42 8
@@ -1484,7 +1495,7 @@
         L 15 46 C 14 46 13.5 45 14.5 42.5
         L 26 16 C 28 12 29 10 30 8.5
         L 8 8.5 L 8 8 C 8 6.5 8 5 8 4 Z
-      " fill="url(#sv)"/>
+      " fill="url(#${u})"/>
       <path d="
         M 8 4 L 42 4 L 42 6 L 8 6 Z
       " fill="rgba(255,255,255,0.15)"/>
@@ -1493,33 +1504,33 @@
     ),
 
     // BAR — classic slot bar symbol
-    bar: SVG(`
+    bar: SVG((u) => `
       <defs>
-        <linearGradient id="br" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d48c"/><stop offset="0.5" stop-color="#c9a84c"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
+        <linearGradient id="${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8d48c"/><stop offset="0.5" stop-color="#c9a84c"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
       </defs>
-      <rect x="1" y="7" width="22" height="10" rx="2.5" fill="url(#br)" stroke="#6b5518" stroke-width="0.8"/>
+      <rect x="1" y="7" width="22" height="10" rx="2.5" fill="url(#${u})" stroke="#6b5518" stroke-width="0.8"/>
       <rect x="1" y="7" width="22" height="5" rx="2.5" fill="rgba(255,255,255,0.12)"/>
       <text x="12" y="14.8" text-anchor="middle" font-family="Georgia,serif" font-weight="900" font-size="7" fill="#2a1a08" letter-spacing="1.5">BAR</text>
     `),
 
     // Liberty bell — classic golden bell with clapper
-    bell: SVG(`
+    bell: SVG((u) => `
       <defs>
-        <linearGradient id="bl" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0" stop-color="#ffe680"/><stop offset="0.4" stop-color="#d4a832"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
+        <linearGradient id="${u}" x1="0.5" y1="0" x2="0.5" y2="1"><stop offset="0" stop-color="#ffe680"/><stop offset="0.4" stop-color="#d4a832"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
       </defs>
       <path d="M12 2a1.2 1.2 0 1 1 0 2.4A1.2 1.2 0 0 1 12 2z" fill="#d4a832"/>
-      <path d="M12 4c-1 0-2 .8-3 2.5C7.5 9 6 12 5.5 14.5c-.3 1.5.5 2.5 2 3h9c1.5-.5 2.3-1.5 2-3C18 12 16.5 9 15 6.5 14 4.8 13 4 12 4z" fill="url(#bl)" stroke="#6b5518" stroke-width="0.6"/>
+      <path d="M12 4c-1 0-2 .8-3 2.5C7.5 9 6 12 5.5 14.5c-.3 1.5.5 2.5 2 3h9c1.5-.5 2.3-1.5 2-3C18 12 16.5 9 15 6.5 14 4.8 13 4 12 4z" fill="url(#${u})" stroke="#6b5518" stroke-width="0.6"/>
       <path d="M9 6.5C7.5 9 6 12 5.5 14.5c-.1.6 0 1.1.2 1.5h5C10 14 9.5 10 9 6.5z" fill="rgba(255,255,255,0.15)"/>
       <ellipse cx="12" cy="18.5" rx="1.2" ry="1.5" fill="#8a6e1e" stroke="#6b5518" stroke-width="0.4"/>
       <line x1="5.5" y1="17.2" x2="18.5" y2="17.2" stroke="#6b5518" stroke-width="0.5"/>
     `),
 
     // Horseshoe — traditional lucky horseshoe
-    horseshoe: SVG(`
+    horseshoe: SVG((u) => `
       <defs>
-        <linearGradient id="hs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8d48c"/><stop offset="0.5" stop-color="#c9a84c"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
+        <linearGradient id="${u}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8d48c"/><stop offset="0.5" stop-color="#c9a84c"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
       </defs>
-      <path d="M6.5 20V10.5a5.5 5.5 0 0 1 11 0V20" stroke="url(#hs)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <path d="M6.5 20V10.5a5.5 5.5 0 0 1 11 0V20" stroke="url(#${u})" stroke-width="3.5" stroke-linecap="round" fill="none"/>
       <path d="M6.5 20V10.5a5.5 5.5 0 0 1 11 0V20" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
       <circle cx="6.5" cy="20" r="1.8" fill="#d4a832" stroke="#6b5518" stroke-width="0.5"/>
       <circle cx="17.5" cy="20" r="1.8" fill="#d4a832" stroke="#6b5518" stroke-width="0.5"/>
@@ -1530,11 +1541,11 @@
 
     // Watermelon — classic fruit machine symbol
     melon: SVG(
-      `
+      (u) => `
       <defs>
-        <radialGradient id="ml" cx="0.5" cy="0.6"><stop offset="0" stop-color="#4ade80"/><stop offset="0.7" stop-color="#16a34a"/><stop offset="1" stop-color="#0a5c28"/></radialGradient>
+        <radialGradient id="${u}" cx="0.5" cy="0.6"><stop offset="0" stop-color="#4ade80"/><stop offset="0.7" stop-color="#16a34a"/><stop offset="1" stop-color="#0a5c28"/></radialGradient>
       </defs>
-      <path d="M3 14A9 9 0 0 1 21 14z" fill="url(#ml)" stroke="#0a5c28" stroke-width="0.7"/>
+      <path d="M3 14A9 9 0 0 1 21 14z" fill="url(#${u})" stroke="#0a5c28" stroke-width="0.7"/>
       <path d="M4.5 14A7.5 7.5 0 0 1 19.5 14z" fill="#ff3b5c"/>
       <path d="M6 14A6 6 0 0 1 18 14z" fill="#e8354f"/>
       <path d="M6 14a6 6 0 0 1 3-5.2" stroke="rgba(255,255,255,0.15)" stroke-width="0.5" fill="none"/>
@@ -1549,11 +1560,11 @@
 
     // Orange — classic citrus fruit
     orange: SVG(
-      `
+      (u) => `
       <defs>
-        <radialGradient id="og" cx="0.38" cy="0.35"><stop offset="0" stop-color="#ffb347"/><stop offset="0.6" stop-color="#ff8c00"/><stop offset="1" stop-color="#c45e00"/></radialGradient>
+        <radialGradient id="${u}" cx="0.38" cy="0.35"><stop offset="0" stop-color="#ffb347"/><stop offset="0.6" stop-color="#ff8c00"/><stop offset="1" stop-color="#c45e00"/></radialGradient>
       </defs>
-      <circle cx="12" cy="12.5" r="8" fill="url(#og)" stroke="#a04d00" stroke-width="0.6"/>
+      <circle cx="12" cy="12.5" r="8" fill="url(#${u})" stroke="#a04d00" stroke-width="0.6"/>
       <ellipse cx="10" cy="10" rx="2.5" ry="3.2" fill="rgba(255,255,255,0.18)" transform="rotate(-20 10 10)"/>
       <path d="M12 4.5c0-1.5.8-2.5 1.5-3" stroke="#2d8a4e" stroke-width="1.3" stroke-linecap="round" fill="none"/>
       <path d="M12.8 3c.8.3 2 .2 2.5-.5" stroke="#3aab62" stroke-width="1" stroke-linecap="round" fill="none"/>
@@ -1563,11 +1574,11 @@
 
     // Plum — classic purple fruit
     plum: SVG(
-      `
+      (u) => `
       <defs>
-        <radialGradient id="pl" cx="0.38" cy="0.35"><stop offset="0" stop-color="#c084fc"/><stop offset="0.5" stop-color="#9333ea"/><stop offset="1" stop-color="#581c87"/></radialGradient>
+        <radialGradient id="${u}" cx="0.38" cy="0.35"><stop offset="0" stop-color="#c084fc"/><stop offset="0.5" stop-color="#9333ea"/><stop offset="1" stop-color="#581c87"/></radialGradient>
       </defs>
-      <ellipse cx="12" cy="12.5" rx="7.5" ry="8" fill="url(#pl)" stroke="#4a1272" stroke-width="0.6"/>
+      <ellipse cx="12" cy="12.5" rx="7.5" ry="8" fill="url(#${u})" stroke="#4a1272" stroke-width="0.6"/>
       <ellipse cx="10" cy="10" rx="2.2" ry="3" fill="rgba(255,255,255,0.18)" transform="rotate(-20 10 10)"/>
       <path d="M12 4.5c-.3-1.5.3-2.8 1-3.2" stroke="#2d8a4e" stroke-width="1.3" stroke-linecap="round" fill="none"/>
       <path d="M12.5 2.8c.6.4 1.8.5 2.4 0" stroke="#3aab62" stroke-width="0.9" stroke-linecap="round" fill="none"/>
@@ -1577,11 +1588,11 @@
 
     // Lemon — classic yellow fruit
     lemon: SVG(
-      `
+      (u) => `
       <defs>
-        <radialGradient id="lm" cx="0.38" cy="0.35"><stop offset="0" stop-color="#fef08a"/><stop offset="0.5" stop-color="#facc15"/><stop offset="1" stop-color="#a16207"/></radialGradient>
+        <radialGradient id="${u}" cx="0.38" cy="0.35"><stop offset="0" stop-color="#fef08a"/><stop offset="0.5" stop-color="#facc15"/><stop offset="1" stop-color="#a16207"/></radialGradient>
       </defs>
-      <ellipse cx="12" cy="11" rx="7" ry="8.5" fill="url(#lm)" stroke="#a16207" stroke-width="0.6" transform="rotate(-15 12 11)"/>
+      <ellipse cx="12" cy="11" rx="7" ry="8.5" fill="url(#${u})" stroke="#a16207" stroke-width="0.6" transform="rotate(-15 12 11)"/>
       <ellipse cx="10.5" cy="9" rx="2" ry="3" fill="rgba(255,255,255,0.22)" transform="rotate(-25 10.5 9)"/>
       <path d="M14 3c.5-1 1.5-1.5 2-1.2" stroke="#65a30d" stroke-width="1.2" stroke-linecap="round" fill="none"/>
     `,
@@ -1590,9 +1601,9 @@
 
     // 6 — Bodoni Black vector, neon green
     sixGreen: SVG(
-      `
+      (u) => `
       <defs>
-        <linearGradient id="s6g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#15803d"/></linearGradient>
+        <linearGradient id="${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#15803d"/></linearGradient>
       </defs>
       <path d="
         M 30 4 C 28.5 4 27 4.5 26 5.5
@@ -1613,16 +1624,16 @@
         C 32 35.5 29 39.5 25 39.5
         C 21 39.5 18 35.5 18 31
         C 18 26.5 21 23 25 23 Z
-      " fill="url(#s6g)" fill-rule="evenodd"/>
+      " fill="url(#${u})" fill-rule="evenodd"/>
     `,
       '-4 -10 58 68',
     ),
 
     // 9 — Bodoni Black vector, cyan
     nineCyan: SVG(
-      `
+      (u) => `
       <defs>
-        <linearGradient id="s9c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#0e7490"/></linearGradient>
+        <linearGradient id="${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#67e8f9"/><stop offset="1" stop-color="#0e7490"/></linearGradient>
       </defs>
       <path d="
         M 20 46 C 21.5 46 23 45.5 24 44.5
@@ -1643,16 +1654,16 @@
         C 18 14.5 21 10.5 25 10.5
         C 29 10.5 32 14.5 32 19
         C 32 23.5 29 27 25 27 Z
-      " fill="url(#s9c)" fill-rule="evenodd"/>
+      " fill="url(#${u})" fill-rule="evenodd"/>
     `,
       '-4 -8 58 68',
     ),
 
     // 6 — Bodoni Black vector, gold
     sixGold: SVG(
-      `
+      (u) => `
       <defs>
-        <linearGradient id="s6d" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd700"/><stop offset="0.6" stop-color="#d4a012"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
+        <linearGradient id="${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd700"/><stop offset="0.6" stop-color="#d4a012"/><stop offset="1" stop-color="#8a6e1e"/></linearGradient>
       </defs>
       <path d="
         M 30 4 C 28.5 4 27 4.5 26 5.5
@@ -1673,16 +1684,16 @@
         C 32 35.5 29 39.5 25 39.5
         C 21 39.5 18 35.5 18 31
         C 18 26.5 21 23 25 23 Z
-      " fill="url(#s6d)" fill-rule="evenodd"/>
+      " fill="url(#${u})" fill-rule="evenodd"/>
     `,
       '-4 -10 58 68',
     ),
 
     // 9 — Bodoni Black vector, hot pink
     ninePink: SVG(
-      `
+      (u) => `
       <defs>
-        <linearGradient id="s9p" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b9d"/><stop offset="1" stop-color="#9d174d"/></linearGradient>
+        <linearGradient id="${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6b9d"/><stop offset="1" stop-color="#9d174d"/></linearGradient>
       </defs>
       <path d="
         M 20 46 C 21.5 46 23 45.5 24 44.5
@@ -1703,13 +1714,14 @@
         C 18 14.5 21 10.5 25 10.5
         C 29 10.5 32 14.5 32 19
         C 32 23.5 29 27 25 27 Z
-      " fill="url(#s9p)" fill-rule="evenodd"/>
+      " fill="url(#${u})" fill-rule="evenodd"/>
     `,
       '-4 -8 58 68',
     ),
   };
 
-  const symbolDefs = [
+  type SymbolFn = () => string;
+  const symbolDefs: SymbolFn[] = [
     ICONS.cherry,
     ICONS.diamond,
     ICONS.seven,
@@ -1721,17 +1733,26 @@
     ICONS.plum,
     ICONS.lemon,
   ];
-  const WIN_REELS = [ICONS.sixGreen, ICONS.seven, ICONS.sixGold, ICONS.nineCyan];
+  const WIN_REELS: SymbolFn[] = [ICONS.sixGreen, ICONS.seven, ICONS.sixGold, ICONS.nineCyan];
   const reelEls = [reels.days, reels.hours, reels.mins, reels.secs] as HTMLElement[];
   const keys = ['days', 'hours', 'mins', 'secs'] as const;
   const marqueeText = document.querySelector<HTMLElement>('.marquee-text')!;
   const cabinet = document.querySelector<HTMLElement>('.slot-cabinet')!;
 
-  function randSym() {
+  function randSym(): SymbolFn {
     return symbolDefs[Math.floor(Math.random() * symbolDefs.length)];
   }
-  function setSymbol(el: HTMLElement, svg: string) {
-    el.innerHTML = svg;
+  // Safari won't correctly parse SVG gradients/defs when inserted via innerHTML
+  // on a non-SVG element (<span>). The SVG gets parsed in the HTML namespace instead
+  // of the SVG namespace, so <linearGradient>, <radialGradient>, etc. are ignored.
+  // Fix: parse through a temporary <div> so the browser creates proper SVG DOM nodes,
+  // then move the node into the target element.
+  const _svgParser = document.createElement('div');
+  function setSymbol(el: HTMLElement, sym: SymbolFn) {
+    _svgParser.innerHTML = sym();
+    el.textContent = '';
+    const svgNode = _svgParser.firstElementChild;
+    if (svgNode) el.appendChild(svgNode);
   }
 
   // Hide labels during spin phase
@@ -1741,6 +1762,14 @@
   reelEls.forEach((el) => {
     setSymbol(el, randSym());
   });
+
+  // Compute reel window height in px — Safari chokes on percentage-based y transforms
+  // when the animated element contains SVGs with filters/gradients inside overflow:hidden.
+  // Using pixel values avoids the Safari rendering bug entirely.
+  const reelWindowH = (reelEls[0].closest('.slot-reel-window') as HTMLElement).offsetHeight;
+  const yOff = Math.ceil(reelWindowH * 1.1);   // 110% equivalent
+  const yUp = -yOff;
+  const yDown = yOff;
 
   // GSAP-based smooth vertical scroll spinning
   const stopFns: (() => void)[] = [];
@@ -1755,14 +1784,14 @@
         if (!running) return;
         speed = Math.max(targetSpeed, speed * 0.6);
         gsap.to(el, {
-          y: '-110%',
+          y: yUp,
           duration: speed,
           ease: 'none',
           onComplete: () => {
             if (!running) return;
             setSymbol(el, randSym());
-            gsap.set(el, { y: '110%' });
-            gsap.to(el, { y: '0%', duration: speed, ease: 'none', onComplete: cycle });
+            gsap.set(el, { y: yDown });
+            gsap.to(el, { y: 0, duration: speed, ease: 'none', onComplete: cycle });
           },
         });
       }
@@ -1776,7 +1805,7 @@
   }
 
   // Stop reel with smooth deceleration + bounce landing
-  async function stopReel(index: number, target: string): Promise<void> {
+  async function stopReel(index: number, target: SymbolFn): Promise<void> {
     stopFns[index]();
     const el = reelEls[index];
 
@@ -1785,13 +1814,13 @@
     for (const dur of durs) {
       await new Promise<void>((res) => {
         gsap.to(el, {
-          y: '-110%',
+          y: yUp,
           duration: dur,
           ease: 'none',
           onComplete: () => {
             setSymbol(el, randSym());
-            gsap.set(el, { y: '110%' });
-            gsap.to(el, { y: '0%', duration: dur, ease: 'none', onComplete: res });
+            gsap.set(el, { y: yDown });
+            gsap.to(el, { y: 0, duration: dur, ease: 'none', onComplete: res });
           },
         });
       });
@@ -1800,14 +1829,14 @@
     // Final landing: ease-in exit, bounce-in entry
     await new Promise<void>((res) => {
       gsap.to(el, {
-        y: '-110%',
+        y: yUp,
         duration: 0.14,
         ease: 'power2.in',
         onComplete: () => {
           setSymbol(el, target);
-          gsap.set(el, { y: '110%' });
+          gsap.set(el, { y: yDown });
           gsap.to(el, {
-            y: '0%',
+            y: 0,
             duration: 0.28,
             ease: 'back.out(1.4)',
             onComplete: () => {
@@ -1954,13 +1983,13 @@
       for (let s = 0; s < 3; s++) {
         await new Promise<void>((res) => {
           gsap.to(el, {
-            y: '-110%',
+            y: yUp,
             duration: 0.08,
             ease: 'none',
             onComplete: () => {
               el.textContent = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-              gsap.set(el, { y: '110%' });
-              gsap.to(el, { y: '0%', duration: 0.08, ease: 'none', onComplete: res });
+              gsap.set(el, { y: yDown });
+              gsap.to(el, { y: 0, duration: 0.08, ease: 'none', onComplete: res });
             },
           });
         });
@@ -1969,15 +1998,15 @@
       // Final land on real value with bounce
       await new Promise<void>((res) => {
         gsap.to(el, {
-          y: '-110%',
+          y: yUp,
           duration: 0.12,
           ease: 'power1.in',
           onComplete: () => {
             el.textContent = real[key];
             prev[key] = real[key];
-            gsap.set(el, { y: '110%' });
+            gsap.set(el, { y: yDown });
             gsap.to(el, {
-              y: '0%',
+              y: 0,
               duration: 0.3,
               ease: 'back.out(1.2)',
               onComplete: () => {
