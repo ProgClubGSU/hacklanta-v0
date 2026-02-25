@@ -15,7 +15,12 @@ const phases = [
     suit: suitSvg.spade,
     color: '#C41E3A',
     rgb: '196,30,58',
-    events: ['Check-In', 'Opening Ceremony', 'Poker Tables', 'Blackjack Table', 'Lunch'],
+    events: [
+      'Check-In', 'Opening Ceremony', 'Hacking Begins',
+      { name: 'Poker Tables', note: 'no real gambling — just for fun' },
+      { name: 'Blackjack Table', note: 'no real gambling — just for fun' },
+      'Lunch',
+    ],
   },
   {
     name: 'THE GRIND',
@@ -33,7 +38,11 @@ const phases = [
     suit: suitSvg.diamond,
     color: '#C9A84C',
     rgb: '201,168,76',
-    events: ['200-Can Red Bull Competition', 'Rainbet Competition', 'Closing Ceremony'],
+    events: [
+      '200-Can Red Bull Competition',
+      { name: 'Crash Game', note: 'most chips wins premium swag' },
+      'Hacking Ends', 'Judging', 'Closing Ceremony',
+    ],
   },
 ];
 ---
@@ -113,23 +122,33 @@ const phases = [
           </header>
 
           <div class="mt-5 border-t border-border/40 pt-5 space-y-3">
-            {phase.events.map((evt) => (
-              <div class="flex items-center gap-3">
-                <span
-                  class="text-sm leading-none select-none"
-                  style={`color: ${phase.color};`}
-                ><Fragment set:html={phase.suit} /></span>
-                <span class="font-display text-base tracking-wide text-white/90 md:text-lg">{evt}</span>
-                <span
-                  class="ml-auto h-px flex-1 max-w-[120px]"
-                  style={`background: linear-gradient(90deg, rgba(${phase.rgb},0.3), transparent);`}
-                ></span>
-              </div>
-            ))}
+            {phase.events.map((evt) => {
+              const name = typeof evt === 'string' ? evt : evt.name;
+              const note = typeof evt === 'string' ? null : evt.note;
+              return (
+                <div class="flex items-center gap-3">
+                  <span
+                    class="text-sm leading-none select-none"
+                    style={`color: ${phase.color};`}
+                  ><Fragment set:html={phase.suit} /></span>
+                  <span class="font-display text-base tracking-wide text-white/90 md:text-lg">{name}</span>
+                  {note && <span class="font-mono text-[10px] tracking-wide text-white/30">{note}</span>}
+                  <span
+                    class="ml-auto h-px flex-1 max-w-[120px]"
+                    style={`background: linear-gradient(90deg, rgba(${phase.rgb},0.3), transparent);`}
+                  ></span>
+                </div>
+              );
+            })}
           </div>
         </article>
       ))}
     </div>
+
+    <!-- WIP notice -->
+    <p class="mt-8 text-center font-mono text-[11px] tracking-[0.2em] text-white/35 uppercase">
+      // more activities coming soon &mdash; stay tuned
+    </p>
 
   </div>
 </section>
