@@ -1,5 +1,5 @@
 import { useAuth } from '@clerk/astro/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ApplicationData {
   id: string;
@@ -146,23 +146,7 @@ export default function ApplicationStatus() {
       </div>
 
       {/* Background: Poster Marquee — fills bottom half */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 overflow-hidden opacity-35">
-        <div className="absolute inset-x-0 top-0 z-10 h-32 bg-gradient-to-b from-[#1a0a0e] to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 z-10 h-20 bg-gradient-to-t from-[#1a0a0e] to-transparent" />
-        <div className="absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#1a0a0e] to-transparent" />
-        <div className="absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#1a0a0e] to-transparent" />
-        <div className="flex h-full animate-[marquee_35s_linear_infinite] items-end">
-          {[...POSTERS, ...POSTERS].map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt=""
-              className="h-full w-auto flex-shrink-0 object-cover"
-              loading="lazy"
-            />
-          ))}
-        </div>
-      </div>
+      <PosterMarquee />
 
       {/* Content — centered in viewport */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
@@ -230,4 +214,77 @@ const POSTERS = [
   '/images/posters/poster-4.png',
   '/images/posters/poster-5.png',
 ];
+
+function PosterMarquee() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [setWidth, setSetWidth] = useState(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    // Wait for images to load, then measure one set's width
+    const images = track.querySelectorAll('img');
+    let loaded = 0;
+    const total = images.length;
+
+    function measure() {
+      // Width of one poster set = total scrolling width / 3
+      setSetWidth(track!.scrollWidth / 3);
+    }
+
+    images.forEach((img) => {
+      if (img.complete) {
+        loaded++;
+      } else {
+        img.addEventListener('load', () => {
+          loaded++;
+          if (loaded >= total) measure();
+        }, { once: true });
+      }
+    });
+
+    if (loaded >= total) measure();
+
+    // Re-measure on resize
+    const onResize = () => measure();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  return (
+    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 overflow-hidden opacity-35">
+      <div className="absolute inset-x-0 top-0 z-10 h-32 bg-gradient-to-b from-[#1a0a0e] to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 z-10 h-20 bg-gradient-to-t from-[#1a0a0e] to-transparent" />
+      <div className="absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#1a0a0e] to-transparent" />
+      <div className="absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#1a0a0e] to-transparent" />
+      <div
+        ref={trackRef}
+        className="flex h-full items-end"
+        style={setWidth ? {
+          animation: `marquee-exact 35s linear infinite`,
+        } : undefined}
+      >
+        {/* 3 copies for seamless loop */}
+        {[...POSTERS, ...POSTERS, ...POSTERS].map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt=""
+            className="h-full w-auto flex-shrink-0 object-cover"
+            loading="lazy"
+          />
+        ))}
+      </div>
+      {setWidth > 0 && (
+        <style>{`
+          @keyframes marquee-exact {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-${setWidth}px); }
+          }
+        `}</style>
+      )}
+    </div>
+  );
+}
 
