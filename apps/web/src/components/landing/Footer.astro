@@ -1,9 +1,37 @@
 ---
 const currentYear = new Date().getFullYear();
+
+const POSTERS = [
+  '/images/posters/poster-1.png',
+  '/images/posters/poster-2.png',
+  '/images/posters/poster-3.png',
+  '/images/posters/poster-4.png',
+  '/images/posters/poster-5.png',
+];
 ---
 
-<footer id="footer" class="relative bg-black px-4 pb-8 pt-16">
+<footer id="footer" class="relative bg-black px-4 pb-8 pt-16 overflow-hidden">
   <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/20 to-transparent"></div>
+
+  <!-- Poster marquee background -->
+  <div class="pointer-events-none absolute inset-0 opacity-[0.4]">
+    <div class="absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-black to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 z-10 h-16 bg-gradient-to-t from-black to-transparent"></div>
+    <div class="absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-black to-transparent"></div>
+    <div class="absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-black to-transparent"></div>
+    <div class="footer-marquee-track flex h-full items-center">
+      {/* 3 copies for seamless loop */}
+      {[...POSTERS, ...POSTERS, ...POSTERS].map((src) => (
+        <img
+          src={src}
+          alt=""
+          class="h-full w-auto flex-shrink-0 object-cover"
+          loading="lazy"
+          draggable="false"
+        />
+      ))}
+    </div>
+  </div>
 
   <div class="relative z-10 mx-auto max-w-5xl">
 
@@ -42,3 +70,48 @@ const currentYear = new Date().getFullYear();
 
   </div>
 </footer>
+
+<script>
+  const track = document.querySelector<HTMLElement>('.footer-marquee-track');
+  if (track) {
+    const images = track.querySelectorAll('img');
+    let loaded = 0;
+    const total = images.length;
+
+    function measure() {
+      const setWidth = track!.scrollWidth / 3;
+      if (setWidth > 0) {
+        track!.style.animation = `footer-marquee ${35}s linear infinite`;
+
+        // Inject keyframes
+        let style = document.getElementById('footer-marquee-style');
+        if (!style) {
+          style = document.createElement('style');
+          style.id = 'footer-marquee-style';
+          document.head.appendChild(style);
+        }
+        style.textContent = `
+          @keyframes footer-marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-${setWidth}px); }
+          }
+        `;
+      }
+    }
+
+    images.forEach((img) => {
+      if (img.complete) {
+        loaded++;
+      } else {
+        img.addEventListener('load', () => {
+          loaded++;
+          if (loaded >= total) measure();
+        }, { once: true });
+      }
+    });
+
+    if (loaded >= total) measure();
+
+    window.addEventListener('resize', measure);
+  }
+</script>
