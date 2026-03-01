@@ -120,6 +120,28 @@ const tracks = [
       ))}
     </div>
   </div>
+
+  <!-- Prize Pool — crash game style -->
+  <div class="prize-pool relative z-10 mx-auto mt-16 min-h-[280px] max-w-5xl md:min-h-0">
+    <canvas class="crash-canvas pointer-events-none absolute inset-0 h-full w-full opacity-50"></canvas>
+
+    <div class="relative z-10 flex flex-col items-center py-16 text-center md:py-10">
+      <span class="font-mono text-[10px] tracking-[0.3em] text-gold/50 uppercase">prize pool</span>
+      <div class="mt-3 flex items-baseline">
+        <span class="font-display text-2xl text-gold/50 md:text-3xl">$</span>
+        <span
+          class="prize-number font-display text-6xl tracking-wider text-gold md:text-8xl"
+          style="text-shadow: 0 0 60px rgba(201,168,76,0.25), 0 0 120px rgba(201,168,76,0.08);"
+        >1,500</span>
+      </div>
+      <div class="mt-2 flex items-center gap-1.5">
+        <svg class="h-3 w-3 animate-bounce text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+        </svg>
+        <span class="font-mono text-[10px] tracking-[0.2em] text-green-400/70 uppercase">and growing</span>
+      </div>
+    </div>
+  </div>
 </section>
 
 <style>
@@ -461,4 +483,267 @@ const tracks = [
       gsap.to(pm, { borderColor: 'rgba(196,30,58,0.1)', duration: 0.3 });
     });
   });
+
+  // ===== Prize pool + Crash game (synced, plays once) =====
+  const prizeEl = document.querySelector('.prize-number') as HTMLElement | null;
+  const crashCanvas = document.querySelector('.crash-canvas') as HTMLCanvasElement | null;
+
+  if (crashCanvas && prizeEl) {
+    const ctx = crashCanvas.getContext('2d')!;
+    let crashAnim: number;
+    let hasPlayed = false;
+    let animStart = 0;
+    const animDuration = 5000;
+
+    // Cashout markers along the curve
+    const cashouts = [
+      { t: 0.12, name: 'auramaxxer', amount: '$45.20', side: 'right' as const },
+      { t: 0.25, name: 'chudlord', amount: '$120.00', side: 'left' as const },
+      { t: 0.38, name: 'progsu_dev', amount: '$230.45', side: 'right' as const },
+      { t: 0.52, name: 'joey zhang', amount: '$310.00', side: 'left' as const },
+      { t: 0.68, name: 'sam altman', amount: '$520.00', side: 'right' as const },
+      { t: 0.88, name: 'elon musk', amount: '$1,000', side: 'left' as const },
+    ];
+
+    // Y-axis multiplier levels
+    const yMultipliers = [
+      { value: 1, label: '1.0x' },
+      { value: 2, label: '2.0x' },
+      { value: 3, label: '3.0x' },
+      { value: 4, label: '4.0x' },
+      { value: 5, label: '5.0x' },
+    ];
+
+    function resizeCrash() {
+      const dpr = window.devicePixelRatio;
+      const rect = crashCanvas!.parentElement!.getBoundingClientRect();
+      crashCanvas!.width = rect.width * dpr;
+      crashCanvas!.height = rect.height * dpr;
+      crashCanvas!.style.width = rect.width + 'px';
+      crashCanvas!.style.height = rect.height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function curveY(px: number): number {
+      return Math.pow(px, 2.8);
+    }
+
+    function getPoint(t: number, graphW: number, graphH: number, pad: number, h: number) {
+      return {
+        x: pad + t * graphW,
+        y: (h - pad) - curveY(t) * graphH * 0.85,
+      };
+    }
+
+    function drawCrash(now: number) {
+      const w = crashCanvas!.width / window.devicePixelRatio;
+      const h = crashCanvas!.height / window.devicePixelRatio;
+      const pad = w < 400 ? 25 : 40;
+
+      const elapsed = now - animStart;
+      const rawProgress = Math.min(elapsed / animDuration, 1);
+      const drawProgress = 1 - Math.pow(1 - rawProgress, 2);
+
+      const graphW = w - pad * 2;
+      const graphH = h - pad * 2;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // --- Grid ---
+      // Horizontal grid lines
+      ctx.setLineDash([2, 6]);
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < yMultipliers.length; i++) {
+        const yFrac = yMultipliers[i].value / 5.5;
+        const y = (h - pad) - yFrac * graphH;
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.beginPath();
+        ctx.moveTo(pad, y);
+        ctx.lineTo(w - pad, y);
+        ctx.stroke();
+
+        // Y-axis labels
+        ctx.font = `${w < 400 ? 7 : 9}px JetBrains Mono, monospace`;
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.textAlign = 'right';
+        ctx.fillText(yMultipliers[i].label, pad - (w < 400 ? 4 : 8), y + 3);
+      }
+      ctx.setLineDash([]);
+
+      // Vertical time ticks
+      ctx.setLineDash([2, 6]);
+      for (let i = 1; i <= 6; i++) {
+        const x = pad + (graphW * i / 7);
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.beginPath();
+        ctx.moveTo(x, pad);
+        ctx.lineTo(x, h - pad);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+
+      // Axes
+      ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(pad, pad);
+      ctx.lineTo(pad, h - pad);
+      ctx.lineTo(w - pad, h - pad);
+      ctx.stroke();
+
+      // --- Curve ---
+      const steps = Math.floor(drawProgress * 400);
+
+      // Wide glow trail
+      ctx.beginPath();
+      ctx.moveTo(pad, h - pad);
+      for (let i = 0; i <= steps; i++) {
+        const px = i / 400;
+        const pt = getPoint(px, graphW, graphH, pad, h);
+        ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.strokeStyle = 'rgba(196,30,58,0.18)';
+      ctx.lineWidth = 20;
+      ctx.shadowColor = 'rgba(196,30,58,0.35)';
+      ctx.shadowBlur = 40;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Secondary glow
+      ctx.beginPath();
+      ctx.moveTo(pad, h - pad);
+      for (let i = 0; i <= steps; i++) {
+        const px = i / 400;
+        const pt = getPoint(px, graphW, graphH, pad, h);
+        ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.strokeStyle = 'rgba(230,57,70,0.2)';
+      ctx.lineWidth = 8;
+      ctx.stroke();
+
+      // Gradient fill under curve
+      const lastPx = steps / 400;
+      const lastPt = getPoint(lastPx, graphW, graphH, pad, h);
+      ctx.lineTo(lastPt.x, h - pad);
+      ctx.closePath();
+      const grad = ctx.createLinearGradient(0, pad, 0, h);
+      grad.addColorStop(0, 'rgba(196,30,58,0.18)');
+      grad.addColorStop(0.4, 'rgba(196,30,58,0.08)');
+      grad.addColorStop(1, 'rgba(196,30,58,0)');
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Main curve line
+      ctx.beginPath();
+      ctx.moveTo(pad, h - pad);
+      for (let i = 0; i <= steps; i++) {
+        const px = i / 400;
+        const pt = getPoint(px, graphW, graphH, pad, h);
+        ctx.lineTo(pt.x, pt.y);
+      }
+      ctx.strokeStyle = '#E63946';
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#E63946';
+      ctx.shadowBlur = 12;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // --- Cashout markers ---
+      for (const c of cashouts) {
+        if (c.t > drawProgress) continue;
+
+        const markerAge = (drawProgress - c.t) / 0.08;
+        const alpha = Math.min(markerAge, 1);
+        const pt = getPoint(c.t, graphW, graphH, pad, h);
+
+        ctx.globalAlpha = alpha;
+
+        // Dot on curve
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#E63946';
+        ctx.shadowColor = '#E63946';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Name + amount as plain text
+        const isMobile = w < 400;
+        const offsetX = c.side === 'right' ? (isMobile ? 8 : 12) : (isMobile ? -8 : -12);
+        ctx.textAlign = c.side === 'right' ? 'left' : 'right';
+
+        ctx.font = `bold ${isMobile ? 8 : 10}px JetBrains Mono, monospace`;
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.fillText(c.name, pt.x + offsetX, pt.y - (isMobile ? 4 : 6));
+
+        ctx.font = `${isMobile ? 7 : 9}px JetBrains Mono, monospace`;
+        ctx.fillStyle = 'rgba(201,168,76,0.7)';
+        ctx.fillText(c.amount, pt.x + offsetX, pt.y + (isMobile ? 6 : 8));
+
+        ctx.globalAlpha = 1;
+      }
+
+      // --- Tip dot (pulsing while animating) ---
+      if (rawProgress < 1) {
+        const pulse = 1 + Math.sin(now * 0.008) * 0.4;
+
+        // Outer pulse ring
+        ctx.beginPath();
+        ctx.arc(lastPt.x, lastPt.y, 14 * pulse, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(230,57,70,0.06)';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(lastPt.x, lastPt.y, 8 * pulse, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(230,57,70,0.1)';
+        ctx.fill();
+
+        // Inner dot
+        ctx.beginPath();
+        ctx.arc(lastPt.x, lastPt.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#E63946';
+        ctx.shadowColor = '#E63946';
+        ctx.shadowBlur = 30;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // White center
+        ctx.beginPath();
+        ctx.arc(lastPt.x, lastPt.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+      }
+
+      // --- Sync prize number ---
+      const currentValue = Math.round(drawProgress * 1500);
+      prizeEl!.textContent = currentValue.toLocaleString();
+
+      if (rawProgress < 1) {
+        crashAnim = requestAnimationFrame(drawCrash);
+      }
+    }
+
+    gsap.from('.prize-pool', {
+      scrollTrigger: { trigger: '.prize-pool', start: 'top 85%' },
+      opacity: 0, y: 20, duration: 0.6, ease: 'power3.out',
+    });
+
+    const crashObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !hasPlayed) {
+          hasPlayed = true;
+          resizeCrash();
+          animStart = performance.now();
+          crashAnim = requestAnimationFrame(drawCrash);
+          window.addEventListener('resize', () => {
+            resizeCrash();
+            if (performance.now() - animStart >= animDuration) {
+              drawCrash(animStart + animDuration);
+            }
+          });
+        }
+      });
+    }, { threshold: 0.2 });
+    crashObserver.observe(crashCanvas);
+  }
 </script>
