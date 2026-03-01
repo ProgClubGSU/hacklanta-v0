@@ -1815,7 +1815,7 @@
     const el = reelEls[index];
 
     // Deceleration: progressively slower cycles
-    const durs = [0.07, 0.12, 0.18];
+    const durs = [0.05, 0.08, 0.12];
     for (const dur of durs) {
       await new Promise<void>((res) => {
         gsap.to(el, {
@@ -1842,7 +1842,7 @@
           gsap.set(el, { y: yDown });
           gsap.to(el, {
             y: 0,
-            duration: 0.28,
+            duration: 0.18,
             ease: 'back.out(1.4)',
             onComplete: () => {
               const reelWindow = el.closest('.slot-reel-window') as HTMLElement;
@@ -1856,7 +1856,7 @@
                   {
                     boxShadow:
                       'inset 0 4px 16px rgba(0,0,0,1), inset 0 -4px 16px rgba(0,0,0,1), 0 0 0px rgba(196,30,58,0)',
-                    duration: 0.5,
+                    duration: 0.3,
                     ease: 'power2.out',
                   },
                 );
@@ -1876,15 +1876,15 @@
 
     startSpinning();
 
-    await new Promise((r) => setTimeout(r, 1000));
+    await new Promise((r) => setTimeout(r, 600));
 
     // Stop reels left to right with stagger
     await stopReel(0, WIN_REELS[0]);
-    await new Promise((r) => setTimeout(r, 100));
+    await new Promise((r) => setTimeout(r, 60));
     await stopReel(1, WIN_REELS[1]);
-    await new Promise((r) => setTimeout(r, 100));
+    await new Promise((r) => setTimeout(r, 60));
     await stopReel(2, WIN_REELS[2]);
-    await new Promise((r) => setTimeout(r, 100));
+    await new Promise((r) => setTimeout(r, 60));
     await stopReel(3, WIN_REELS[3]);
 
     // === JACKPOT! ===
@@ -1894,7 +1894,7 @@
         '0 0 60px rgba(196,30,58,0.5), 0 0 120px rgba(196,30,58,0.2), inset 0 1px 0 rgba(255,255,255,0.06)',
       duration: 0.3,
       yoyo: true,
-      repeat: 3,
+      repeat: 2,
       ease: 'power2.inOut',
     });
 
@@ -1920,7 +1920,7 @@
     });
 
     // Wait for jackpot celebration
-    await new Promise((r) => setTimeout(r, 1600));
+    await new Promise((r) => setTimeout(r, 900));
 
     // Signal other components that jackpot has landed
     window.dispatchEvent(new CustomEvent('jackpot'));
@@ -2025,11 +2025,11 @@
       });
 
       if (i < keys.length - 1) {
-        await new Promise((r) => setTimeout(r, 100));
+        await new Promise((r) => setTimeout(r, 50));
       }
     }
 
     // Start live countdown
     setInterval(updateCountdown, 1000);
-  }, 800);
+  }, 500);
 </script>
