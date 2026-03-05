@@ -387,17 +387,23 @@ const tracks = [
   const heroCenterX = heroRect.left + heroRect.width / 2;
   const heroBottomY = heroRect.bottom - 80; // 80px above hero bottom edge
 
+  // Cap fan card height so cards don't overwhelm the hero on large screens
+  const MAX_FAN_CARD_H = 320;
+
   const fanPositions = cards.map((card, i) => {
     const rect = card.getBoundingClientRect();
     const cardCenterX = rect.left + rect.width / 2;
     const cardCenterY = rect.top + rect.height / 2;
-    const fanSpreadX = (i - 1.5) * rect.width * 0.3;
+    const fanSpreadX = (i - 1.5) * rect.width * 0.25;
     return {
       x: heroCenterX + fanSpreadX - cardCenterX,
       y: heroBottomY - cardCenterY,
       rotation: fanRotations[i],
     };
   });
+
+  // Measure card heights BEFORE gsap transforms (scale=1 natural size)
+  const cardNaturalHeights = cards.map((card) => (card as HTMLElement).offsetHeight);
 
   // Initial state: off-screen right, invisible — ready to be dealt in
   const dealOffsetX = window.innerWidth * 0.7;
@@ -419,13 +425,17 @@ const tracks = [
     cards.forEach((card, i) => {
       const pos = fanPositions[i];
       const dealTl = gsap.timeline({ delay: i * 0.22 });
+      // Compute a scale so the card is at most MAX_FAN_CARD_H px tall in fan view
+      const naturalH = cardNaturalHeights[i];
+      const maxScale = naturalH > 0 ? Math.min(1.1, MAX_FAN_CARD_H / naturalH) : 1.0;
+
       dealTl
         .to(card, { opacity: 1, duration: 0.1, ease: 'power1.out' })
         .to(card, {
           x: pos.x,
           y: pos.y,
           rotation: pos.rotation,
-          scale: 1.35,
+          scale: maxScale,
           duration: 0.45,
           ease: 'power3.out',
           onComplete: i === lastIndex ? () => {
