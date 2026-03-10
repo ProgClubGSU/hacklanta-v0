@@ -47,7 +47,7 @@ const phases = [
 ];
 ---
 
-<section id="schedule" class="relative overflow-hidden bg-black px-4 py-28 md:py-40">
+<section id="schedule" class="relative overflow-hidden bg-black px-4 py-16 md:py-24">
   <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
 
   <!-- Ambient glows -->
@@ -82,12 +82,35 @@ const phases = [
       </div>
     </div>
 
-    <!-- Main lineup cards -->
-    <div class="lineup-board mx-auto max-w-6xl space-y-5">
+    <!-- Phase selector buttons -->
+    <div class="lineup-board mx-auto max-w-6xl">
+      <div class="mb-5 flex gap-2">
+        {phases.map((phase, pi) => (
+          <button
+            type="button"
+            class="phase-tab flex items-center gap-2 border px-4 py-2.5 font-mono text-[11px] tracking-[0.2em] uppercase transition-all duration-300"
+            data-phase={pi}
+            style={`
+              --tab-rgb: ${phase.rgb};
+              --tab-color: ${phase.color};
+              border-color: rgba(${phase.rgb}, ${pi === 0 ? '0.5' : '0.15'});
+              background: ${pi === 0 ? `rgba(${phase.rgb}, 0.08)` : 'transparent'};
+              color: ${pi === 0 ? phase.color : 'rgba(255,255,255,0.4)'};
+            `}
+          >
+            <span class="text-xs leading-none" set:html={phase.suit} />
+            <span class="hidden sm:inline">{phase.name}</span>
+            <span class="sm:hidden">PHASE {pi + 1}</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Single visible card -->
       {phases.map((phase, pi) => (
         <article
           class="phase-card group relative overflow-hidden border border-border/60 bg-black-card/70 p-5 md:p-7"
-          style={`--phase-rgb: ${phase.rgb};`}
+          data-phase-card={pi}
+          style={`--phase-rgb: ${phase.rgb}; ${pi !== 0 ? 'display:none;' : ''}`}
         >
           <div
             class="pointer-events-none absolute inset-x-0 top-0 h-px opacity-70"
@@ -166,13 +189,41 @@ const phases = [
     ease: 'power3.out',
   });
 
-  gsap.from('.phase-card', {
+  gsap.from('.phase-card[data-phase-card="0"]', {
     scrollTrigger: { trigger: '.lineup-board', start: 'top 80%' },
     opacity: 0,
     y: 28,
-    stagger: 0.13,
     duration: 0.75,
     ease: 'power3.out',
+  });
+
+  // Phase tab switching
+  const tabs = document.querySelectorAll<HTMLButtonElement>('.phase-tab');
+  const cards = document.querySelectorAll<HTMLElement>('.phase-card');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const idx = tab.dataset.phase!;
+
+      // Update tabs
+      tabs.forEach((t) => {
+        const rgb = t.style.getPropertyValue('--tab-rgb');
+        const isActive = t.dataset.phase === idx;
+        t.style.borderColor = `rgba(${rgb}, ${isActive ? '0.5' : '0.15'})`;
+        t.style.background = isActive ? `rgba(${rgb}, 0.08)` : 'transparent';
+        t.style.color = isActive ? t.style.getPropertyValue('--tab-color') : 'rgba(255,255,255,0.4)';
+      });
+
+      // Show/hide cards with animation
+      cards.forEach((card) => {
+        if (card.dataset.phaseCard === idx) {
+          card.style.display = '';
+          gsap.fromTo(card, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
   });
 
   const suits = Array.from(document.querySelectorAll('.lineup-suit'));
