@@ -184,7 +184,7 @@ export default function ApplicationStatus() {
             DISCORD
           </a>
           <a
-            href="https://instagram.com/progclubgsu"
+            href="https://www.instagram.com/progsuhq/"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 rounded-lg border border-[#E1306C]/30 bg-[#E1306C]/10 px-7 py-3.5 font-body text-sm font-bold tracking-[0.15em] text-white transition-all duration-300 hover:border-[#E1306C]/60 hover:bg-[#E1306C]/20 hover:shadow-[0_0_40px_rgba(225,48,108,0.3)]"
