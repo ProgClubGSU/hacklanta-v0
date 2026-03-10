@@ -2,27 +2,44 @@
 // [05] FAQ — casino fine print
 
 const faqs = [
-  { q: 'Who can participate?', a: 'Any college student. No CS degree required, no prior hackathon experience needed. All skill levels are welcome!' },
-  { q: 'How much does it cost?', a: 'Zero. Free entry, free food, free swag. All you need is a laptop and the will to build something.' },
-  { q: 'Do I need a team?', a: 'Nope. Come solo and squad up at the event, or bring a pre-formed team of up to 4. You\'ll be granted access to the team finder within your user dashboard upon acceptance.' },
-  { q: 'Can I use AI tools?', a: 'Yes — go crazy. ChatGPT, Copilot, whatever. Judges care about what you built, not whether you typed every line yourself.' },
+  {
+    q: 'Who can participate?',
+    a: 'Any college student. No CS degree required, no prior hackathon experience needed. All skill levels are welcome!',
+  },
+  {
+    q: 'How much does it cost?',
+    a: 'Zero. Free entry, free food, free swag. All you need is a laptop and the will to build something.',
+  },
+  {
+    q: 'Do I need a team?',
+    a: "Nope. Come solo and squad up at the event, or bring a pre-formed team of up to 4. You'll be granted access to the team finder within your user dashboard upon acceptance.",
+  },
+  {
+    q: 'Can I use AI tools?',
+    a: 'Yes — go crazy. ChatGPT, Copilot, whatever. Judges care about what you built, not whether you typed every line yourself.',
+  },
 ];
 ---
 
 <section id="faq" class="relative overflow-hidden bg-black px-4 py-16 md:py-24">
   <!-- Top gradient border -->
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
+  <div
+    class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"
+  >
+  </div>
 
   <!-- Ambient glow — center-left -->
   <div
     class="pointer-events-none absolute left-[10%] top-[30%] h-[600px] w-[500px] rounded-full"
     style="background: radial-gradient(circle, rgba(196,30,58,0.05) 0%, rgba(196,30,58,0.012) 40%, transparent 65%);"
-  ></div>
+  >
+  </div>
   <!-- Gold accent glow — bottom right -->
   <div
     class="pointer-events-none absolute right-[15%] bottom-[10%] h-[300px] w-[300px] rounded-full opacity-[0.03] blur-[80px]"
     style="background: radial-gradient(circle, rgba(201,168,76,0.5) 0%, transparent 70%);"
-  ></div>
+  >
+  </div>
 
   <div class="relative z-10 mx-auto max-w-3xl">
     <div class="faq-header mb-14">
@@ -37,13 +54,23 @@ const faqs = [
       <div class="mt-4 h-px w-24 bg-gradient-to-r from-red/60 to-transparent"></div>
     </div>
 
-    <div class="faq-list grid gap-4 sm:grid-cols-2">
-      {faqs.map((faq) => (
-        <div class="faq-item border border-border/40 bg-black-card/20 p-6 transition-all duration-300 hover:border-red/25 hover:bg-black-card/40">
-          <h3 class="mb-3 font-display text-xl tracking-wide text-white">{faq.q}</h3>
-          <p class="font-body text-sm leading-[1.9] text-gray">{faq.a}</p>
-        </div>
-      ))}
+    <div class="faq-list flex flex-col gap-2">
+      {
+        faqs.map((faq, i) => (
+          <details class="faq-item group border border-border/40 bg-black-card/20 transition-all duration-300 hover:border-red/25 open:border-red/30 open:bg-black-card/40">
+            <summary class="flex cursor-pointer select-none items-center justify-between gap-4 px-6 py-5 font-display text-lg tracking-wide text-white list-none transition-colors duration-200 hover:text-white group-open:text-red/90">
+              <span>{faq.q}</span>
+              <span class="faq-chevron shrink-0 font-mono text-[10px] tracking-[0.2em] text-red/50 transition-all duration-300 group-open:text-red/80">
+                [+]
+              </span>
+            </summary>
+            <div class="faq-body overflow-hidden px-6 pb-5">
+              <div class="h-px w-full bg-gradient-to-r from-red/20 to-transparent mb-4" />
+              <p class="font-body text-sm leading-[1.9] text-gray">{faq.a}</p>
+            </div>
+          </details>
+        ))
+      }
     </div>
 
     <div class="faq-cta mt-12 text-center">
@@ -54,7 +81,9 @@ const faqs = [
           class="group relative inline-flex items-center gap-2 overflow-hidden border border-red/30 bg-red/[0.06] px-6 py-3 font-body text-[11px] font-semibold tracking-[0.15em] text-red/80 transition-all duration-500 hover:border-red/50 hover:text-red hover:shadow-[0_0_24px_rgba(196,30,58,0.08)]"
         >
           <span class="relative z-10">EMAIL</span>
-          <span class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-red/[0.06] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
+          <span
+            class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-red/[0.06] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+          ></span>
         </a>
         <a
           href="https://discord.com/invite/BgKg9gskM2"
@@ -63,7 +92,9 @@ const faqs = [
           class="group relative inline-flex items-center gap-2 overflow-hidden border border-border/80 bg-black-card/30 px-6 py-3 font-body text-[11px] font-semibold tracking-[0.15em] text-gray transition-all duration-500 hover:border-border-light hover:text-white hover:shadow-[0_0_24px_rgba(0,0,0,0.2)]"
         >
           <span class="relative z-10">DISCORD</span>
-          <span class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.02] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
+          <span
+            class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/[0.02] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+          ></span>
         </a>
       </div>
     </div>
@@ -77,15 +108,33 @@ const faqs = [
 
   gsap.from('.faq-header', {
     scrollTrigger: { trigger: '.faq-header', start: 'top 80%' },
-    opacity: 0, y: 40, duration: 1, ease: 'power3.out',
+    opacity: 0,
+    y: 40,
+    duration: 1,
+    ease: 'power3.out',
   });
   gsap.from('.faq-item', {
     scrollTrigger: { trigger: '.faq-list', start: 'top bottom', once: true },
     immediateRender: false,
-    opacity: 0, y: 16, stagger: 0.06, duration: 0.5, ease: 'power3.out',
+    opacity: 0,
+    y: 16,
+    stagger: 0.06,
+    duration: 0.5,
+    ease: 'power3.out',
+  });
+
+  // Swap [+] → [−] on open/close
+  document.querySelectorAll<HTMLDetailsElement>('.faq-item').forEach((details) => {
+    const chevron = details.querySelector<HTMLElement>('.faq-chevron');
+    details.addEventListener('toggle', () => {
+      if (chevron) chevron.textContent = details.open ? '[−]' : '[+]';
+    });
   });
   gsap.from('.faq-cta', {
     scrollTrigger: { trigger: '.faq-cta', start: 'top 85%' },
-    opacity: 0, y: 25, duration: 0.8, ease: 'power3.out',
+    opacity: 0,
+    y: 25,
+    duration: 0.8,
+    ease: 'power3.out',
   });
 </script>
