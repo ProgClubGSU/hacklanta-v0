@@ -481,6 +481,43 @@
     </div>
   </div>
 
+  <!-- Hanging tee shirt -->
+  <div
+    class="tee-hanger pointer-events-none absolute right-[2%] top-0 z-20 hidden lg:block xl:right-[4%] 2xl:right-[6%]"
+    style="opacity: 0; transform: translateY(-120%);"
+    aria-hidden="true"
+  >
+    <div
+      class="tee-string mx-auto w-px bg-gradient-to-b from-white/30 to-white/10"
+      style="height: 0;"
+    >
+    </div>
+    <div
+      class="tee-flip-container pointer-events-auto relative -mt-1 cursor-pointer"
+      style="perspective: 800px; width: clamp(190px, 17vw, 310px);"
+    >
+      <div
+        class="tee-flipper relative transition-transform duration-700"
+        style="transform-style: preserve-3d;"
+      >
+        <img
+          src="/images/tee/front.png"
+          alt="Hacklanta tee front"
+          class="block w-full"
+          style="backface-visibility: hidden;"
+          loading="lazy"
+        />
+        <img
+          src="/images/tee/back.png?v=2"
+          alt="Hacklanta tee back"
+          class="absolute inset-0 block w-full"
+          style="backface-visibility: hidden; transform: rotateY(180deg);"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+
   <!-- Main content -->
   <div class="relative z-10 max-w-4xl">
     <!-- Presented by -->
@@ -633,6 +670,65 @@
         style="text-shadow:0 0 8px rgba(255,255,255,0.6)">No gambling involved.</span
       >
     </p>
+  </div>
+
+  <!-- Mobile tee badge (floating, appears after scrolling past hero) -->
+  <div
+    class="tee-badge fixed right-4 top-4 z-50 lg:hidden"
+    style="opacity: 0; pointer-events: none;"
+  >
+    <button
+      type="button"
+      class="tee-badge-btn relative block w-[70px] rounded-lg border border-white/10 bg-black/60 p-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-sm transition-all duration-300 active:scale-95"
+      aria-label="View tee shirt"
+    >
+      <img src="/images/tee/front.png" alt="Hacklanta tee" class="block w-full rounded" />
+      <span
+        class="mt-1 block font-mono text-[7px] tracking-[0.2em] text-white/40 uppercase text-center"
+        >swag</span
+      >
+    </button>
+  </div>
+
+  <!-- Mobile tee lightbox -->
+  <div
+    class="tee-lightbox fixed inset-0 z-[60] hidden items-center justify-center lg:hidden"
+    style="background: rgba(0,0,0,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);"
+  >
+    <button
+      type="button"
+      class="tee-lightbox-close absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 font-mono text-lg text-white/60 transition-colors active:bg-white/10"
+      aria-label="Close"
+    >
+      &times;
+    </button>
+    <div class="flex flex-col items-center px-6">
+      <div
+        class="tee-lightbox-flip relative cursor-pointer drop-shadow-[0_12px_40px_rgba(0,0,0,0.7)]"
+        style="perspective: 800px; width: min(80vw, 360px);"
+      >
+        <div
+          class="tee-lightbox-flipper relative transition-transform duration-700"
+          style="transform-style: preserve-3d;"
+        >
+          <img
+            src="/images/tee/front.png"
+            alt="Hacklanta tee front"
+            class="block w-full"
+            style="backface-visibility: hidden;"
+          />
+          <img
+            src="/images/tee/back.png?v=2"
+            alt="Hacklanta tee back"
+            class="absolute inset-0 block w-full"
+            style="backface-visibility: hidden; transform: rotateY(180deg);"
+          />
+        </div>
+      </div>
+      <p class="mt-4 font-mono text-[11px] tracking-[0.25em] text-white/70 uppercase">
+        tap to flip
+      </p>
+    </div>
   </div>
 </section>
 
@@ -1944,6 +2040,100 @@
       .to('.hero-chip', { opacity: 1, y: 0, duration: 1, stagger: 0.06, ease: 'power2.out' }, 0.3)
       .to('.hero-cta', { opacity: 1, y: 0, duration: 0.6 }, 0.6);
 
+    // === Drop tee shirt ===
+    const hangerEl = document.querySelector('.tee-hanger') as HTMLElement;
+    const teeStringEl = document.querySelector('.tee-string') as HTMLElement;
+
+    if (hangerEl && teeStringEl) {
+      const teeTl = gsap.timeline({ delay: 0.3 });
+
+      teeTl.to(hangerEl, {
+        opacity: 1,
+        y: 0,
+        duration: 1.8,
+        ease: 'elastic.out(1, 0.3)',
+      });
+
+      teeTl.to(
+        teeStringEl,
+        {
+          height: 120,
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        0,
+      );
+
+      teeTl.fromTo(
+        hangerEl,
+        { rotation: 0 },
+        {
+          rotation: 6,
+          transformOrigin: 'top center',
+          duration: 0.4,
+          ease: 'power1.out',
+        },
+        0.9,
+      );
+
+      teeTl.to(
+        hangerEl,
+        {
+          rotation: -4,
+          transformOrigin: 'top center',
+          duration: 0.35,
+          ease: 'sine.inOut',
+        },
+        1.3,
+      );
+
+      teeTl.to(
+        hangerEl,
+        {
+          rotation: 2.5,
+          transformOrigin: 'top center',
+          duration: 0.3,
+          ease: 'sine.inOut',
+        },
+        1.65,
+      );
+
+      teeTl.to(
+        hangerEl,
+        {
+          rotation: -1,
+          transformOrigin: 'top center',
+          duration: 0.25,
+          ease: 'sine.inOut',
+        },
+        1.95,
+      );
+
+      teeTl.to(
+        hangerEl,
+        {
+          rotation: 0,
+          transformOrigin: 'top center',
+          duration: 0.3,
+          ease: 'sine.inOut',
+        },
+        2.2,
+      );
+
+      teeTl.to(
+        hangerEl,
+        {
+          rotation: 1.5,
+          transformOrigin: 'top center',
+          duration: 3,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+        },
+        2.5,
+      );
+    }
+
     // === Transition to countdown ===
     // Fade out jackpot text, swap, fade in as "TIME REMAINING"
     await new Promise<void>((res) => {
@@ -2041,4 +2231,89 @@
     // Start live countdown
     setInterval(updateCountdown, 1000);
   }, 500);
+
+  // === Desktop tee flip: hover on desktop, tap on mobile ===
+  const teeContainer = document.querySelector('.tee-flip-container');
+  const teeFlipper = document.querySelector('.tee-flipper') as HTMLElement;
+  const isTouch = window.matchMedia('(hover: none)').matches;
+
+  if (isTouch) {
+    let teeFlipped = false;
+    teeContainer?.addEventListener('click', () => {
+      teeFlipped = !teeFlipped;
+      teeFlipper.style.transform = teeFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+    });
+  } else {
+    teeContainer?.addEventListener('mouseenter', () => {
+      teeFlipper.style.transform = 'rotateY(180deg)';
+    });
+    teeContainer?.addEventListener('mouseleave', () => {
+      teeFlipper.style.transform = 'rotateY(0deg)';
+    });
+  }
+
+  // === Mobile tee badge: show/hide on scroll ===
+  const teeBadge = document.querySelector('.tee-badge') as HTMLElement;
+  if (teeBadge) {
+    ScrollTrigger.create({
+      trigger: '#hero',
+      start: 'bottom top',
+      onEnter: () => {
+        gsap.to(teeBadge, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+        teeBadge.style.pointerEvents = 'auto';
+      },
+      onEnterBack: () => {
+        gsap.to(teeBadge, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+        teeBadge.style.pointerEvents = 'auto';
+      },
+      onLeaveBack: () => {
+        gsap.to(teeBadge, { opacity: 0, duration: 0.3, ease: 'power2.in' });
+        teeBadge.style.pointerEvents = 'none';
+      },
+    });
+  }
+
+  // === Mobile tee lightbox ===
+  const teeLightbox = document.querySelector('.tee-lightbox') as HTMLElement;
+  const teeBadgeBtn = document.querySelector('.tee-badge-btn');
+  const teeLightboxClose = document.querySelector('.tee-lightbox-close');
+  const teeLightboxFlip = document.querySelector('.tee-lightbox-flip');
+  const teeLightboxFlipper = document.querySelector('.tee-lightbox-flipper') as HTMLElement;
+
+  let lightboxFlipped = false;
+
+  function openLightbox() {
+    if (!teeLightbox) return;
+    lightboxFlipped = false;
+    teeLightboxFlipper.style.transform = 'rotateY(0deg)';
+    teeLightbox.style.display = 'flex';
+    gsap.fromTo(teeLightbox, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!teeLightbox) return;
+    gsap.to(teeLightbox, {
+      opacity: 0,
+      duration: 0.25,
+      onComplete: () => {
+        teeLightbox.style.display = 'none';
+        document.body.style.overflow = '';
+      },
+    });
+  }
+
+  teeBadgeBtn?.addEventListener('click', openLightbox);
+  teeLightboxClose?.addEventListener('click', closeLightbox);
+
+  // Close on backdrop tap (but not on the image itself)
+  teeLightbox?.addEventListener('click', (e) => {
+    if (e.target === teeLightbox) closeLightbox();
+  });
+
+  // Flip on image tap
+  teeLightboxFlip?.addEventListener('click', () => {
+    lightboxFlipped = !lightboxFlipped;
+    teeLightboxFlipper.style.transform = lightboxFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+  });
 </script>
