@@ -16,7 +16,7 @@ const faqs = [
   },
   {
     q: 'Can I use AI tools?',
-    a: 'Yes, it is not only allowed but encouraged. In the end, judges care about more about what you built, not whether you typed every line yourself.',
+    a: 'Absolutely! It is not only allowed but encouraged. In the end, judges care about more about what you built, not whether you typed every line yourself.',
   },
 ];
 ---
@@ -58,10 +58,11 @@ const faqs = [
       {
         faqs.map((faq, i) => (
           <details class="faq-item group border border-border/40 bg-black-card/20 transition-all duration-300 hover:border-red/25 open:border-red/30 open:bg-black-card/40">
-            <summary class="flex cursor-pointer select-none items-center justify-between gap-4 px-6 py-5 font-display text-lg tracking-wide text-white list-none transition-colors duration-200 hover:text-white">
+            <summary class="flex cursor-pointer select-none items-center justify-between gap-4 px-6 py-5 font-display text-lg tracking-wide text-white list-none [&::-webkit-details-marker]:hidden transition-colors duration-200 hover:text-white">
               <span>{faq.q}</span>
               <span class="faq-chevron shrink-0 font-mono text-[10px] tracking-[0.2em] text-red/50 transition-all duration-300 group-open:text-red/80">
-                [+]
+                <span class="group-open:hidden">[+]</span>
+                <span class="hidden group-open:inline">[x]</span>
               </span>
             </summary>
             <div class="faq-body overflow-hidden px-6 pb-5">
