@@ -11,8 +11,6 @@ const suitSvg = {
 type ScheduleEvent = {
   time: string;
   label: string;
-  note?: string;
-  tag?: string; // e.g. 'sponsor' | 'food' | 'judging' | 'workshop' | 'ceremony'
 };
 
 const phases: Array<{
@@ -32,23 +30,25 @@ const phases: Array<{
     color: '#C41E3A',
     rgb: '196,30,58',
     events: [
-      { time: '9:45 AM',  label: 'Sponsor Tables Open',           tag: 'sponsor',  note: 'Swag & networking opportunities for hackers' },
-      { time: '9:00 AM',  label: 'Breakfast Closes',              tag: 'food' },
-      { time: '10:00 AM', label: 'Snack Bar Opens',               tag: 'food' },
-      { time: '10:30 AM', label: 'Workshop #1 Begins',            tag: 'workshop' },
-      { time: '11:15 AM', label: 'Workshop #1 Closes',            tag: 'workshop' },
-      { time: '11:30 AM', label: 'Blackjack / Poker Tables Open', note: 'Poker chips granted after workshop — no real gambling' },
-      { time: '12:00 PM', label: 'Submission Info Announcement',  note: 'Discord announcement: where to submit, rules, demos, etc.' },
-      { time: '12:15 PM', label: 'Project Submission Form Opens', note: 'Form for electing to submit — fill out before 4:00 PM' },
-      { time: '12:15 PM', label: 'Judge Mentor Hours Open',       note: '"Mentorship" style event — attendees can interact with judges' },
-      { time: '12:15 PM', label: 'Mentor Session — Amazon',       tag: 'sponsor',  note: 'Classroom South 103' },
-      { time: '12:30 PM', label: 'Merchandise Store Opens',       note: 'Attendees begin receiving poker chips' },
-      { time: '1:00 PM',  label: 'Mentor Session — Amazon Ends',  tag: 'sponsor' },
+      { time: '7:45 AM',  label: 'Check-in Begins',},
+      { time: '8:30 AM',  label: 'Opening Ceremony',},
+      { time: '9:45 AM',  label: 'Sponsor Tables Open'},
+      { time: '9:00 AM',  label: 'Breakfast Closes' },
+      { time: '10:00 AM', label: 'Snack Bar Opens' },
+      { time: '10:30 AM', label: 'Workshop #1 Begins' },
+      { time: '11:15 AM', label: 'Workshop #1 Closes' },
+      { time: '11:30 AM', label: 'Blackjack / Poker Tables Open' },
+      { time: '12:00 PM', label: 'Submission Info Announcement' },
+      { time: '12:15 PM', label: 'Project Submission Form Opens' },
+      { time: '12:15 PM', label: 'Judge Mentor Hours Open' },
+      { time: '12:15 PM', label: 'Mentor Session — Amazon' },
+      { time: '12:30 PM', label: 'Merchandise Store Opens' },
+      { time: '1:00 PM',  label: 'Mentor Session — Amazon Ends' },
       { time: '1:00 PM',  label: 'MonkeyType Competition Starts' },
-      { time: '1:10 PM',  label: 'Mentor Session — Microsoft',    tag: 'sponsor',  note: 'Classroom South 105' },
-      { time: '1:20 PM',  label: 'Lunch Pickup / Delivery',       tag: 'food' },
-      { time: '1:55 PM',  label: 'Mentor Session — Microsoft Ends', tag: 'sponsor' },
-      { time: '2:00 PM',  label: 'Lunch Opens',                   tag: 'food',     note: 'Lunch Line will open in Classroom South 150' },
+      { time: '1:10 PM',  label: 'Mentor Session — Microsoft' },
+      { time: '1:20 PM',  label: 'Lunch Pickup / Delivery' },
+      { time: '1:55 PM',  label: 'Mentor Session — Microsoft Ends' },
+      { time: '2:00 PM',  label: 'Lunch Opens' },
     ],
   },
   {
@@ -59,16 +59,16 @@ const phases: Array<{
     color: '#E63946',
     rgb: '230,57,70',
     events: [
-      { time: '2:45 PM', label: 'Lunch Closes',                 tag: 'food' },
+      { time: '2:45 PM', label: 'Lunch Closes' },
       { time: '3:15 PM', label: 'Judge Mentor Hours Close' },
-      { time: '3:45 PM', label: 'Workshop #2 Begins — Cox',     tag: 'workshop' },
-      { time: '4:30 PM', label: 'Workshop #2 Ends',             tag: 'workshop' },
-      { time: '5:00 PM', label: 'Dinner Pickup / Delivery',     tag: 'food',    note: 'Please account for traffic' },
-      { time: '5:30 PM', label: 'Dinner Line Opens',            tag: 'food',    note: 'Dinner Line opens in Classroom South 150' },
-      { time: '6:00 PM', label: 'Dinner Line Closes',           tag: 'food' },
-      { time: '6:15 PM', label: 'Hacking Ending Alert — 45 min', note: 'Discord announcement + vocal alert: hacking ends in 45 min' },
-      { time: '6:40 PM', label: 'Hacking Ending Alert — 5 min',  note: 'Discord announcement + vocal alert: hacking ends in 5 min' },
-      { time: '6:45 PM', label: 'Hacking Officially Ends',      note: 'All submissions should now be made' },
+      { time: '3:45 PM', label: 'Workshop #2 Begins — Cox' },
+      { time: '4:30 PM', label: 'Workshop #2 Ends' },
+      { time: '5:00 PM', label: 'Dinner Pickup / Delivery' },
+      { time: '5:30 PM', label: 'Dinner Line Opens' },
+      { time: '6:00 PM', label: 'Dinner Line Closes' },
+      { time: '6:15 PM', label: 'Hacking Ending Alert — 45 min' },
+      { time: '6:40 PM', label: 'Hacking Ending Alert — 5 min' },
+      { time: '6:45 PM', label: 'Hacking Officially Ends' },
     ],
   },
   {
@@ -227,11 +227,6 @@ const phases: Array<{
                       </span>
 
                     </div>
-                    {evt.note && (
-                      <p class="mt-0.5 font-mono text-[10px] leading-relaxed text-white/30">
-                        {evt.note}
-                      </p>
-                    )}
                   </div>
 
                   <!-- trailing dash -->
