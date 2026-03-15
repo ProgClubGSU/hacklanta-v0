@@ -1,50 +1,80 @@
 ---
-// [03] Schedule — dealer board lineup (TBA)
+// [03] Schedule — detailed run-of-show timeline
 
 const suitSvg = {
-  spade: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg>',
-  heart: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg>',
+  spade:   '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg>',
+  heart:   '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg>',
   diamond: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5L5 50 50 95 95 50z"/></svg>',
+  club:    '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><circle cx="35" cy="45" r="20"/><circle cx="65" cy="45" r="20"/><circle cx="50" cy="28" r="20"/><rect x="40" y="58" width="20" height="28"/><rect x="30" y="82" width="40" height="8"/></svg>',
 };
 
-const phases = [
+type ScheduleEvent = {
+  time: string;
+  label: string;
+};
+
+const phases: Array<{
+  name: string;
+  subtitle: string;
+  timeRange: string;
+  suit: string;
+  color: string;
+  rgb: string;
+  events: ScheduleEvent[];
+}> = [
   {
     name: 'THE OPENING',
     subtitle: 'ANTE UP',
-    time: 'TBA',
+    timeRange: '7:45 AM – 12:00 PM',
     suit: suitSvg.spade,
     color: '#C41E3A',
     rgb: '196,30,58',
     events: [
-      'Check-In', 'Opening Ceremony', 'Hacking Begins',
-      { name: 'Poker Tables', note: 'no real gambling — just for fun' },
-      { name: 'Blackjack Table', note: 'no real gambling — just for fun' },
-      'Lunch',
+      { time: '7:45 AM - 12:00 PM',  label: 'Check-in'},
+      { time: '8:30 AM - 9:00 AM',  label: 'Opening Ceremony'},
+      { time: '9:00 AM',  label: 'Hacking Begins'},
+      { time: '9:10 AM - 9:50 AM',  label: 'Breakfast' },
+      { time: '9:45 AM', label: 'Sponser Tables Open' },
+      { time: '10:00 AM', label: 'Snack Bar Opens' },
+      { time: '10:30 AM - 11:15 AM', label: 'Workshop #1 - COX' },
+      { time: '11:30 AM', label: 'Blackjack / Poker Tables Open (No Gambling Involved)' }, 
     ],
   },
   {
     name: 'THE GRIND',
     subtitle: 'PLAYING THE HAND',
-    time: 'TBA',
+    timeRange: '12:00 PM – 5:00 PM',
     suit: suitSvg.heart,
     color: '#E63946',
     rgb: '230,57,70',
-    events: ['Workshops', 'Monkeytype Contest', 'Dinner', 'Snacks'],
+    events: [
+      { time: '12:00 PM', label: 'Judge Mentor Hours Open' },
+      { time: '12:15 PM - 1:00 PM', label: 'Mentor Session by Amazon' },
+      { time: '12:30 PM', label: 'Merchandise Store Opens' },
+      { time: '1:00 PM',  label: 'MonkeyType Competition' },
+      { time: '1:10 PM - 1:55 PM',  label: 'Mentor Session by Microsoft' },
+      { time: '2:00 PM - 2:45 PM', label: 'Lunch' },
+      { time: '3:15 PM', label: 'Judge Mentor Hours Close' },
+      { time: '3:45 PM - 4:30 PM', label: 'Workshop #2 - Cox' },
+    ],
   },
   {
     name: 'THE FINAL HAND',
     subtitle: 'ALL IN',
-    time: 'TBA',
+    timeRange: '5:00 PM – 9:00 PM',
     suit: suitSvg.diamond,
     color: '#C9A84C',
     rgb: '201,168,76',
     events: [
-      '200-Can Red Bull Competition',
-      { name: 'Crash Game', note: 'most chips wins premium swag' },
-      'Hacking Ends', 'Judging', 'Closing Ceremony',
+      { time: '5:00 PM - 5:45 PM', label: 'Dinner' },
+      { time: '6:45 PM', label: 'Hacking Ends' },
+      { time: '7:10 PM - 8:00 PM', label: 'Judging Period'},
+      { time: '8:30 PM - 9:00 PM', label: 'Closing Ceremony & Awards' },
     ],
   },
 ];
+
+
 ---
 
 <section id="schedule" class="relative overflow-hidden bg-black px-4 py-16 md:py-24">
@@ -84,7 +114,7 @@ const phases = [
 
     <!-- Phase selector buttons -->
     <div class="lineup-board mx-auto max-w-6xl">
-      <div class="mb-5 flex gap-2">
+      <div class="mb-5 flex flex-wrap gap-2">
         {phases.map((phase, pi) => (
           <button
             type="button"
@@ -105,7 +135,7 @@ const phases = [
         ))}
       </div>
 
-      <!-- Single visible card -->
+      <!-- Phase cards -->
       {phases.map((phase, pi) => (
         <article
           class="phase-card group relative overflow-hidden border border-border/60 bg-black-card/70 p-5 md:p-7"
@@ -132,6 +162,9 @@ const phases = [
               <h3 class="mt-1 font-display text-2xl tracking-wide text-white md:text-[2rem]">
                 {phase.name}
               </h3>
+              <p class="mt-1 font-mono text-[10px] tracking-[0.22em] text-gray-500">
+                {phase.timeRange}
+              </p>
             </div>
 
             <div class="text-right">
@@ -144,21 +177,46 @@ const phases = [
             </div>
           </header>
 
-          <div class="mt-5 border-t border-border/40 pt-5 space-y-3">
-            {phase.events.map((evt) => {
-              const name = typeof evt === 'string' ? evt : evt.name;
-              const note = typeof evt === 'string' ? null : evt.note;
+          <!-- Timeline list -->
+          <div class="mt-5 border-t border-border/40 pt-5 space-y-0">
+            {phase.events.map((evt, ei) => {
               return (
-                <div class="flex items-center gap-3">
+                <div
+                  class="schedule-row group/row relative flex items-start gap-3 border-b border-border/20 py-3 last:border-b-0"
+                  data-index={ei}
+                >
+
+
+                  <!-- time chip -->
                   <span
-                    class="text-sm leading-none select-none"
-                    style={`color: ${phase.color};`}
-                  ><Fragment set:html={phase.suit} /></span>
-                  <span class="font-display text-base tracking-wide text-white/90 md:text-lg">{name}</span>
-                  {note && <span class="font-mono text-[10px] tracking-wide text-white/30">{note}</span>}
+                    class="flex-shrink-0 w-[140px] font-mono text-[10px] tracking-[0.12em] pt-0.5"
+                    style={`color: rgba(${phase.rgb}, 0.72);`}
+                  >
+                    {evt.time}
+                  </span>
+
+                  <!-- suit dot -->
                   <span
-                    class="ml-auto h-px flex-1 max-w-[120px]"
-                    style={`background: linear-gradient(90deg, rgba(${phase.rgb},0.3), transparent);`}
+                    class="flex-shrink-0 text-[11px] leading-none mt-0.5"
+                    style={`color: rgba(${phase.rgb}, 0.55);`}
+                  >
+                    <Fragment set:html={phase.suit} />
+                  </span>
+
+                  <!-- content -->
+                  <div class="flex-1 min-w-0">
+                    <div class="flex flex-wrap items-center gap-2">
+                      <span class="font-display text-sm tracking-wide text-white/90 md:text-base">
+                        {evt.label}
+                      </span>
+
+                    </div>
+                  </div>
+
+                  <!-- trailing dash -->
+                  <span
+                    class="hidden md:block flex-shrink-0 self-center h-px w-8"
+                    style={`background: linear-gradient(90deg, rgba(${phase.rgb},0.25), transparent);`}
                   ></span>
                 </div>
               );
@@ -168,9 +226,9 @@ const phases = [
       ))}
     </div>
 
-    <!-- WIP notice -->
+    <!-- Date badge -->
     <p class="mt-8 text-center font-mono text-[11px] tracking-[0.2em] text-white/35 uppercase">
-      // more activities coming soon &mdash; stay tuned
+      Saturday, March 28 @ Georgia State University
     </p>
 
   </div>
@@ -219,6 +277,13 @@ const phases = [
         if (card.dataset.phaseCard === idx) {
           card.style.display = '';
           gsap.fromTo(card, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' });
+
+          // Stagger rows
+          const rows = card.querySelectorAll('.schedule-row');
+          gsap.fromTo(rows,
+            { opacity: 0, x: -8 },
+            { opacity: 1, x: 0, duration: 0.35, stagger: 0.03, ease: 'power2.out' }
+          );
         } else {
           card.style.display = 'none';
         }
@@ -226,6 +291,7 @@ const phases = [
     });
   });
 
+  // Subtle parallax on ghosted suits
   const suits = Array.from(document.querySelectorAll('.lineup-suit'));
   const lineupSection = document.getElementById('schedule');
   const suitAnims = suits.map((el) => ({

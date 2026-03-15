@@ -9,6 +9,8 @@ interface Props {
 
 const { title, description = 'Hacklanta — A 12-hour hackathon by progsu. Go all in.' } =
   Astro.props;
+const socialImagePath = '/images/thumbnail/Thumbnail-preview-final.png';
+const socialImageUrl = new URL(socialImagePath, Astro.url).toString();
 ---
 
 <!doctype html>
@@ -28,6 +30,14 @@ const { title, description = 'Hacklanta — A 12-hour hackathon by progsu. Go al
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content="Hacklanta event banner" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content="Hacklanta event banner" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
