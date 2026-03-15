@@ -25,63 +25,51 @@ const phases: Array<{
   {
     name: 'THE OPENING',
     subtitle: 'ANTE UP',
-    timeRange: '9:45 AM – 2:00 PM',
+    timeRange: '7:45 AM – 12:00 PM',
     suit: suitSvg.spade,
     color: '#C41E3A',
     rgb: '196,30,58',
     events: [
-      { time: '7:45 AM',  label: 'Check-in Begins',},
-      { time: '8:30 AM',  label: 'Opening Ceremony',},
-      { time: '9:45 AM',  label: 'Sponsor Tables Open'},
-      { time: '9:00 AM',  label: 'Breakfast Closes' },
+      { time: '7:45 AM - 12:00 PM',  label: 'Check-in'},
+      { time: '8:30 AM - 9:00 AM',  label: 'Opening Ceremony'},
+      { time: '9:00 AM',  label: 'Hacking Begins'},
+      { time: '9:10 AM - 9:50 AM',  label: 'Breakfast' },
+      { time: '9:45 AM', label: 'Sponser Tables Open' },
       { time: '10:00 AM', label: 'Snack Bar Opens' },
-      { time: '10:30 AM', label: 'Workshop #1 Begins' },
-      { time: '11:15 AM', label: 'Workshop #1 Closes' },
-      { time: '11:30 AM', label: 'Blackjack / Poker Tables Open' },
-      { time: '12:00 PM', label: 'Submission Info Announcement' },
-      { time: '12:15 PM', label: 'Project Submission Form Opens' },
-      { time: '12:15 PM', label: 'Judge Mentor Hours Open' },
-      { time: '12:15 PM', label: 'Mentor Session — Amazon' },
-      { time: '12:30 PM', label: 'Merchandise Store Opens' },
-      { time: '1:00 PM',  label: 'Mentor Session — Amazon Ends' },
-      { time: '1:00 PM',  label: 'MonkeyType Competition Starts' },
-      { time: '1:10 PM',  label: 'Mentor Session — Microsoft' },
-      { time: '1:20 PM',  label: 'Lunch Pickup / Delivery' },
-      { time: '1:55 PM',  label: 'Mentor Session — Microsoft Ends' },
-      { time: '2:00 PM',  label: 'Lunch Opens' },
+      { time: '10:30 AM - 11:15 AM', label: 'Workshop #1 - COX' },
+      { time: '11:30 AM', label: 'Blackjack / Poker Tables Open (No Gambling Involved)' }, 
     ],
   },
   {
     name: 'THE GRIND',
     subtitle: 'PLAYING THE HAND',
-    timeRange: '2:45 PM – 6:45 PM',
+    timeRange: '12:00 PM – 5:00 PM',
     suit: suitSvg.heart,
     color: '#E63946',
     rgb: '230,57,70',
     events: [
-      { time: '2:45 PM', label: 'Lunch Closes' },
+      { time: '12:00 PM', label: 'Judge Mentor Hours Open' },
+      { time: '12:15 PM - 1:00 PM', label: 'Mentor Session by Amazon' },
+      { time: '12:30 PM', label: 'Merchandise Store Opens' },
+      { time: '1:00 PM',  label: 'MonkeyType Competition' },
+      { time: '1:10 PM - 1:55 PM',  label: 'Mentor Session by Microsoft' },
+      { time: '2:00 PM - 2:45 PM', label: 'Lunch' },
       { time: '3:15 PM', label: 'Judge Mentor Hours Close' },
-      { time: '3:45 PM', label: 'Workshop #2 Begins — Cox' },
-      { time: '4:30 PM', label: 'Workshop #2 Ends' },
-      { time: '5:00 PM', label: 'Dinner Pickup / Delivery' },
-      { time: '5:30 PM', label: 'Dinner Line Opens' },
-      { time: '6:00 PM', label: 'Dinner Line Closes' },
-      { time: '6:15 PM', label: 'Hacking Ending Alert — 45 min' },
-      { time: '6:40 PM', label: 'Hacking Ending Alert — 5 min' },
-      { time: '6:45 PM', label: 'Hacking Officially Ends' },
+      { time: '3:45 PM - 4:30 PM', label: 'Workshop #2 - Cox' },
     ],
   },
   {
     name: 'THE FINAL HAND',
     subtitle: 'ALL IN',
-    timeRange: '7:10 PM – 9:00 PM',
+    timeRange: '5:00 PM – 9:00 PM',
     suit: suitSvg.diamond,
     color: '#C9A84C',
     rgb: '201,168,76',
     events: [
-      { time: '7:10 PM', label: 'Judging Begins'},
-      { time: '8:00 PM', label: 'Judging Concludes' },
-      { time: '8:30 PM', label: 'Closing Ceremony' },
+      { time: '5:00 PM - 5:45 PM', label: 'Dinner' },
+      { time: '6:45 PM', label: 'Hacking Ends' },
+      { time: '7:10 PM - 8:00 PM', label: 'Judging Period'},
+      { time: '8:30 PM - 9:00 PM', label: 'Closing Ceremony & Awards' },
     ],
   },
 ];
@@ -197,15 +185,11 @@ const phases: Array<{
                   class="schedule-row group/row relative flex items-start gap-3 border-b border-border/20 py-3 last:border-b-0"
                   data-index={ei}
                 >
-                  <!-- left accent line -->
-                  <div
-                    class="pointer-events-none absolute left-0 inset-y-0 w-[2px] opacity-0 group-hover/row:opacity-100 transition-opacity duration-200 rounded-full"
-                    style={`background: rgba(${phase.rgb}, 0.5);`}
-                  ></div>
+
 
                   <!-- time chip -->
                   <span
-                    class="flex-shrink-0 w-[72px] font-mono text-[10px] tracking-[0.12em] pt-0.5"
+                    class="flex-shrink-0 w-[140px] font-mono text-[10px] tracking-[0.12em] pt-0.5"
                     style={`color: rgba(${phase.rgb}, 0.72);`}
                   >
                     {evt.time}
