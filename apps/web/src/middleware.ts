@@ -1,15 +1,11 @@
-// import { clerkMiddleware, createRouteMatcher } from '@clerk/astro/server';
-// 
-// const isProtectedRoute = createRouteMatcher(['/apply(.*)', '/status(.*)']);
-// 
-// export const onRequest = clerkMiddleware((auth, context) => {
-//     const { isAuthenticated, redirectToSignIn } = auth();
-// 
-//     if (!isAuthenticated && isProtectedRoute(context.request)) {
-//         return redirectToSignIn();
-//     }
-// });
+import { clerkMiddleware, createRouteMatcher } from '@clerk/astro/server';
 
-export const onRequest = async (context, next) => {
-  return next();
-};
+const isProtectedRoute = createRouteMatcher(['/apply(.*)', '/status(.*)']);
+
+export const onRequest = clerkMiddleware((auth, context) => {
+    const { isAuthenticated, redirectToSignIn } = auth();
+
+    if (!isAuthenticated && isProtectedRoute(context.request)) {
+        return redirectToSignIn();
+    }
+});
