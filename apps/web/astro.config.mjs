@@ -25,6 +25,7 @@ export default defineConfig({
     }),
   ],
   adapter: vercel(),
+  site: 'https://hacklanta.dev',
   output: 'server',
   vite: {
     plugins: [tailwindcss()],
