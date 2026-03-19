@@ -1,16 +1,28 @@
 ---
 // Nav — fixed top bar with logo + links
+import { UserMenu } from '../ui/UserMenu';
 const { userId } = await Astro.locals.auth();
 ---
 
-<nav
-  id="site-nav"
-  class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
->
+<nav id="site-nav" class="fixed inset-x-0 top-0 z-50 transition-all duration-300">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 md:px-8">
     <!-- Home icon -->
-    <a href="/" class="relative z-10 shrink-0 text-white/60 transition-colors duration-200 hover:text-white" aria-label="Home">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <a
+      href="/"
+      class="relative z-10 shrink-0 text-white/60 transition-colors duration-200 hover:text-white"
+      aria-label="Home"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
         <polyline points="9 22 9 12 15 12 15 22"></polyline>
       </svg>
@@ -21,33 +33,26 @@ const { userId } = await Astro.locals.auth();
       <a href="#schedule" class="nav-link">Schedule</a>
       <a href="#sponsors" class="nav-link">Sponsors</a>
       <a href="#faq" class="nav-link">FAQ</a>
-      {!userId ? (
-        <a
-          href="/sign-in"
-          class="relative inline-flex items-center gap-2 border border-[#FBAE17]/40 bg-[#FBAE17]/10 px-5 py-1.5 font-body text-[11px] font-semibold tracking-[0.15em] text-[#FBAE17] uppercase transition-all duration-300 hover:border-[#FBAE17]/70 hover:bg-[#FBAE17]/20 hover:shadow-[0_0_20px_rgba(251,174,23,0.15)]"
-        >
-          Team Matcher Login
-        </a>
-      ) : (
-        <>
+      {
+        !userId ? (
           <a
-            href="/dashboard/team"
+            href="/sign-in"
             class="relative inline-flex items-center gap-2 border border-[#FBAE17]/40 bg-[#FBAE17]/10 px-5 py-1.5 font-body text-[11px] font-semibold tracking-[0.15em] text-[#FBAE17] uppercase transition-all duration-300 hover:border-[#FBAE17]/70 hover:bg-[#FBAE17]/20 hover:shadow-[0_0_20px_rgba(251,174,23,0.15)]"
           >
-            Team Matcher
+            Team Matcher Login
           </a>
-          <a
-            href="/status"
-            class="user-icon ml-2"
-            aria-label="Application status"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </a>
-        </>
-      )}
+        ) : (
+          <>
+            <a
+              href="/dashboard/team"
+              class="relative inline-flex items-center gap-2 border border-[#FBAE17]/40 bg-[#FBAE17]/10 px-5 py-1.5 font-body text-[11px] font-semibold tracking-[0.15em] text-[#FBAE17] uppercase transition-all duration-300 hover:border-[#FBAE17]/70 hover:bg-[#FBAE17]/20 hover:shadow-[0_0_20px_rgba(251,174,23,0.15)]"
+            >
+              Team Matcher
+            </a>
+            <UserMenu client:only="react" />
+          </>
+        )
+      }
       <a
         href="/apply"
         class="relative inline-flex items-center gap-2 border border-red/40 bg-red/10 px-5 py-1.5 font-body text-[11px] font-semibold tracking-[0.15em] text-red-bright uppercase transition-all duration-300 hover:border-red/70 hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)]"
