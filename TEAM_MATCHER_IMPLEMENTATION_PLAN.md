@@ -1,6 +1,12 @@
-# Hacklanta Implementation Plan: Zero-AWS & Team Matcher
+# Team Matcher & Full Implementation Plan
 
-This document outlines the steps to migrate away from AWS SES for emails and build a custom Team Matcher system.
+This is the primary implementation tracking file for the Hacklanta Team Matcher and Zero-AWS Migration.
+
+## Overview
+
+We are migrating away from AWS SES to **Resend** (Zero-AWS) and building a custom **Team Matcher** system that allows accepted participants to find teammates. The process assumes all signed-in users are accepted.
+
+---
 
 ## Phase 1: Zero-AWS Email Migration (Resend)
 
@@ -42,7 +48,7 @@ Replace `services/api/app/utils/email.py` content to use Resend instead of Boto3
 
 ---
 
-## Phase 2: "Accept All" Workflow
+## Phase 2: "Accept All" & Notification
 
 Since we are accepting everyone who signs in, we need a script to bulk-email acceptance notifications.
 
@@ -70,7 +76,17 @@ uv run python scripts/accept_all_users.py
 
 We are building a custom internal system for participants to find teammates, independent of Tally.
 
-### 3.1 Database Models
+### 3.1 Tech Stack
+
+- **Backend Framework:** FastAPI (Python 3.12+)
+- **Database:** PostgreSQL (SQLAlchemy Async ORM)
+- **Validation:** Pydantic v2
+- **Frontend Framework:** React 19 (Islands within Astro 5)
+- **Styling:** Tailwind CSS v4
+- **State Management:** React Query (TanStack Query) or simple fetch hooks
+- **Authentication:** Clerk (already integrated)
+
+### 3.2 Database Models
 
 Create new domain `services/api/app/domains/teams`.
 
@@ -81,39 +97,47 @@ Create new domain `services/api/app/domains/teams`.
     - `bio` (Text)
     - `skills` (Array of Strings or comma-separated)
     - `looking_for_team` (Boolean)
+    - `github_handle` (String, Optional)
+    - `discord_handle` (String, Optional)
+
 2.  **`teams`**: The teams themselves.
     - `name` (String)
     - `description` (Text)
     - `invite_code` (String, Unique) - for joining
+    - `is_looking_for_members` (Boolean) - defaulted to True
+
 3.  **`team_members`**: Link table.
     - `team_id` (FK)
     - `user_id` (FK)
     - `role` (Leader/Member)
 
-### 3.2 API Endpoints
+### 3.3 API Endpoints
 
 Create `services/api/app/domains/teams/router.py`.
 
-| Method | Endpoint              | Description                                 |
-| :----- | :-------------------- | :------------------------------------------ |
-| `POST` | `/api/v1/profiles/me` | Create/Update current user's hacker profile |
-| `GET`  | `/api/v1/profiles`    | List all users with `looking_for_team=True` |
-| `POST` | `/api/v1/teams`       | Create a new team (User becomes Leader)     |
-| `POST` | `/api/v1/teams/join`  | Join a team using an `invite_code`          |
-| `GET`  | `/api/v1/teams/me`    | Get current user's team                     |
+| Method | Endpoint              | Description                                                    |
+| :----- | :-------------------- | :------------------------------------------------------------- |
+| `GET`  | `/api/v1/profiles/me` | Get current user's profile                                     |
+| `POST` | `/api/v1/profiles/me` | Create/Update current user's hacker profile                    |
+| `GET`  | `/api/v1/profiles`    | List all users with `looking_for_team=True` (Public directory) |
+| `POST` | `/api/v1/teams`       | Create a new team (User becomes Leader)                        |
+| `POST` | `/api/v1/teams/join`  | Join a team using an `invite_code`                             |
+| `POST` | `/api/v1/teams/leave` | Leave current team                                             |
+| `GET`  | `/api/v1/teams/me`    | Get current user's team                                        |
 
-### 3.3 Frontend (Astro + React)
+### 3.4 Frontend Implementation (Astro + React)
 
 Create `apps/web/src/pages/dashboard/team.astro`.
 
-**Features:**
+**UI Components:**
 
-- **Profile Editor:** Form to update Bio/Skills.
-- **Team Browser:** Grid of users looking for teams.
-- **Team Management:**
-  - "Create Team" button.
-  - "Join Team" input field (for invite codes).
-  - List of current team members.
+1.  **ProfileEditor.tsx**: Form to update Bio/Skills.
+2.  **TeamBrowser.tsx**: Grid of users looking for teams.
+3.  **TeamManager.tsx**:
+    - "Create Team" button.
+    - "Join Team" input field (for invite codes).
+    - List of current team members.
+    - "Leave Team" button.
 
 ---
 
@@ -123,4 +147,4 @@ Create `apps/web/src/pages/dashboard/team.astro`.
 2.  **Backend:** Create `teams` domain (Models, Repositories, Routers).
 3.  **Database:** Generate and run Alembic migrations for new tables.
 4.  **Script:** Run `accept_all_users.py` to notify existing users.
-5.  **Frontend:** Build the Team Dashboard UI.
+5.  **Frontend:** Build the Team Dashboard UI components.

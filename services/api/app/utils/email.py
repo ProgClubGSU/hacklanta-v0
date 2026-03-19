@@ -1,30 +1,29 @@
 # ruff: noqa: E501
 import logging
 
-import boto3
-from botocore.exceptions import ClientError
+import resend
 
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-ses_client = boto3.client("ses", region_name=settings.aws_region)
+# Configure Resend with the API key from settings
+resend.api_key = settings.resend_api_key
 
 
 def send_email(*, to: str, subject: str, html_body: str) -> dict:
-    """Send an email via AWS SES. Returns the SES response or raises on failure."""
+    """Send an email via Resend. Returns the Resend response or raises on failure."""
     try:
-        response = ses_client.send_email(
-            Source=settings.aws_ses_from_email,
-            Destination={"ToAddresses": [to]},
-            Message={
-                "Subject": {"Data": subject, "Charset": "UTF-8"},
-                "Body": {"Html": {"Data": html_body, "Charset": "UTF-8"}},
-            },
-        )
-        logger.info("Email sent to %s, MessageId: %s", to, response.get("MessageId"))
+        params: resend.Emails.SendParams = {
+            "from": settings.aws_ses_from_email,  # reuses existing "from" address setting
+            "to": [to],
+            "subject": subject,
+            "html": html_body,
+        }
+        response = resend.Emails.send(params)
+        logger.info("Email sent to %s via Resend, id=%s", to, response.get("id"))
         return response
-    except ClientError as err:
+    except Exception as err:
         logger.error("Failed to send email to %s: %s", to, err)
         raise
 

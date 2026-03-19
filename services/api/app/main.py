@@ -15,6 +15,8 @@ if settings.sentry_dsn:
     )
 from app.domains.applicants.router import router as applicants_router
 from app.domains.applicants.webhook import router as tally_webhook_router
+from app.domains.profiles.router import router as profiles_router
+from app.domains.teams.router import router as teams_router
 from app.domains.users.router import router as users_router
 
 
@@ -49,6 +51,8 @@ def create_app() -> FastAPI:
     app.include_router(users_router, prefix="/api/v1")
     app.include_router(applicants_router, prefix="/api/v1")
     app.include_router(tally_webhook_router, prefix="/api/v1")
+    app.include_router(profiles_router, prefix="/api/v1")
+    app.include_router(teams_router, prefix="/api/v1")
 
     return app
 

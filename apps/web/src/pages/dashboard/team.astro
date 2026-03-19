@@ -1,0 +1,57 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { ProfileEditor } from "../../components/dashboard/ProfileEditor";
+import { TeamManager } from "../../components/dashboard/TeamManager";
+import { TeamBrowser } from "../../components/dashboard/TeamBrowser";
+
+// Need to ensure the user is authenticated in this page
+import { getAuth } from '@clerk/astro/server';
+
+const auth = getAuth(Astro.request);
+if (!auth?.userId) {
+  return Astro.redirect('/sign-in');
+}
+---
+
+<Layout title="Team Matcher | Hacklanta">
+  <main class="min-h-screen bg-[#0D001A] text-white pt-24 pb-16 px-4 font-['Courier_New']">
+    <div class="max-w-6xl mx-auto space-y-12">
+      
+      <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-['Leckerli_One'] text-[#FBAE17] mb-4">
+          Team Matcher
+        </h1>
+        <p class="text-xl text-[#FBAE17]/80">
+          Find your crew. Build something amazing.
+        </p>
+      </header>
+
+      <!-- 
+        We use Astro "islands" (client:load) to hydrate these React components 
+        because they need to maintain state and make API calls.
+      -->
+
+      <section class="bg-[#1A0033]/50 border-2 border-[#FBAE17] rounded-xl p-6 md:p-8 backdrop-blur-md shadow-[0_0_15px_rgba(251,174,23,0.2)]">
+        <h2 class="text-2xl font-['Leckerli_One'] text-[#FBAE17] mb-6 flex items-center gap-3">
+          <span class="text-3xl">👤</span> Your Hacker Profile
+        </h2>
+        <ProfileEditor client:load />
+      </section>
+
+      <section class="bg-[#1A0033]/50 border-2 border-[#B92B27] rounded-xl p-6 md:p-8 backdrop-blur-md shadow-[0_0_15px_rgba(185,43,39,0.2)]">
+         <h2 class="text-2xl font-['Leckerli_One'] text-[#B92B27] mb-6 flex items-center gap-3">
+          <span class="text-3xl">🤝</span> Your Team
+        </h2>
+        <TeamManager client:load />
+      </section>
+
+      <section>
+         <h2 class="text-3xl font-['Leckerli_One'] text-white mb-8 border-b border-white/20 pb-4">
+          Hacker Directory
+        </h2>
+        <TeamBrowser client:load />
+      </section>
+
+    </div>
+  </main>
+</Layout>

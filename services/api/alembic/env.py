@@ -7,13 +7,10 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
 from app.core.config import settings
 from app.core.database import Base
-from app.domains.announcements.models import Announcement  # noqa: F401
 from app.domains.applicants.models import Application  # noqa: F401
-from app.domains.contestants.models import Team, TeamMember  # noqa: F401
-from app.domains.events.models import Event  # noqa: F401
-from app.domains.food.models import FoodMenuItem, FoodOrder, FoodOrderItem  # noqa: F401
+from app.domains.profiles.models import Profile  # noqa: F401
+from app.domains.teams.models import Team, TeamMember  # noqa: F401
 from app.domains.users.models import User  # noqa: F401
-from app.utils.models import EmailLog  # noqa: F401
 
 config = context.config
 

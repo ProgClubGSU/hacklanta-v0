@@ -14,9 +14,12 @@ class Settings(BaseSettings):
     clerk_secret_key: str = ""
     clerk_webhook_secret: str = ""
 
-    # AWS
+    # Resend (transactional email)
+    resend_api_key: str = ""
+
+    # AWS (S3 only — SES replaced by Resend)
     aws_region: str = "us-east-1"
-    aws_ses_from_email: str = "noreply@hacklanta.com"
+    aws_ses_from_email: str = "noreply@hacklanta.com"  # reused as Resend sender
     s3_bucket_name: str = "hacklanta-uploads"
 
     # Cloudflare Turnstile
