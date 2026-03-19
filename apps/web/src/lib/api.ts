@@ -1,6 +1,6 @@
 import { clerk } from './clerk';
 
-const API_BASE = 'http://localhost:8000/api/v1';
+const API_BASE = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000/api/v1';
 
 async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
   // Wait for clerk to be loaded, checking repeatedly is a simple fallback for SPA
