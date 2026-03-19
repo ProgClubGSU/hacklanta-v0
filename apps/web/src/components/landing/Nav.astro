@@ -21,6 +21,22 @@ import { SignedIn, SignedOut } from '@clerk/astro/components';
       <a href="#schedule" class="nav-link">Schedule</a>
       <a href="#sponsors" class="nav-link">Sponsors</a>
       <a href="#faq" class="nav-link">FAQ</a>
+      <SignedOut>
+        <a
+          href="/sign-in"
+          class="relative inline-flex items-center gap-2 border border-white/40 bg-white/10 px-5 py-1.5 font-body text-[11px] font-semibold tracking-[0.15em] text-white uppercase transition-all duration-300 hover:border-white/70 hover:bg-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+        >
+          Log In
+        </a>
+      </SignedOut>
+      <SignedIn>
+        <a
+          href="/dashboard/team"
+          class="relative inline-flex items-center gap-2 border border-[#FBAE17]/40 bg-[#FBAE17]/10 px-5 py-1.5 font-body text-[11px] font-semibold tracking-[0.15em] text-[#FBAE17] uppercase transition-all duration-300 hover:border-[#FBAE17]/70 hover:bg-[#FBAE17]/20 hover:shadow-[0_0_20px_rgba(251,174,23,0.15)]"
+        >
+          Team Matcher
+        </a>
+      </SignedIn>
       <a
         href="/apply"
         class="relative inline-flex items-center gap-2 border border-red/40 bg-red/10 px-5 py-1.5 font-body text-[11px] font-semibold tracking-[0.15em] text-red-bright uppercase transition-all duration-300 hover:border-red/70 hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)]"
@@ -28,12 +44,9 @@ import { SignedIn, SignedOut } from '@clerk/astro/components';
         Apply
       </a>
       <SignedIn>
-        <a href="/dashboard/team" class="nav-link font-bold text-red-bright hover:shadow-[0_0_15px_rgba(196,30,58,0.15)]">
-          Team Matcher
-        </a>
         <a
           href="/status"
-          class="user-icon"
+          class="user-icon ml-2"
           aria-label="Application status"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -42,11 +55,6 @@ import { SignedIn, SignedOut } from '@clerk/astro/components';
           </svg>
         </a>
       </SignedIn>
-      <SignedOut>
-        <a href="/sign-in" class="nav-link">
-          Log In
-        </a>
-      </SignedOut>
     </div>
   </div>
 </nav>
