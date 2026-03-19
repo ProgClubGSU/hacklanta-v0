@@ -5,10 +5,8 @@ import { TeamManager } from "../../components/dashboard/TeamManager";
 import { TeamBrowser } from "../../components/dashboard/TeamBrowser";
 
 // Need to ensure the user is authenticated in this page
-import { getAuth } from '@clerk/astro/server';
-
-const auth = getAuth(Astro.request);
-if (!auth?.userId) {
+const { userId } = await Astro.locals.auth();
+if (!userId) {
   return Astro.redirect('/sign-in');
 }
 ---
