@@ -58,4 +58,42 @@ export const api = {
   leaveTeam: () => fetchWithAuth('/teams/leave', {
     method: 'POST',
   }),
+
+  // Team Browsing
+  listTeams: (params?: { offset?: number; limit?: number; has_openings?: boolean }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.offset !== undefined) searchParams.set('offset', params.offset.toString());
+    if (params?.limit !== undefined) searchParams.set('limit', params.limit.toString());
+    if (params?.has_openings !== undefined) searchParams.set('has_openings', params.has_openings.toString());
+    const query = searchParams.toString();
+    return fetchWithAuth(`/teams${query ? '?' + query : ''}`);
+  },
+  getTeamById: (teamId: string) => fetchWithAuth(`/teams/${teamId}`),
+
+  // Join Requests
+  createJoinRequest: (teamId: string, data: { message?: string }) =>
+    fetchWithAuth(`/teams/${teamId}/join-requests`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    }),
+  listTeamJoinRequests: (teamId: string, statusFilter: string = 'pending') =>
+    fetchWithAuth(`/teams/${teamId}/join-requests?status_filter=${statusFilter}`),
+  updateJoinRequest: (teamId: string, requestId: string, data: { status: 'approved' | 'rejected' }) =>
+    fetchWithAuth(`/teams/${teamId}/join-requests/${requestId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+  withdrawJoinRequest: (requestId: string) =>
+    fetchWithAuth(`/teams/join-requests/${requestId}`, {
+      method: 'DELETE',
+    }),
+
+  // Users
+  listUsers: (params?: { offset?: number; limit?: number }) => {
+    const searchParams = new URLSearchParams();
+    if (params?.offset !== undefined) searchParams.set('offset', params.offset.toString());
+    if (params?.limit !== undefined) searchParams.set('limit', params.limit.toString());
+    const query = searchParams.toString();
+    return fetchWithAuth(`/users${query ? '?' + query : ''}`);
+  },
 };

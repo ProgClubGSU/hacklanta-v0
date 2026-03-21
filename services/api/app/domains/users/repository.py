@@ -1,7 +1,8 @@
 import uuid
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.domains.users.models import User
 
@@ -50,3 +51,28 @@ async def upsert_user(
     await session.commit()
     await session.refresh(user)
     return user
+
+
+async def list_users(
+    session: AsyncSession,
+    offset: int = 0,
+    limit: int = 50,
+) -> tuple[list[User], int]:
+    """List all users with pagination."""
+    # Get total count
+    count_query = select(func.count()).select_from(User)
+    total_result = await session.execute(count_query)
+    total = total_result.scalar_one()
+
+    # Get users with pagination
+    query = (
+        select(User)
+        .order_by(User.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+    )
+
+    result = await session.execute(query)
+    users = list(result.scalars().all())
+
+    return users, total
