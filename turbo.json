@@ -12,7 +12,12 @@
         "PUBLIC_SUPABASE_ANON_KEY",
         "PUBLIC_CLERK_PUBLISHABLE_KEY",
         "PUBLIC_SENTRY_DSN",
-        "CLERK_SECRET_KEY"
+        "PUBLIC_CLERK_PROXY_URL",
+        "CLERK_SECRET_KEY",
+        "SUPABASE_SERVICE_ROLE_KEY",
+        "CLERK_WEBHOOK_SECRET",
+        "TALLY_SIGNING_SECRET",
+        "RESEND_API_KEY"
       ],
       "outputs": ["dist/**", ".astro/**", ".vercel/output/**"]
     },
