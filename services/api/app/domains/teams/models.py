@@ -22,11 +22,27 @@ class Team(UUIDMixin, TimestampMixin, Base):
 
 class TeamMember(UUIDMixin, Base):
     __tablename__ = "team_members"
-    
+
     team_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("teams.id", ondelete="CASCADE"))
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), unique=True)
     role: Mapped[str] = mapped_column(String, default="member")  # "leader" | "member"
     joined_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
-    
+
     team = relationship("Team", back_populates="members")
     user = relationship("User")
+
+
+class TeamJoinRequest(UUIDMixin, TimestampMixin, Base):
+    __tablename__ = "team_join_requests"
+
+    team_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("teams.id", ondelete="CASCADE"))
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    status: Mapped[str] = mapped_column(String, default="pending")  # "pending" | "approved" | "rejected" | "withdrawn" | "expired"
+    message: Mapped[str | None] = mapped_column(Text)
+    reviewed_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
+    reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+    team = relationship("Team")
+    user = relationship("User", foreign_keys=[user_id])
+    reviewer = relationship("User", foreign_keys=[reviewed_by])

@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { useClerk, useUser } from '@clerk/astro/react';
+import { useAuth } from '@clerk/astro/react';
 
 export function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const { signOut } = useClerk();
-  const { user } = useUser();
+  const { isLoaded } = useAuth();
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   // Close menu when clicking outside
@@ -22,9 +22,23 @@ export function UserMenu() {
   }, [isOpen]);
 
   const handleSignOut = async () => {
-    await signOut();
+    if (typeof window !== 'undefined') {
+      await window.Clerk?.signOut();
+    }
     window.location.href = '/';
   };
+
+  useEffect(() => {
+    if (!isLoaded || typeof window === 'undefined') return;
+    const clerkUser = window.Clerk?.user;
+    if (!clerkUser) return;
+    const email =
+      clerkUser.primaryEmailAddress?.emailAddress ||
+      clerkUser.emailAddresses?.[0]?.emailAddress ||
+      clerkUser.username ||
+      null;
+    setUserEmail(email);
+  }, [isLoaded]);
 
   return (
     <div className="relative" ref={menuRef}>
@@ -42,13 +56,13 @@ export function UserMenu() {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 bg-black border border-white/10 shadow-lg overflow-hidden z-50">
           {/* User info */}
-          {user && (
+          {userEmail && (
             <div className="px-4 py-3 border-b border-white/10">
               <p className="font-mono text-[10px] tracking-wider uppercase text-[#4a4a4a] mb-1">
                 Signed in as
               </p>
               <p className="font-body text-sm text-white/90 truncate">
-                {user.primaryEmailAddress?.emailAddress || user.username}
+                {userEmail}
               </p>
             </div>
           )}

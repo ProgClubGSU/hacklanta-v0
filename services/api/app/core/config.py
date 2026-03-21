@@ -4,8 +4,14 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8", "extra": "ignore"}
 
-    # Database
+    # Primary database (applications, Tally webhooks)
     database_url: str = "postgresql+asyncpg://dev:dev@localhost:5432/hackathon"
+
+    # Supabase database (team matching)
+    supabase_database_url: str = ""
+    supabase_api_url: str = ""
+    supabase_anon_key: str = ""
+    supabase_service_key: str = ""
 
     # Redis
     redis_url: str = "redis://localhost:6379/0"
