@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { mockJoinRequests } from '@/lib/mockData';
+import { api } from '@/lib/api';
 
 interface JoinRequest {
   id: string;
@@ -32,8 +32,8 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
   const loadRequests = async () => {
     try {
       setIsLoading(true);
-      // Using mock data for UI development
-      setRequests(mockJoinRequests);
+      const result = await api.listTeamJoinRequests(teamId);
+      setRequests(result.data);
     } catch (error) {
       console.error('Failed to load join requests:', error);
     } finally {
@@ -44,9 +44,7 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
   const handleApprove = async (requestId: string) => {
     try {
       setProcessingId(requestId);
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 800));
-      alert('✓ Request approved! (Mock)');
+      await api.updateJoinRequest(teamId, requestId, { status: 'approved' });
       onRequestProcessed();
       await loadRequests();
     } catch (error: any) {
@@ -60,9 +58,7 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
   const handleReject = async (requestId: string) => {
     try {
       setProcessingId(requestId);
-      // Mock API call
-      await new Promise(resolve => setTimeout(resolve, 800));
-      alert('✓ Request rejected! (Mock)');
+      await api.updateJoinRequest(teamId, requestId, { status: 'rejected' });
       await loadRequests();
     } catch (error: any) {
       console.error('Failed to reject request:', error);
