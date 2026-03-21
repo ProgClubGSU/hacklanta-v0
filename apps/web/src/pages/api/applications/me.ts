@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ locals }) => {
   // Find user by Clerk ID
   const { data: user } = await supabase
     .from('users')
-    .select('id, email')
+    .select('id, email, first_name, last_name')
     .eq('clerk_id', userId)
     .single()
 
@@ -21,24 +21,63 @@ export const GET: APIRoute = async ({ locals }) => {
     return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 })
   }
 
-  // Find application by user_id or email
+  const appFields = 'id, status, university, major, year_of_study, experience_level, created_at, reviewed_at'
+
+  // 1. Try by user_id (already linked)
   let { data: application } = await supabase
     .from('applications')
-    .select('id, status, university, major, year_of_study, experience_level, created_at, reviewed_at')
+    .select(appFields)
     .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(1)
     .single()
 
+  // 2. Fallback: try matching by email
   if (!application) {
-    // Fallback: try matching by email
     const result = await supabase
       .from('applications')
-      .select('id, status, university, major, year_of_study, experience_level, created_at, reviewed_at')
+      .select(appFields)
       .eq('email', user.email)
+      .order('created_at', { ascending: false })
+      .limit(1)
       .single()
     application = result.data
+  }
 
-    // Link application to user if found
-    if (application) {
+  // 3. Fallback: try matching by Clerk email addresses (user may have multiple)
+  if (!application) {
+    const clerkSecretKey = import.meta.env.CLERK_SECRET_KEY
+    if (clerkSecretKey) {
+      const clerkRes = await fetch(`https://api.clerk.com/v1/users/${userId}`, {
+        headers: { Authorization: `Bearer ${clerkSecretKey}` },
+      })
+      if (clerkRes.ok) {
+        const clerkUser = await clerkRes.json()
+        const allEmails = (clerkUser.email_addresses ?? []).map(
+          (e: { email_address: string }) => e.email_address
+        )
+        if (allEmails.length > 0) {
+          const result = await supabase
+            .from('applications')
+            .select(appFields)
+            .in('email', allEmails)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .single()
+          application = result.data
+        }
+      }
+    }
+  }
+
+  // Link application to user if found by fallback
+  if (application) {
+    const { data: linked } = await supabase
+      .from('applications')
+      .select('user_id')
+      .eq('id', application.id)
+      .single()
+    if (linked && !linked.user_id) {
       await supabase
         .from('applications')
         .update({ user_id: user.id })

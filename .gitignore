@@ -63,3 +63,8 @@ reports/
 .claude
 docs/superpowers
 
+
+# Tally submission data
+Submissions_*.csv
+applications_import.csv
+applications_link.sql
