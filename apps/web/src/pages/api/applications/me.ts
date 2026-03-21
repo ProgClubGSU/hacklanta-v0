@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro'
 import { createServerSupabaseClient } from '../../../lib/supabase-server'
 
+const APP_FIELDS = 'id, status, university, major, year_of_study, experience_level, created_at, reviewed_at'
+
 export const GET: APIRoute = async ({ locals }) => {
   const { isAuthenticated, userId } = locals.auth()
 
@@ -13,38 +15,36 @@ export const GET: APIRoute = async ({ locals }) => {
   // Find user by Clerk ID
   const { data: user } = await supabase
     .from('users')
-    .select('id, email, first_name, last_name')
+    .select('id, email')
     .eq('clerk_id', userId)
     .single()
 
   if (!user) {
-    return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 })
+    return new Response(JSON.stringify({ error: 'User not found', step: 'user_lookup' }), { status: 404 })
   }
 
-  const appFields = 'id, status, university, major, year_of_study, experience_level, created_at, reviewed_at'
-
   // 1. Try by user_id (already linked)
-  let { data: application } = await supabase
+  let { data: apps } = await supabase
     .from('applications')
-    .select(appFields)
+    .select(APP_FIELDS)
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(1)
-    .single()
 
-  // 2. Fallback: try matching by email
+  let application = apps?.[0] ?? null
+
+  // 2. Fallback: try matching by Supabase user email
   if (!application) {
-    const result = await supabase
+    const { data: apps2 } = await supabase
       .from('applications')
-      .select(appFields)
+      .select(APP_FIELDS)
       .eq('email', user.email)
       .order('created_at', { ascending: false })
       .limit(1)
-      .single()
-    application = result.data
+    application = apps2?.[0] ?? null
   }
 
-  // 3. Fallback: try matching by Clerk email addresses (user may have multiple)
+  // 3. Fallback: try matching by ALL Clerk email addresses
   if (!application) {
     const clerkSecretKey = import.meta.env.CLERK_SECRET_KEY
     if (clerkSecretKey) {
@@ -53,41 +53,32 @@ export const GET: APIRoute = async ({ locals }) => {
       })
       if (clerkRes.ok) {
         const clerkUser = await clerkRes.json()
-        const allEmails = (clerkUser.email_addresses ?? []).map(
+        const allEmails: string[] = (clerkUser.email_addresses ?? []).map(
           (e: { email_address: string }) => e.email_address
         )
         if (allEmails.length > 0) {
-          const result = await supabase
+          const { data: apps3 } = await supabase
             .from('applications')
-            .select(appFields)
+            .select(APP_FIELDS)
             .in('email', allEmails)
             .order('created_at', { ascending: false })
             .limit(1)
-            .single()
-          application = result.data
+          application = apps3?.[0] ?? null
         }
       }
     }
   }
 
-  // Link application to user if found by fallback
-  if (application) {
-    const { data: linked } = await supabase
-      .from('applications')
-      .select('user_id')
-      .eq('id', application.id)
-      .single()
-    if (linked && !linked.user_id) {
-      await supabase
-        .from('applications')
-        .update({ user_id: user.id })
-        .eq('id', application.id)
-    }
+  if (!application) {
+    return new Response(JSON.stringify({ error: 'No application found', step: 'app_lookup', user_id: user.id }), { status: 404 })
   }
 
-  if (!application) {
-    return new Response(JSON.stringify({ error: 'No application found' }), { status: 404 })
-  }
+  // Auto-link application to user if not already linked
+  await supabase
+    .from('applications')
+    .update({ user_id: user.id })
+    .eq('id', application.id)
+    .is('user_id', null)
 
   return new Response(JSON.stringify(application))
 }
