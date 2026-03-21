@@ -1,0 +1,156 @@
+// Mock data for UI development (no backend integration yet)
+
+export const mockProfile = {
+  user_id: 'user-123',
+  display_name: 'Alex Chen',
+  bio: 'Full-stack developer passionate about AI and open source. Looking to build something cool with a talented team.',
+  linkedin_url: 'https://linkedin.com/in/alexchen',
+  github_url: 'https://github.com/alexchen',
+  portfolio_url: 'https://alexchen.dev',
+  looking_for_team: true,
+};
+
+export const mockTeams = [
+  {
+    id: '1',
+    name: 'Code Wizards',
+    description: 'Building an AI-powered code assistant. We need a frontend dev and a designer!',
+    member_count: 2,
+    max_size: 4,
+    is_full: false,
+    is_looking_for_members: true,
+    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: '2',
+    name: 'Pixel Pushers',
+    description: 'Creating the ultimate design tool for developers',
+    member_count: 4,
+    max_size: 4,
+    is_full: true,
+    is_looking_for_members: false,
+    created_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: '3',
+    name: 'Data Ninjas',
+    description: 'ML pipeline optimization and data visualization. Join us!',
+    member_count: 1,
+    max_size: 4,
+    is_full: false,
+    is_looking_for_members: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: '4',
+    name: 'Security Squad',
+    description: 'Blockchain security audit tools',
+    member_count: 3,
+    max_size: 4,
+    is_full: false,
+    is_looking_for_members: true,
+    created_at: new Date().toISOString(),
+  },
+];
+
+export const mockUsers = [
+  {
+    id: '1',
+    clerk_id: 'user_1',
+    email: 'alex@hacklanta.dev',
+    first_name: 'Alex',
+    last_name: 'Chen',
+    avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=alex',
+  },
+  {
+    id: '2',
+    clerk_id: 'user_2',
+    email: 'jordan@hacklanta.dev',
+    first_name: 'Jordan',
+    last_name: 'Smith',
+    avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=jordan',
+  },
+  {
+    id: '3',
+    clerk_id: 'user_3',
+    email: 'taylor@hacklanta.dev',
+    first_name: 'Taylor',
+    last_name: 'Johnson',
+    avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=taylor',
+  },
+  {
+    id: '4',
+    clerk_id: 'user_4',
+    email: 'casey@hacklanta.dev',
+    first_name: 'Casey',
+    last_name: 'Williams',
+    avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=casey',
+  },
+  {
+    id: '5',
+    clerk_id: 'user_5',
+    email: 'morgan@hacklanta.dev',
+    first_name: 'Morgan',
+    last_name: 'Brown',
+    avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=morgan',
+  },
+];
+
+export const mockTeamDetail = {
+  id: '1',
+  name: 'Code Wizards',
+  description: 'Building an AI-powered code assistant. We need a frontend dev and a designer!',
+  invite_code: 'WIZARD99',
+  max_size: 4,
+  is_looking_for_members: true,
+  members: [
+    {
+      id: 'tm1',
+      user_id: '1',
+      role: 'leader',
+      first_name: 'Alex',
+      last_name: 'Chen',
+      avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=alex',
+      email: 'alex@hacklanta.dev',
+    },
+    {
+      id: 'tm2',
+      user_id: '2',
+      role: 'member',
+      first_name: 'Jordan',
+      last_name: 'Smith',
+      avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=jordan',
+      email: 'jordan@hacklanta.dev',
+    },
+  ],
+  join_request_status: null,
+};
+
+export const mockJoinRequests = [
+  {
+    id: 'jr1',
+    team_id: '1',
+    user_id: '3',
+    status: 'pending',
+    message: 'I have 3 years of React experience and would love to help build this!',
+    expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    user_first_name: 'Taylor',
+    user_last_name: 'Johnson',
+    user_avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=taylor',
+    user_email: 'taylor@hacklanta.dev',
+  },
+  {
+    id: 'jr2',
+    team_id: '1',
+    user_id: '4',
+    status: 'pending',
+    message: 'Designer here! Love the project idea.',
+    expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    created_at: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+    user_first_name: 'Casey',
+    user_last_name: 'Williams',
+    user_avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=casey',
+    user_email: 'casey@hacklanta.dev',
+  },
+];
