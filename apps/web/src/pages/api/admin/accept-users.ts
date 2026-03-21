@@ -52,7 +52,7 @@ export const POST: APIRoute = async ({ locals }) => {
       })
       await supabase
         .from('users')
-        .update({ acceptance_sent_at: new Date().toISOString() })
+        .update({ is_accepted: true, acceptance_sent_at: new Date().toISOString() })
         .eq('id', user.id)
       sent++
     } catch {

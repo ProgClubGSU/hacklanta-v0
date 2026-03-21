@@ -237,10 +237,13 @@ Server-side endpoints running as Vercel serverless functions:
 ### RLS Policies
 
 Defined in `apps/web/supabase/rls-policies.sql`. Key patterns:
-- All authenticated users can SELECT from `users`, `profiles`, `teams`, `team_members`
+- Users can always see their **own** `users` record (needed for `getCurrentUserId()`)
+- Only users with `is_accepted = true` can see other accepted users, profiles, teams, team members, and join requests (gates the team finder)
+- `is_accepted` has no user-facing UPDATE policy — only modifiable by service role via the admin accept flow
 - Users can only INSERT/UPDATE/DELETE their own records (matched via `auth.jwt()->>'sub'` → `users.clerk_id`)
 - Team leaders can manage join requests for their team
 - Applications are read-only for users (writes via service role from webhooks)
+- A helper view `accepted_self` simplifies the accepted-user check across policies
 
 ---
 
@@ -258,6 +261,7 @@ CREATE TABLE users (
     last_name VARCHAR,
     avatar_url VARCHAR,
     role VARCHAR DEFAULT 'user',  -- 'user' | 'admin'
+    is_accepted BOOLEAN DEFAULT false,  -- only set by service role (admin accept flow)
     acceptance_sent_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()

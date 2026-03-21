@@ -14,7 +14,7 @@ export function createClerkSupabaseClient(): SupabaseClient {
       if (!window.Clerk) {
         await new Promise((resolve) => setTimeout(resolve, 500))
       }
-      return (await window.Clerk?.session?.getToken({ template: 'supabase' })) ?? null
+      return (await window.Clerk?.session?.getToken()) ?? null
     },
   })
 }
