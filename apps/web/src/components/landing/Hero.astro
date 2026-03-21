@@ -686,6 +686,15 @@
     </p>
   </div>
 
+  <!-- Skip intro button -->
+  <button
+    type="button"
+    class="skip-intro fixed bottom-6 right-6 z-50 border border-white/10 bg-black/60 px-4 py-2 font-mono text-[11px] tracking-[0.2em] text-white/40 uppercase backdrop-blur-sm transition-all duration-300 hover:border-white/25 hover:text-white/70"
+    aria-label="Skip intro animation"
+  >
+    skip &rarr;
+  </button>
+
   <!-- Mobile tee badge (floating, appears after scrolling past hero) -->
   <div
     class="tee-badge fixed right-4 top-4 z-50 lg:hidden"
@@ -1483,6 +1492,63 @@
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
+  // ===== Skip intro support =====
+  let introSkipped = false;
+  const skipBtn = document.querySelector<HTMLElement>('.skip-intro');
+
+  function skipIntro() {
+    introSkipped = true;
+    gsap.globalTimeline.clear();
+    gsap.killTweensOf('*');
+
+    // Jump everything to final state
+    gsap.set('.hero-slot', { opacity: 1, y: 0 });
+    gsap.set('.hero-title', { opacity: 1, y: 0 });
+    gsap.set('.hero-line', { opacity: 1, y: 0 });
+    gsap.set('.hero-rule', { opacity: 1, scaleX: 1 });
+    gsap.set('.hero-suit', { opacity: 1 });
+    gsap.set('.hero-deco-card', { opacity: 1 });
+    gsap.set('.hero-chip', { opacity: 1, y: 0 });
+    gsap.set('.hero-cta', { opacity: 1, y: 0 });
+
+    // Show countdown immediately
+    const marqueeEl = document.querySelector<HTMLElement>('.marquee-text');
+    if (marqueeEl) {
+      marqueeEl.textContent = 'TIME REMAINING';
+      marqueeEl.style.color = 'rgba(196,30,58,0.6)';
+      marqueeEl.style.textShadow = '0 0 10px rgba(196,30,58,0.2)';
+      marqueeEl.style.opacity = '1';
+    }
+
+    // Set countdown values
+    const real = getCountdownVals();
+    for (const key of keys) {
+      const el = reels[key];
+      const label = reelLabels[key] as HTMLElement;
+      el.textContent = real[key];
+      el.style.fontSize = '';
+      prev[key] = real[key];
+      (label as HTMLElement).style.opacity = '1';
+    }
+
+    // Show tee hanger
+    const hangerEl = document.querySelector<HTMLElement>('.tee-hanger');
+    const teeStringEl = document.querySelector<HTMLElement>('.tee-string');
+    if (hangerEl) gsap.set(hangerEl, { y: 0, opacity: 1 });
+    if (teeStringEl) gsap.set(teeStringEl, { scaleY: 1, opacity: 1 });
+
+    // Fire jackpot event for other components
+    window.dispatchEvent(new CustomEvent('jackpot'));
+
+    // Start live countdown
+    setInterval(updateCountdown, 1000);
+
+    // Hide skip button
+    if (skipBtn) skipBtn.style.display = 'none';
+  }
+
+  skipBtn?.addEventListener('click', skipIntro);
+
   // ===== Hide everything except slot machine on load =====
   gsap.set('.hero-suit', { opacity: 0 });
 
@@ -1990,6 +2056,8 @@
 
   // Main sequence
   setTimeout(async () => {
+    if (introSkipped) return;
+
     // Reveal Hacklanta logo early, while slot machine spins
     gsap.to('.hero-title', { opacity: 1, y: 0, duration: 1.4, ease: 'power2.out' });
 
@@ -2244,6 +2312,9 @@
 
     // Start live countdown
     setInterval(updateCountdown, 1000);
+
+    // Hide skip button — intro is done
+    if (skipBtn) gsap.to(skipBtn, { opacity: 0, duration: 0.3, onComplete: () => { skipBtn.style.display = 'none'; } });
   }, 500);
 
   // === Desktop tee flip: hover on desktop, tap on mobile ===

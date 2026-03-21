@@ -31,17 +31,16 @@ export const POST: APIRoute = async ({ request }) => {
     status: 'pending',
   }
 
-  let _firstName = ''
-  let _lastName = ''
   let schoolEmail = ''
   let personalEmail = ''
+  let clerkId = ''
 
   for (const field of fields) {
     const label = (field.label ?? '').toLowerCase()
     const value = field.value ?? ''
 
-    if (label.includes('first name')) _firstName = value
-    else if (label.includes('last name')) _lastName = value
+    if (label.includes('first name')) { /* parsed but not stored separately */ }
+    else if (label.includes('last name')) { /* parsed but not stored separately */ }
     else if (label.includes('school email')) schoolEmail = value
     else if (label.includes('personal email')) personalEmail = value
     else if (label.includes('phone')) appData.phone_number = value
@@ -61,6 +60,9 @@ export const POST: APIRoute = async ({ request }) => {
     else if (label.includes('hear about')) appData.how_did_you_hear = value
   }
 
+  // Clerk user ID passed as URL parameter from the embedded form
+  clerkId = payload.data?.urlParameters?.clerk_id ?? ''
+
   appData.email = schoolEmail || personalEmail
   appData.university = appData.university || 'N/A'
   appData.major = appData.major || 'N/A'
@@ -68,14 +70,32 @@ export const POST: APIRoute = async ({ request }) => {
 
   const supabase = createServerSupabaseClient()
 
-  // Try to link to existing user by email
-  if (appData.email) {
+  // 1. Best: link directly via Clerk user ID (passed from logged-in apply page)
+  if (clerkId) {
     const { data: user } = await supabase
       .from('users')
       .select('id')
-      .eq('email', appData.email)
+      .eq('clerk_id', clerkId)
+      .limit(1)
       .single()
     if (user) appData.user_id = user.id
+  }
+
+  // 2. Fallback: try matching by any email from the submission
+  if (!appData.user_id) {
+    const allEmails = [schoolEmail, personalEmail].filter(Boolean)
+    for (const email of allEmails) {
+      const { data: user } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .limit(1)
+        .single()
+      if (user) {
+        appData.user_id = user.id
+        break
+      }
+    }
   }
 
   const { error } = await supabase.from('applications').upsert(appData, {

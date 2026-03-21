@@ -114,12 +114,18 @@ export default function ApplicationStatus() {
         >
           APPLY NOW
         </a>
-        <div className="mt-10">
+        <div className="mt-10 flex items-center gap-6">
           <a
             href="/"
             className="font-body text-xs tracking-widest text-white/20 uppercase transition-colors hover:text-white/40"
           >
             &larr; back to home
+          </a>
+          <a
+            href="/dashboard/team"
+            className="font-body text-xs tracking-widest text-white/20 uppercase transition-colors hover:text-white/40"
+          >
+            dashboard &rarr;
           </a>
         </div>
       </div>
@@ -195,12 +201,20 @@ export default function ApplicationStatus() {
           </a>
         </div>
 
-        <a
-          href="/"
-          className="mt-6 font-body text-xs tracking-widest text-white/20 uppercase transition-colors hover:text-white/40"
-        >
-          &larr; home
-        </a>
+        <div className="mt-6 flex items-center gap-6">
+          <a
+            href="/"
+            className="font-body text-xs tracking-widest text-white/20 uppercase transition-colors hover:text-white/40"
+          >
+            &larr; home
+          </a>
+          <a
+            href="/dashboard/team"
+            className="font-body text-xs tracking-widest text-white/20 uppercase transition-colors hover:text-white/40"
+          >
+            dashboard &rarr;
+          </a>
+        </div>
       </div>
     </div>
   );

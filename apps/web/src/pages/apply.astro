@@ -1,5 +1,6 @@
 ---
 import LandingLayout from '../layouts/LandingLayout.astro';
+const { userId } = await Astro.locals.auth();
 ---
 
 <LandingLayout title="Apply — Hacklanta">
@@ -15,7 +16,7 @@ import LandingLayout from '../layouts/LandingLayout.astro';
       <div class="tally-embed">
         <div class="tally-embed-inner">
           <iframe
-            data-tally-src="https://tally.so/embed/q4dzZO?alignLeft=1&hideTitle=1&dynamicHeight=1&formEventsForwarding=1"
+            data-tally-src={`https://tally.so/embed/q4dzZO?alignLeft=1&hideTitle=1&dynamicHeight=1&formEventsForwarding=1${userId ? `&clerk_id=${userId}` : ''}`}
             loading="lazy"
             width="100%"
             height="1001"
