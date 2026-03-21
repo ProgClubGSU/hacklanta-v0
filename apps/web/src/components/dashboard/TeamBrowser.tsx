@@ -3,7 +3,7 @@ import { api } from '../../lib/api';
 
 export function TeamBrowser() {
   const [loading, setLoading] = useState(true);
-  const [profiles, setProfiles] = useState<any[]>([]);
+  const [profiles, setProfiles] = useState<Record<string, unknown>[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export function TeamBrowser() {
       try {
         const data = await api.listProfiles();
         setProfiles(data);
-      } catch (err: any) {
+      } catch (_err: unknown) {
         setError('Failed to load hacker directory.');
       } finally {
         setLoading(false);

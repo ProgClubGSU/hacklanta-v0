@@ -25,7 +25,7 @@ export default function ProfileCard() {
       setIsLoading(true);
       const profile = await api.getProfile();
       setProfile(profile);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to load profile:', error);
     } finally {
       setIsLoading(false);

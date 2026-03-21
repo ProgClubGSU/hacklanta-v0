@@ -47,9 +47,9 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
       await api.updateJoinRequest(teamId, requestId, { status: 'approved' });
       onRequestProcessed();
       await loadRequests();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to approve request:', error);
-      alert(error.message || 'Failed to approve request');
+      alert(error instanceof Error ? error.message : 'Failed to approve request');
     } finally {
       setProcessingId(null);
     }
@@ -60,9 +60,9 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
       setProcessingId(requestId);
       await api.updateJoinRequest(teamId, requestId, { status: 'rejected' });
       await loadRequests();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to reject request:', error);
-      alert(error.message || 'Failed to reject request');
+      alert(error instanceof Error ? error.message : 'Failed to reject request');
     } finally {
       setProcessingId(null);
     }

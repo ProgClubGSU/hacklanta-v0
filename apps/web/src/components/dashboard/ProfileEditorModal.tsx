@@ -41,8 +41,8 @@ export default function ProfileEditorModal({ initialData, onClose, onSave }: Pro
         looking_for_team: lookingForTeam,
       });
       onSave();
-    } catch (err: any) {
-      setError(err.message || 'Failed to update profile.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to update profile.');
       setSaving(false);
     }
   };

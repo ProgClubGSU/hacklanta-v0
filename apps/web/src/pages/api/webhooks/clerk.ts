@@ -19,6 +19,7 @@ export const POST: APIRoute = async ({ request }) => {
   const body = await request.text()
   const wh = new Webhook(webhookSecret)
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let event: any
   try {
     event = wh.verify(body, {

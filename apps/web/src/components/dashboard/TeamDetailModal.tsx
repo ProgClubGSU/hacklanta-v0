@@ -61,8 +61,8 @@ export default function TeamDetailModal({ teamId, onClose, onJoinRequestSent }: 
       setError(null);
       await api.createJoinRequest(teamId, { message: message || undefined });
       onJoinRequestSent();
-    } catch (err: any) {
-      setError(err.message || 'Failed to send join request');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to send join request');
       setIsSubmitting(false);
     }
   };

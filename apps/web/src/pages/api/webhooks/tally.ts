@@ -26,13 +26,13 @@ export const POST: APIRoute = async ({ request }) => {
   const fields = payload.data?.fields ?? []
 
   // Map Tally fields to application data
-  const appData: Record<string, any> = {
+  const appData: Record<string, unknown> = {
     tally_response_id: responseId,
     status: 'pending',
   }
 
-  let firstName = ''
-  let lastName = ''
+  let _firstName = ''
+  let _lastName = ''
   let schoolEmail = ''
   let personalEmail = ''
 
@@ -40,8 +40,8 @@ export const POST: APIRoute = async ({ request }) => {
     const label = (field.label ?? '').toLowerCase()
     const value = field.value ?? ''
 
-    if (label.includes('first name')) firstName = value
-    else if (label.includes('last name')) lastName = value
+    if (label.includes('first name')) _firstName = value
+    else if (label.includes('last name')) _lastName = value
     else if (label.includes('school email')) schoolEmail = value
     else if (label.includes('personal email')) personalEmail = value
     else if (label.includes('phone')) appData.phone_number = value

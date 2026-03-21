@@ -27,9 +27,9 @@ export function ProfileEditor() {
           setPortfolioUrl(profile.portfolio_url || '');
           setLookingForTeam(profile.looking_for_team ?? true);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         // 404 just means no profile yet, which is fine
-        if (err.status !== 404) {
+        if (err instanceof Error && (err as Error & { status?: number }).status !== 404) {
           setError('Failed to load profile.');
         }
       } finally {
@@ -56,8 +56,8 @@ export function ProfileEditor() {
       });
       setSuccessMsg('Profile updated successfully!');
       setTimeout(() => setSuccessMsg(null), 3000);
-    } catch (err: any) {
-      setError(err.message || 'Failed to update profile.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to update profile.');
     } finally {
       setSaving(false);
     }

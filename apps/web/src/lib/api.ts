@@ -26,12 +26,12 @@ async function getCurrentUserId(client: SupabaseClient): Promise<string> {
 }
 
 /** Flatten Supabase nested join results. Transforms { users: { first_name, ... } } → { first_name, ... } */
-function flattenMember(member: any) {
+function flattenMember(member: Record<string, unknown>) {
   const { users, ...rest } = member
-  return { ...rest, ...users }
+  return { ...rest, ...(users as Record<string, unknown>) }
 }
 
-function flattenJoinRequest(request: any) {
+function flattenJoinRequest(request: Record<string, unknown>) {
   const { users, ...rest } = request
   return {
     ...rest,
@@ -95,7 +95,7 @@ export const api = {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     const generateCode = () => Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
 
-    let team: any = null
+    let team: Record<string, unknown> | null = null
     for (let attempt = 0; attempt < 3; attempt++) {
       const { data, error } = await client
         .from('teams')
@@ -221,14 +221,14 @@ export const api = {
     const { data, error, count } = await query
     if (error) throw new Error(error.message)
 
-    let teams = (data ?? []).map((t: any) => ({
+    let teams = (data ?? []).map((t: Record<string, unknown> & { team_members?: unknown[]; max_size: number }) => ({
       ...t,
       member_count: t.team_members?.length ?? 0,
       is_full: (t.team_members?.length ?? 0) >= t.max_size,
     }))
 
     if (params?.has_openings) {
-      teams = teams.filter((t: any) => !t.is_full)
+      teams = teams.filter((t) => !t.is_full)
     }
 
     return { data: teams, meta: { total: count ?? teams.length } }
