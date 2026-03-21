@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import { api } from '@/lib/api';
+=======
+import Icon from '@/components/ui/Icon';
+>>>>>>> 054f02c (dashboard)
 
 interface User {
   id: string;
@@ -21,10 +25,70 @@ export default function UserGrid() {
   const loadUsers = async () => {
     try {
       setIsLoading(true);
+<<<<<<< HEAD
       const result = await api.listUsers();
       setUsers(result.data);
+=======
+      // TODO: Replace with real API call
+      // const data = await api.listUsers({ looking_for_team_only: true });
+      // setUsers(data);
+
+      // Mock data for demo
+      const mockUsers: User[] = [
+        {
+          id: '1',
+          clerk_id: 'user_1',
+          email: 'alex.dev@example.com',
+          first_name: 'Alex',
+          last_name: 'Chen',
+          avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex',
+        },
+        {
+          id: '2',
+          clerk_id: 'user_2',
+          email: 'sarah.codes@example.com',
+          first_name: 'Sarah',
+          last_name: 'Johnson',
+          avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
+        },
+        {
+          id: '3',
+          clerk_id: 'user_3',
+          email: 'mike.tech@example.com',
+          first_name: 'Mike',
+          last_name: 'Williams',
+          avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mike',
+        },
+        {
+          id: '4',
+          clerk_id: 'user_4',
+          email: 'emma.hacks@example.com',
+          first_name: 'Emma',
+          last_name: 'Davis',
+          avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma',
+        },
+        {
+          id: '5',
+          clerk_id: 'user_5',
+          email: 'james.builds@example.com',
+          first_name: 'James',
+          last_name: 'Martinez',
+          avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=James',
+        },
+        {
+          id: '6',
+          clerk_id: 'user_6',
+          email: 'olivia.creates@example.com',
+          first_name: 'Olivia',
+          last_name: 'Brown',
+          avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Olivia',
+        },
+      ];
+      setUsers(mockUsers);
+>>>>>>> 054f02c (dashboard)
     } catch (error) {
       console.error('Failed to load users:', error);
+      setUsers([]);
     } finally {
       setIsLoading(false);
     }
@@ -34,8 +98,8 @@ export default function UserGrid() {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-red/20 border-t-red"></div>
-          <p className="font-mono text-sm uppercase tracking-widest text-gray">Loading hackers...</p>
+          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></div>
+          <p className="font-label text-sm uppercase tracking-widest text-outline">Loading teammates...</p>
         </div>
       </div>
     );
@@ -43,10 +107,10 @@ export default function UserGrid() {
 
   if (users.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="mb-4 text-6xl">👨‍💻</div>
-        <h3 className="mb-2 font-display text-2xl tracking-wide text-white-pure">No Users Found</h3>
-        <p className="text-gray">Check back later!</p>
+      <div className="py-12 text-center">
+        <Icon name="person_off" className="mb-4 text-6xl text-on-surface/20" />
+        <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">No Teammates Available</h3>
+        <p className="text-on-surface/60">No one is currently looking for a team. Check back later!</p>
       </div>
     );
   }

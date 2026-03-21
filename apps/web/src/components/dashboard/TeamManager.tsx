@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/astro/react';
 import { api } from '@/lib/api';
 import JoinRequestManager from './JoinRequestManager';
+import Icon from '@/components/ui/Icon';
 
+<<<<<<< HEAD
 interface TeamMember {
   id: string;
   user_id: string;
@@ -23,6 +25,17 @@ interface Team {
 }
 
 export default function TeamManager() {
+=======
+interface TeamManagerProps {
+  compactWhenNoTeam?: boolean;
+  onBrowseTeams?: () => void;
+}
+
+export default function TeamManager({
+  compactWhenNoTeam = false,
+  onBrowseTeams,
+}: TeamManagerProps) {
+>>>>>>> 054f02c (dashboard)
   const { userId } = useAuth();
   const [loading, setLoading] = useState(true);
   const [team, setTeam] = useState<Team | null>(null);
@@ -34,6 +47,7 @@ export default function TeamManager() {
   const [createDesc, setCreateDesc] = useState('');
   const [joinCode, setJoinCode] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
+  const [showQuickCreate, setShowQuickCreate] = useState(false);
 
   useEffect(() => {
     loadTeam();
@@ -42,10 +56,21 @@ export default function TeamManager() {
   async function loadTeam() {
     try {
       setLoading(true);
+<<<<<<< HEAD
       const myTeam = await api.getMyTeam();
       setTeam(myTeam);
     } catch (err: unknown) {
       if (err instanceof Error && (err as Error & { status?: number }).status !== 404) {
+=======
+      // TODO: Replace with real API call
+      // const myTeam = await api.getMyTeam();
+      // setTeam(myTeam);
+
+      // Mock - user has no team yet
+      setTeam(null);
+    } catch (err: any) {
+      if (err.status !== 404) {
+>>>>>>> 054f02c (dashboard)
         setError('Failed to load team data.');
       } else {
         setTeam(null);
@@ -60,10 +85,24 @@ export default function TeamManager() {
     setActionLoading(true);
     setError(null);
     try {
+<<<<<<< HEAD
       await api.createTeam({ name: createName, description: createDesc || undefined });
       await loadTeam();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to create team.');
+=======
+      // TODO: Replace with real API call
+      // await api.createTeam({ name: createName, description: createDesc || null });
+
+      // Mock success - simulate team creation
+      await new Promise(resolve => setTimeout(resolve, 500));
+      alert('Team creation will be available once the API is connected!');
+      setCreateName('');
+      setCreateDesc('');
+      setShowQuickCreate(false);
+    } catch (err: any) {
+      setError(err.message || 'Failed to create team.');
+>>>>>>> 054f02c (dashboard)
     } finally {
       setActionLoading(false);
     }
@@ -74,10 +113,22 @@ export default function TeamManager() {
     setActionLoading(true);
     setError(null);
     try {
+<<<<<<< HEAD
       await api.joinTeam({ invite_code: joinCode });
       await loadTeam();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to join team.');
+=======
+      // TODO: Replace with real API call
+      // await api.joinTeam({ invite_code: joinCode });
+
+      // Mock success - simulate joining team
+      await new Promise(resolve => setTimeout(resolve, 500));
+      alert('Team joining will be available once the API is connected!');
+      setJoinCode('');
+    } catch (err: any) {
+      setError(err.message || 'Failed to join team.');
+>>>>>>> 054f02c (dashboard)
     } finally {
       setActionLoading(false);
     }
@@ -113,39 +164,43 @@ export default function TeamManager() {
       (m: TeamMember) => m.role === 'leader' && m.user_id === userId
     );
 
+    const totalSlots = team.max_size;
+    const filledSlots = team.members.length;
+    const emptySlots = Math.max(0, totalSlots - filledSlots);
+
     return (
       <div className="space-y-6">
         {/* Team Header */}
-        <div className="relative overflow-hidden rounded-lg border border-red/40 bg-black-card/80 p-6 backdrop-blur-sm">
-          {/* Ambient glow */}
-          <div className="pointer-events-none absolute -top-24 right-0 h-48 w-full bg-[radial-gradient(circle_at_100%_0%,rgba(196,30,58,0.08)_0%,transparent_60%)]" />
-
-          <div className="relative z-10 flex items-start justify-between gap-4">
+        <div className="glass-effect overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-6">
+          <div className="flex items-center justify-between gap-4">
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <h3 className="font-display text-3xl tracking-wide text-white-pure">
+              <div className="flex items-center gap-3">
+                <h2 className="font-headline text-3xl tracking-wide text-white-pure">
                   {team.name}
-                </h3>
+                </h2>
                 {isCurrentUserLeader && (
-                  <span className="rounded border border-gold/40 bg-gold/10 px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-wider text-gold">
-                    Leader
+                  <span className="rounded border border-secondary-container/40 bg-secondary-container/10 px-2 py-0.5 font-label text-xs font-bold uppercase tracking-wider text-secondary-fixed">
+                    Lead
                   </span>
                 )}
               </div>
               {team.description && (
-                <p className="text-sm leading-relaxed text-white/70">{team.description}</p>
+                <p className="mt-2 text-sm leading-relaxed text-on-surface/70">{team.description}</p>
               )}
             </div>
 
-            {/* Invite Code Card */}
-            <div className="shrink-0 rounded-lg border border-gold/40 bg-gold/5 p-4 text-center backdrop-blur-sm">
-              <div className="font-mono text-xs uppercase tracking-[0.2em] text-gold/80 mb-2">
+            {/* Invite Code */}
+            <div className="shrink-0 text-center">
+              <Icon name="key" className="mb-2 text-2xl text-secondary-fixed" />
+              <div className="font-label text-xs uppercase tracking-wider text-secondary/80">
                 Invite Code
               </div>
               <div
-                className="font-mono text-xl font-bold text-gold cursor-copy hover:text-gold-bright transition-colors select-all"
+                className="mt-1 cursor-copy select-all font-mono text-xl font-bold text-secondary-fixed transition-colors hover:text-secondary-fixed-dim"
                 title="Click to copy"
-                onClick={() => navigator.clipboard.writeText(team.invite_code)}
+                onClick={() => {
+                  navigator.clipboard.writeText(team.invite_code);
+                }}
               >
                 {team.invite_code}
               </div>
@@ -153,52 +208,78 @@ export default function TeamManager() {
           </div>
         </div>
 
-        {/* Members Section */}
-        <div className="relative overflow-hidden rounded-lg border border-red/40 bg-black-card/80 p-6 backdrop-blur-sm">
+
+        {/* Team Roster - Slot System */}
+        <div className="glass-effect overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h4 className="font-display text-xl tracking-wide text-white-pure">
-              Team Members
-            </h4>
-            <div className="font-mono text-xs uppercase tracking-wider text-red">
-              {team.members.length}/{team.max_size}
+            <h3 className="font-headline text-xl tracking-wide text-white-pure">
+              The Crew
+            </h3>
+            <div className="font-mono text-sm uppercase tracking-wider text-primary">
+              {filledSlots} / {totalSlots} Slots
             </div>
           </div>
 
+<<<<<<< HEAD
           <div className="space-y-2">
             {team.members.map((member: TeamMember) => (
+=======
+          <div className="grid gap-3 sm:grid-cols-2">
+            {/* Filled member slots */}
+            {team.members.map((member: any) => (
+>>>>>>> 054f02c (dashboard)
               <div
                 key={member.id}
-                className="flex items-center gap-3 rounded border border-red/20 bg-red/5 p-3"
+                className="flex items-center gap-3 rounded border border-outline-variant/20 bg-surface-container-high/50 p-3"
               >
                 <img
-                  src={member.avatar_url || 'https://via.placeholder.com/40'}
+                  src={member.avatar_url || 'https://via.placeholder.com/48'}
                   alt={member.first_name || 'User'}
-                  className="h-10 w-10 rounded-full border-2 border-red/30"
+                  className="h-12 w-12 rounded-full border-2 border-primary/30"
                 />
-                <div className="flex-1 min-w-0">
+                <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="font-medium text-white truncate">
+                    <p className="truncate font-medium text-white">
                       {member.first_name} {member.last_name}
                     </p>
                     {member.role === 'leader' && (
-                      <span className="shrink-0 rounded bg-gold/20 px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-gold">
-                        Leader
+                      <span className="shrink-0 rounded bg-secondary-container/20 px-1.5 py-0.5 font-label text-[10px] font-bold uppercase text-secondary-fixed">
+                        Lead
                       </span>
                     )}
                   </div>
                   {member.email && (
-                    <p className="font-mono text-xs text-gray truncate">{member.email}</p>
+                    <p className="truncate font-mono text-xs text-on-surface/60">{member.email}</p>
                   )}
                 </div>
+                <button
+                  className="shrink-0 rounded p-1.5 text-primary/60 transition-colors hover:bg-primary/10 hover:text-primary"
+                  title="Message member"
+                >
+                  <Icon name="chat_bubble" className="text-xl" />
+                </button>
               </div>
             ))}
+
+            {/* Empty slots + Invite placeholder */}
+            {emptySlots > 0 && (
+              <button className="flex items-center gap-3 rounded border border-dashed border-outline-variant/40 bg-surface-container/30 p-3 transition-colors hover:border-primary/40 hover:bg-primary/5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-dashed border-outline-variant/40">
+                  <Icon name="person_add" className="text-2xl text-on-surface/40" />
+                </div>
+                <div className="min-w-0 flex-1 text-left">
+                  <p className="font-medium text-on-surface/70">Invite Member</p>
+                  <p className="font-label text-xs text-on-surface/50">{emptySlots} {emptySlots === 1 ? 'slot' : 'slots'} available</p>
+                </div>
+              </button>
+            )}
           </div>
         </div>
 
         {/* Join Requests (for leaders) */}
         {isCurrentUserLeader && (
-          <div className="relative overflow-hidden rounded-lg border border-gold/40 bg-black-card/80 p-6 backdrop-blur-sm">
-            <h4 className="mb-4 font-display text-xl tracking-wide text-white-pure">
+          <div className="glass-effect overflow-hidden rounded-lg border border-secondary-container/40 bg-surface-container/80 p-6">
+            <h4 className="mb-4 font-headline text-xl tracking-wide text-white-pure">
               Join Requests
             </h4>
             <JoinRequestManager
@@ -212,18 +293,30 @@ export default function TeamManager() {
         )}
 
         {error && (
-          <div className="rounded border border-red/30 bg-red/10 p-3 text-sm text-red-bright">
+          <div className="rounded border border-error/30 bg-error-container/20 p-3 text-sm text-error">
             {error}
           </div>
         )}
 
-        {/* Leave Team */}
-        <div className="flex justify-end">
+        {/* Actions */}
+        <div className="flex justify-end gap-3">
+          {isCurrentUserLeader && (
+            <button
+              className="flex items-center gap-2 border border-outline-variant/40 bg-surface-container-high/50 px-5 py-2.5 font-label text-xs font-semibold uppercase tracking-wider text-on-surface transition-all hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
+              onClick={() => {
+                // TODO: Open edit team modal
+              }}
+            >
+              <Icon name="edit" />
+              Edit Team
+            </button>
+          )}
           <button
             onClick={handleLeave}
             disabled={actionLoading}
-            className="border border-red/40 bg-red/10 px-6 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-red-bright transition-all hover:border-red/70 hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 border border-error/40 bg-error-container/10 px-5 py-2.5 font-label text-xs font-semibold uppercase tracking-wider text-error transition-all hover:border-error/70 hover:bg-error-container/20 disabled:cursor-not-allowed disabled:opacity-50"
           >
+            <Icon name="logout" />
             {actionLoading ? 'Leaving...' : 'Leave Team'}
           </button>
         </div>
@@ -232,96 +325,219 @@ export default function TeamManager() {
   }
 
   return (
-    <div className="grid gap-8 md:grid-cols-2">
-      {/* Create Team Form */}
-      <div className="relative overflow-hidden rounded-lg border border-red/40 bg-black-card/80 p-6 backdrop-blur-sm">
-        {/* Ambient glow */}
-        <div className="pointer-events-none absolute -top-24 left-0 h-48 w-full bg-[radial-gradient(circle_at_0%_0%,rgba(196,30,58,0.08)_0%,transparent_60%)]" />
+    compactWhenNoTeam ? (
+      <div className="rounded-lg border border-white/10 bg-black/80 p-6">
+        <div className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-white/50">
+          <Icon name="group" className="text-base" />
+          Team Status
+        </div>
 
-        <div className="relative z-10">
-          <h3 className="mb-4 font-display text-xl tracking-wide text-white-pure">
-            Create a New Team
-          </h3>
-          <form onSubmit={handleCreate} className="space-y-4">
+        <h3 className="font-headline text-2xl font-bold text-white">No Team Yet</h3>
+        <p className="mt-2 text-sm text-white/60">
+          Create your own team here, or head to the Teams tab to join a crew that is already recruiting.
+        </p>
+
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={() => setShowQuickCreate((current) => !current)}
+            className="rounded border border-primary/60 bg-primary/10 px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.08em] text-primary transition-colors hover:bg-primary/20 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {showQuickCreate ? 'Hide Form' : 'Create Team'}
+          </button>
+          <button
+            type="button"
+            onClick={onBrowseTeams}
+            className="rounded border border-white/10 bg-white/5 px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.08em] text-white/75 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            Browse Teams
+          </button>
+        </div>
+
+        {showQuickCreate && (
+          <form onSubmit={handleCreate} className="mt-5 space-y-4 rounded-lg border border-white/10 bg-white/5 p-4">
             <div>
-              <label className="mb-2 block font-mono text-xs uppercase tracking-wider text-red/80">
-                Team Name <span className="text-red-bright">*</span>
+              <label className="mb-2 block font-mono text-[11px] uppercase tracking-[0.18em] text-white/60">
+                Team Name
               </label>
               <input
                 type="text"
                 required
-                placeholder="e.g. Code Wizards"
                 value={createName}
                 onChange={(e) => setCreateName(e.target.value)}
-                className="w-full rounded border border-red/30 bg-black/40 px-4 py-2 text-white placeholder-gray transition-colors focus:border-red focus:outline-none"
+                placeholder="e.g. The Neon Dealers"
+                className="w-full rounded border border-white/10 bg-black px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-primary focus:outline-none"
               />
             </div>
+
             <div>
-              <label className="mb-2 block font-mono text-xs uppercase tracking-wider text-red/80">
+              <label className="mb-2 block font-mono text-[11px] uppercase tracking-[0.18em] text-white/60">
                 Description
               </label>
               <textarea
-                placeholder="What will your team build?"
                 value={createDesc}
                 onChange={(e) => setCreateDesc(e.target.value)}
-                className="w-full resize-none rounded border border-red/30 bg-black/40 px-4 py-2 text-white placeholder-gray transition-colors focus:border-red focus:outline-none"
-                rows={4}
+                placeholder="What are you building?"
+                rows={3}
+                className="w-full rounded border border-white/10 bg-black px-3 py-2 text-sm text-white placeholder:text-white/30 focus:border-primary focus:outline-none"
               />
             </div>
+
             <button
               type="submit"
               disabled={actionLoading || !createName.trim()}
-              className="w-full border border-red/40 bg-red/10 px-6 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-red-bright transition-all hover:border-red/70 hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded border border-primary/60 bg-primary/10 px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.08em] text-primary transition-colors hover:bg-primary/20 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {actionLoading ? 'Creating...' : 'Create Team'}
+              {actionLoading ? 'Creating...' : 'Submit Team'}
             </button>
           </form>
+        )}
+      </div>
+    ) : (
+    <div className="space-y-8">
+      {/* Section Indicator [01] - Create Team */}
+      <div>
+        <div className="mb-4 flex items-center gap-3 font-label text-xs tracking-wider text-outline">
+          <span className="text-primary/80">[01]</span>
+          <span className="h-px flex-1 bg-gradient-to-r from-outline-variant/40 to-transparent"></span>
+        </div>
+
+        <div className="glass-effect relative overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-6">
+          {/* Ambient glow */}
+          <div className="pointer-events-none absolute -left-24 -top-24 h-48 w-48 bg-[radial-gradient(circle,rgba(255,179,177,0.08)_0%,transparent_60%)]"></div>
+
+          <div className="relative z-10">
+            <div className="mb-6">
+              <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">
+                Create New Crew
+              </h3>
+              <p className="font-label text-sm text-on-surface/70">
+                Start your own team and invite others to join your mission
+              </p>
+            </div>
+
+            <form onSubmit={handleCreate} className="space-y-5">
+              <div>
+                <label className="mb-2 block font-label text-xs font-semibold uppercase tracking-wider text-outline">
+                  Crew Designation <span className="text-error">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g., The Neon Dealers"
+                  value={createName}
+                  onChange={(e) => setCreateName(e.target.value)}
+                  className="w-full rounded border border-outline-variant/30 bg-surface-container-highest/50 px-4 py-2.5 text-white placeholder-on-surface/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block font-label text-xs font-semibold uppercase tracking-wider text-outline">
+                  The Briefing
+                </label>
+                <textarea
+                  placeholder="What will your team build? What's your strategy?"
+                  value={createDesc}
+                  onChange={(e) => setCreateDesc(e.target.value)}
+                  className="w-full resize-none rounded border border-outline-variant/30 bg-surface-container-highest/50 px-4 py-2.5 text-white placeholder-on-surface/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                  rows={4}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={actionLoading || !createName.trim()}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary-container/60 bg-gradient-to-r from-primary-container to-primary-container/80 px-6 py-3 font-label text-sm font-bold uppercase tracking-wider text-on-primary shadow-lg shadow-primary/20 transition-all hover:border-primary hover:shadow-primary/30 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+              >
+                {actionLoading ? (
+                  'Creating...'
+                ) : (
+                  <>
+                    <Icon name="bolt" fill />
+                    Deal Me In
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
 
-      {/* Join Team Form */}
-      <div className="relative overflow-hidden rounded-lg border border-red/40 bg-black-card/80 p-6 backdrop-blur-sm">
-        {/* Ambient glow */}
-        <div className="pointer-events-none absolute -top-24 right-0 h-48 w-full bg-[radial-gradient(circle_at_100%_0%,rgba(196,30,58,0.08)_0%,transparent_60%)]" />
+      {/* Section Indicator [02] - Join Team */}
+      <div>
+        <div className="mb-4 flex items-center gap-3 font-label text-xs tracking-wider text-outline">
+          <span className="text-primary/80">[02]</span>
+          <span className="h-px flex-1 bg-gradient-to-r from-outline-variant/40 to-transparent"></span>
+        </div>
 
-        <div className="relative z-10">
-          <h3 className="mb-4 font-display text-xl tracking-wide text-white-pure">
-            Join Existing Team
-          </h3>
-          <form onSubmit={handleJoin} className="space-y-4">
-            <div>
-              <label className="mb-2 block font-mono text-xs uppercase tracking-wider text-red/80">
-                Invite Code <span className="text-red-bright">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                placeholder="6-Character Code"
-                value={joinCode}
-                onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
-                maxLength={10}
-                className="w-full rounded border border-red/30 bg-black/40 px-4 py-2 font-mono text-white placeholder-gray transition-colors focus:border-red focus:outline-none uppercase"
-              />
+        <div className="glass-effect relative overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-6">
+          {/* Ambient glow */}
+          <div className="pointer-events-none absolute -right-24 -top-24 h-48 w-48 bg-[radial-gradient(circle,rgba(255,179,177,0.08)_0%,transparent_60%)]"></div>
+
+          <div className="relative z-10">
+            <div className="mb-6">
+              <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">
+                Join Existing Crew
+              </h3>
+              <p className="font-label text-sm text-on-surface/70">
+                Have an invite code? Enter it below to join a team
+              </p>
             </div>
-            <p className="text-xs text-gray">
-              Ask a team leader for their 6-character invite code to join them.
-            </p>
-            <button
-              type="submit"
-              disabled={actionLoading || joinCode.length < 5}
-              className="w-full border border-red/40 bg-red/10 px-6 py-2 font-mono text-xs font-semibold uppercase tracking-wider text-red-bright transition-all hover:border-red/70 hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)] disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {actionLoading ? 'Joining...' : 'Join Team'}
-            </button>
-          </form>
+
+            <form onSubmit={handleJoin} className="space-y-5">
+              <div>
+                <label className="mb-2 block font-label text-xs font-semibold uppercase tracking-wider text-outline">
+                  Invite Code <span className="text-error">*</span>
+                </label>
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
+                    <Icon name="key" className="text-secondary-fixed/60" />
+                  </div>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Enter 6-character code"
+                    value={joinCode}
+                    onChange={(e) => setJoinCode(e.target.value.toUpperCase())}
+                    maxLength={10}
+                    className="w-full rounded border border-outline-variant/30 bg-surface-container-highest/50 py-2.5 pl-12 pr-4 font-mono uppercase text-white placeholder-on-surface/40 transition-colors focus:border-secondary-fixed focus:outline-none focus:ring-1 focus:ring-secondary-fixed/30"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2 rounded border border-outline-variant/20 bg-surface-container-high/30 p-3">
+                <Icon name="info" className="mt-0.5 text-secondary-fixed/80" />
+                <p className="font-label text-xs text-on-surface/70">
+                  Ask a team leader for their 6-character invite code. Teams can have up to 4 members.
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={actionLoading || joinCode.length < 5}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-secondary-container/60 bg-secondary-container/20 px-6 py-3 font-label text-sm font-bold uppercase tracking-wider text-secondary-fixed shadow-lg shadow-secondary-container/10 transition-all hover:border-secondary-fixed hover:bg-secondary-container/30 hover:shadow-secondary-container/20 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+              >
+                {actionLoading ? (
+                  'Joining...'
+                ) : (
+                  <>
+                    <Icon name="group_add" />
+                    Join Crew
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
 
       {error && (
-        <div className="col-span-full rounded border border-red/30 bg-red/10 p-3 text-sm text-red-bright">
-          {error}
+        <div className="flex items-start gap-2 rounded border border-error/30 bg-error-container/20 p-3 text-sm text-error">
+          <Icon name="warning" className="mt-0.5 shrink-0" />
+          <span>{error}</span>
         </div>
       )}
     </div>
+    )
   );
 }

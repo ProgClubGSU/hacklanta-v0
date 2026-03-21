@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import { api } from '@/lib/api';
+=======
+import Icon from '@/components/ui/Icon';
+>>>>>>> 054f02c (dashboard)
 
 interface TeamMember {
   id: string;
@@ -43,11 +47,20 @@ export default function TeamDetailModal({ teamId, onClose, onJoinRequestSent }: 
   const loadTeamDetails = async () => {
     try {
       setIsLoading(true);
+<<<<<<< HEAD
       const teamData = await api.getTeamById(teamId);
       setTeam(teamData);
+=======
+      // TODO: Replace with real API call
+      // const data = await api.getTeamById(teamId);
+      // setTeam(data);
+      setTeam(null); // No team details until API is connected
+      setError('Team details not available (API not connected)');
+>>>>>>> 054f02c (dashboard)
     } catch (error) {
       console.error('Failed to load team details:', error);
       setError('Failed to load team details');
+      setTeam(null);
     } finally {
       setIsLoading(false);
     }

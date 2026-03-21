@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import { api } from '@/lib/api';
+=======
+>>>>>>> 054f02c (dashboard)
 import TeamDetailModal from './TeamDetailModal';
+import Icon from '@/components/ui/Icon';
 
 interface Team {
   id: string;
@@ -22,10 +26,87 @@ export default function TeamGrid() {
   const loadTeams = async () => {
     try {
       setIsLoading(true);
+<<<<<<< HEAD
       const result = await api.listTeams({ has_openings: showAvailableOnly || undefined });
       setTeams(result.data);
+=======
+      // TODO: Replace with real API call
+      // const data = await api.listTeams({ available_only: showAvailableOnly });
+      // setTeams(data);
+
+      // Mock data for demo
+      const mockTeams: Team[] = [
+        {
+          id: '1',
+          name: 'The Neon Dealers',
+          description: 'Building an AI-powered poker training app. Looking for backend devs!',
+          member_count: 3,
+          max_size: 4,
+          is_full: false,
+          is_looking_for_members: true,
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: '2',
+          name: 'Code Casino',
+          description: 'Creating a blockchain-based betting platform with smart contracts.',
+          member_count: 4,
+          max_size: 4,
+          is_full: true,
+          is_looking_for_members: false,
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: '3',
+          name: 'Binary Blackjack',
+          description: 'Developing a multiplayer card game with real-time chat. Need frontend React dev!',
+          member_count: 2,
+          max_size: 4,
+          is_full: false,
+          is_looking_for_members: true,
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: '4',
+          name: 'Stack Shufflers',
+          description: 'Working on a mobile app for tracking hackathon stats and achievements.',
+          member_count: 1,
+          max_size: 4,
+          is_full: false,
+          is_looking_for_members: true,
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: '5',
+          name: 'Debug Dragons',
+          description: 'Building a VS Code extension for collaborative debugging sessions.',
+          member_count: 3,
+          max_size: 4,
+          is_full: false,
+          is_looking_for_members: true,
+          created_at: new Date().toISOString(),
+        },
+        {
+          id: '6',
+          name: 'Chip Stackers',
+          description: 'Creating an educational platform for learning poker strategy through code.',
+          member_count: 2,
+          max_size: 4,
+          is_full: false,
+          is_looking_for_members: true,
+          created_at: new Date().toISOString(),
+        },
+      ];
+
+      const filteredTeams = showAvailableOnly
+        ? mockTeams.filter(team => !team.is_full)
+        : mockTeams;
+
+      setTeams(filteredTeams);
+>>>>>>> 054f02c (dashboard)
     } catch (error) {
       console.error('Failed to load teams:', error);
+      setTeams([]);
     } finally {
       setIsLoading(false);
     }
@@ -39,8 +120,8 @@ export default function TeamGrid() {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-red/20 border-t-red"></div>
-          <p className="font-mono text-sm uppercase tracking-widest text-gray">Loading teams...</p>
+          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></div>
+          <p className="font-label text-sm uppercase tracking-widest text-outline">Loading teams...</p>
         </div>
       </div>
     );
@@ -48,10 +129,10 @@ export default function TeamGrid() {
 
   if (teams.length === 0) {
     return (
-      <div className="text-center py-12">
-        <div className="mb-4 text-6xl">⚡</div>
-        <h3 className="mb-2 font-display text-2xl tracking-wide text-white-pure">No Teams Yet</h3>
-        <p className="text-gray">Be the first to create a team!</p>
+      <div className="py-12 text-center">
+        <Icon name="group_off" className="mb-4 text-6xl text-on-surface/20" />
+        <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">No Teams Available</h3>
+        <p className="text-on-surface/60">Check back later or create your own team to get started!</p>
       </div>
     );
   }
@@ -59,31 +140,26 @@ export default function TeamGrid() {
   return (
     <>
       <div className="space-y-6">
-        {/* Filter Toggle */}
-        <div className="flex items-center justify-between border-b border-red/20 pb-4">
+        {/* Header with Filter */}
+        <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-display text-xl tracking-wide text-white-pure">
+            <h3 className="font-headline text-xl tracking-wide text-white-pure">
               Browse Teams
             </h3>
-            <p className="mt-1 font-mono text-xs tracking-wider text-gray">
+            <p className="mt-1 font-label text-xs tracking-wider text-outline">
               {teams.length} team{teams.length !== 1 ? 's' : ''} available
             </p>
           </div>
 
           <button
             onClick={() => setShowAvailableOnly(!showAvailableOnly)}
-            className={`
-              flex items-center gap-2 rounded border px-4 py-2 font-mono text-xs font-semibold uppercase tracking-wider transition-all
-              ${
-                showAvailableOnly
-                  ? 'border-red/40 bg-red/10 text-red-bright hover:bg-red/20'
-                  : 'border-white/20 bg-white/5 text-white/70 hover:border-white/40 hover:bg-white/10'
-              }
-            `}
+            className={`flex items-center gap-2 rounded border px-4 py-2 font-label text-xs font-semibold uppercase tracking-wider transition-all ${
+              showAvailableOnly
+                ? 'border-primary/40 bg-primary/10 text-primary hover:bg-primary/20'
+                : 'border-outline-variant/40 bg-surface-container-high/50 text-on-surface/70 hover:border-outline-variant/60 hover:bg-surface-container-high'
+            }`}
           >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
+            <Icon name="tune" />
             {showAvailableOnly ? 'Show All' : 'Available Only'}
           </button>
         </div>
@@ -94,47 +170,49 @@ export default function TeamGrid() {
             <button
               key={team.id}
               onClick={() => setSelectedTeam(team.id)}
-              className="group relative overflow-hidden rounded-lg border border-red/40 bg-black-card/80 p-5 text-left backdrop-blur-sm transition-all duration-300 hover:border-red/70 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)]"
+              className="glass-effect group relative overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-5 text-left transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
             >
-              {/* Card suit decoration */}
-              <div className="pointer-events-none absolute right-3 top-3 select-none text-4xl text-red/10 transition-all group-hover:text-red/20" aria-hidden="true">
-                ♠
-              </div>
+              {/* Ambient glow on hover */}
+              <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 bg-[radial-gradient(circle,rgba(255,179,177,0.1)_0%,transparent_60%)] opacity-0 transition-opacity group-hover:opacity-100"></div>
 
-              <div className="relative z-10">
-                <div className="mb-3 flex items-start justify-between">
-                  <h4 className="font-display text-xl tracking-wide text-white-pure line-clamp-1">
+              <div className="relative z-10 space-y-3">
+                {/* Header with status badge */}
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="line-clamp-1 font-headline text-xl tracking-wide text-white-pure">
                     {team.name}
                   </h4>
                   {team.is_full ? (
-                    <span className="shrink-0 rounded border border-gray/40 bg-gray/10 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-gray">
+                    <span className="flex shrink-0 items-center gap-1 rounded border border-outline/40 bg-surface-container-highest/50 px-2 py-0.5 font-label text-[10px] font-bold uppercase tracking-wider text-outline">
+                      <Icon name="lock" className="text-xs" />
                       Full
                     </span>
                   ) : (
-                    <span className="shrink-0 rounded border border-green-500/40 bg-green-500/10 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-green-500">
+                    <span className="flex shrink-0 items-center gap-1 rounded border border-secondary-fixed/40 bg-secondary-container/10 px-2 py-0.5 font-label text-[10px] font-bold uppercase tracking-wider text-secondary-fixed">
+                      <Icon name="auto_awesome" className="text-xs" fill />
                       Open
                     </span>
                   )}
                 </div>
 
+                {/* Description */}
                 {team.description && (
-                  <p className="mb-4 text-sm leading-relaxed text-white/70 line-clamp-2">
+                  <p className="line-clamp-2 text-sm leading-relaxed text-on-surface/70">
                     {team.description}
                   </p>
                 )}
 
-                <div className="flex items-center justify-between border-t border-red/20 pt-3">
+                {/* Footer with member count and CTA */}
+                <div className="flex items-center justify-between border-t border-outline-variant/20 pt-3">
                   <div className="flex items-center gap-2">
-                    <svg className="h-4 w-4 text-red-bright" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
-                    </svg>
-                    <span className="font-mono text-sm text-white/80">
+                    <Icon name="group" className="text-primary" />
+                    <span className="font-mono text-sm text-on-surface/80">
                       {team.member_count}/{team.max_size}
                     </span>
                   </div>
 
-                  <div className="font-mono text-xs uppercase tracking-wider text-red transition-all group-hover:text-red-bright">
-                    View →
+                  <div className="flex items-center gap-1 font-label text-xs uppercase tracking-wider text-primary transition-all group-hover:gap-2 group-hover:text-primary">
+                    {team.is_full ? 'View' : 'Join'}
+                    <Icon name="arrow_forward" className="text-sm" />
                   </div>
                 </div>
               </div>
