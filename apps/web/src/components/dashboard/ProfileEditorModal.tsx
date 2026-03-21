@@ -34,15 +34,15 @@ export default function ProfileEditorModal({ initialData, onClose, onSave }: Pro
     try {
       await api.upsertProfile({
         display_name: displayName,
-        bio: bio || null,
-        linkedin_url: linkedinUrl || null,
-        github_url: githubUrl || null,
-        portfolio_url: portfolioUrl || null,
+        bio: bio || undefined,
+        linkedin_url: linkedinUrl || undefined,
+        github_url: githubUrl || undefined,
+        portfolio_url: portfolioUrl || undefined,
         looking_for_team: lookingForTeam,
       });
       onSave();
-    } catch (err: any) {
-      setError(err.message || 'Failed to update profile.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to update profile.');
       setSaving(false);
     }
   };

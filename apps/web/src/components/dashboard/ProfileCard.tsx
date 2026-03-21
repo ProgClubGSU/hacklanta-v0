@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@clerk/astro/react';
-import { mockProfile } from '@/lib/mockData';
+import { api } from '@/lib/api';
 import ProfileEditorModal from './ProfileEditorModal';
 
 interface Profile {
@@ -23,9 +23,9 @@ export default function ProfileCard() {
   const loadProfile = async () => {
     try {
       setIsLoading(true);
-      // Using mock data for UI development
-      setProfile(mockProfile as Profile);
-    } catch (error: any) {
+      const profile = await api.getProfile();
+      setProfile(profile);
+    } catch (error: unknown) {
       console.error('Failed to load profile:', error);
     } finally {
       setIsLoading(false);

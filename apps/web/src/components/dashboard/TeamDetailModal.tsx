@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { mockTeamDetail } from '@/lib/mockData';
+import { api } from '@/lib/api';
 
 interface TeamMember {
   id: string;
@@ -43,8 +43,8 @@ export default function TeamDetailModal({ teamId, onClose, onJoinRequestSent }: 
   const loadTeamDetails = async () => {
     try {
       setIsLoading(true);
-      // Using mock data for UI development
-      setTeam(mockTeamDetail as TeamDetail);
+      const teamData = await api.getTeamById(teamId);
+      setTeam(teamData);
     } catch (error) {
       console.error('Failed to load team details:', error);
       setError('Failed to load team details');
@@ -59,12 +59,10 @@ export default function TeamDetailModal({ teamId, onClose, onJoinRequestSent }: 
     try {
       setIsSubmitting(true);
       setError(null);
-      // Mock API call - just show success
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      alert('✓ Join request sent! (This is mock data)');
+      await api.createJoinRequest(teamId, { message: message || undefined });
       onJoinRequestSent();
-    } catch (err: any) {
-      setError(err.message || 'Failed to send join request');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to send join request');
       setIsSubmitting(false);
     }
   };

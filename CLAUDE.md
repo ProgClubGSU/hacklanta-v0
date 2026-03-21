@@ -2,9 +2,9 @@
 
 ## Project Overview
 
-This is the official website for **Hacklanta**, a 12-hour hackathon hosted by **progsu** (Programming Club @ Georgia State University). The site includes a high-performance marketing landing page, an applicant/contestant portal with dashboards, and an admin panel. The codebase is a monorepo with a clear frontend/backend separation.
+This is the official website for **Hacklanta**, a 12-hour hackathon hosted by **progsu** (Programming Club @ Georgia State University). The site includes a high-performance marketing landing page, an applicant/contestant portal with dashboards, and an admin panel.
 
-**Domain:** Already purchased via Vercel.
+**Domain:** hacklanta.dev (via Vercel)
 
 ---
 
@@ -57,22 +57,16 @@ The result should feel like **if progsu.com ran an underground hacker casino**. 
 
 ## Architecture Summary
 
-This is a **monorepo** with three main workspaces:
-
 ```
 hacklanta/
 ├── apps/
-│   └── web/                  # Astro 5 frontend (landing + dashboards)
-├── services/
-│   └── api/                  # FastAPI backend
-├── infra/                    # AWS CDK (TypeScript)
+│   └── web/                  # Astro 5 frontend (landing + dashboards + API routes)
 ├── packages/
-│   └── shared/               # Shared types, constants, validation schemas
+│   └── shared/               # Shared types, constants
 ├── .github/
-│   └── workflows/            # CI/CD pipelines
-├── docker-compose.yml        # Local dev environment
+│   └── workflows/            # CI pipeline
 ├── turbo.json                # Turborepo config
-└── package.json              # Root workspace config
+└── package.json              # Root workspace config (pnpm)
 ```
 
 Use **Turborepo** for monorepo orchestration (`turbo dev`, `turbo build`, `turbo lint`).
@@ -85,23 +79,19 @@ Use **Turborepo** for monorepo orchestration (`turbo dev`, `turbo build`, `turbo
 | --------------- | -------------------------------------------------- |
 | Frontend        | Astro 5, React 19 (islands), Tailwind CSS v4       |
 | Animations      | GSAP (landing page scroll/hero), Framer Motion (dashboard UI) |
-| Backend API     | FastAPI (Python 3.12+), async throughout            |
-| ORM             | SQLAlchemy 2.0 (async mode)                        |
-| Migrations      | Alembic                                            |
-| Validation      | Pydantic v2 (API schemas)                          |
-| Task Queue      | Celery + Redis                                     |
-| Auth            | Clerk (React SDK frontend, Python SDK backend)     |
-| Database        | PostgreSQL (AWS RDS)                                |
-| Cache/Broker    | Redis (AWS ElastiCache)                            |
-| Email           | AWS SES + React Email (templates)                  |
-| Object Storage  | AWS S3                                             |
-| Hosting (FE)    | Vercel (already have domain there) OR CloudFront+S3 |
-| Hosting (API)   | AWS ECS Fargate (containerized)                    |
-| IaC             | AWS CDK (TypeScript)                               |
-| CI/CD           | GitHub Actions → ECR → ECS                         |
-| Error Tracking  | Sentry (frontend + backend)                        |
-| Logging         | Axiom + OpenTelemetry                              |
-| Real-time       | Server-Sent Events (SSE) via FastAPI               |
+| Database        | Supabase (hosted PostgreSQL + client SDK)           |
+| Auth            | Clerk (@clerk/astro for SSR, Clerk JWT → Supabase) |
+| Server Routes   | Astro API routes (Vercel serverless functions)      |
+| Email           | Resend (transactional email)                       |
+| Hosting         | Vercel (frontend + API routes)                     |
+| Error Tracking  | Sentry (@sentry/astro)                             |
+| CI              | GitHub Actions                                     |
+
+### Key Patterns
+
+- **No separate backend.** The frontend talks to Supabase directly from React components using `@supabase/supabase-js` with Clerk JWTs for auth. Server-side operations (webhooks, admin actions, email) are Astro API routes that run as Vercel serverless functions.
+- **Supabase RLS** enforces authorization at the database level using `auth.jwt()->>'sub'` to match Clerk user IDs.
+- **Clerk JWT template** named `supabase` bridges Clerk auth → Supabase auth. Created in Clerk Dashboard, uses the Supabase JWT secret as signing key.
 
 ---
 
@@ -109,16 +99,17 @@ Use **Turborepo** for monorepo orchestration (`turbo dev`, `turbo build`, `turbo
 
 ### Framework: Astro 5 + React Islands
 
-Astro ships zero JS by default. Interactive components (dashboards, forms, real-time feeds) are React islands hydrated with `client:load` or `client:visible`. The landing page should ship near-zero JS and score 100 on Lighthouse.
+Astro ships zero JS by default. Interactive components (dashboards, forms) are React islands hydrated with `client:load` or `client:visible`. The landing page should ship near-zero JS and score 100 on Lighthouse.
 
 ### Structure
 
 ```
 apps/web/
 ├── astro.config.mjs
-├── tailwind.config.ts
 ├── public/
 │   └── fonts/, images/, og/
+├── supabase/
+│   └── rls-policies.sql           # RLS policy reference (apply via Supabase SQL Editor)
 ├── src/
 │   ├── layouts/
 │   │   ├── BaseLayout.astro       # HTML shell, meta, fonts
@@ -127,49 +118,41 @@ apps/web/
 │   ├── pages/
 │   │   ├── index.astro            # Landing page
 │   │   ├── apply.astro            # Application form page
+│   │   ├── status.astro           # Application status page
 │   │   ├── dashboard/
 │   │   │   ├── index.astro        # Contestant dashboard home
-│   │   │   ├── team.astro         # Team finder / team management
-│   │   │   ├── schedule.astro     # Event schedule + workshops
-│   │   │   └── food.astro         # Food ordering during event
+│   │   │   └── team.astro         # Team finder / team management
+│   │   ├── api/
+│   │   │   ├── webhooks/
+│   │   │   │   ├── clerk.ts       # Clerk webhook (user sync)
+│   │   │   │   └── tally.ts       # Tally webhook (application form)
+│   │   │   ├── users/
+│   │   │   │   └── sync.ts        # Manual user sync
+│   │   │   ├── applications/
+│   │   │   │   └── me.ts          # Current user's application status
+│   │   │   └── admin/
+│   │   │       └── accept-users.ts # Bulk acceptance + email
 │   │   └── admin/
-│   │       ├── index.astro        # Admin overview
-│   │       ├── applicants.astro   # Review/accept/reject applicants
-│   │       ├── contestants.astro  # Manage accepted contestants
-│   │       ├── announcements.astro
-│   │       └── emails.astro       # Mass email composer
+│   │       └── index.astro
 │   ├── components/
 │   │   ├── landing/               # Static Astro components + GSAP
-│   │   │   ├── Hero.astro
-│   │   │   ├── About.astro
-│   │   │   ├── Schedule.astro
-│   │   │   ├── Sponsors.astro
-│   │   │   ├── FAQ.astro
-│   │   │   └── Footer.astro
 │   │   ├── dashboard/             # React islands (client:load)
-│   │   │   ├── ApplicationForm.tsx
-│   │   │   ├── ApplicationStatus.tsx
-│   │   │   ├── TeamFinder.tsx
-│   │   │   ├── EventSchedule.tsx
-│   │   │   ├── FoodOrder.tsx
-│   │   │   └── AnnouncementsFeed.tsx
-│   │   ├── admin/                 # React islands (client:load)
-│   │   │   ├── ApplicantTable.tsx
-│   │   │   ├── ApplicantReview.tsx
-│   │   │   ├── EmailComposer.tsx
-│   │   │   ├── AnnouncementEditor.tsx
-│   │   │   └── StatsOverview.tsx
+│   │   │   ├── ProfileCard.tsx
+│   │   │   ├── ProfileEditorModal.tsx
+│   │   │   ├── TeamManager.tsx
+│   │   │   ├── TeamGrid.tsx
+│   │   │   ├── TeamDetailModal.tsx
+│   │   │   ├── UserGrid.tsx
+│   │   │   ├── JoinRequestManager.tsx
+│   │   │   └── TabNavigation.tsx
+│   │   ├── status/
+│   │   │   └── ApplicationStatus.tsx
 │   │   └── ui/                    # Shared UI primitives
-│   │       ├── Button.tsx
-│   │       ├── Card.tsx
-│   │       ├── Modal.tsx
-│   │       ├── Badge.tsx
-│   │       ├── DataTable.tsx
-│   │       └── Toast.tsx
 │   ├── lib/
-│   │   ├── api.ts                 # Typed API client (fetch wrapper)
-│   │   ├── clerk.ts               # Clerk config
-│   │   └── sse.ts                 # SSE client hook for real-time
+│   │   ├── api.ts                 # Supabase-based API client (teams, profiles, users)
+│   │   ├── supabase.ts            # Client-side Supabase factory (Clerk JWT auth)
+│   │   ├── supabase-server.ts     # Server-side Supabase client (service role key)
+│   │   └── clerk-types.d.ts       # Window.Clerk type declaration
 │   └── styles/
 │       └── global.css             # Tailwind directives + custom CSS
 ```
@@ -178,7 +161,7 @@ apps/web/
 
 The landing page must feel premium and high-energy — like an underground hacker casino. See the **Branding & Theme** section above for the full design language.
 
-- **Hero section:** Full-viewport, animated (GSAP ScrollTrigger). Dark base with neon casino glow effects. Animated text reveals (slot-machine style). Poker chip / card motifs. Optionally a 3D element (Three.js/Spline) — e.g. a spinning poker chip, floating cards, or a neon roulette wheel. Prominent CTA: "DEAL ME IN" / "$ ante up" style.
+- **Hero section:** Full-viewport, animated (GSAP ScrollTrigger). Dark base with neon casino glow effects. Animated text reveals (slot-machine style). Poker chip / card motifs. Prominent CTA: "DEAL ME IN" / "$ ante up" style.
 - **Scroll animations:** Sections fade/slide in on scroll using GSAP ScrollTrigger. Card-dealing or chip-stacking entrance animations. Smooth, performant, 60fps.
 - **Typography:** Monospace (JetBrains Mono / Fira Code) for terminal elements. Bold sans-serif (Satoshi / Inter / Geist) for headings. Neon green or gold for accent numbers/stats.
 - **Color palette:** See Branding section. Near-black base, neon green primary, gold accent, hot pink secondary. Glow effects on accent elements.
@@ -190,132 +173,81 @@ The landing page must feel premium and high-energy — like an underground hacke
 
 - Maintain the dark theme and terminal motifs from the landing page throughout the dashboard.
 - Use Framer Motion for transitions (page transitions, card-flip modal animations, list reordering).
-- "Betting slip" style for application status cards and food order receipts.
-- DataTable components for applicant/contestant lists with sorting, filtering, search.
-- Toast notifications styled as casino chip / card pop-ins for actions (accepted applicant, sent email, etc.).
-- Real-time announcement feed via SSE.
-- Leaderboard/scoreboard aesthetic for minigame results and team standings during the event.
-
-### API Client
-
-Create a typed fetch wrapper in `lib/api.ts` that:
-- Automatically attaches Clerk session tokens via `getToken()`.
-- Has typed request/response generics matching Pydantic schemas.
-- Handles errors consistently with toast notifications.
-- Base URL configurable via env var `PUBLIC_API_URL`.
+- "Betting slip" style for application status cards.
+- Toast notifications styled as casino chip / card pop-ins for actions.
+- Leaderboard/scoreboard aesthetic for team standings during the event.
 
 ---
 
-## Backend API — `services/api/`
+## Supabase Client Architecture
 
-### Framework: FastAPI (Python 3.12+)
+### Client-Side (`lib/supabase.ts`)
 
-Fully async. All database calls use SQLAlchemy async sessions. Pydantic v2 for all request/response models.
+Used in React components. Creates a Supabase client with Clerk JWT auth:
 
-### Structure
-
-```
-services/api/
-├── Dockerfile
-├── pyproject.toml              # Dependencies (use uv or poetry)
-├── alembic/
-│   ├── alembic.ini
-│   └── versions/               # Migration files
-├── app/
-│   ├── main.py                 # FastAPI app factory, middleware, lifespan
-│   ├── core/
-│   │   ├── config.py           # Settings via pydantic-settings (env vars)
-│   │   ├── database.py         # Async engine, session factory
-│   │   ├── redis.py            # Redis client
-│   │   ├── security.py         # Clerk token verification, role checks
-│   │   └── middleware.py       # CORS, request logging, rate limiting
-│   ├── domains/
-│   │   ├── applicants/
-│   │   │   ├── router.py       # POST /apply, GET /applications/{id}, etc.
-│   │   │   ├── schemas.py      # Pydantic models
-│   │   │   ├── service.py      # Business logic
-│   │   │   ├── repository.py   # DB queries (SQLAlchemy)
-│   │   │   └── models.py       # SQLAlchemy ORM models
-│   │   ├── contestants/
-│   │   │   ├── router.py       # GET /me, GET /team, POST /team/join, etc.
-│   │   │   ├── schemas.py
-│   │   │   ├── service.py
-│   │   │   ├── repository.py
-│   │   │   └── models.py
-│   │   ├── events/
-│   │   │   ├── router.py       # GET /schedule, GET /events/{id}
-│   │   │   ├── schemas.py
-│   │   │   ├── service.py
-│   │   │   ├── repository.py
-│   │   │   └── models.py
-│   │   ├── food/
-│   │   │   ├── router.py       # GET /menu, POST /orders, GET /orders/me
-│   │   │   ├── schemas.py
-│   │   │   ├── service.py
-│   │   │   ├── repository.py
-│   │   │   └── models.py
-│   │   ├── announcements/
-│   │   │   ├── router.py       # GET /announcements (SSE), POST /announcements
-│   │   │   ├── schemas.py
-│   │   │   ├── service.py
-│   │   │   ├── repository.py
-│   │   │   └── models.py
-│   │   └── admin/
-│   │       ├── router.py       # Admin-only endpoints
-│   │       ├── schemas.py
-│   │       └── service.py
-│   ├── workers/
-│   │   ├── celery_app.py       # Celery configuration
-│   │   ├── email_tasks.py      # Send acceptance emails, mass emails
-│   │   └── notification_tasks.py
-│   └── utils/
-│       ├── email.py            # SES client wrapper
-│       └── pagination.py       # Cursor/offset pagination helpers
+```typescript
+createClerkSupabaseClient()
+// Uses window.Clerk.session.getToken({ template: 'supabase' }) as accessToken
 ```
 
-### API Design Conventions
+### Server-Side (`lib/supabase-server.ts`)
 
-- All routes versioned under `/api/v1/`.
-- Use dependency injection for database sessions, current user, admin checks.
-- Return consistent response envelopes: `{ "data": ..., "meta": { "total": N, "page": N } }`.
-- Use HTTP status codes correctly (201 for creation, 204 for deletion, 422 for validation errors).
-- Auto-generate OpenAPI docs at `/docs` (FastAPI built-in).
+Used in Astro API routes. Creates a Supabase client with the service role key (bypasses RLS):
+
+```typescript
+createServerSupabaseClient()
+// Uses SUPABASE_SERVICE_ROLE_KEY — server-side only
+```
+
+### API Client (`lib/api.ts`)
+
+All dashboard components use `api.*` methods that call Supabase directly:
+
+- `api.getProfile()` / `api.upsertProfile()` / `api.listProfiles()`
+- `api.createTeam()` / `api.getMyTeam()` / `api.joinTeam()` / `api.leaveTeam()`
+- `api.listTeams()` / `api.getTeamById()`
+- `api.createJoinRequest()` / `api.listTeamJoinRequests()` / `api.updateJoinRequest()` / `api.withdrawJoinRequest()`
+- `api.listUsers()`
+
+Key helpers:
+- `getCurrentUserId()` — resolves Clerk user ID → internal UUID, with auto-sync fallback via `POST /api/users/sync`
+- `flattenMember()` / `flattenJoinRequest()` — transforms Supabase nested join results into flat objects for component compatibility
+
+### Astro API Routes (`pages/api/`)
+
+Server-side endpoints running as Vercel serverless functions:
+
+| Route | Purpose |
+| ----- | ------- |
+| `POST /api/webhooks/clerk` | Clerk webhook — syncs user data on `user.created`/`user.updated` |
+| `POST /api/webhooks/tally` | Tally webhook — creates applications from form submissions |
+| `POST /api/users/sync` | Manual user sync (first-login fallback) |
+| `GET /api/applications/me` | Current user's application status |
+| `POST /api/admin/accept-users` | Bulk acceptance emails via Resend |
 
 ### Auth Flow
 
-1. Frontend uses Clerk's `<SignIn />` / `<SignUp />` React components.
-2. Clerk issues a JWT session token.
-3. Frontend sends `Authorization: Bearer <token>` on every API request.
-4. FastAPI middleware verifies the token using Clerk's Python SDK (`clerk.verify_token()`).
-5. Middleware extracts `user_id` and attaches it to the request state.
-6. Admin endpoints additionally check for `admin` role via Clerk metadata.
-7. Clerk webhooks (`user.created`, `user.updated`) sync user data to the local PostgreSQL `users` table so the API can JOIN user data in queries without calling Clerk's API.
+1. Frontend uses Clerk's `<SignIn />` / `<SignUp />` React components
+2. Clerk issues a session token
+3. Client-side: `supabase.ts` gets a Clerk JWT (template: `supabase`) and passes it as `accessToken` to the Supabase client
+4. Supabase validates the JWT and applies RLS policies using `auth.jwt()->>'sub'` (Clerk user ID)
+5. Server-side: Astro API routes use `locals.auth()` from Clerk middleware for authentication, and the Supabase service role client for DB access
+6. Clerk webhooks sync user data to the `users` table so the client can JOIN user data in queries
 
-### Key Dependencies (FastAPI)
+### RLS Policies
 
-```
-fastapi
-uvicorn[standard]
-sqlalchemy[asyncio]
-asyncpg                   # async PostgreSQL driver
-alembic
-pydantic>=2.0
-pydantic-settings
-celery[redis]
-redis
-httpx                     # async HTTP client (for Clerk SDK, etc.)
-clerk-backend-api         # Clerk Python SDK
-sentry-sdk[fastapi]
-opentelemetry-api
-opentelemetry-sdk
-opentelemetry-instrumentation-fastapi
-boto3                     # AWS SES
-python-multipart          # file uploads
-```
+Defined in `apps/web/supabase/rls-policies.sql`. Key patterns:
+- Users can always see their **own** `users` record (needed for `getCurrentUserId()`)
+- Only users with `is_accepted = true` can see other accepted users, profiles, teams, team members, and join requests (gates the team finder)
+- `is_accepted` has no user-facing UPDATE policy — only modifiable by service role via the admin accept flow
+- Users can only INSERT/UPDATE/DELETE their own records (matched via `auth.jwt()->>'sub'` → `users.clerk_id`)
+- Team leaders can manage join requests for their team
+- Applications are read-only for users (writes via service role from webhooks)
+- A helper view `accepted_self` simplifies the accepted-user check across policies
 
 ---
 
-## Data Model (PostgreSQL)
+## Data Model (Supabase PostgreSQL)
 
 ### Core Tables
 
@@ -329,6 +261,21 @@ CREATE TABLE users (
     last_name VARCHAR,
     avatar_url VARCHAR,
     role VARCHAR DEFAULT 'user',  -- 'user' | 'admin'
+    is_accepted BOOLEAN DEFAULT false,  -- only set by service role (admin accept flow)
+    acceptance_sent_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE profiles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE UNIQUE,
+    display_name VARCHAR NOT NULL,
+    bio TEXT,
+    linkedin_url VARCHAR,
+    github_url VARCHAR,
+    portfolio_url VARCHAR,
+    looking_for_team BOOLEAN DEFAULT false,
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -336,19 +283,22 @@ CREATE TABLE users (
 CREATE TABLE applications (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    tally_response_id VARCHAR UNIQUE,
     status VARCHAR DEFAULT 'pending',  -- 'pending' | 'accepted' | 'rejected' | 'waitlisted'
-    -- Application fields:
+    email VARCHAR,
     university VARCHAR NOT NULL,
     major VARCHAR NOT NULL,
     year_of_study VARCHAR NOT NULL,
     graduation_date DATE,
-    resume_url VARCHAR,             -- S3 presigned URL
+    resume_url VARCHAR,
     github_url VARCHAR,
     linkedin_url VARCHAR,
     why_attend TEXT,
-    experience_level VARCHAR,       -- 'beginner' | 'intermediate' | 'advanced'
+    experience_level VARCHAR,
     dietary_restrictions VARCHAR,
     tshirt_size VARCHAR,
+    phone_number VARCHAR,
+    how_did_you_hear VARCHAR,
     reviewed_by UUID REFERENCES users(id),
     reviewed_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -359,7 +309,7 @@ CREATE TABLE teams (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR NOT NULL,
     description TEXT,
-    invite_code VARCHAR UNIQUE NOT NULL,  -- short code for team joining
+    invite_code VARCHAR UNIQUE NOT NULL,
     max_size INT DEFAULT 4,
     created_by UUID REFERENCES users(id),
     created_at TIMESTAMPTZ DEFAULT NOW()
@@ -374,258 +324,91 @@ CREATE TABLE team_members (
     UNIQUE(team_id, user_id)
 );
 
-CREATE TABLE events (
+CREATE TABLE team_join_requests (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR NOT NULL,
-    description TEXT,
-    event_type VARCHAR NOT NULL,    -- 'workshop' | 'minigame' | 'ceremony' | 'meal' | 'general'
-    location VARCHAR,
-    starts_at TIMESTAMPTZ NOT NULL,
-    ends_at TIMESTAMPTZ NOT NULL,
-    capacity INT,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE TABLE announcements (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    title VARCHAR NOT NULL,
-    body TEXT NOT NULL,
-    priority VARCHAR DEFAULT 'normal',  -- 'low' | 'normal' | 'urgent'
-    created_by UUID REFERENCES users(id),
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE TABLE food_menu_items (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR NOT NULL,
-    description TEXT,
-    category VARCHAR,               -- 'entree' | 'side' | 'drink' | 'dessert'
-    dietary_tags VARCHAR[],          -- ['vegetarian', 'vegan', 'gluten-free', 'halal']
-    available BOOLEAN DEFAULT TRUE,
-    max_quantity INT,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE TABLE food_orders (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    team_id UUID REFERENCES teams(id) ON DELETE CASCADE,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-    status VARCHAR DEFAULT 'placed',  -- 'placed' | 'preparing' | 'ready' | 'picked_up'
-    notes TEXT,
-    created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE TABLE food_order_items (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    order_id UUID REFERENCES food_orders(id) ON DELETE CASCADE,
-    menu_item_id UUID REFERENCES food_menu_items(id),
-    quantity INT DEFAULT 1
-);
-
-CREATE TABLE email_logs (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    recipient_email VARCHAR NOT NULL,
-    subject VARCHAR NOT NULL,
-    template VARCHAR NOT NULL,
-    status VARCHAR DEFAULT 'queued',  -- 'queued' | 'sent' | 'failed'
-    sent_at TIMESTAMPTZ,
-    error TEXT,
+    status VARCHAR DEFAULT 'pending',  -- 'pending' | 'approved' | 'rejected' | 'withdrawn'
+    message TEXT,
+    reviewed_by UUID REFERENCES users(id),
+    reviewed_at TIMESTAMPTZ,
+    expires_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 ```
-
-All timestamp columns should use `TIMESTAMPTZ`. Use Alembic to generate and manage migrations from the SQLAlchemy models — never write raw SQL migrations by hand.
 
 ---
 
-## Infrastructure — `infra/`
-
-### AWS CDK (TypeScript)
-
-```
-infra/
-├── bin/
-│   └── infra.ts                # CDK app entry
-├── lib/
-│   ├── network-stack.ts        # VPC, subnets, security groups
-│   ├── database-stack.ts       # RDS PostgreSQL, ElastiCache Redis
-│   ├── api-stack.ts            # ECS Fargate service, ALB, ECR repo
-│   ├── storage-stack.ts        # S3 buckets (resumes, assets)
-│   ├── email-stack.ts          # SES configuration, verified domain
-│   └── monitoring-stack.ts     # CloudWatch alarms, basic infra monitoring
-├── cdk.json
-├── tsconfig.json
-└── package.json
-```
-
-### AWS Resources
-
-| Resource              | Service              | Config                                      |
-| --------------------- | -------------------- | ------------------------------------------- |
-| API hosting           | ECS Fargate          | 0.5 vCPU, 1GB RAM, auto-scale 1-4 tasks    |
-| Load balancer         | ALB                  | HTTPS termination, health checks            |
-| Container registry    | ECR                  | API Docker images                           |
-| Database              | RDS PostgreSQL 16    | db.t4g.micro, Multi-AZ off (cost saving)    |
-| Cache / Task broker   | ElastiCache Redis    | cache.t4g.micro, single node               |
-| Object storage        | S3                   | Resumes, assets, email templates            |
-| Email                 | SES                  | Verified domain, production access          |
-| Secrets               | Secrets Manager      | DB creds, Clerk keys, API keys              |
-| DNS (if not Vercel)   | Route 53             | Domain → CloudFront / ALB                   |
-| CDN (if not Vercel)   | CloudFront           | Frontend static assets                      |
-
-### Environment Variables
+## Environment Variables
 
 **Frontend (`apps/web/.env`):**
 ```
-PUBLIC_API_URL=https://api.yourdomain.com
 PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
-PUBLIC_SENTRY_DSN=...
-```
-
-**Backend (`services/api/.env`):**
-```
-DATABASE_URL=postgresql+asyncpg://user:pass@host:5432/hackathon
-REDIS_URL=redis://host:6379/0
 CLERK_SECRET_KEY=sk_...
+
+PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+RESEND_API_KEY=re_...
 CLERK_WEBHOOK_SECRET=whsec_...
-AWS_REGION=us-east-1
-AWS_SES_FROM_EMAIL=noreply@yourdomain.com
-S3_BUCKET_NAME=hacklanta-uploads
-SENTRY_DSN=...
-AXIOM_TOKEN=...
-AXIOM_DATASET=hacklanta-api
-CORS_ORIGINS=https://yourdomain.com
+TALLY_SIGNING_SECRET=...
+
+PUBLIC_SENTRY_DSN=...
+PUBLIC_TURNSTILE_SITE_KEY=...
 ```
 
 ---
 
-## Observability
+## CI/CD
 
-### Sentry (Error Tracking)
-- Install `@sentry/astro` for the frontend, `sentry-sdk[fastapi]` for the backend.
-- Configure source maps upload in CI for readable stack traces.
-- Set up Sentry alerts for new error spikes.
+### Pipeline: `ci.yml`
 
-### Axiom (Logging + Metrics)
-- Structured JSON logging from FastAPI using `structlog` or Python's `logging` with JSON formatter.
-- Ship logs to Axiom via their Python SDK or OpenTelemetry exporter.
-- Log: every API request (method, path, status, latency, user_id), all Celery task executions, all email send attempts.
+Runs on pull requests to `main`:
+- Frontend lint and test via `pnpm turbo lint/test`
 
-### OpenTelemetry (Tracing)
-- Instrument FastAPI with `opentelemetry-instrumentation-fastapi`.
-- Instrument SQLAlchemy with `opentelemetry-instrumentation-sqlalchemy`.
-- Export traces to Axiom (they accept OTLP).
-- This produces end-to-end request traces: HTTP → service → DB.
+### Deployment
 
----
-
-## CI/CD — `.github/workflows/`
-
-### Pipeline: `deploy.yml`
-
-Trigger on push to `main`:
-
-1. **Lint + Type Check:** `turbo lint` (ESLint for frontend, Ruff for Python).
-2. **Test:** `turbo test` (Vitest for frontend, Pytest for API).
-3. **Build Frontend:** `turbo build --filter=web`, deploy to Vercel via Vercel CLI or git integration.
-4. **Build API Image:** Docker build `services/api/`, push to ECR.
-5. **Deploy API:** Update ECS service to pull new image.
-6. **Run Migrations:** Execute Alembic migrations against RDS (via a one-off ECS task or CI step with DB access).
-7. **Sentry Release:** Create Sentry release and upload source maps.
+Frontend deploys to Vercel via git integration (push to `main`). Astro API routes deploy as Vercel serverless functions automatically.
 
 ### Branch Strategy
 
-- `main` → production
-- `staging` → staging environment (optional, same pipeline targeting staging ECS/DB)
-- Feature branches → PR with lint/test checks only
+- `main` → production (auto-deploys to Vercel)
+- Feature branches → PR with CI checks
 
 ---
 
 ## Local Development
 
-### `docker-compose.yml`
+```bash
+# Install dependencies
+pnpm install
 
-```yaml
-services:
-  postgres:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: hackathon
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: dev
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-
-  api:
-    build: ./services/api
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    ports:
-      - "8000:8000"
-    env_file: ./services/api/.env.local
-    depends_on:
-      - postgres
-      - redis
-    volumes:
-      - ./services/api:/app
-
-  celery-worker:
-    build: ./services/api
-    command: celery -A app.workers.celery_app worker --loglevel=info
-    env_file: ./services/api/.env.local
-    depends_on:
-      - postgres
-      - redis
-    volumes:
-      - ./services/api:/app
-
-volumes:
-  pgdata:
+# Start dev server
+pnpm turbo dev
+# or
+cd apps/web && pnpm dev
 ```
 
-Run `turbo dev` in root to start the Astro frontend dev server alongside docker-compose for the backend.
+The Astro dev server runs at `http://localhost:4321`. API routes are available at `http://localhost:4321/api/*`.
 
-### Python Tooling
+### Tooling Rules
 
-**Always use `uv` instead of raw `python`/`pip`/`python3` commands.** The project uses `uv` as the Python package manager and runner.
-
-- Run Python scripts: `uv run python script.py`
-- Run tools: `uv run ruff check app/`, `uv run pytest`
-- Install dependencies: `uv sync` or `uv sync --all-extras` (to include dev deps)
-- Add a dependency: `uv add <package>`
-- Never use `python`, `python3`, or `pip` directly — they may not resolve to the correct virtualenv
-
----
-
-## Modularity & Parallel Safety
-
-The architecture enforces clean separation across workspaces to avoid coupling:
-
-- **`apps/web/`** — All frontend code. Depends on the API only through the typed client in `lib/api.ts`.
-- **`services/api/`** — All backend code. Each domain (`applicants/`, `contestants/`, `events/`, etc.) is self-contained with its own router, schemas, service, repository, and models. Domain folders should not import from each other except through shared utilities in `core/`.
-- **`infra/`** — All AWS CDK stacks. No application code here.
-
-The contract between frontend and backend is the OpenAPI schema auto-generated by FastAPI at `/docs`. When building frontend features, reference the backend's Pydantic schemas to ensure type alignment.
+- **Always use `pnpm`** — never `npm`. The project uses pnpm as its package manager.
+- **Always use `uv`** for any Python tooling — never raw `python`, `python3`, or `pip`.
 
 ---
 
 ## Key Implementation Notes
 
-1. **Clerk Webhooks:** Set up a `/api/v1/webhooks/clerk` endpoint early. Verify the webhook signature using `svix` (Clerk uses Svix for webhook delivery). Sync `user.created` and `user.updated` events to the local `users` table. This is critical — without it, the API can't associate requests with user data.
+1. **Clerk Webhooks:** The `/api/webhooks/clerk` endpoint verifies signatures using `svix` and syncs `user.created`/`user.updated` events to the `users` table. This is critical — without it, the API client can't resolve Clerk user IDs to internal UUIDs.
 
-2. **SSE for Real-Time:** Use FastAPI's `StreamingResponse` with `text/event-stream` content type for the announcements feed. The frontend subscribes via `EventSource`. This avoids the complexity of WebSocket connection management for what is a unidirectional data flow.
+2. **Tally Integration:** Applications are submitted via a Tally form. The `/api/webhooks/tally` endpoint receives form submissions, maps fields by label, and upserts into the `applications` table. Duplicate submissions are handled via `tally_response_id` unique constraint.
 
-3. **Food Ordering:** This only activates during the event. Use a feature flag (simple boolean in Redis or a DB config table) that admins toggle on when dinner service starts. The frontend checks this flag and shows/hides the food ordering UI.
+3. **First-Login User Sync:** If a user's Clerk webhook hasn't fired yet (race condition), `getCurrentUserId()` in `api.ts` automatically calls `POST /api/users/sync` to create the user record. Components don't need to handle this.
 
-4. **Email Templates:** Build email templates with React Email in a shared package or within the API's email utility. Templates for: application received, acceptance, rejection, waitlist, announcements. Render to HTML and send via SES through Celery tasks.
+4. **Team Finder:** Accepted contestants can create teams (generates a 6-char invite code), browse teams, and send join requests. Team leaders approve/reject requests. All via direct Supabase calls from React components.
 
-5. **Resume Uploads:** Use S3 presigned URLs. The flow: frontend requests a presigned upload URL from the API → API generates it via boto3 → frontend uploads directly to S3 → frontend sends the S3 key back to the API to store in the application record. Do not stream file uploads through the API server.
+5. **Admin Bulk Accept:** `POST /api/admin/accept-users` finds accepted users who haven't received emails, sends acceptance emails via Resend, and marks `acceptance_sent_at`. Admin role is verified via Clerk metadata.
 
-6. **Team Finder:** Accepted contestants can create a team (generates a short invite code) or browse teams looking for members. Team profiles include: team name, description, member list, what skills they're looking for. Keep it simple — this doesn't need to be a matching algorithm, just a browsable list with filters.
-
-7. **Admin Bulk Actions:** The admin applicant review page should support bulk accept/reject. This fires a Celery task that processes the batch and sends corresponding emails. Show progress via polling or SSE.
+6. **Supabase RLS is the security boundary.** Without RLS policies applied, the anon key would allow unrestricted access. The policies in `supabase/rls-policies.sql` must be applied via the Supabase SQL Editor.

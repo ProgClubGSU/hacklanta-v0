@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { mockUsers } from '@/lib/mockData';
+import { api } from '@/lib/api';
 
 interface User {
   id: string;
@@ -21,8 +21,8 @@ export default function UserGrid() {
   const loadUsers = async () => {
     try {
       setIsLoading(true);
-      // Using mock data for UI development
-      setUsers(mockUsers);
+      const result = await api.listUsers();
+      setUsers(result.data);
     } catch (error) {
       console.error('Failed to load users:', error);
     } finally {

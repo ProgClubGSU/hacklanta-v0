@@ -60,3 +60,6 @@ reports/
 # Misc
 *.log
 .vercel
+.claude
+docs/superpowers
+

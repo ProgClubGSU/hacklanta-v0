@@ -8,7 +8,8 @@
     "build": {
       "dependsOn": ["^build"],
       "env": [
-        "PUBLIC_API_URL",
+        "PUBLIC_SUPABASE_URL",
+        "PUBLIC_SUPABASE_ANON_KEY",
         "PUBLIC_CLERK_PUBLISHABLE_KEY",
         "PUBLIC_SENTRY_DSN",
         "CLERK_SECRET_KEY"

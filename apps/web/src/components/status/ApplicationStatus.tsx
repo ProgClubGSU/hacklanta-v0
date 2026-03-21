@@ -46,7 +46,7 @@ const STATUS_CONFIG = {
 } as const;
 
 export default function ApplicationStatus() {
-  const { getToken, isLoaded } = useAuth();
+  const { isLoaded } = useAuth();
   const [state, setState] = useState<PageState>({ kind: 'loading' });
 
   const rid = typeof window !== 'undefined'
@@ -58,10 +58,9 @@ export default function ApplicationStatus() {
 
     async function fetchStatus() {
       try {
-        const token = await getToken();
-        const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:8000';
-        const res = await fetch(`${apiUrl}/api/v1/applications/me`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const res = await fetch('/api/applications/me', {
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
         });
 
         if (res.status === 404) {
@@ -79,7 +78,7 @@ export default function ApplicationStatus() {
     }
 
     fetchStatus();
-  }, [isLoaded, getToken, rid]);
+  }, [isLoaded, rid]);
 
   if (state.kind === 'loading' || !isLoaded) {
     return (

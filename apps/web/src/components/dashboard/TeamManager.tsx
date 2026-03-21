@@ -3,10 +3,29 @@ import { useAuth } from '@clerk/astro/react';
 import { api } from '@/lib/api';
 import JoinRequestManager from './JoinRequestManager';
 
+interface TeamMember {
+  id: string;
+  user_id: string;
+  role: string;
+  first_name: string | null;
+  last_name: string | null;
+  avatar_url: string | null;
+  email: string | null;
+}
+
+interface Team {
+  id: string;
+  name: string;
+  description: string | null;
+  invite_code: string;
+  max_size: number;
+  members: TeamMember[];
+}
+
 export default function TeamManager() {
   const { userId } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [team, setTeam] = useState<any>(null);
+  const [team, setTeam] = useState<Team | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [requestsProcessed, setRequestsProcessed] = useState(0);
 
@@ -25,8 +44,8 @@ export default function TeamManager() {
       setLoading(true);
       const myTeam = await api.getMyTeam();
       setTeam(myTeam);
-    } catch (err: any) {
-      if (err.status !== 404) {
+    } catch (err: unknown) {
+      if (err instanceof Error && (err as Error & { status?: number }).status !== 404) {
         setError('Failed to load team data.');
       } else {
         setTeam(null);
@@ -41,10 +60,10 @@ export default function TeamManager() {
     setActionLoading(true);
     setError(null);
     try {
-      await api.createTeam({ name: createName, description: createDesc || null });
+      await api.createTeam({ name: createName, description: createDesc || undefined });
       await loadTeam();
-    } catch (err: any) {
-      setError(err.message || 'Failed to create team.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to create team.');
     } finally {
       setActionLoading(false);
     }
@@ -57,8 +76,8 @@ export default function TeamManager() {
     try {
       await api.joinTeam({ invite_code: joinCode });
       await loadTeam();
-    } catch (err: any) {
-      setError(err.message || 'Failed to join team.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to join team.');
     } finally {
       setActionLoading(false);
     }
@@ -71,8 +90,8 @@ export default function TeamManager() {
     try {
       await api.leaveTeam();
       setTeam(null);
-    } catch (err: any) {
-      setError(err.message || 'Failed to leave team.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to leave team.');
     } finally {
       setActionLoading(false);
     }
@@ -91,7 +110,7 @@ export default function TeamManager() {
 
   if (team) {
     const isCurrentUserLeader = team.members.some(
-      (m: any) => m.role === 'leader' && m.user_id === userId
+      (m: TeamMember) => m.role === 'leader' && m.user_id === userId
     );
 
     return (
@@ -146,7 +165,7 @@ export default function TeamManager() {
           </div>
 
           <div className="space-y-2">
-            {team.members.map((member: any) => (
+            {team.members.map((member: TeamMember) => (
               <div
                 key={member.id}
                 className="flex items-center gap-3 rounded border border-red/20 bg-red/5 p-3"

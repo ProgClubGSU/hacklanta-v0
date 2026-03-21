@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { mockTeams } from '@/lib/mockData';
+import { api } from '@/lib/api';
 import TeamDetailModal from './TeamDetailModal';
 
 interface Team {
@@ -22,12 +22,8 @@ export default function TeamGrid() {
   const loadTeams = async () => {
     try {
       setIsLoading(true);
-      // Using mock data for UI development
-      if (showAvailableOnly) {
-        setTeams(mockTeams.filter(t => !t.is_full));
-      } else {
-        setTeams(mockTeams);
-      }
+      const result = await api.listTeams({ has_openings: showAvailableOnly || undefined });
+      setTeams(result.data);
     } catch (error) {
       console.error('Failed to load teams:', error);
     } finally {
