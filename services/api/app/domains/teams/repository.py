@@ -1,7 +1,7 @@
 import random
 import string
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,7 +9,6 @@ from sqlalchemy.orm import selectinload
 
 from app.domains.teams.models import Team, TeamJoinRequest, TeamMember
 from app.domains.teams.schemas import TeamCreate
-from app.domains.users.models import User
 
 
 def generate_invite_code(length: int = 6) -> str:
@@ -263,7 +262,7 @@ async def create_join_request(
         user_id=user_id,
         message=message,
         status="pending",
-        expires_at=datetime.utcnow() + timedelta(days=7)
+        expires_at=datetime.now(timezone.utc) + timedelta(days=7)
     )
     session.add(join_request)
     await session.commit()
@@ -327,7 +326,7 @@ async def update_join_request_status(
     # Update request status
     join_request.status = status
     join_request.reviewed_by = reviewed_by
-    join_request.reviewed_at = datetime.utcnow()
+    join_request.reviewed_at = datetime.now(timezone.utc)
     await session.commit()
     await session.refresh(join_request)
 
@@ -357,7 +356,7 @@ async def expire_old_requests(session: AsyncSession) -> int:
     """Mark expired join requests. Returns count of expired requests."""
     query = select(TeamJoinRequest).where(
         TeamJoinRequest.status == "pending",
-        TeamJoinRequest.expires_at < datetime.utcnow()
+        TeamJoinRequest.expires_at < datetime.now(timezone.utc)
     )
     result = await session.execute(query)
     requests = result.scalars().all()
