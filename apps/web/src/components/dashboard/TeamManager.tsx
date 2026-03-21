@@ -27,6 +27,7 @@ export default function TeamManager() {
   const [loading, setLoading] = useState(true);
   const [team, setTeam] = useState<Team | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [requestsProcessed, setRequestsProcessed] = useState(0);
 
   // Forms
   const [createName, setCreateName] = useState('');
@@ -59,7 +60,7 @@ export default function TeamManager() {
     setActionLoading(true);
     setError(null);
     try {
-      await api.createTeam({ name: createName, description: createDesc || null });
+      await api.createTeam({ name: createName, description: createDesc || undefined });
       await loadTeam();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to create team.');

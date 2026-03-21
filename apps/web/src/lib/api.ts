@@ -26,12 +26,14 @@ async function getCurrentUserId(client: SupabaseClient): Promise<string> {
 }
 
 /** Flatten Supabase nested join results. Transforms { users: { first_name, ... } } → { first_name, ... } */
-function flattenMember(member: Record<string, unknown>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function flattenMember(member: any) {
   const { users, ...rest } = member
-  return { ...rest, ...(users as Record<string, unknown>) }
+  return { ...rest, ...users }
 }
 
-function flattenJoinRequest(request: Record<string, unknown>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function flattenJoinRequest(request: any) {
   const { users, ...rest } = request
   return {
     ...rest,
@@ -95,7 +97,8 @@ export const api = {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     const generateCode = () => Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('')
 
-    let team: Record<string, unknown> | null = null
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let team: any = null
     for (let attempt = 0; attempt < 3; attempt++) {
       const { data, error } = await client
         .from('teams')
@@ -221,14 +224,16 @@ export const api = {
     const { data, error, count } = await query
     if (error) throw new Error(error.message)
 
-    let teams = (data ?? []).map((t: Record<string, unknown> & { team_members?: unknown[]; max_size: number }) => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let teams = (data ?? []).map((t: any) => ({
       ...t,
       member_count: t.team_members?.length ?? 0,
       is_full: (t.team_members?.length ?? 0) >= t.max_size,
     }))
 
     if (params?.has_openings) {
-      teams = teams.filter((t) => !t.is_full)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      teams = teams.filter((t: any) => !t.is_full)
     }
 
     return { data: teams, meta: { total: count ?? teams.length } }

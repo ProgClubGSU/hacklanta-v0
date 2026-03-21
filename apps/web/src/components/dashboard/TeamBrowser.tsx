@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react';
 import { api } from '../../lib/api';
 
+interface BrowseProfile {
+  id: string;
+  display_name: string;
+  bio: string | null;
+  github_url: string | null;
+  linkedin_url: string | null;
+  portfolio_url: string | null;
+  looking_for_team: boolean;
+}
+
 export function TeamBrowser() {
   const [loading, setLoading] = useState(true);
-  const [profiles, setProfiles] = useState<Record<string, unknown>[]>([]);
+  const [profiles, setProfiles] = useState<BrowseProfile[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
