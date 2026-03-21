@@ -19,7 +19,7 @@ async function getCurrentUserId(client: SupabaseClient): Promise<string> {
   if (data) return data.id
 
   // User not in DB yet (first login, webhook hasn't fired). Trigger sync via API route.
-  const syncRes = await fetch('/api/users/sync', { method: 'POST' })
+  const syncRes = await fetch('/api/users/sync', { method: 'POST', credentials: 'same-origin' })
   if (!syncRes.ok) throw new Error('Failed to sync user. Please refresh the page.')
   const synced = await syncRes.json()
   return synced.user_id
