@@ -23,7 +23,10 @@ async function getCurrentUserId(client: SupabaseClient): Promise<string> {
   const syncRes = await fetch('/api/users/sync', {
     method: 'POST',
     credentials: 'same-origin',
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
   })
   if (!syncRes.ok) throw new Error('Failed to sync user. Please refresh the page.')
   const synced = await syncRes.json()
