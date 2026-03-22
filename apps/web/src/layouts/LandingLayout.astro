@@ -14,7 +14,9 @@ const { title = 'Hacklanta — Go All In' } = Astro.props;
     <a
       id="mlh-trust-badge"
       class="hidden lg:block"
-      style="max-width:80px;min-width:50px;position:absolute;left:180px;top:0;width:8%;z-index:10000"
+      style="max-width:80px;min-width:50px;position:absolute;left:180px;top:0;width:8%;z-index:10000;transition:transform 0.3s ease"
+      onmouseover="this.style.transform='scale(1.1)'"
+      onmouseout="this.style.transform='scale(1)'"
       href="https://mlh.io/na?utm_source=na-hackathon&utm_medium=TrustBadge&utm_campaign=2026-season&utm_content=black"
       target="_blank"
       ><img
