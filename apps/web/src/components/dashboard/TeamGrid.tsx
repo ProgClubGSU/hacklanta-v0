@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
+import { TRACKS } from '@/lib/tracks';
 import TeamDetailModal from './TeamDetailModal';
 import Icon from '@/components/ui/Icon';
 
@@ -7,6 +8,7 @@ interface Team {
   id: string;
   name: string;
   description: string | null;
+  tracks: string[] | null;
   member_count: number;
   max_size: number;
   is_full: boolean;
@@ -108,6 +110,23 @@ export default function TeamGrid() {
 
                 {team.description && (
                   <p className="line-clamp-2 text-sm leading-relaxed text-on-surface/70">{team.description}</p>
+                )}
+
+                {team.tracks && team.tracks.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {team.tracks.map((trackName) => {
+                      const track = TRACKS.find((t) => t.name === trackName);
+                      if (!track) return null;
+                      return (
+                        <span
+                          key={track.id}
+                          className={`font-mono text-[9px] uppercase tracking-[0.1em] px-2 py-0.5 rounded-sm border ${track.bgClass}`}
+                        >
+                          {track.name}
+                        </span>
+                      );
+                    })}
+                  </div>
                 )}
 
                 <div className="flex items-center justify-between border-t border-outline-variant/20 pt-3">

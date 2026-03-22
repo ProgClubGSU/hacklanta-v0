@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
+import { TRACKS } from '@/lib/tracks';
 
 interface TeamMember {
   id: string;
@@ -15,6 +16,7 @@ interface TeamDetail {
   id: string;
   name: string;
   description: string | null;
+  tracks: string[] | null;
   invite_code: string;
   max_size: number;
   is_looking_for_members: boolean;
@@ -128,6 +130,26 @@ export default function TeamDetailModal({ teamId, onClose, onJoinRequestSent }: 
                 </div>
               )}
 
+              {team.tracks && team.tracks.length > 0 && (
+                <div>
+                  <h3 className="mb-2 font-mono text-xs uppercase tracking-wider text-red/80">Tracks</h3>
+                  <div className="flex flex-wrap gap-1.5">
+                    {team.tracks.map((trackName) => {
+                      const track = TRACKS.find((t) => t.name === trackName);
+                      if (!track) return null;
+                      return (
+                        <span
+                          key={track.id}
+                          className={`font-mono text-[9px] uppercase tracking-[0.1em] px-2 py-0.5 rounded-sm border ${track.bgClass}`}
+                        >
+                          {track.name}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               <div>
                 <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-red/80">Team Members</h3>
                 <div className="space-y-2">
@@ -149,7 +171,7 @@ export default function TeamDetailModal({ teamId, onClose, onJoinRequestSent }: 
                             </span>
                           )}
                         </div>
-                        {member.email && <p className="font-mono text-xs text-gray">{member.email}</p>}
+                        {/* Email hidden for privacy */}
                       </div>
                     </div>
                   ))}

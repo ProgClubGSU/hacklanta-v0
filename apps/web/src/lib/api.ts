@@ -97,8 +97,17 @@ export const api = {
     return data
   },
 
+  listAllProfiles: async () => {
+    const client = getClient()
+    const { data, error } = await client
+      .from('profiles')
+      .select('*, users(first_name, last_name, avatar_url)')
+    if (error) throw new Error(error.message)
+    return data
+  },
+
   // ─── Teams ──────────────────────────────────────────────────
-  createTeam: async (teamData: { name: string; description?: string }) => {
+  createTeam: async (teamData: { name: string; description?: string; tracks?: string[] }) => {
     const client = getClient()
     const userId = await getCurrentUserId(client)
 

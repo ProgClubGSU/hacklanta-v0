@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@clerk/astro/react';
 import { api } from '@/lib/api';
+import { TRACKS } from '@/lib/tracks';
 import JoinRequestManager from './JoinRequestManager';
 import Icon from '@/components/ui/Icon';
 
@@ -18,6 +19,7 @@ interface Team {
   id: string;
   name: string;
   description: string | null;
+  tracks: string[] | null;
   invite_code: string;
   max_size: number;
   members: TeamMember[];
@@ -39,6 +41,7 @@ export default function TeamManager({
   const [requestsProcessed, setRequestsProcessed] = useState(0);
   const [createName, setCreateName] = useState('');
   const [createDesc, setCreateDesc] = useState('');
+  const [selectedTracks, setSelectedTracks] = useState<string[]>([]);
   const [joinCode, setJoinCode] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
   const [showQuickCreate, setShowQuickCreate] = useState(false);
@@ -63,14 +66,25 @@ export default function TeamManager({
     }
   }
 
+  const toggleTrack = (trackName: string) => {
+    setSelectedTracks((prev) =>
+      prev.includes(trackName) ? prev.filter((t) => t !== trackName) : [...prev, trackName]
+    );
+  };
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     setActionLoading(true);
     setError(null);
     try {
-      await api.createTeam({ name: createName, description: createDesc || undefined });
+      await api.createTeam({
+        name: createName,
+        description: createDesc || undefined,
+        tracks: selectedTracks.length > 0 ? selectedTracks : undefined,
+      });
       setCreateName('');
       setCreateDesc('');
+      setSelectedTracks([]);
       setShowQuickCreate(false);
       await loadTeam();
     } catch (err: unknown) {
@@ -144,6 +158,22 @@ export default function TeamManager({
               {team.description && (
                 <p className="mt-2 text-sm leading-relaxed text-on-surface/70">{team.description}</p>
               )}
+              {team.tracks && team.tracks.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {team.tracks.map((trackName) => {
+                    const track = TRACKS.find((t) => t.name === trackName);
+                    if (!track) return null;
+                    return (
+                      <span
+                        key={track.id}
+                        className={`font-mono text-[9px] uppercase tracking-[0.1em] px-2 py-0.5 rounded-sm border ${track.bgClass}`}
+                      >
+                        {track.name}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             <div className="shrink-0 text-center">
@@ -190,9 +220,7 @@ export default function TeamManager({
                       </span>
                     )}
                   </div>
-                  {member.email && (
-                    <p className="truncate font-mono text-xs text-on-surface/60">{member.email}</p>
-                  )}
+                  {/* Email hidden for privacy */}
                 </div>
                 <button
                   className="shrink-0 rounded p-1.5 text-primary/60 transition-colors hover:bg-primary/10 hover:text-primary"
@@ -322,6 +350,31 @@ export default function TeamManager({
               />
             </div>
 
+            <div>
+              <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
+                Tracks (optional)
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {TRACKS.map((track) => {
+                  const isActive = selectedTracks.includes(track.name);
+                  return (
+                    <button
+                      key={track.id}
+                      type="button"
+                      onClick={() => toggleTrack(track.name)}
+                      className={`font-mono text-[9px] uppercase tracking-[0.1em] px-2 py-0.5 rounded-sm border transition-colors ${
+                        isActive
+                          ? track.bgClass
+                          : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
+                      }`}
+                    >
+                      {track.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <button
               type="submit"
               disabled={actionLoading || !createName.trim()}
@@ -380,6 +433,31 @@ export default function TeamManager({
                   className="w-full resize-none rounded border border-outline-variant/30 bg-surface-container-highest/50 px-4 py-2.5 text-white placeholder-on-surface/40 transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
                   rows={4}
                 />
+              </div>
+
+              <div>
+                <label className="mb-2 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
+                  Tracks (optional)
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {TRACKS.map((track) => {
+                    const isActive = selectedTracks.includes(track.name);
+                    return (
+                      <button
+                        key={track.id}
+                        type="button"
+                        onClick={() => toggleTrack(track.name)}
+                        className={`font-mono text-[9px] uppercase tracking-[0.1em] px-2 py-0.5 rounded-sm border transition-colors ${
+                          isActive
+                            ? track.bgClass
+                            : 'bg-white/5 text-white/40 border-white/10 hover:bg-white/10'
+                        }`}
+                      >
+                        {track.name}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               <button
