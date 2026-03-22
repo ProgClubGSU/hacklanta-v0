@@ -33,7 +33,6 @@ export const POST: APIRoute = async ({ request }) => {
 
   let schoolEmail = ''
   let personalEmail = ''
-  let clerkId = ''
 
   for (const field of fields) {
     const label = (field.label ?? '').toLowerCase()
@@ -61,7 +60,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   // Clerk user ID passed as URL parameter from the embedded form
-  clerkId = payload.data?.urlParameters?.clerk_id ?? ''
+  const clerkId = payload.data?.urlParameters?.clerk_id ?? ''
 
   appData.email = schoolEmail || personalEmail
   appData.university = appData.university || 'N/A'
