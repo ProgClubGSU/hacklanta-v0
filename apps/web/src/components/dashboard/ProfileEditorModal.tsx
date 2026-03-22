@@ -8,6 +8,7 @@ interface ProfileEditorModalProps {
     linkedin_url?: string;
     github_url?: string;
     portfolio_url?: string;
+    discord_username?: string;
     looking_for_team: boolean;
   };
   onClose: () => void;
@@ -24,6 +25,7 @@ export default function ProfileEditorModal({ initialData, onClose, onSave }: Pro
   const [linkedinUrl, setLinkedinUrl] = useState(initialData?.linkedin_url || '');
   const [githubUrl, setGithubUrl] = useState(initialData?.github_url || '');
   const [portfolioUrl, setPortfolioUrl] = useState(initialData?.portfolio_url || '');
+  const [discordUsername, setDiscordUsername] = useState(initialData?.discord_username || '');
   const [lookingForTeam, setLookingForTeam] = useState(initialData?.looking_for_team ?? false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -38,6 +40,7 @@ export default function ProfileEditorModal({ initialData, onClose, onSave }: Pro
         linkedin_url: linkedinUrl || undefined,
         github_url: githubUrl || undefined,
         portfolio_url: portfolioUrl || undefined,
+        discord_username: discordUsername || undefined,
         looking_for_team: lookingForTeam,
       });
       onSave();
@@ -173,6 +176,19 @@ export default function ProfileEditorModal({ initialData, onClose, onSave }: Pro
                   onChange={(e) => setPortfolioUrl(e.target.value)}
                   className="w-full rounded border border-gold/30 bg-black/40 px-4 py-2 text-white placeholder-gray transition-colors focus:border-gold focus:outline-none"
                   placeholder="https://..."
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block font-mono text-xs uppercase tracking-wider text-gold/80">
+                  Discord Username
+                </label>
+                <input
+                  type="text"
+                  value={discordUsername}
+                  onChange={(e) => setDiscordUsername(e.target.value)}
+                  className="w-full rounded border border-gold/30 bg-black/40 px-4 py-2 text-white placeholder-gray transition-colors focus:border-gold focus:outline-none"
+                  placeholder="username"
                 />
               </div>
             </div>

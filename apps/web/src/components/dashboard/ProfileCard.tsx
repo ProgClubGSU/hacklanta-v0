@@ -33,6 +33,7 @@ interface ProfileData {
   linkedin: string;
   github: string;
   portfolio: string;
+  discord: string;
   lookingForTeam: boolean;
 }
 
@@ -42,6 +43,7 @@ const EMPTY_PROFILE: ProfileData = {
   linkedin: '',
   github: '',
   portfolio: '',
+  discord: '',
   lookingForTeam: false,
 };
 
@@ -78,6 +80,7 @@ function mapProfileData(profile: {
   linkedin_url?: string | null;
   github_url?: string | null;
   portfolio_url?: string | null;
+  discord_username?: string | null;
   looking_for_team?: boolean | null;
 } | null): ProfileData {
   if (!profile) return EMPTY_PROFILE;
@@ -88,6 +91,7 @@ function mapProfileData(profile: {
     linkedin: profile.linkedin_url?.trim() || '',
     github: profile.github_url?.trim() || '',
     portfolio: profile.portfolio_url?.trim() || '',
+    discord: profile.discord_username?.trim() || '',
     lookingForTeam: profile.looking_for_team ?? false,
   };
 }
@@ -184,6 +188,7 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
     { label: 'LinkedIn', value: profile.linkedin, href: normalizeHref(profile.linkedin) },
     { label: 'GitHub', value: profile.github, href: normalizeHref(profile.github) },
     { label: 'Portfolio', value: profile.portfolio, href: normalizeHref(profile.portfolio) },
+    { label: 'Discord', value: profile.discord, href: '' },
     { label: 'Team Status', value: profile.lookingForTeam ? 'Looking for team' : 'Not currently looking', href: '' },
   ];
 
@@ -208,6 +213,7 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
         linkedin_url: draft.linkedin.trim() || undefined,
         github_url: draft.github.trim() || undefined,
         portfolio_url: draft.portfolio.trim() || undefined,
+        discord_username: draft.discord.trim() || undefined,
         looking_for_team: draft.lookingForTeam,
       });
 
@@ -399,9 +405,13 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
                 <label className="mb-2 block font-mono text-[11px] uppercase tracking-[0.22em] text-white/55">GitHub</label>
                 <input type="text" value={draft.github} onChange={(e) => setDraft({ ...draft, github: e.target.value })} className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 font-body text-white placeholder:text-white/30 focus:border-primary focus:outline-none" placeholder="github.com/..." />
               </div>
-              <div className="md:col-span-2">
+              <div>
                 <label className="mb-2 block font-mono text-[11px] uppercase tracking-[0.22em] text-white/55">Portfolio</label>
                 <input type="text" value={draft.portfolio} onChange={(e) => setDraft({ ...draft, portfolio: e.target.value })} className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 font-body text-white placeholder:text-white/30 focus:border-primary focus:outline-none" placeholder="your-site.com" />
+              </div>
+              <div>
+                <label className="mb-2 block font-mono text-[11px] uppercase tracking-[0.22em] text-white/55">Discord</label>
+                <input type="text" value={draft.discord} onChange={(e) => setDraft({ ...draft, discord: e.target.value })} className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 font-body text-white placeholder:text-white/30 focus:border-primary focus:outline-none" placeholder="username" />
               </div>
               <label className="md:col-span-2 flex items-center gap-3 rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-white/80">
                 <input

@@ -73,6 +73,7 @@ export const api = {
     linkedin_url?: string
     github_url?: string
     portfolio_url?: string
+    discord_username?: string
     looking_for_team?: boolean
   }) => {
     const client = getClient()
