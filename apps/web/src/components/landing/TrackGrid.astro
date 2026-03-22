@@ -128,9 +128,9 @@ const tracks = [
     <div class="relative z-10 flex flex-col items-center py-16 text-center md:py-10">
       <span class="font-mono text-[10px] tracking-[0.3em] text-gold/50 uppercase">prize pool</span>
       <div class="mt-3 flex items-baseline">
-        <span class="font-display text-2xl text-gold/50 md:text-3xl">$</span>
+        <span class="font-mono text-2xl font-bold text-gold/50 md:text-3xl">$</span>
         <span
-          class="prize-number font-display text-6xl tracking-wider text-gold md:text-8xl"
+          class="prize-number font-mono text-6xl font-bold tracking-wider text-gold md:text-8xl"
           style="text-shadow: 0 0 60px rgba(201,168,76,0.25), 0 0 120px rgba(201,168,76,0.08);"
         >4,300</span>
       </div>
@@ -285,9 +285,9 @@ const tracks = [
     z-index: 2;
   }
   .card-rank {
-    font-family: 'Bebas Neue', serif;
+    font-family: var(--font-serif);
     font-size: clamp(18px, 3.5vw, 32px);
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1;
     color: var(--card-accent);
   }
@@ -316,9 +316,9 @@ const tracks = [
     opacity: 0.5;
   }
   .card-track-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(12px, 2.5vw, 22px);
-    letter-spacing: 0.12em;
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 2vw, 16px);
+    letter-spacing: 0.15em;
     color: #1a1a1a;
     line-height: 1.1;
   }
