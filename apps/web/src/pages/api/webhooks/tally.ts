@@ -92,6 +92,16 @@ export const POST: APIRoute = async ({ request }) => {
   let schoolEmail = ''
   let personalEmail = ''
 
+  // DEBUG: Log raw field data to diagnose option ID resolution
+  console.log('[tally-webhook] Raw fields:', JSON.stringify(fields.map((f: any) => ({
+    label: f.label,
+    type: f.type,
+    value: f.value,
+    hasOptions: !!f.options,
+    optionsCount: f.options?.length ?? 0,
+    options: f.options?.slice(0, 3), // first 3 options for brevity
+  })), null, 2))
+
   for (const field of fields) {
     const label = (field.label ?? '').toLowerCase()
     const value = extractValue(field)
