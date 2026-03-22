@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TextLogo from '../../components/ui/TextLogo.astro';
 import { checkDashboardAccess } from '../../lib/dashboard-gate';
 
 const { userId } = await Astro.locals.auth();
@@ -59,7 +60,7 @@ if (gate.status === 'pending') {
       <!-- Top nav -->
       <nav class="mb-10 flex items-center justify-between sm:mb-16">
         <a href="/" class="transition-opacity hover:opacity-70" aria-label="Home">
-          <img src="/logo_trimmed.png" alt="Hacklanta" class="h-5 w-auto opacity-80 select-none sm:h-6" draggable="false" />
+          <TextLogo size="xs" class="opacity-80" />
         </a>
         <a href="/" class="font-mono text-[10px] uppercase tracking-[0.25em] text-white/40 transition-colors hover:text-white/70">
           &larr; Home

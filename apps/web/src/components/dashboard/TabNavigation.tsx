@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ProfileCard from './ProfileCard.tsx';
 import UserGrid from './UserGrid.tsx';
 import TeamGrid from './TeamGrid.tsx';
+import { TextLogo } from '../ui/TextLogoReact.tsx';
 
 type Tab = 'dashboard' | 'teams' | 'players';
 
@@ -18,12 +19,8 @@ export default function TabNavigation() {
     <div className="relative">
       <div className="mb-8 overflow-hidden rounded-lg border border-primary/20 bg-[linear-gradient(135deg,#161313_0%,#191414_58%,#241414_100%)] shadow-[0_16px_40px_rgba(0,0,0,0.28)]">
         <div className="flex items-center justify-between gap-6 px-4 py-3 sm:px-6">
-          <a href="/" className="shrink-0 transition-opacity hover:opacity-85" aria-label="Hacklanta home">
-            <img
-              src="/logo_trimmed.png"
-              alt="Hacklanta"
-              className="h-6 w-auto object-contain sm:h-7"
-            />
+          <a href="/" className="shrink-0" aria-label="Hacklanta home">
+            <TextLogo size="xs" className="opacity-85" />
           </a>
 
           <div className="flex flex-1 justify-end overflow-x-auto">

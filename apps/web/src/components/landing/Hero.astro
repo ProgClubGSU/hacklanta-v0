@@ -533,19 +533,14 @@
     </p>
 
     <!-- Logo — tighter spacing -->
-    <h1 class="hero-title mt-1 p-8 pt-2 opacity-0">
-      <span class="relative inline-block">
-        <img
-          src="/logo_trimmed.png"
-          alt="Hacklanta"
-          class="mx-auto h-auto select-none pointer-events-none"
-          style="width: clamp(260px, 50vw, 560px);"
-          draggable="false"
-          width="620"
-          height="120"
-        />
-        <span class="absolute inset-0 z-10"></span>
-      </span>
+    <h1 class="hero-title mt-1 p-8 pt-2 text-center opacity-0">
+      <a href="/" class="inline-block">
+        <span
+          class="text-logo-hero inline-block select-none font-serif italic leading-none tracking-tight text-white"
+          style="font-size: clamp(2.8rem, 8vw, 5.5rem);"
+          aria-label="Hacklanta"
+        >Hacklanta</span>
+      </a>
     </h1>
 
     <!-- Red rule — tight -->
@@ -759,6 +754,19 @@
 </section>
 
 <style>
+  /* ======================================================
+     TEXT LOGO — solid to outlined on hover
+     ====================================================== */
+  .text-logo-hero {
+    -webkit-text-stroke: 1.5px transparent;
+    transition: color 0.35s ease, -webkit-text-stroke-color 0.35s ease, filter 0.35s ease;
+  }
+  .text-logo-hero:hover {
+    color: transparent;
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.8);
+    filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.3));
+  }
+
   /* ======================================================
      POKER CHIPS — classic dice-stripe style
      ====================================================== */

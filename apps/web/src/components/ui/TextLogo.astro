@@ -1,0 +1,42 @@
+---
+/**
+ * Text-based "Hacklanta" logo using Instrument Serif.
+ * Solid white text that transitions to outlined on hover.
+ *
+ * Props:
+ *   size: 'xs' | 'sm' | 'md' | 'lg' — controls font size
+ *   class: additional classes to merge
+ */
+interface Props {
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const { size = 'sm', class: className = '' } = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+  xs: 'text-[1.1rem] sm:text-[1.25rem]',
+  sm: 'text-[1.25rem] sm:text-[1.5rem]',
+  md: 'text-[1.5rem] sm:text-[1.75rem]',
+  lg: 'text-[clamp(2.5rem,8vw,4.5rem)]',
+};
+---
+
+<span
+  class:list={['text-logo inline-block select-none font-serif italic leading-none tracking-tight', sizeClasses[size], className]}
+  aria-label="Hacklanta"
+>Hacklanta</span>
+
+<style>
+  .text-logo {
+    color: white;
+    transition: color 0.35s ease, -webkit-text-stroke-color 0.35s ease, filter 0.35s ease;
+    -webkit-text-stroke: 1px transparent;
+  }
+
+  .text-logo:hover {
+    color: transparent;
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.8);
+    filter: drop-shadow(0 0 12px rgba(230, 57, 70, 0.25));
+  }
+</style>
