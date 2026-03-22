@@ -1,41 +1,20 @@
 ---
-import { createServerSupabaseClient } from '../../lib/supabase-server';
+import { checkDashboardAccess } from '../../lib/dashboard-gate';
 
-// Check auth
 const { userId } = await Astro.locals.auth();
 if (!userId) {
   return Astro.redirect('/sign-in');
 }
 
-// Check if user is accepted
-const supabase = createServerSupabaseClient();
-const { data: user } = await supabase
-  .from('users')
-  .select('id, is_accepted, created_at')
-  .eq('clerk_id', userId)
-  .single();
+const gate = await checkDashboardAccess(userId);
 
-if (!user?.is_accepted) {
-  // Cutoff: March 21, 2026 6:00 PM EDT (10:00 PM UTC — EDT is UTC-4, DST active)
-  // Accounts created after this have tally+clerk linking, so we verify they applied
-  const LINKING_CUTOFF = new Date('2026-03-21T22:00:00Z');
-
-  if (user && new Date(user.created_at) >= LINKING_CUTOFF) {
-    const { data: application } = await supabase
-      .from('applications')
-      .select('id')
-      .eq('user_id', user.id)
-      .limit(1)
-      .maybeSingle();
-
-    if (!application) {
-      return Astro.redirect('/dashboard/no-application');
-    }
-  }
-
+if (gate.status === 'no-application') {
+  return Astro.redirect('/dashboard/no-application');
+}
+if (gate.status === 'pending') {
   return Astro.redirect('/dashboard/pending');
 }
 
-// Redirects /dashboard to /dashboard/team
+// Accepted — redirect to team matcher
 return Astro.redirect('/dashboard/team');
 ---
