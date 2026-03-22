@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
+
 import { api } from '@/lib/api';
+import { TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
 import { TRACKS } from '@/lib/tracks';
+
 import TeamDetailModal from './TeamDetailModal';
+import TeamInvitationsPanel from './TeamInvitationsPanel';
 
 interface TeamMemberUser {
   avatar_url: string | null;
@@ -24,10 +28,23 @@ interface Team {
   max_size: number;
   is_full: boolean;
   is_looking_for_members: boolean;
+  invite_code: string;
   created_at: string;
 }
 
-const SUIT_SYMBOLS = ['♠', '♦', '♣', '♥'];
+interface MyTeam {
+  id: string;
+  name: string;
+  description: string | null;
+  invite_code: string;
+  max_size: number;
+  members: Array<{
+    user_id: string;
+    role: string;
+  }>;
+}
+
+const SUIT_SYMBOLS = ['S', 'D', 'C', 'H'];
 
 function MemberAvatars({ team }: { team: Team }) {
   const members = team.team_members ?? [];
@@ -35,31 +52,34 @@ function MemberAvatars({ team }: { team: Team }) {
 
   return (
     <div className="flex items-center gap-1">
-      {members.map((m) => {
-        const user = m.users;
-        const initials = `${user?.first_name?.[0] ?? ''}${user?.last_name?.[0] ?? ''}`.toUpperCase() || '?';
+      {members.map((member) => {
+        const user = member.users;
+        const initials =
+          `${user?.first_name?.[0] ?? ''}${user?.last_name?.[0] ?? ''}`.toUpperCase() || '?';
+
         return user?.avatar_url ? (
           <img
-            key={m.id}
+            key={member.id}
             src={user.avatar_url}
             alt=""
             className="h-6 w-6 rounded-full border border-[#1a1a1a] object-cover"
           />
         ) : (
           <div
-            key={m.id}
+            key={member.id}
             className="flex h-6 w-6 items-center justify-center rounded-full border border-[#1a1a1a] bg-white/10 font-mono text-[8px] text-white/50"
           >
             {initials}
           </div>
         );
       })}
-      {Array.from({ length: openSlots }).map((_, i) => (
+
+      {Array.from({ length: openSlots }).map((_, index) => (
         <div
-          key={`slot-${i}`}
+          key={`slot-${index}`}
           className="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-white/12 text-[10px] text-white/12"
         >
-          {SUIT_SYMBOLS[i % SUIT_SYMBOLS.length]}
+          {SUIT_SYMBOLS[index % SUIT_SYMBOLS.length]}
         </div>
       ))}
     </div>
@@ -68,41 +88,76 @@ function MemberAvatars({ team }: { team: Team }) {
 
 export default function TeamGrid() {
   const [teams, setTeams] = useState<Team[]>([]);
+  const [myTeam, setMyTeam] = useState<MyTeam | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [showAvailableOnly, setShowAvailableOnly] = useState(false);
 
-  // Create team form
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newName, setNewName] = useState('');
   const [newDesc, setNewDesc] = useState('');
   const [newTracks, setNewTracks] = useState<string[]>([]);
+  const [joinCode, setJoinCode] = useState('');
   const [isCreating, setIsCreating] = useState(false);
-  const [createError, setCreateError] = useState<string | null>(null);
+  const [isJoiningByCode, setIsJoiningByCode] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
-  const loadTeams = async () => {
+  useEffect(() => {
+    void loadTeams();
+  }, [showAvailableOnly]);
+
+  useEffect(() => {
+    const handleTeamChanged = () => {
+      void loadTeams();
+    };
+
+    window.addEventListener(TEAM_CHANGED_EVENT, handleTeamChanged);
+    return () => window.removeEventListener(TEAM_CHANGED_EVENT, handleTeamChanged);
+  }, [showAvailableOnly]);
+
+  async function loadTeams() {
     try {
       setIsLoading(true);
-      const result = await api.listTeams({ has_openings: showAvailableOnly || undefined });
-      setTeams(result.data ?? []);
+      setActionError(null);
+
+      const [teamsResult, currentTeam] = await Promise.all([
+        api.listTeams({ has_openings: showAvailableOnly || undefined }),
+        api.getMyTeam(),
+      ]);
+
+      setTeams((teamsResult.data ?? []) as Team[]);
+      setMyTeam(
+        currentTeam
+          ? {
+              id: currentTeam.id,
+              name: currentTeam.name,
+              description: currentTeam.description,
+              invite_code: currentTeam.invite_code,
+              max_size: currentTeam.max_size,
+              members: currentTeam.members.map((member: { user_id: string; role: string }) => ({
+                user_id: member.user_id,
+                role: member.role,
+              })),
+            }
+          : null,
+      );
     } catch (error) {
       console.error('Failed to load teams:', error);
       setTeams([]);
+      setMyTeam(null);
+      setActionError(error instanceof Error ? error.message : 'Failed to load teams.');
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
-  useEffect(() => {
-    loadTeams();
-  }, [showAvailableOnly]);
-
-  async function handleCreateTeam(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleCreateTeam(event: React.FormEvent) {
+    event.preventDefault();
     if (!newName.trim()) return;
-    setIsCreating(true);
-    setCreateError(null);
+
     try {
+      setIsCreating(true);
+      setActionError(null);
       await api.createTeam({
         name: newName.trim(),
         description: newDesc.trim() || undefined,
@@ -112,19 +167,36 @@ export default function TeamGrid() {
       setNewDesc('');
       setNewTracks([]);
       setShowCreateForm(false);
-      loadTeams();
-    } catch (err) {
-      setCreateError(err instanceof Error ? err.message : 'Failed to create team');
+      await loadTeams();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : 'Failed to create team.');
     } finally {
       setIsCreating(false);
     }
   }
 
+  async function handleJoinByCode(event: React.FormEvent) {
+    event.preventDefault();
+    if (!joinCode.trim()) return;
+
+    try {
+      setIsJoiningByCode(true);
+      setActionError(null);
+      await api.joinTeam({ invite_code: joinCode });
+      setJoinCode('');
+      await loadTeams();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : 'Failed to join team.');
+    } finally {
+      setIsJoiningByCode(false);
+    }
+  }
+
   function toggleTrack(trackName: string) {
-    setNewTracks(prev =>
-      prev.includes(trackName)
-        ? prev.filter(t => t !== trackName)
-        : [...prev, trackName]
+    setNewTracks((previous) =>
+      previous.includes(trackName)
+        ? previous.filter((item) => item !== trackName)
+        : [...previous, trackName],
     );
   }
 
@@ -133,7 +205,9 @@ export default function TeamGrid() {
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
           <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-red"></div>
-          <p className="font-mono text-[11px] uppercase tracking-widest text-white/40">Loading teams...</p>
+          <p className="font-mono text-[11px] uppercase tracking-widest text-white/40">
+            Loading teams...
+          </p>
         </div>
       </div>
     );
@@ -142,8 +216,9 @@ export default function TeamGrid() {
   return (
     <>
       <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
+        <TeamInvitationsPanel />
+
+        <div className="flex items-center justify-between gap-4">
           <div>
             <h3 className="font-display text-2xl uppercase tracking-[-0.03em] text-white">Teams</h3>
             <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.15em] text-white/35">
@@ -152,127 +227,226 @@ export default function TeamGrid() {
           </div>
 
           <button
+            type="button"
             onClick={() => setShowAvailableOnly(!showAvailableOnly)}
             className={`rounded px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-all ${
               showAvailableOnly
-                ? 'bg-red/15 text-red border border-red/30'
-                : 'bg-white/5 text-white/40 border border-white/10 hover:text-white/60'
+                ? 'border border-red/30 bg-red/15 text-red'
+                : 'border border-white/10 bg-white/5 text-white/40 hover:text-white/60'
             }`}
           >
             {showAvailableOnly ? 'Showing open' : 'Show open only'}
           </button>
         </div>
 
-        {/* Grid */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {/* Create Team Card — always first */}
-          {!showCreateForm ? (
-            <button
-              onClick={() => setShowCreateForm(true)}
-              className="group flex flex-col items-center justify-center rounded-lg border border-dashed border-white/12 bg-white/[0.02] p-8 transition-all hover:border-red/40 hover:bg-red/[0.04]"
-            >
-              <span className="mb-3 text-3xl text-white/20 transition-colors group-hover:text-red/60">+</span>
-              <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/30 transition-colors group-hover:text-white/60">
-                Create Team
-              </span>
-            </button>
-          ) : (
-            <form
-              onSubmit={handleCreateTeam}
-              className="rounded-lg border border-red/20 bg-[#1a1a1a] p-5 space-y-3"
-            >
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">New Team</div>
-              <input
-                type="text"
-                required
-                maxLength={50}
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
-                className="w-full rounded border border-white/10 bg-black/40 px-3 py-2 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
-                placeholder="Team name"
-                autoFocus
-              />
-              <textarea
-                rows={2}
-                maxLength={200}
-                value={newDesc}
-                onChange={(e) => setNewDesc(e.target.value)}
-                className="w-full resize-none rounded border border-white/10 bg-black/40 px-3 py-2 font-body text-[13px] text-white placeholder:text-white/25 focus:border-red focus:outline-none"
-                placeholder="Brief description (optional)"
-              />
-              {/* Track selector */}
+        {myTeam ? (
+          <div className="rounded-lg border border-[#00ff88]/20 bg-[#00ff88]/5 p-5">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <div className="mb-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-white/30">Tracks</div>
-                <div className="flex flex-wrap gap-1.5">
-                  {TRACKS.map(track => (
-                    <button
-                      key={track.id}
-                      type="button"
-                      onClick={() => toggleTrack(track.name)}
-                      className={`rounded-sm px-2 py-0.5 font-mono text-[8px] uppercase tracking-[0.08em] border transition-colors ${
-                        newTracks.includes(track.name)
-                          ? track.bgClass
-                          : 'bg-white/5 text-white/30 border-white/10 hover:text-white/50'
-                      }`}
-                    >
-                      {track.id}
-                    </button>
-                  ))}
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#00ff88]">
+                  Your team
+                </p>
+                <h4 className="mt-1 font-display text-2xl uppercase tracking-[-0.03em] text-white">
+                  {myTeam.name}
+                </h4>
+                <p className="mt-2 text-sm text-white/55">
+                  You can still browse other team profiles, but you will need to leave your current
+                  team before joining another one.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-3">
+                <div className="rounded border border-white/10 bg-white/5 px-4 py-2">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/35">
+                    Team code
+                  </p>
+                  <p className="mt-1 font-mono text-sm text-white/85">{myTeam.invite_code}</p>
+                </div>
+                <div className="rounded border border-white/10 bg-white/5 px-4 py-2">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/35">
+                    Open slots
+                  </p>
+                  <p className="mt-1 font-mono text-sm text-white/85">
+                    {Math.max(myTeam.max_size - myTeam.members.length, 0)} / {myTeam.max_size}
+                  </p>
                 </div>
               </div>
-              {createError && (
-                <p className="text-[12px] text-red-bright">{createError}</p>
-              )}
-              <div className="flex items-center gap-2 pt-1">
+            </div>
+          </div>
+        ) : (
+          <div className="grid gap-4 lg:grid-cols-2">
+            {!showCreateForm ? (
+              <button
+                type="button"
+                onClick={() => setShowCreateForm(true)}
+                className="group flex min-h-[220px] flex-col items-center justify-center rounded-lg border border-dashed border-white/12 bg-white/[0.02] p-8 transition-all hover:border-red/40 hover:bg-red/[0.04]"
+              >
+                <span className="mb-3 text-3xl text-white/20 transition-colors group-hover:text-red/60">
+                  +
+                </span>
+                <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/30 transition-colors group-hover:text-white/60">
+                  Create Team
+                </span>
+                <span className="mt-2 text-center text-sm text-white/35">
+                  Start a team, become the leader, and invite participants directly.
+                </span>
+              </button>
+            ) : (
+              <form
+                onSubmit={handleCreateTeam}
+                className="space-y-3 rounded-lg border border-red/20 bg-[#1a1a1a] p-5"
+              >
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
+                  New Team
+                </div>
+                <input
+                  type="text"
+                  required
+                  maxLength={50}
+                  value={newName}
+                  onChange={(event) => setNewName(event.target.value)}
+                  className="w-full rounded border border-white/10 bg-black/40 px-3 py-2 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                  placeholder="Team name"
+                  autoFocus
+                />
+                <textarea
+                  rows={2}
+                  maxLength={200}
+                  value={newDesc}
+                  onChange={(event) => setNewDesc(event.target.value)}
+                  className="w-full resize-none rounded border border-white/10 bg-black/40 px-3 py-2 font-body text-[13px] text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                  placeholder="Brief description (optional)"
+                />
+                <div>
+                  <div className="mb-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-white/30">
+                    Tracks
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {TRACKS.map((track) => (
+                      <button
+                        key={track.id}
+                        type="button"
+                        onClick={() => toggleTrack(track.name)}
+                        className={`rounded-sm border px-2 py-0.5 font-mono text-[8px] uppercase tracking-[0.08em] transition-colors ${
+                          newTracks.includes(track.name)
+                            ? track.bgClass
+                            : 'border-white/10 bg-white/5 text-white/30 hover:text-white/50'
+                        }`}
+                      >
+                        {track.id}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    type="submit"
+                    disabled={isCreating || !newName.trim()}
+                    className="rounded border border-red/40 bg-red/15 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-red transition-colors hover:bg-red/25 disabled:opacity-40"
+                  >
+                    {isCreating ? 'Creating...' : 'Create'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowCreateForm(false);
+                      setActionError(null);
+                    }}
+                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/35 hover:text-white/60"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <form
+              onSubmit={handleJoinByCode}
+              className="flex min-h-[220px] flex-col justify-between rounded-lg border border-white/8 bg-[#1a1a1a] p-5"
+            >
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
+                  Join With Code
+                </div>
+                <h4 className="mt-2 font-display text-xl uppercase tracking-[-0.03em] text-white">
+                  Already have a team code?
+                </h4>
+                <p className="mt-2 text-sm text-white/45">
+                  Ask a team leader for their code and join instantly without waiting for approval.
+                </p>
+              </div>
+
+              <div className="mt-4 space-y-3">
+                <input
+                  type="text"
+                  value={joinCode}
+                  onChange={(event) => setJoinCode(event.target.value.toUpperCase())}
+                  maxLength={10}
+                  placeholder="Enter team code"
+                  className="w-full rounded border border-white/10 bg-black/40 px-3 py-2 font-mono text-sm uppercase text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                />
                 <button
                   type="submit"
-                  disabled={isCreating || !newName.trim()}
-                  className="rounded border border-red/40 bg-red/15 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-red transition-colors hover:bg-red/25 disabled:opacity-40"
+                  disabled={isJoiningByCode || joinCode.trim().length < 6}
+                  className="w-full rounded border border-white/10 bg-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {isCreating ? 'Creating...' : 'Create'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setShowCreateForm(false); setCreateError(null); }}
-                  className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/35 hover:text-white/60"
-                >
-                  Cancel
+                  {isJoiningByCode ? 'Joining...' : 'Join team'}
                 </button>
               </div>
             </form>
-          )}
+          </div>
+        )}
 
-          {/* Team cards */}
+        {actionError && (
+          <div className="rounded border border-red/30 bg-red/10 px-4 py-3 text-sm text-red-200">
+            {actionError}
+          </div>
+        )}
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {teams.map((team) => (
             <button
               key={team.id}
+              type="button"
               onClick={() => setSelectedTeam(team.id)}
               className="group rounded-lg border border-white/8 bg-[#1a1a1a] p-5 text-left transition-all hover:border-white/15"
             >
               <div className="flex items-start justify-between gap-2">
-                <h4 className="line-clamp-1 font-display text-lg uppercase tracking-[-0.02em] text-white">{team.name}</h4>
-                <span className={`shrink-0 rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] ${
-                  team.is_full
-                    ? 'bg-white/5 text-white/30'
-                    : 'bg-[#00ff88]/10 text-[#00ff88]'
-                }`}>
+                <div className="min-w-0">
+                  <h4 className="line-clamp-1 font-display text-lg uppercase tracking-[-0.02em] text-white">
+                    {team.name}
+                  </h4>
+                  {myTeam?.id === team.id && (
+                    <span className="mt-2 inline-flex rounded border border-[#00ff88]/20 bg-[#00ff88]/10 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-[#00ff88]">
+                      Your team
+                    </span>
+                  )}
+                </div>
+                <span
+                  className={`shrink-0 rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] ${
+                    team.is_full ? 'bg-white/5 text-white/30' : 'bg-[#00ff88]/10 text-[#00ff88]'
+                  }`}
+                >
                   {team.is_full ? 'Full' : 'Open'}
                 </span>
               </div>
 
               {team.description && (
-                <p className="mt-2 line-clamp-2 font-body text-[13px] leading-relaxed text-white/40">{team.description}</p>
+                <p className="mt-2 line-clamp-2 font-body text-[13px] leading-relaxed text-white/40">
+                  {team.description}
+                </p>
               )}
 
               {team.tracks && team.tracks.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-1">
                   {team.tracks.map((trackName) => {
-                    const track = TRACKS.find((t) => t.name === trackName);
+                    const track = TRACKS.find((item) => item.name === trackName);
                     if (!track) return null;
+
                     return (
                       <span
                         key={track.id}
-                        className={`font-mono text-[8px] uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-sm border ${track.bgClass}`}
+                        className={`rounded-sm border px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.08em] ${track.bgClass}`}
                       >
                         {track.id}
                       </span>
@@ -289,7 +463,7 @@ export default function TeamGrid() {
                   <MemberAvatars team={team} />
                 </div>
                 <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-white/25 transition-colors group-hover:text-red">
-                  View &rarr;
+                  View
                 </span>
               </div>
             </button>
@@ -309,7 +483,7 @@ export default function TeamGrid() {
           onClose={() => setSelectedTeam(null)}
           onJoinRequestSent={() => {
             setSelectedTeam(null);
-            loadTeams();
+            void loadTeams();
           }}
         />
       )}

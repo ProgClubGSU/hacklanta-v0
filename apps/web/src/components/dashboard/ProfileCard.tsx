@@ -1,9 +1,7 @@
 import { useAuth } from '@clerk/astro/react';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
-
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface ProfileCardProps {}
+import { PROFILE_CHANGED_EVENT, TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
 
 interface TeamMember {
   id: string;
@@ -59,15 +57,17 @@ function normalizeHref(value: string) {
   return /^https?:\/\//i.test(value) ? value : `https://${value}`;
 }
 
-function mapProfileData(profile: {
-  display_name?: string | null;
-  bio?: string | null;
-  linkedin_url?: string | null;
-  github_url?: string | null;
-  portfolio_url?: string | null;
-  discord_username?: string | null;
-  looking_for_team?: boolean | null;
-} | null): ProfileData {
+function mapProfileData(
+  profile: {
+    display_name?: string | null;
+    bio?: string | null;
+    linkedin_url?: string | null;
+    github_url?: string | null;
+    portfolio_url?: string | null;
+    discord_username?: string | null;
+    looking_for_team?: boolean | null;
+  } | null,
+): ProfileData {
   if (!profile) return EMPTY_PROFILE;
 
   return {
@@ -92,7 +92,7 @@ function getMemberInitials(member: TeamMember) {
   return (first + last).toUpperCase() || '??';
 }
 
-export default function ProfileCard({}: ProfileCardProps) {
+export default function ProfileCard() {
   const { isLoaded } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,57 +104,61 @@ export default function ProfileCard({}: ProfileCardProps) {
   const [draft, setDraft] = useState<ProfileData>(EMPTY_PROFILE);
   const [team, setTeam] = useState<TeamData | null>(null);
 
+  async function loadDashboardData(cancelledRef?: { current: boolean }) {
+    setIsLoading(true);
+    setLoadError(null);
+
+    const firstName = getClerkFirstName();
+    let mappedProfile = EMPTY_PROFILE;
+    let nextTeam: TeamData | null = null;
+    let hasLoadError = false;
+
+    try {
+      const profileResult = await api.getProfile();
+      mappedProfile = mapProfileData(profileResult);
+    } catch {
+      hasLoadError = true;
+    }
+
+    try {
+      nextTeam = await api.getMyTeam();
+    } catch {
+      hasLoadError = true;
+    }
+
+    if (cancelledRef?.current) return;
+
+    setClerkFirstName(firstName);
+    setProfile(mappedProfile);
+    setDraft({
+      ...mappedProfile,
+      displayName: mappedProfile.displayName || firstName,
+    });
+    setTeam(nextTeam);
+    if (hasLoadError) {
+      setLoadError('Some data could not be loaded.');
+    }
+    setIsLoading(false);
+  }
+
   useEffect(() => {
     if (!isLoaded) return;
 
-    let cancelled = false;
+    const cancelled = { current: false };
 
-    async function loadDashboardData() {
-      setIsLoading(true);
-      setLoadError(null);
+    void loadDashboardData(cancelled);
 
-      const firstName = getClerkFirstName();
-      let mappedProfile = EMPTY_PROFILE;
-      let nextTeam: TeamData | null = null;
-      let hasLoadError = false;
+    const handleRefresh = () => {
+      void loadDashboardData(cancelled);
+    };
 
-      try {
-        const profileResult = await api.getProfile();
-        mappedProfile = mapProfileData(profileResult);
-      } catch {
-        hasLoadError = true;
-      }
-
-      try {
-        nextTeam = await api.getMyTeam();
-      } catch {
-        hasLoadError = true;
-      }
-
-      try {
-        if (cancelled) return;
-
-        setClerkFirstName(firstName);
-        setProfile(mappedProfile);
-        setDraft({
-          ...mappedProfile,
-          displayName: mappedProfile.displayName || firstName,
-        });
-        setTeam(nextTeam);
-        if (hasLoadError) {
-          setLoadError('Some data could not be loaded.');
-        }
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadDashboardData();
+    window.addEventListener(PROFILE_CHANGED_EVENT, handleRefresh);
+    window.addEventListener(TEAM_CHANGED_EVENT, handleRefresh);
 
     return () => {
-      cancelled = true;
+      cancelled.current = true;
+      window.removeEventListener(PROFILE_CHANGED_EVENT, handleRefresh);
+      window.removeEventListener(TEAM_CHANGED_EVENT, handleRefresh);
     };
   }, [isLoaded]);
 
@@ -179,7 +183,7 @@ export default function ProfileCard({}: ProfileCardProps) {
     { label: 'GitHub', value: profile.github, href: normalizeHref(profile.github) },
     { label: 'Portfolio', value: profile.portfolio, href: normalizeHref(profile.portfolio) },
     { label: 'Discord', value: profile.discord, href: '' },
-  ].filter(s => s.value);
+  ].filter((s) => s.value);
 
   function openEditor() {
     setSaveError(null);
@@ -259,7 +263,7 @@ export default function ProfileCard({}: ProfileCardProps) {
           {/* Socials — inline, minimal */}
           {socials.length > 0 && (
             <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
-              {socials.map(s => (
+              {socials.map((s) =>
                 s.href ? (
                   <a
                     key={s.label}
@@ -277,8 +281,8 @@ export default function ProfileCard({}: ProfileCardProps) {
                   >
                     {s.label}: <span className="text-white/55">{s.value}</span>
                   </span>
-                )
-              ))}
+                ),
+              )}
             </div>
           )}
         </div>
@@ -309,11 +313,15 @@ export default function ProfileCard({}: ProfileCardProps) {
         {team ? (
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">Code</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
+                Code
+              </span>
               <span className="ml-2 font-mono text-sm text-white/80">{team.invite_code}</span>
             </div>
             <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">Slots</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
+                Slots
+              </span>
               <span className="ml-2 font-mono text-sm text-white/80">
                 {availableSlots} / {team.max_size} open
               </span>
@@ -321,7 +329,7 @@ export default function ProfileCard({}: ProfileCardProps) {
             <div className="h-6 w-px bg-white/8" />
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
-                {team.members.map(member => (
+                {team.members.map((member) =>
                   member.avatar_url ? (
                     <img
                       key={member.id}
@@ -338,8 +346,8 @@ export default function ProfileCard({}: ProfileCardProps) {
                     >
                       {getMemberInitials(member)}
                     </div>
-                  )
-                ))}
+                  ),
+                )}
               </div>
               <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">
                 {team.members.length} member{team.members.length !== 1 ? 's' : ''}
@@ -348,9 +356,7 @@ export default function ProfileCard({}: ProfileCardProps) {
           </div>
         ) : (
           <div className="mt-4 flex items-center gap-5">
-            <p className="font-body text-sm text-white/35">
-              You're not on a team yet.
-            </p>
+            <p className="font-body text-sm text-white/35">You're not on a team yet.</p>
             <a
               href="#teams"
               className="font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:text-red-bright"
@@ -364,42 +370,107 @@ export default function ProfileCard({}: ProfileCardProps) {
       {/* Editor modal */}
       {isEditing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsEditing(false)} />
-          <form onSubmit={saveEditor} className="relative z-10 w-full max-w-2xl rounded-lg border border-primary/30 bg-[#141011] p-6 shadow-[0_0_40px_rgba(122,16,36,0.18)]">
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setIsEditing(false)}
+          />
+          <form
+            onSubmit={saveEditor}
+            className="relative z-10 w-full max-w-2xl rounded-lg border border-primary/30 bg-[#141011] p-6 shadow-[0_0_40px_rgba(122,16,36,0.18)]"
+          >
             <div className="mb-6 flex items-center justify-between">
               <div>
-                <h2 className="font-display text-2xl uppercase tracking-[-0.03em] text-white">Edit Profile</h2>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">Team finder profile</p>
+                <h2 className="font-display text-2xl uppercase tracking-[-0.03em] text-white">
+                  Edit Profile
+                </h2>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
+                  Team finder profile
+                </p>
               </div>
-              <button type="button" onClick={() => setIsEditing(false)} className="font-mono text-lg text-white/50 transition-colors hover:text-white">
+              <button
+                type="button"
+                onClick={() => setIsEditing(false)}
+                className="font-mono text-lg text-white/50 transition-colors hover:text-white"
+              >
                 &times;
               </button>
             </div>
             <div className="space-y-4">
               <div>
-                <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">Display Name</label>
-                <input type="text" required maxLength={100} value={draft.displayName} onChange={(e) => setDraft({ ...draft, displayName: e.target.value })} className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none" placeholder="How should your name appear?" />
+                <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                  Display Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxLength={100}
+                  value={draft.displayName}
+                  onChange={(e) => setDraft({ ...draft, displayName: e.target.value })}
+                  className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                  placeholder="How should your name appear?"
+                />
               </div>
               <div>
-                <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">Bio</label>
-                <textarea rows={3} maxLength={500} value={draft.bio} onChange={(e) => setDraft({ ...draft, bio: e.target.value })} className="w-full resize-none rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none" placeholder="Skills, interests, what you want to build..." />
+                <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                  Bio
+                </label>
+                <textarea
+                  rows={3}
+                  maxLength={500}
+                  value={draft.bio}
+                  onChange={(e) => setDraft({ ...draft, bio: e.target.value })}
+                  className="w-full resize-none rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                  placeholder="Skills, interests, what you want to build..."
+                />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">LinkedIn</label>
-                  <input type="text" value={draft.linkedin} onChange={(e) => setDraft({ ...draft, linkedin: e.target.value })} className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none" placeholder="linkedin.com/in/..." />
+                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                    LinkedIn
+                  </label>
+                  <input
+                    type="text"
+                    value={draft.linkedin}
+                    onChange={(e) => setDraft({ ...draft, linkedin: e.target.value })}
+                    className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                    placeholder="linkedin.com/in/..."
+                  />
                 </div>
                 <div>
-                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">Discord</label>
-                  <input type="text" value={draft.discord} onChange={(e) => setDraft({ ...draft, discord: e.target.value })} className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none" placeholder="username" />
+                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                    Discord
+                  </label>
+                  <input
+                    type="text"
+                    value={draft.discord}
+                    onChange={(e) => setDraft({ ...draft, discord: e.target.value })}
+                    className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                    placeholder="username"
+                  />
                 </div>
                 <div>
-                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">GitHub</label>
-                  <input type="text" value={draft.github} onChange={(e) => setDraft({ ...draft, github: e.target.value })} className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none" placeholder="github.com/..." />
+                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                    GitHub
+                  </label>
+                  <input
+                    type="text"
+                    value={draft.github}
+                    onChange={(e) => setDraft({ ...draft, github: e.target.value })}
+                    className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                    placeholder="github.com/..."
+                  />
                 </div>
                 <div>
-                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">Portfolio</label>
-                  <input type="text" value={draft.portfolio} onChange={(e) => setDraft({ ...draft, portfolio: e.target.value })} className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none" placeholder="your-site.com" />
+                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                    Portfolio
+                  </label>
+                  <input
+                    type="text"
+                    value={draft.portfolio}
+                    onChange={(e) => setDraft({ ...draft, portfolio: e.target.value })}
+                    className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                    placeholder="your-site.com"
+                  />
                 </div>
               </div>
               <label className="flex items-center gap-3 rounded border border-white/8 bg-black/30 px-4 py-2.5 text-white/70">
@@ -418,8 +489,18 @@ export default function ProfileCard({}: ProfileCardProps) {
               </div>
             )}
             <div className="mt-5 flex justify-end gap-3 border-t border-white/8 pt-5">
-              <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-white/50 transition-colors hover:text-white/80">Cancel</button>
-              <button type="submit" disabled={isSaving || !draft.displayName.trim()} className="rounded border border-red/50 bg-red/10 px-5 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-40">
+              <button
+                type="button"
+                onClick={() => setIsEditing(false)}
+                className="px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-white/50 transition-colors hover:text-white/80"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={isSaving || !draft.displayName.trim()}
+                className="rounded border border-red/50 bg-red/10 px-5 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-40"
+              >
                 {isSaving ? 'Saving...' : 'Save'}
               </button>
             </div>
