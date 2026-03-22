@@ -2,10 +2,8 @@ import { useAuth } from '@clerk/astro/react';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 
-interface ProfileCardProps {
-  onBrowsePlayers?: () => void;
-  onBrowseTeams?: () => void;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface ProfileCardProps {}
 
 interface TeamMember {
   id: string;
@@ -94,7 +92,7 @@ function getMemberInitials(member: TeamMember) {
   return (first + last).toUpperCase() || '??';
 }
 
-export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileCardProps) {
+export default function ProfileCard({}: ProfileCardProps) {
   const { isLoaded } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -300,13 +298,12 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
               <p className="mt-2 max-w-xl font-body text-sm text-white/45">{teamDescription}</p>
             )}
           </div>
-          <button
-            type="button"
-            onClick={onBrowseTeams}
+          <a
+            href="#teams"
             className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
           >
-            Browse teams &rarr;
-          </button>
+            Browse teams &darr;
+          </a>
         </div>
 
         {team ? (
@@ -344,13 +341,9 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
                   )
                 ))}
               </div>
-              <button
-                type="button"
-                onClick={onBrowsePlayers}
-                className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30 transition-colors hover:text-white/60"
-              >
+              <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">
                 {team.members.length} member{team.members.length !== 1 ? 's' : ''}
-              </button>
+              </span>
             </div>
           </div>
         ) : (
@@ -358,21 +351,12 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
             <p className="font-body text-sm text-white/35">
               You're not on a team yet.
             </p>
-            <button
-              type="button"
-              onClick={onBrowseTeams}
+            <a
+              href="#teams"
               className="font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:text-red-bright"
             >
-              Browse teams &rarr;
-            </button>
-            <span className="text-white/15">|</span>
-            <button
-              type="button"
-              onClick={onBrowseTeams}
-              className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/40 transition-colors hover:text-white/70"
-            >
-              Create team
-            </button>
+              Browse teams &darr;
+            </a>
           </div>
         )}
       </div>
