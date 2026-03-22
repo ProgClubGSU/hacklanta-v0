@@ -24,7 +24,7 @@ export default function ProfileEditorModal({ initialData, onClose, onSave }: Pro
   const [linkedinUrl, setLinkedinUrl] = useState(initialData?.linkedin_url || '');
   const [githubUrl, setGithubUrl] = useState(initialData?.github_url || '');
   const [portfolioUrl, setPortfolioUrl] = useState(initialData?.portfolio_url || '');
-  const [lookingForTeam, setLookingForTeam] = useState(initialData?.looking_for_team ?? true);
+  const [lookingForTeam, setLookingForTeam] = useState(initialData?.looking_for_team ?? false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

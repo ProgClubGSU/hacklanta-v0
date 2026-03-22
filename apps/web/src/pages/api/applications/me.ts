@@ -24,7 +24,7 @@ export const GET: APIRoute = async ({ locals }) => {
   }
 
   // 1. Try by user_id (already linked)
-  let { data: apps } = await supabase
+  const { data: apps } = await supabase
     .from('applications')
     .select(APP_FIELDS)
     .eq('user_id', user.id)

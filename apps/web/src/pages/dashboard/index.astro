@@ -1,4 +1,24 @@
 ---
+import { createServerSupabaseClient } from '../../lib/supabase-server';
+
+// Check auth
+const { userId } = await Astro.locals.auth();
+if (!userId) {
+  return Astro.redirect('/sign-in');
+}
+
+// Check if user is accepted
+const supabase = createServerSupabaseClient();
+const { data: user } = await supabase
+  .from('users')
+  .select('is_accepted')
+  .eq('clerk_id', userId)
+  .single();
+
+if (!user?.is_accepted) {
+  return Astro.redirect('/dashboard/pending');
+}
+
 // Redirects /dashboard to /dashboard/team
 return Astro.redirect('/dashboard/team');
 ---
