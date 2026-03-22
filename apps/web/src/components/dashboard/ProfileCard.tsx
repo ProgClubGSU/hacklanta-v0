@@ -178,10 +178,10 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
   const availableSlots = team ? Math.max(team.max_size - team.members.length, 0) : null;
 
   const socials = [
-    { icon: 'link', label: 'LinkedIn', value: profile.linkedin, href: normalizeHref(profile.linkedin) },
-    { icon: 'code', label: 'GitHub', value: profile.github, href: normalizeHref(profile.github) },
-    { icon: 'language', label: 'Portfolio', value: profile.portfolio, href: normalizeHref(profile.portfolio) },
-    { icon: 'forum', label: 'Discord', value: profile.discord, href: '' },
+    { label: 'LinkedIn', value: profile.linkedin, href: normalizeHref(profile.linkedin) },
+    { label: 'GitHub', value: profile.github, href: normalizeHref(profile.github) },
+    { label: 'Portfolio', value: profile.portfolio, href: normalizeHref(profile.portfolio) },
+    { label: 'Discord', value: profile.discord, href: '' },
   ].filter(s => s.value);
 
   function openEditor() {
@@ -229,8 +229,8 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
       )}
 
       {/* Hero — name + bio + socials in one cohesive block */}
-      <div className="relative overflow-hidden rounded-lg border border-[#3b1d1d] bg-[linear-gradient(135deg,#161313_0%,#191414_58%,#241414_100%)]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(122,16,36,0.22),transparent_36%)]" />
+      <div className="relative overflow-hidden rounded-lg border border-white/8 bg-[linear-gradient(135deg,#181818_0%,#1a1a1a_58%,#1e1a1a_100%)]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(196,30,58,0.08),transparent_40%)]" />
 
         <div className="relative z-10 px-8 pb-8 pt-6">
           {/* Top bar: label + edit */}
@@ -262,7 +262,7 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
 
           {/* Socials — inline, minimal */}
           {socials.length > 0 && (
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
               {socials.map(s => (
                 s.href ? (
                   <a
@@ -270,18 +270,16 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
                     href={s.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/40 transition-colors hover:text-red"
+                    className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40 transition-colors hover:text-red"
                   >
-                    <Icon name={s.icon} className="text-sm" />
                     {s.label}
                   </a>
                 ) : (
                   <span
                     key={s.label}
-                    className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-white/40"
+                    className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40"
                   >
-                    <Icon name={s.icon} className="text-sm" />
-                    {s.value}
+                    {s.label}: <span className="text-white/55">{s.value}</span>
                   </span>
                 )
               ))}
@@ -315,21 +313,17 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
 
         {team ? (
           <div className="mt-6 flex flex-wrap items-center gap-4">
-            {/* Invite code */}
             <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">Code</span>
               <span className="ml-2 font-mono text-sm text-white/80">{team.invite_code}</span>
             </div>
-            {/* Slots */}
             <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
               <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">Slots</span>
               <span className="ml-2 font-mono text-sm text-white/80">
                 {availableSlots} / {team.max_size} open
               </span>
             </div>
-            {/* Divider */}
             <div className="h-6 w-px bg-white/8" />
-            {/* Members — avatar stack */}
             <div className="flex items-center gap-2">
               <div className="flex -space-x-2">
                 {team.members.map(member => (
@@ -362,9 +356,18 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
             </div>
           </div>
         ) : (
-          <p className="mt-4 font-body text-sm text-white/35">
-            Create or join a team to get started.
-          </p>
+          <div className="mt-4 flex items-center gap-4">
+            <p className="font-body text-sm text-white/35">
+              You're not on a team yet.
+            </p>
+            <button
+              type="button"
+              onClick={onBrowseTeams}
+              className="font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:text-red-bright"
+            >
+              Find a team &rarr;
+            </button>
+          </div>
         )}
       </div>
 
