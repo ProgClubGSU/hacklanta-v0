@@ -132,7 +132,7 @@ const tracks = [
         <span
           class="prize-number font-mono text-6xl font-bold tracking-wider text-gold md:text-8xl"
           style="text-shadow: 0 0 60px rgba(201,168,76,0.25), 0 0 120px rgba(201,168,76,0.08);"
-        >4,300</span>
+        >5,000</span>
       </div>
       <div class="mt-2 flex items-center gap-1.5">
         <svg class="h-3 w-3 animate-bounce text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
@@ -507,12 +507,12 @@ const tracks = [
 
     // Cashout markers along the curve
     const cashouts = [
-      { t: 0.12, name: 'auramaxxer', amount: '$130.00', side: 'right' as const },
-      { t: 0.25, name: 'chudlord', amount: '$345.00', side: 'left' as const },
-      { t: 0.38, name: 'progsu_dev', amount: '$660.00', side: 'right' as const },
-      { t: 0.52, name: 'joey zhang', amount: '$890.00', side: 'left' as const },
-      { t: 0.68, name: 'sam altman', amount: '$1,500', side: 'right' as const },
-      { t: 0.88, name: 'elon musk', amount: '$2,870', side: 'left' as const },
+      { t: 0.12, name: 'auramaxxer', amount: '$150.00', side: 'right' as const },
+      { t: 0.25, name: 'chudlord', amount: '$400.00', side: 'left' as const },
+      { t: 0.38, name: 'progsu_dev', amount: '$770.00', side: 'right' as const },
+      { t: 0.52, name: 'joey zhang', amount: '$1,050', side: 'left' as const },
+      { t: 0.68, name: 'sam altman', amount: '$1,750', side: 'right' as const },
+      { t: 0.88, name: 'elon musk', amount: '$3,340', side: 'left' as const },
     ];
 
     // Y-axis multiplier levels
@@ -725,7 +725,7 @@ const tracks = [
       }
 
       // --- Sync prize number ---
-      const currentValue = Math.round(drawProgress * 4300);
+      const currentValue = Math.round(drawProgress * 5000);
       prizeEl!.textContent = currentValue.toLocaleString();
 
       if (rawProgress < 1) {

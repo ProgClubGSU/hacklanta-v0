@@ -2,6 +2,9 @@
 node_modules/
 .pnpm-store/
 
+# MCP config (contains secrets)
+.mcp.json
+
 # Build outputs
 dist/
 .astro/
