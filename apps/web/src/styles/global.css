@@ -27,6 +27,7 @@
 
   /* === FONTS === */
   --font-display: 'Bebas Neue', 'Anton', sans-serif;
+  --font-serif: 'Instrument Serif', 'Georgia', serif;
   --font-body: 'Manrope', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }

@@ -19,217 +19,142 @@ if (gate.status === 'no-application') {
 ---
 
 <BaseLayout title="Application Pending | Hacklanta">
-  <main class="min-h-screen bg-black px-4 py-16 font-body">
-    <div class="mx-auto max-w-4xl">
-      <!-- Header -->
-      <div
-        class="mb-8 overflow-hidden rounded-lg border border-primary/20 bg-[linear-gradient(135deg,#161313_0%,#191414_58%,#241414_100%)] shadow-[0_16px_40px_rgba(0,0,0,0.28)]"
-      >
-        <div class="flex items-center justify-between gap-6 px-4 py-3 sm:px-6">
-          <a
-            href="/"
-            class="shrink-0 transition-opacity hover:opacity-85"
-            aria-label="Hacklanta home"
-          >
-            <img src="/logo_trimmed.png" alt="Hacklanta" class="h-6 w-auto object-contain sm:h-7" />
-          </a>
-          <div class="flex items-center gap-4">
-            <a
-              href="/"
-              class="font-body text-xs font-bold uppercase tracking-[0.08em] text-white/75 transition-colors hover:text-white"
-            >
-              Home
-            </a>
-          </div>
-        </div>
-      </div>
+  <main class="gate-page relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-[#121212] px-6 py-20">
 
-      <!-- Pending Status Card -->
-      <div
-        class="relative overflow-hidden rounded-lg border border-[#c9a84c]/30 bg-[linear-gradient(135deg,#161313_0%,#191414_58%,#241414_100%)] p-8 sm:p-12"
-      >
-        <div
-          class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(201,168,76,0.12),transparent_40%)]"
-        >
-        </div>
+    <!-- Grid background -->
+    <div class="pointer-events-none absolute inset-0 gate-grid opacity-[0.35]" aria-hidden="true"></div>
 
-        <div class="relative z-10 text-center">
-          <!-- Icon -->
-          <div class="mb-6 inline-flex items-center justify-center">
-            <div class="relative">
-              <div class="absolute inset-0 animate-ping rounded-full bg-[#c9a84c]/20"></div>
-              <div
-                class="relative flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#c9a84c]/40 bg-[#c9a84c]/10"
-              >
-                <svg
-                  class="h-10 w-10 text-[#c9a84c]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
+    <!-- Radial glow -->
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(201,168,76,0.06)_0%,transparent_70%)]"></div>
+    </div>
 
-          <!-- Status Label -->
-          <div class="mb-3 font-mono text-xs uppercase tracking-[0.28em] text-[#c9a84c]">
-            System Status
-          </div>
+    <!-- Decorative compass / star -->
+    <div class="pointer-events-none absolute right-[8%] top-[12%] select-none opacity-[0.07]" aria-hidden="true">
+      <svg width="180" height="180" viewBox="0 0 100 100" fill="none" stroke="currentColor" class="text-gold">
+        <circle cx="50" cy="50" r="35" stroke-width="0.5" />
+        <circle cx="50" cy="50" r="25" stroke-width="0.3" />
+        <line x1="50" y1="10" x2="50" y2="90" stroke-width="0.5" />
+        <line x1="10" y1="50" x2="90" y2="50" stroke-width="0.5" />
+        <line x1="22" y1="22" x2="78" y2="78" stroke-width="0.3" />
+        <line x1="78" y1="22" x2="22" y2="78" stroke-width="0.3" />
+        <!-- 4-point star -->
+        <path d="M50 15 L53 47 L85 50 L53 53 L50 85 L47 53 L15 50 L47 47 Z" stroke-width="0.5" fill="currentColor" opacity="0.3" />
+      </svg>
+    </div>
 
-          <!-- Main Heading -->
+    <!-- Floating suit symbols -->
+    <span class="pointer-events-none absolute left-[5%] top-[20%] select-none font-serif text-[12rem] leading-none text-white/[0.02]" aria-hidden="true">♠</span>
+    <span class="pointer-events-none absolute bottom-[10%] right-[12%] select-none font-serif text-[8rem] leading-none text-gold/[0.03]" aria-hidden="true">♦</span>
+
+    <div class="relative z-10 mx-auto w-full max-w-4xl">
+
+      <!-- Top nav -->
+      <nav class="mb-16 flex items-center justify-between">
+        <a href="/" class="transition-opacity hover:opacity-70" aria-label="Home">
+          <img src="/logo_trimmed.png" alt="Hacklanta" class="h-6 w-auto opacity-80 select-none" draggable="false" />
+        </a>
+        <a href="/" class="font-mono text-[10px] uppercase tracking-[0.25em] text-white/40 transition-colors hover:text-white/70">
+          &larr; Home
+        </a>
+      </nav>
+
+      <!-- Main typography block -->
+      <div class="mb-16 select-none">
+        <!-- "Your application" — outline italic -->
+        <div class="relative mb-2">
+          <!-- Glow layer -->
           <h1
-            class="mb-4 font-display text-4xl uppercase leading-tight tracking-[-0.04em] text-white sm:text-5xl"
-          >
-            Application<br />
-            <span class="text-[#c9a84c]">Under Review</span>
-          </h1>
+            class="gate-outline-glow absolute inset-0 font-serif italic text-[clamp(3rem,10vw,7rem)] leading-[0.9] tracking-tight"
+            aria-hidden="true"
+          >Your application</h1>
+          <!-- Sharp layer -->
+          <h1
+            class="gate-outline relative font-serif italic text-[clamp(3rem,10vw,7rem)] leading-[0.9] tracking-tight"
+          >Your application</h1>
+        </div>
 
-          <!-- Description -->
-          <p
-            class="mx-auto mb-8 max-w-2xl font-body text-base leading-relaxed text-white/70 sm:text-lg"
-          >
-            Thanks for applying to Hacklanta! Your application is currently being reviewed by our
-            team. You'll receive an email once your application has been processed.
+        <!-- "is" — gold italic accent -->
+        <div class="mb-1 ml-[5%]">
+          <span class="font-serif italic text-[clamp(1.5rem,4vw,2.5rem)] text-gold">is</span>
+        </div>
+
+        <!-- "under review" — solid white serif -->
+        <div class="ml-[15%] sm:ml-[20%]">
+          <h2 class="font-serif text-[clamp(3rem,11vw,8rem)] leading-[0.85] tracking-tight text-white">
+            under review
+          </h2>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="mb-12 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+      <!-- Content -->
+      <div class="grid gap-12 sm:grid-cols-2">
+        <div>
+          <p class="mb-6 font-body text-[15px] leading-relaxed text-white/60">
+            Thanks for applying to Hacklanta. Your application is currently being reviewed by our team. You'll receive an email once a decision has been made.
           </p>
-
-          <!-- Info Boxes -->
-          <div class="mx-auto grid max-w-2xl gap-4 sm:grid-cols-2">
-            <div class="rounded-lg border border-white/10 bg-black/40 p-5 text-left">
-              <div class="mb-2 flex items-center gap-2">
-                <svg
-                  class="h-5 w-5 text-[#c9a84c]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  ></path>
-                </svg>
-                <h3 class="font-mono text-xs uppercase tracking-wider text-white/90">
-                  What's Next?
-                </h3>
-              </div>
-              <p class="font-body text-sm text-white/60">
-                Keep an eye on your email. We'll notify you as soon as your application is reviewed.
-              </p>
-            </div>
-
-            <div class="rounded-lg border border-white/10 bg-black/40 p-5 text-left">
-              <div class="mb-2 flex items-center gap-2">
-                <svg
-                  class="h-5 w-5 text-[#c9a84c]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <h3 class="font-mono text-xs uppercase tracking-wider text-white/90">How Long?</h3>
-              </div>
-              <p class="font-body text-sm text-white/60">
-                Most applications are reviewed within 24-48 hours. Hang tight!
-              </p>
-            </div>
-          </div>
-
-          <!-- CTA -->
-          <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="/"
-              class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white/80 transition-colors hover:border-white/20 hover:bg-white/10 hover:text-white"
-            >
-              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-              </svg>
-              Back to Home
-            </a>
-          </div>
-
-          <!-- Terminal-style accent -->
-          <div
-            class="mt-8 rounded border border-white/10 bg-black/60 p-4 font-mono text-xs text-white/40"
-          >
-            <span class="text-[#c9a84c]">$</span> access_status --user=current
-            <br />
-            <span class="text-white/60">&gt; STATUS: PENDING_APPROVAL</span>
-            <br />
-            <span class="text-white/60">&gt; ACCESS_LEVEL: LIMITED</span>
-            <br />
-            <span class="text-white/60">&gt; MESSAGE: Awaiting admin authorization...</span>
-          </div>
+          <p class="font-body text-[15px] leading-relaxed text-white/60">
+            Most applications are reviewed within 24–48 hours. Keep an eye on your inbox.
+          </p>
         </div>
 
-        <!-- Decorative poker suit -->
-        <div
-          class="pointer-events-none absolute bottom-6 right-6 select-none text-6xl text-white/5"
+        <div class="space-y-6">
+          <!-- Info cards -->
+          <div class="border-l-2 border-gold/30 pl-5">
+            <h3 class="mb-1 font-mono text-[10px] uppercase tracking-[0.25em] text-gold">What's next</h3>
+            <p class="font-body text-sm text-white/50">
+              We'll notify you via email as soon as your application has been processed.
+            </p>
+          </div>
+          <div class="border-l-2 border-white/10 pl-5">
+            <h3 class="mb-1 font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">Need help?</h3>
+            <p class="font-body text-sm text-white/50">
+              Reach out at <a href="mailto:official@progsu.com" class="text-gold/80 underline decoration-gold/30 transition-colors hover:text-gold">official@progsu.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terminal accent -->
+      <div class="mt-16 rounded border border-white/[0.06] bg-white/[0.02] px-5 py-4 font-mono text-[11px] leading-relaxed text-white/30">
+        <span class="text-gold/60">$</span> access_status --user=current<br />
+        <span class="text-white/40">&gt; STATUS: PENDING_REVIEW</span><br />
+        <span class="text-white/40">&gt; ACCESS_LEVEL: LIMITED</span><br />
+        <span class="text-white/40">&gt; MESSAGE: Awaiting authorization...</span>
+      </div>
+
+      <!-- CTA -->
+      <div class="mt-10 flex items-center gap-6">
+        <a
+          href="/"
+          class="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
         >
-          ♠
-        </div>
+          &larr; Back to home
+        </a>
       </div>
 
-      <!-- FAQ Section -->
-      <div class="mt-8 rounded-lg border border-white/10 bg-black/60 p-6">
-        <h2 class="mb-4 font-display text-2xl uppercase tracking-[-0.04em] text-white">
-          Frequently Asked Questions
-        </h2>
-        <div class="space-y-4">
-          <div>
-            <h3 class="mb-1 font-body font-semibold text-white/90">Can I edit my application?</h3>
-            <p class="font-body text-sm text-white/60">
-              Not at this time. If you need to update critical information, please reach out to our
-              team.
-            </p>
-          </div>
-          <div>
-            <h3 class="mb-1 font-body font-semibold text-white/90">
-              What if I don't get accepted?
-            </h3>
-            <p class="font-body text-sm text-white/60">
-              We review all applications fairly. If capacity is limited, we may need to waitlist
-              some applicants.
-            </p>
-          </div>
-          <div>
-            <h3 class="mb-1 font-body font-semibold text-white/90">Need help?</h3>
-            <p class="font-body text-sm text-white/60">
-              Contact us at <a href="mailto:official@progsu.com" class="text-[#c9a84c] underline"
-                >official@progsu.com</a
-              >
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   </main>
 
   <style>
-    @keyframes ping {
-      75%,
-      100% {
-        transform: scale(2);
-        opacity: 0;
-      }
+    .gate-grid {
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
     }
-    .animate-ping {
-      animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+
+    .gate-outline {
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.7);
+      color: transparent;
+    }
+
+    .gate-outline-glow {
+      -webkit-text-stroke: 8px rgba(255,255,255,0.06);
+      color: transparent;
     }
   </style>
 </BaseLayout>
