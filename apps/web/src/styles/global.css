@@ -97,4 +97,17 @@ body::after {
   to { transform: rotate(360deg); }
 }
 
+/* Section headings — solid to outlined on hover */
+.section-heading {
+  -webkit-text-stroke: 1.5px transparent;
+  transition: color 0.35s ease, -webkit-text-stroke-color 0.35s ease, filter 0.35s ease;
+  cursor: default;
+}
+
+.section-heading:hover {
+  color: transparent;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 0.8);
+  filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.3));
+}
+
 
