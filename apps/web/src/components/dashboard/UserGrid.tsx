@@ -46,7 +46,6 @@ export default function UserGrid() {
   if (users.length === 0) {
     return (
       <div className="py-12 text-center">
-        <Icon name="person_off" className="mb-4 text-6xl text-on-surface/20" />
         <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">No Players Available</h3>
         <p className="text-on-surface/60">No participant profiles are available yet.</p>
       </div>

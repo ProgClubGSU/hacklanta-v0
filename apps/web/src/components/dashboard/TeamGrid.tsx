@@ -51,7 +51,6 @@ export default function TeamGrid() {
   if (teams.length === 0) {
     return (
       <div className="py-12 text-center">
-        <Icon name="group_off" className="mb-4 text-6xl text-on-surface/20" />
         <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">No Teams Available</h3>
         <p className="text-on-surface/60">Check back later or create your own team to get started.</p>
       </div>

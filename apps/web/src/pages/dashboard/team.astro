@@ -1,10 +1,23 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TabNavigation from '../../components/dashboard/TabNavigation';
+import { createServerSupabaseClient } from '../../lib/supabase-server';
 
 const { userId } = await Astro.locals.auth();
 if (!userId) {
   return Astro.redirect('/sign-in');
+}
+
+// Check if user is accepted (gated access to team finder)
+const supabase = createServerSupabaseClient();
+const { data: user } = await supabase
+  .from('users')
+  .select('is_accepted')
+  .eq('clerk_id', userId)
+  .single();
+
+if (!user?.is_accepted) {
+  return Astro.redirect('/dashboard/pending');
 }
 ---
 
