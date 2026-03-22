@@ -8,6 +8,38 @@ function verifyTallySignature(body: string, signature: string | null, secret: st
   return signature === expected
 }
 
+/** Extract a human-readable string from Tally's various field value formats */
+function extractValue(field: { value: unknown; options?: Array<{ id: string; name: string }> }): string {
+  const val = field.value
+  if (val == null) return ''
+  if (typeof val === 'string') return val
+  if (typeof val === 'number' || typeof val === 'boolean') return String(val)
+  if (Array.isArray(val)) {
+    if (val.length === 0) return ''
+    // Choice/dropdown fields: [{id, name}] — extract names
+    if (typeof val[0] === 'object' && val[0]?.name) {
+      return val.map((v: { name?: string }) => v.name ?? '').filter(Boolean).join(', ')
+    }
+    // Option ID arrays (plain strings) — resolve labels via field.options
+    if (typeof val[0] === 'string' && field.options?.length) {
+      return val.map((id: string) => {
+        const opt = field.options!.find((o) => o.id === id)
+        return opt?.name ?? id
+      }).join(', ')
+    }
+    // File uploads: [{url, name}]
+    if (typeof val[0] === 'object' && val[0]?.url) {
+      return val[0].url
+    }
+    // Fallback: join plain values
+    return val.map(String).join(', ')
+  }
+  if (typeof val === 'object' && val !== null) {
+    return (val as { name?: string }).name ?? JSON.stringify(val)
+  }
+  return String(val)
+}
+
 export const POST: APIRoute = async ({ request }) => {
   const secret = import.meta.env.TALLY_SIGNING_SECRET ?? ''
   const body = await request.text()
@@ -36,7 +68,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   for (const field of fields) {
     const label = (field.label ?? '').toLowerCase()
-    const value = field.value ?? ''
+    const value = extractValue(field)
 
     if (label.includes('first name')) { /* parsed but not stored separately */ }
     else if (label.includes('last name')) { /* parsed but not stored separately */ }
@@ -51,7 +83,8 @@ export const POST: APIRoute = async ({ request }) => {
     else if (label.includes('graduation')) appData.graduation_date = value
     else if (label.includes('hackathon experience')) appData.experience_level = value
     else if (label.includes('resume')) {
-      appData.resume_url = Array.isArray(value) ? value[0]?.url : value
+      // Resume is a file upload — extractValue already handles [{url}]
+      appData.resume_url = value
     }
     else if (label.includes('github')) appData.github_url = value
     else if (label.includes('linkedin')) appData.linkedin_url = value
@@ -99,13 +132,10 @@ export const POST: APIRoute = async ({ request }) => {
 
   const { error } = await supabase.from('applications').upsert(appData, {
     onConflict: 'tally_response_id',
-    ignoreDuplicates: true,
+    ignoreDuplicates: false,
   })
 
   if (error) {
-    if (error.code === '23505') {
-      return new Response(JSON.stringify({ status: 'duplicate', response_id: responseId }), { status: 200 })
-    }
     return new Response(JSON.stringify({ error: error.message }), { status: 500 })
   }
 
