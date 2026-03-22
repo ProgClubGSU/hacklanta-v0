@@ -12,7 +12,14 @@ function verifyTallySignature(body: string, signature: string | null, secret: st
 function extractValue(field: { value: unknown; options?: Array<{ id: string; name: string }> }): string {
   const val = field.value
   if (val == null) return ''
-  if (typeof val === 'string') return val
+  if (typeof val === 'string') {
+    // Single-choice dropdowns send a plain option ID string — resolve via options
+    if (field.options?.length) {
+      const opt = field.options.find((o) => o.id === val)
+      if (opt?.name) return opt.name
+    }
+    return val
+  }
   if (typeof val === 'number' || typeof val === 'boolean') return String(val)
   if (Array.isArray(val)) {
     if (val.length === 0) return ''
@@ -21,11 +28,15 @@ function extractValue(field: { value: unknown; options?: Array<{ id: string; nam
       return val.map((v: { name?: string }) => v.name ?? '').filter(Boolean).join(', ')
     }
     // Option ID arrays (plain strings) — resolve labels via field.options
-    if (typeof val[0] === 'string' && field.options?.length) {
-      return val.map((id: string) => {
-        const opt = field.options!.find((o) => o.id === id)
-        return opt?.name ?? id
-      }).join(', ')
+    if (typeof val[0] === 'string') {
+      if (field.options?.length) {
+        return val.map((id: string) => {
+          const opt = field.options!.find((o) => o.id === id)
+          return opt?.name ?? id
+        }).join(', ')
+      }
+      // No options provided — return raw values (may be IDs or plain text)
+      return val.join(', ')
     }
     // File uploads: [{url, name}]
     if (typeof val[0] === 'object' && val[0]?.url) {
