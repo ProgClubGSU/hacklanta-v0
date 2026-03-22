@@ -74,9 +74,9 @@ if (gate.status === 'no-application') {
           >Your application</h1>
         </div>
 
-        <!-- "is" — red italic accent with hover glow -->
+        <!-- "is" — red italic accent with hover pop + tilt -->
         <div class="mb-1 ml-[5%]">
-          <span class="gate-accent font-serif italic text-[clamp(1.5rem,4vw,2.5rem)] text-red-bright">is</span>
+          <span class="gate-accent inline-block font-serif italic text-[clamp(2.5rem,7vw,4.5rem)] text-red-bright">is</span>
         </div>
 
         <!-- "under review" — solid white serif with hover glow -->
@@ -182,12 +182,15 @@ if (gate.status === 'no-application') {
       text-shadow: 0 0 40px rgba(230, 57, 70, 0.2);
     }
 
-    /* Accent text — hover glow */
+    /* Accent text — hover pop + tilt + glow */
     .gate-accent {
-      transition: filter 0.4s ease, text-shadow 0.4s ease;
+      cursor: default;
+      transform-origin: center center;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease, text-shadow 0.4s ease;
     }
 
     .gate-accent:hover {
+      transform: scale(1.2) rotate(-6deg);
       filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.5));
       text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
     }
