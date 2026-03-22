@@ -63,7 +63,7 @@ export default function TabNavigation() {
   return (
     <div className="space-y-12">
       {/* Top bar */}
-      <header className="flex items-center justify-between">
+      <header id="top" className="flex items-center justify-between">
         <a href="/" aria-label="Hacklanta home">
           <TextLogo size="xs" className="opacity-85" />
         </a>
@@ -84,6 +84,16 @@ export default function TabNavigation() {
       <section id="players">
         <UserGrid />
       </section>
+
+      {/* Back to top */}
+      <div className="flex justify-center pb-4">
+        <a
+          href="#top"
+          className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/20 transition-colors hover:text-white/50"
+        >
+          &uarr; Back to profile
+        </a>
+      </div>
     </div>
   );
 }
