@@ -78,8 +78,9 @@ export default function ApplicationStatus() {
 
         const data: ApplicationData = await res.json();
         setState({ kind: 'submitted', data });
-      } catch {
-        setState(rid ? { kind: 'submitted' } : { kind: 'not_found' });
+      } catch (err) {
+        console.error('[ApplicationStatus] Failed to fetch status:', err);
+        setState(rid ? { kind: 'submitted' } : { kind: 'error', message: 'Something went wrong. Try refreshing the page.' });
       }
     }
 
@@ -100,7 +101,13 @@ export default function ApplicationStatus() {
   if (state.kind === 'error') {
     return (
       <div className="text-center">
-        <p className="font-body text-sm text-white/40">{state.message}</p>
+        <p className="font-body text-sm text-white/40 mb-4">{state.message}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="font-mono text-[11px] uppercase tracking-[0.2em] text-red-bright/80 transition-colors hover:text-red-bright"
+        >
+          Try again
+        </button>
       </div>
     );
   }

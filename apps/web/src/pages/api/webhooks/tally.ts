@@ -40,6 +40,21 @@ function extractValue(field: { value: unknown; options?: Array<{ id: string; nam
   return String(val)
 }
 
+async function fetchWithRetry(url: string, options: RequestInit, retries = 2): Promise<Response | null> {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 5000) // 5s timeout
+      const res = await fetch(url, { ...options, signal: controller.signal })
+      clearTimeout(timeout)
+      if (res.ok) return res
+    } catch {
+      // retry
+    }
+  }
+  return null
+}
+
 export const POST: APIRoute = async ({ request }) => {
   const secret = import.meta.env.TALLY_SIGNING_SECRET ?? ''
   const body = await request.text()
@@ -116,10 +131,11 @@ export const POST: APIRoute = async ({ request }) => {
       // User not in DB yet (Clerk webhook race condition) — sync from Clerk API
       const clerkSecretKey = import.meta.env.CLERK_SECRET_KEY
       if (clerkSecretKey) {
-        const clerkRes = await fetch(`https://api.clerk.com/v1/users/${clerkId}`, {
-          headers: { Authorization: `Bearer ${clerkSecretKey}` },
-        })
-        if (clerkRes.ok) {
+        const clerkRes = await fetchWithRetry(
+          `https://api.clerk.com/v1/users/${clerkId}`,
+          { headers: { Authorization: `Bearer ${clerkSecretKey}` } }
+        )
+        if (clerkRes) {
           const clerkUser = await clerkRes.json()
           const clerkEmail = clerkUser.email_addresses?.[0]?.email_address
           if (clerkEmail) {
@@ -144,10 +160,10 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
-  // 2. Fallback: try matching by any email from the submission
+  // 2. Fallback: try matching by any email from the form submission
   if (!appData.user_id) {
-    const allEmails = [schoolEmail, personalEmail].filter(Boolean)
-    for (const email of allEmails) {
+    const formEmails = [schoolEmail, personalEmail].filter(Boolean)
+    for (const email of formEmails) {
       const { data: user } = await supabase
         .from('users')
         .select('id')
@@ -159,6 +175,40 @@ export const POST: APIRoute = async ({ request }) => {
         break
       }
     }
+  }
+
+  // 3. Last resort: if we have clerk_id but still no link, try ALL Clerk emails
+  if (!appData.user_id && clerkId) {
+    const clerkSecretKey = import.meta.env.CLERK_SECRET_KEY
+    if (clerkSecretKey) {
+      const clerkRes = await fetchWithRetry(
+        `https://api.clerk.com/v1/users/${clerkId}`,
+        { headers: { Authorization: `Bearer ${clerkSecretKey}` } }
+      )
+      if (clerkRes) {
+        const clerkUser = await clerkRes.json()
+        const allClerkEmails: string[] = (clerkUser.email_addresses ?? []).map(
+          (e: { email_address: string }) => e.email_address
+        )
+        for (const clerkEmail of allClerkEmails) {
+          const { data: user } = await supabase
+            .from('users')
+            .select('id')
+            .eq('email', clerkEmail)
+            .limit(1)
+            .single()
+          if (user) {
+            appData.user_id = user.id
+            break
+          }
+        }
+      }
+    }
+  }
+
+  // Log a warning if we had a clerk_id but couldn't link to any user
+  if (clerkId && !appData.user_id) {
+    console.error(`[tally-webhook] Failed to link application to user. clerk_id=${clerkId}, email=${appData.email}, tally_response_id=${responseId}`)
   }
 
   const { error } = await supabase.from('applications').upsert(appData, {

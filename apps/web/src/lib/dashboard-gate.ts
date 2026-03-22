@@ -52,13 +52,19 @@ export async function checkDashboardAccess(clerkUserId: string): Promise<GateRes
           .single()
 
         user = synced
+      } else {
+        console.warn(
+          `[dashboard-gate] Clerk API sync failed for ${clerkUserId}: ${clerkRes.status} ${clerkRes.statusText}`
+        )
       }
+    } else {
+      console.warn('[dashboard-gate] Missing CLERK_SECRET_KEY, cannot sync user from Clerk')
     }
   }
 
-  // If we still can't find/create the user, treat as pending
+  // If we still can't find/create the user, they have no application
   if (!user) {
-    return { status: 'pending' }
+    return { status: 'no-application' }
   }
 
   if (user.is_accepted) {
