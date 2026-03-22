@@ -4,7 +4,6 @@ import { api } from '@/lib/api';
 import JoinRequestManager from './JoinRequestManager';
 import Icon from '@/components/ui/Icon';
 
-<<<<<<< HEAD
 interface TeamMember {
   id: string;
   user_id: string;
@@ -24,8 +23,6 @@ interface Team {
   members: TeamMember[];
 }
 
-export default function TeamManager() {
-=======
 interface TeamManagerProps {
   compactWhenNoTeam?: boolean;
   onBrowseTeams?: () => void;
@@ -35,14 +32,11 @@ export default function TeamManager({
   compactWhenNoTeam = false,
   onBrowseTeams,
 }: TeamManagerProps) {
->>>>>>> 054f02c (dashboard)
   const { userId } = useAuth();
   const [loading, setLoading] = useState(true);
   const [team, setTeam] = useState<Team | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [requestsProcessed, setRequestsProcessed] = useState(0);
-
-  // Forms
   const [createName, setCreateName] = useState('');
   const [createDesc, setCreateDesc] = useState('');
   const [joinCode, setJoinCode] = useState('');
@@ -56,21 +50,10 @@ export default function TeamManager({
   async function loadTeam() {
     try {
       setLoading(true);
-<<<<<<< HEAD
       const myTeam = await api.getMyTeam();
       setTeam(myTeam);
     } catch (err: unknown) {
-      if (err instanceof Error && (err as Error & { status?: number }).status !== 404) {
-=======
-      // TODO: Replace with real API call
-      // const myTeam = await api.getMyTeam();
-      // setTeam(myTeam);
-
-      // Mock - user has no team yet
-      setTeam(null);
-    } catch (err: any) {
-      if (err.status !== 404) {
->>>>>>> 054f02c (dashboard)
+      if (!(err instanceof Error && (err as Error & { status?: number }).status === 404)) {
         setError('Failed to load team data.');
       } else {
         setTeam(null);
@@ -85,24 +68,13 @@ export default function TeamManager({
     setActionLoading(true);
     setError(null);
     try {
-<<<<<<< HEAD
       await api.createTeam({ name: createName, description: createDesc || undefined });
-      await loadTeam();
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to create team.');
-=======
-      // TODO: Replace with real API call
-      // await api.createTeam({ name: createName, description: createDesc || null });
-
-      // Mock success - simulate team creation
-      await new Promise(resolve => setTimeout(resolve, 500));
-      alert('Team creation will be available once the API is connected!');
       setCreateName('');
       setCreateDesc('');
       setShowQuickCreate(false);
-    } catch (err: any) {
-      setError(err.message || 'Failed to create team.');
->>>>>>> 054f02c (dashboard)
+      await loadTeam();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to create team.');
     } finally {
       setActionLoading(false);
     }
@@ -113,22 +85,11 @@ export default function TeamManager({
     setActionLoading(true);
     setError(null);
     try {
-<<<<<<< HEAD
       await api.joinTeam({ invite_code: joinCode });
+      setJoinCode('');
       await loadTeam();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to join team.');
-=======
-      // TODO: Replace with real API call
-      // await api.joinTeam({ invite_code: joinCode });
-
-      // Mock success - simulate joining team
-      await new Promise(resolve => setTimeout(resolve, 500));
-      alert('Team joining will be available once the API is connected!');
-      setJoinCode('');
-    } catch (err: any) {
-      setError(err.message || 'Failed to join team.');
->>>>>>> 054f02c (dashboard)
     } finally {
       setActionLoading(false);
     }
@@ -163,21 +124,17 @@ export default function TeamManager({
     const isCurrentUserLeader = team.members.some(
       (m: TeamMember) => m.role === 'leader' && m.user_id === userId
     );
-
     const totalSlots = team.max_size;
     const filledSlots = team.members.length;
     const emptySlots = Math.max(0, totalSlots - filledSlots);
 
     return (
       <div className="space-y-6">
-        {/* Team Header */}
         <div className="glass-effect overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-6">
           <div className="flex items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-3">
-                <h2 className="font-headline text-3xl tracking-wide text-white-pure">
-                  {team.name}
-                </h2>
+                <h2 className="font-headline text-3xl tracking-wide text-white-pure">{team.name}</h2>
                 {isCurrentUserLeader && (
                   <span className="rounded border border-secondary-container/40 bg-secondary-container/10 px-2 py-0.5 font-label text-xs font-bold uppercase tracking-wider text-secondary-fixed">
                     Lead
@@ -189,18 +146,13 @@ export default function TeamManager({
               )}
             </div>
 
-            {/* Invite Code */}
             <div className="shrink-0 text-center">
               <Icon name="key" className="mb-2 text-2xl text-secondary-fixed" />
-              <div className="font-label text-xs uppercase tracking-wider text-secondary/80">
-                Invite Code
-              </div>
+              <div className="font-label text-xs uppercase tracking-wider text-secondary/80">Invite Code</div>
               <div
                 className="mt-1 cursor-copy select-all font-mono text-xl font-bold text-secondary-fixed transition-colors hover:text-secondary-fixed-dim"
                 title="Click to copy"
-                onClick={() => {
-                  navigator.clipboard.writeText(team.invite_code);
-                }}
+                onClick={() => navigator.clipboard.writeText(team.invite_code)}
               >
                 {team.invite_code}
               </div>
@@ -208,26 +160,16 @@ export default function TeamManager({
           </div>
         </div>
 
-
-        {/* Team Roster - Slot System */}
         <div className="glass-effect overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-6">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="font-headline text-xl tracking-wide text-white-pure">
-              The Crew
-            </h3>
+            <h3 className="font-headline text-xl tracking-wide text-white-pure">The Crew</h3>
             <div className="font-mono text-sm uppercase tracking-wider text-primary">
               {filledSlots} / {totalSlots} Slots
             </div>
           </div>
 
-<<<<<<< HEAD
-          <div className="space-y-2">
-            {team.members.map((member: TeamMember) => (
-=======
           <div className="grid gap-3 sm:grid-cols-2">
-            {/* Filled member slots */}
-            {team.members.map((member: any) => (
->>>>>>> 054f02c (dashboard)
+            {team.members.map((member: TeamMember) => (
               <div
                 key={member.id}
                 className="flex items-center gap-3 rounded border border-outline-variant/20 bg-surface-container-high/50 p-3"
@@ -261,7 +203,6 @@ export default function TeamManager({
               </div>
             ))}
 
-            {/* Empty slots + Invite placeholder */}
             {emptySlots > 0 && (
               <button className="flex items-center gap-3 rounded border border-dashed border-outline-variant/40 bg-surface-container/30 p-3 transition-colors hover:border-primary/40 hover:bg-primary/5">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-dashed border-outline-variant/40">
@@ -269,19 +210,18 @@ export default function TeamManager({
                 </div>
                 <div className="min-w-0 flex-1 text-left">
                   <p className="font-medium text-on-surface/70">Invite Member</p>
-                  <p className="font-label text-xs text-on-surface/50">{emptySlots} {emptySlots === 1 ? 'slot' : 'slots'} available</p>
+                  <p className="font-label text-xs text-on-surface/50">
+                    {emptySlots} {emptySlots === 1 ? 'slot' : 'slots'} available
+                  </p>
                 </div>
               </button>
             )}
           </div>
         </div>
 
-        {/* Join Requests (for leaders) */}
         {isCurrentUserLeader && (
           <div className="glass-effect overflow-hidden rounded-lg border border-secondary-container/40 bg-surface-container/80 p-6">
-            <h4 className="mb-4 font-headline text-xl tracking-wide text-white-pure">
-              Join Requests
-            </h4>
+            <h4 className="mb-4 font-headline text-xl tracking-wide text-white-pure">Join Requests</h4>
             <JoinRequestManager
               teamId={team.id}
               onRequestProcessed={() => {
@@ -298,7 +238,6 @@ export default function TeamManager({
           </div>
         )}
 
-        {/* Actions */}
         <div className="flex justify-end gap-3">
           {isCurrentUserLeader && (
             <button
@@ -324,8 +263,8 @@ export default function TeamManager({
     );
   }
 
-  return (
-    compactWhenNoTeam ? (
+  if (compactWhenNoTeam) {
+    return (
       <div className="rounded-lg border border-white/10 bg-black/80 p-6">
         <div className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-white/50">
           <Icon name="group" className="text-base" />
@@ -341,7 +280,7 @@ export default function TeamManager({
           <button
             type="button"
             onClick={() => setShowQuickCreate((current) => !current)}
-            className="rounded border border-primary/60 bg-primary/10 px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.08em] text-primary transition-colors hover:bg-primary/20 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded border border-primary/60 bg-primary/10 px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.08em] text-primary transition-colors hover:bg-primary/20"
           >
             {showQuickCreate ? 'Hide Form' : 'Create Team'}
           </button>
@@ -393,9 +332,11 @@ export default function TeamManager({
           </form>
         )}
       </div>
-    ) : (
+    );
+  }
+
+  return (
     <div className="space-y-8">
-      {/* Section Indicator [01] - Create Team */}
       <div>
         <div className="mb-4 flex items-center gap-3 font-label text-xs tracking-wider text-outline">
           <span className="text-primary/80">[01]</span>
@@ -403,14 +344,11 @@ export default function TeamManager({
         </div>
 
         <div className="glass-effect relative overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-6">
-          {/* Ambient glow */}
           <div className="pointer-events-none absolute -left-24 -top-24 h-48 w-48 bg-[radial-gradient(circle,rgba(255,179,177,0.08)_0%,transparent_60%)]"></div>
 
           <div className="relative z-10">
             <div className="mb-6">
-              <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">
-                Create New Crew
-              </h3>
+              <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">Create New Crew</h3>
               <p className="font-label text-sm text-on-surface/70">
                 Start your own team and invite others to join your mission
               </p>
@@ -463,7 +401,6 @@ export default function TeamManager({
         </div>
       </div>
 
-      {/* Section Indicator [02] - Join Team */}
       <div>
         <div className="mb-4 flex items-center gap-3 font-label text-xs tracking-wider text-outline">
           <span className="text-primary/80">[02]</span>
@@ -471,14 +408,11 @@ export default function TeamManager({
         </div>
 
         <div className="glass-effect relative overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-6">
-          {/* Ambient glow */}
           <div className="pointer-events-none absolute -right-24 -top-24 h-48 w-48 bg-[radial-gradient(circle,rgba(255,179,177,0.08)_0%,transparent_60%)]"></div>
 
           <div className="relative z-10">
             <div className="mb-6">
-              <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">
-                Join Existing Crew
-              </h3>
+              <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">Join Existing Crew</h3>
               <p className="font-label text-sm text-on-surface/70">
                 Have an invite code? Enter it below to join a team
               </p>
@@ -538,6 +472,5 @@ export default function TeamManager({
         </div>
       )}
     </div>
-    )
   );
 }

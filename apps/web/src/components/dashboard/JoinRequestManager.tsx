@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
-<<<<<<< HEAD
 import { api } from '@/lib/api';
-=======
 import Icon from '@/components/ui/Icon';
->>>>>>> 054f02c (dashboard)
 
 interface JoinRequest {
   id: string;
@@ -36,15 +33,8 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
   const loadRequests = async () => {
     try {
       setIsLoading(true);
-<<<<<<< HEAD
       const result = await api.listTeamJoinRequests(teamId);
-      setRequests(result.data);
-=======
-      // TODO: Replace with real API call
-      // const data = await api.listTeamJoinRequests(teamId, 'pending');
-      // setRequests(data);
-      setRequests([]); // No requests until API is connected
->>>>>>> 054f02c (dashboard)
+      setRequests(result.data ?? []);
     } catch (error) {
       console.error('Failed to load join requests:', error);
       setRequests([]);
@@ -56,13 +46,7 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
   const handleApprove = async (requestId: string) => {
     try {
       setProcessingId(requestId);
-<<<<<<< HEAD
       await api.updateJoinRequest(teamId, requestId, { status: 'approved' });
-=======
-      // TODO: Replace with real API call
-      // await api.updateJoinRequest(teamId, requestId, { status: 'approved' });
-      console.log('Approve request:', requestId);
->>>>>>> 054f02c (dashboard)
       onRequestProcessed();
       await loadRequests();
     } catch (error: unknown) {
@@ -76,13 +60,7 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
   const handleReject = async (requestId: string) => {
     try {
       setProcessingId(requestId);
-<<<<<<< HEAD
       await api.updateJoinRequest(teamId, requestId, { status: 'rejected' });
-=======
-      // TODO: Replace with real API call
-      // await api.updateJoinRequest(teamId, requestId, { status: 'rejected' });
-      console.log('Reject request:', requestId);
->>>>>>> 054f02c (dashboard)
       await loadRequests();
     } catch (error: unknown) {
       console.error('Failed to reject request:', error);
@@ -156,9 +134,7 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
 
             {request.message && (
               <div className="mb-3 rounded border border-outline-variant/20 bg-surface-container-highest/30 p-3">
-                <p className="text-sm italic leading-relaxed text-on-surface/80">
-                  "{request.message}"
-                </p>
+                <p className="text-sm italic leading-relaxed text-on-surface/80">"{request.message}"</p>
               </div>
             )}
 

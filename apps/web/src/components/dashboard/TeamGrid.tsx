@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
-<<<<<<< HEAD
 import { api } from '@/lib/api';
-=======
->>>>>>> 054f02c (dashboard)
 import TeamDetailModal from './TeamDetailModal';
 import Icon from '@/components/ui/Icon';
 
@@ -26,84 +23,8 @@ export default function TeamGrid() {
   const loadTeams = async () => {
     try {
       setIsLoading(true);
-<<<<<<< HEAD
       const result = await api.listTeams({ has_openings: showAvailableOnly || undefined });
-      setTeams(result.data);
-=======
-      // TODO: Replace with real API call
-      // const data = await api.listTeams({ available_only: showAvailableOnly });
-      // setTeams(data);
-
-      // Mock data for demo
-      const mockTeams: Team[] = [
-        {
-          id: '1',
-          name: 'The Neon Dealers',
-          description: 'Building an AI-powered poker training app. Looking for backend devs!',
-          member_count: 3,
-          max_size: 4,
-          is_full: false,
-          is_looking_for_members: true,
-          created_at: new Date().toISOString(),
-        },
-        {
-          id: '2',
-          name: 'Code Casino',
-          description: 'Creating a blockchain-based betting platform with smart contracts.',
-          member_count: 4,
-          max_size: 4,
-          is_full: true,
-          is_looking_for_members: false,
-          created_at: new Date().toISOString(),
-        },
-        {
-          id: '3',
-          name: 'Binary Blackjack',
-          description: 'Developing a multiplayer card game with real-time chat. Need frontend React dev!',
-          member_count: 2,
-          max_size: 4,
-          is_full: false,
-          is_looking_for_members: true,
-          created_at: new Date().toISOString(),
-        },
-        {
-          id: '4',
-          name: 'Stack Shufflers',
-          description: 'Working on a mobile app for tracking hackathon stats and achievements.',
-          member_count: 1,
-          max_size: 4,
-          is_full: false,
-          is_looking_for_members: true,
-          created_at: new Date().toISOString(),
-        },
-        {
-          id: '5',
-          name: 'Debug Dragons',
-          description: 'Building a VS Code extension for collaborative debugging sessions.',
-          member_count: 3,
-          max_size: 4,
-          is_full: false,
-          is_looking_for_members: true,
-          created_at: new Date().toISOString(),
-        },
-        {
-          id: '6',
-          name: 'Chip Stackers',
-          description: 'Creating an educational platform for learning poker strategy through code.',
-          member_count: 2,
-          max_size: 4,
-          is_full: false,
-          is_looking_for_members: true,
-          created_at: new Date().toISOString(),
-        },
-      ];
-
-      const filteredTeams = showAvailableOnly
-        ? mockTeams.filter(team => !team.is_full)
-        : mockTeams;
-
-      setTeams(filteredTeams);
->>>>>>> 054f02c (dashboard)
+      setTeams(result.data ?? []);
     } catch (error) {
       console.error('Failed to load teams:', error);
       setTeams([]);
@@ -132,7 +53,7 @@ export default function TeamGrid() {
       <div className="py-12 text-center">
         <Icon name="group_off" className="mb-4 text-6xl text-on-surface/20" />
         <h3 className="mb-2 font-headline text-2xl tracking-wide text-white-pure">No Teams Available</h3>
-        <p className="text-on-surface/60">Check back later or create your own team to get started!</p>
+        <p className="text-on-surface/60">Check back later or create your own team to get started.</p>
       </div>
     );
   }
@@ -140,12 +61,9 @@ export default function TeamGrid() {
   return (
     <>
       <div className="space-y-6">
-        {/* Header with Filter */}
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="font-headline text-xl tracking-wide text-white-pure">
-              Browse Teams
-            </h3>
+            <h3 className="font-headline text-xl tracking-wide text-white-pure">Browse Teams</h3>
             <p className="mt-1 font-label text-xs tracking-wider text-outline">
               {teams.length} team{teams.length !== 1 ? 's' : ''} available
             </p>
@@ -164,7 +82,6 @@ export default function TeamGrid() {
           </button>
         </div>
 
-        {/* Team Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {teams.map((team) => (
             <button
@@ -172,15 +89,11 @@ export default function TeamGrid() {
               onClick={() => setSelectedTeam(team.id)}
               className="glass-effect group relative overflow-hidden rounded-lg border border-outline-variant/30 bg-surface-container/80 p-5 text-left transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10"
             >
-              {/* Ambient glow on hover */}
               <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 bg-[radial-gradient(circle,rgba(255,179,177,0.1)_0%,transparent_60%)] opacity-0 transition-opacity group-hover:opacity-100"></div>
 
               <div className="relative z-10 space-y-3">
-                {/* Header with status badge */}
                 <div className="flex items-start justify-between gap-2">
-                  <h4 className="line-clamp-1 font-headline text-xl tracking-wide text-white-pure">
-                    {team.name}
-                  </h4>
+                  <h4 className="line-clamp-1 font-headline text-xl tracking-wide text-white-pure">{team.name}</h4>
                   {team.is_full ? (
                     <span className="flex shrink-0 items-center gap-1 rounded border border-outline/40 bg-surface-container-highest/50 px-2 py-0.5 font-label text-[10px] font-bold uppercase tracking-wider text-outline">
                       <Icon name="lock" className="text-xs" />
@@ -194,14 +107,10 @@ export default function TeamGrid() {
                   )}
                 </div>
 
-                {/* Description */}
                 {team.description && (
-                  <p className="line-clamp-2 text-sm leading-relaxed text-on-surface/70">
-                    {team.description}
-                  </p>
+                  <p className="line-clamp-2 text-sm leading-relaxed text-on-surface/70">{team.description}</p>
                 )}
 
-                {/* Footer with member count and CTA */}
                 <div className="flex items-center justify-between border-t border-outline-variant/20 pt-3">
                   <div className="flex items-center gap-2">
                     <Icon name="group" className="text-primary" />
@@ -210,7 +119,7 @@ export default function TeamGrid() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1 font-label text-xs uppercase tracking-wider text-primary transition-all group-hover:gap-2 group-hover:text-primary">
+                  <div className="flex items-center gap-1 font-label text-xs uppercase tracking-wider text-primary transition-all group-hover:gap-2">
                     {team.is_full ? 'View' : 'Join'}
                     <Icon name="arrow_forward" className="text-sm" />
                   </div>
@@ -221,7 +130,6 @@ export default function TeamGrid() {
         </div>
       </div>
 
-      {/* Team Detail Modal */}
       {selectedTeam && (
         <TeamDetailModal
           teamId={selectedTeam}

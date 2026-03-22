@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import ProfileCard from './ProfileCard';
-import UserGrid from './UserGrid';
-import TeamGrid from './TeamGrid';
+import ProfileCard from './ProfileCard.tsx';
+import UserGrid from './UserGrid.tsx';
+import TeamGrid from './TeamGrid.tsx';
 
 type Tab = 'dashboard' | 'teams' | 'players';
 
