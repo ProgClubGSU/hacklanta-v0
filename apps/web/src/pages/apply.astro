@@ -1,6 +1,22 @@
 ---
 import LandingLayout from '../layouts/LandingLayout.astro';
+import { checkDashboardAccess } from '../lib/dashboard-gate';
+
 const { userId } = await Astro.locals.auth();
+
+// If logged in, check if they've already applied or are accepted
+if (userId) {
+  const gate = await checkDashboardAccess(userId);
+
+  if (gate.status === 'accepted') {
+    return Astro.redirect('/dashboard/team');
+  }
+  // Pre-cutoff users OR post-cutoff users with a linked application → under review
+  if (gate.status === 'pending') {
+    return Astro.redirect('/dashboard/pending');
+  }
+  // gate.status === 'no-application' → let them through to the Tally form
+}
 ---
 
 <LandingLayout title="Apply — Hacklanta">
