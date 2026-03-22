@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdminPanel from '../../components/admin/AdminPanel';
+
+const devBypass = import.meta.env.DEV;
+let isAdmin = false;
+
+if (devBypass) {
+  isAdmin = true;
+} else {
+  const { userId } = Astro.locals.auth();
+  if (!userId) {
+    return Astro.redirect('/sign-in');
+  }
+  const clerkSecretKey = import.meta.env.CLERK_SECRET_KEY;
+  const clerkRes = await fetch(`https://api.clerk.com/v1/users/${userId}`, {
+    headers: { Authorization: `Bearer ${clerkSecretKey}` },
+  });
+  const clerkUser = await clerkRes.json();
+  const role = clerkUser.public_metadata?.role ?? clerkUser.private_metadata?.role;
+  isAdmin = role === 'admin';
+}
+---
+
+<BaseLayout title="Admin | Hacklanta">
+  {isAdmin ? (
+    <main class="min-h-screen bg-black px-4 py-16 font-body">
+      <div class="mx-auto max-w-7xl">
+        <AdminPanel client:load />
+      </div>
+    </main>
+  ) : (
+    <main class="flex min-h-screen items-center justify-center bg-black px-4 font-body">
+      <div class="text-center">
+        <p class="mb-2 font-mono text-[11px] uppercase tracking-[0.3em] text-red/80">[403]</p>
+        <h1 class="mb-4 font-serif text-3xl italic text-white">Access Denied</h1>
+        <p class="mb-8 text-sm text-gray">You do not have admin privileges.</p>
+        <a
+          href="/"
+          class="inline-block border border-border px-6 py-2 font-mono text-[11px] uppercase tracking-[0.2em] text-white/70 transition-colors hover:border-red/50 hover:text-white"
+        >
+          Return Home
+        </a>
+      </div>
+    </main>
+  )}
+</BaseLayout>
