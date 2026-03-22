@@ -4,7 +4,6 @@ import OnboardingCard from './OnboardingCard';
 import UserGrid from './UserGrid.tsx';
 import TeamGrid from './TeamGrid.tsx';
 import { TextLogo } from '../ui/TextLogoReact.tsx';
-import Icon from '../ui/Icon';
 import { api } from '../../lib/api';
 
 type Tab = 'dashboard' | 'teams' | 'players';
@@ -31,9 +30,9 @@ export default function TabNavigation() {
   }
 
   const tabs = [
-    { id: 'dashboard' as Tab, label: 'Dashboard', icon: 'space_dashboard' },
-    { id: 'teams' as Tab, label: 'Teams', icon: 'groups' },
-    { id: 'players' as Tab, label: 'Players', icon: 'person_search' },
+    { id: 'dashboard' as Tab, label: 'Dashboard' },
+    { id: 'teams' as Tab, label: 'Teams' },
+    { id: 'players' as Tab, label: 'Players' },
   ];
 
   const isTabLocked = (tabId: Tab) => !profileComplete && (tabId === 'teams' || tabId === 'players');
@@ -45,13 +44,13 @@ export default function TabNavigation() {
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] gap-0">
-      {/* Sidebar — desktop only */}
-      <aside className="hidden w-52 shrink-0 border-r border-white/6 pr-6 pt-2 md:block">
-        <a href="/" className="mb-10 block" aria-label="Hacklanta home">
+      {/* Sidebar — desktop */}
+      <aside className="hidden w-40 shrink-0 border-r border-white/6 pt-2 md:block">
+        <a href="/" className="mb-10 block pr-4" aria-label="Hacklanta home">
           <TextLogo size="xs" className="opacity-85" />
         </a>
 
-        <nav className="space-y-1">
+        <nav className="space-y-0.5 pr-4">
           {tabs.map((tab) => {
             const locked = isTabLocked(tab.id);
             const active = activeTab === tab.id;
@@ -59,7 +58,7 @@ export default function TabNavigation() {
               <button
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
-                className={`flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left transition-all duration-150 ${
+                className={`flex w-full items-center justify-between rounded px-3 py-2 text-left transition-all duration-150 ${
                   locked
                     ? 'cursor-not-allowed opacity-25'
                     : active
@@ -68,22 +67,23 @@ export default function TabNavigation() {
                 }`}
                 title={locked ? 'Complete your profile to unlock' : undefined}
               >
-                <Icon name={locked ? 'lock' : tab.icon} className="text-[18px]" />
-                <span className="font-mono text-[11px] uppercase tracking-[0.1em]">
+                <span className="font-mono text-[11px] uppercase tracking-[0.08em]">
                   {tab.label}
                 </span>
+                {locked && (
+                  <span className="text-[10px] text-white/30">&#128274;</span>
+                )}
               </button>
             );
           })}
         </nav>
 
-        <div className="mt-8 border-t border-white/6 pt-6">
+        <div className="mt-8 border-t border-white/6 pt-5 pr-4">
           <a
             href="/"
-            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-white/25 transition-colors hover:text-white/50"
+            className="block px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-white/25 transition-colors hover:text-white/50"
           >
-            <Icon name="arrow_back" className="text-sm" />
-            Home
+            &larr; Home
           </a>
         </div>
       </aside>
@@ -101,7 +101,7 @@ export default function TabNavigation() {
                 <button
                   key={tab.id}
                   onClick={() => handleTabClick(tab.id)}
-                  className={`font-mono text-[10px] uppercase tracking-[0.1em] transition-colors ${
+                  className={`font-mono text-[10px] uppercase tracking-[0.08em] transition-colors ${
                     locked
                       ? 'cursor-not-allowed opacity-25'
                       : activeTab === tab.id
@@ -110,7 +110,6 @@ export default function TabNavigation() {
                   }`}
                 >
                   {tab.label}
-                  {locked && <Icon name="lock" className="ml-1 text-[10px]" weight={600} />}
                 </button>
               );
             })}
@@ -119,8 +118,7 @@ export default function TabNavigation() {
       </div>
 
       {/* Main content */}
-      <main className="min-w-0 flex-1 pt-2 md:pl-6">
-        {/* Mobile spacer for fixed nav */}
+      <main className="min-w-0 flex-1 pt-2 md:pl-8">
         <div className="h-10 md:hidden" />
 
         <div className="animate-fadeIn" key={activeTab}>

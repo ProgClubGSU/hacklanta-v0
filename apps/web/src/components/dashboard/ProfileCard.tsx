@@ -1,7 +1,6 @@
 import { useAuth } from '@clerk/astro/react';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
-import Icon from '@/components/ui/Icon';
 
 interface ProfileCardProps {
   onBrowsePlayers?: () => void;
@@ -241,10 +240,9 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
             <button
               type="button"
               onClick={openEditor}
-              className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
+              className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
             >
-              <Icon name="edit" className="text-sm" />
-              Edit
+              Edit &rarr;
             </button>
           </div>
 
@@ -356,7 +354,7 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
             </div>
           </div>
         ) : (
-          <div className="mt-4 flex items-center gap-4">
+          <div className="mt-4 flex items-center gap-5">
             <p className="font-body text-sm text-white/35">
               You're not on a team yet.
             </p>
@@ -365,7 +363,15 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
               onClick={onBrowseTeams}
               className="font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:text-red-bright"
             >
-              Find a team &rarr;
+              Browse teams &rarr;
+            </button>
+            <span className="text-white/15">|</span>
+            <button
+              type="button"
+              onClick={onBrowseTeams}
+              className="font-mono text-[11px] uppercase tracking-[0.15em] text-white/40 transition-colors hover:text-white/70"
+            >
+              Create team
             </button>
           </div>
         )}
@@ -381,8 +387,8 @@ export default function ProfileCard({ onBrowsePlayers, onBrowseTeams }: ProfileC
                 <h2 className="font-display text-2xl uppercase tracking-[-0.03em] text-white">Edit Profile</h2>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">Team finder profile</p>
               </div>
-              <button type="button" onClick={() => setIsEditing(false)} className="text-white/50 transition-colors hover:text-white">
-                <Icon name="close" />
+              <button type="button" onClick={() => setIsEditing(false)} className="font-mono text-lg text-white/50 transition-colors hover:text-white">
+                &times;
               </button>
             </div>
             <div className="space-y-4">
