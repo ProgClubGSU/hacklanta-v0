@@ -8,35 +8,31 @@ function verifyTallySignature(body: string, signature: string | null, secret: st
   return signature === expected
 }
 
+/** Resolve an option ID to its label using the field's options list.
+ *  Tally options use `text` (not `name`) for the human-readable label. */
+function resolveOptionId(id: string, options?: Array<{ id: string; text?: string; name?: string }>): string {
+  if (!options?.length) return id
+  const opt = options.find((o) => o.id === id)
+  return opt?.text ?? opt?.name ?? id
+}
+
 /** Extract a human-readable string from Tally's various field value formats */
-function extractValue(field: { value: unknown; options?: Array<{ id: string; name: string }> }): string {
+function extractValue(field: { value: unknown; options?: Array<{ id: string; text?: string; name?: string }> }): string {
   const val = field.value
   if (val == null) return ''
   if (typeof val === 'string') {
-    // Single-choice dropdowns send a plain option ID string — resolve via options
-    if (field.options?.length) {
-      const opt = field.options.find((o) => o.id === val)
-      if (opt?.name) return opt.name
-    }
-    return val
+    return resolveOptionId(val, field.options)
   }
   if (typeof val === 'number' || typeof val === 'boolean') return String(val)
   if (Array.isArray(val)) {
     if (val.length === 0) return ''
-    // Choice/dropdown fields: [{id, name}] — extract names
-    if (typeof val[0] === 'object' && val[0]?.name) {
-      return val.map((v: { name?: string }) => v.name ?? '').filter(Boolean).join(', ')
+    // Choice/dropdown fields: [{id, text}] or [{id, name}] — extract labels
+    if (typeof val[0] === 'object' && (val[0]?.text || val[0]?.name)) {
+      return val.map((v: { text?: string; name?: string }) => v.text ?? v.name ?? '').filter(Boolean).join(', ')
     }
     // Option ID arrays (plain strings) — resolve labels via field.options
     if (typeof val[0] === 'string') {
-      if (field.options?.length) {
-        return val.map((id: string) => {
-          const opt = field.options!.find((o) => o.id === id)
-          return opt?.name ?? id
-        }).join(', ')
-      }
-      // No options provided — return raw values (may be IDs or plain text)
-      return val.join(', ')
+      return val.map((id: string) => resolveOptionId(id, field.options)).join(', ')
     }
     // File uploads: [{url, name}]
     if (typeof val[0] === 'object' && val[0]?.url) {
@@ -46,7 +42,7 @@ function extractValue(field: { value: unknown; options?: Array<{ id: string; nam
     return val.map(String).join(', ')
   }
   if (typeof val === 'object' && val !== null) {
-    return (val as { name?: string }).name ?? JSON.stringify(val)
+    return (val as { text?: string; name?: string }).text ?? (val as { name?: string }).name ?? JSON.stringify(val)
   }
   return String(val)
 }
@@ -92,28 +88,21 @@ export const POST: APIRoute = async ({ request }) => {
   let schoolEmail = ''
   let personalEmail = ''
 
-  // DEBUG: Log raw field data to diagnose option ID resolution
-  console.log('[tally-webhook] Raw fields:', JSON.stringify(fields.map((f: any) => ({
-    label: f.label,
-    type: f.type,
-    value: f.value,
-    hasOptions: !!f.options,
-    optionsCount: f.options?.length ?? 0,
-    options: f.options?.slice(0, 3), // first 3 options for brevity
-  })), null, 2))
-
   for (const field of fields) {
     const label = (field.label ?? '').toLowerCase()
     const value = extractValue(field)
 
     if (label.includes('first name')) { /* parsed but not stored separately */ }
     else if (label.includes('last name')) { /* parsed but not stored separately */ }
-    else if (label.includes('school email')) schoolEmail = value
+    else if (label.includes('school email') || label.includes('.edu')) schoolEmail = value
     else if (label.includes('personal email')) personalEmail = value
     else if (label.includes('phone')) appData.phone_number = value
     else if (label.includes('t-shirt')) appData.tshirt_size = value
     else if (label.includes('dietary')) appData.dietary_restrictions = value
-    else if (label.includes('school') || label.includes('university')) appData.university = value
+    else if (label.includes('school') || label.includes('university')) {
+      // Dropdown + "Other" text input share this label — prefer non-empty text input over dropdown
+      if (value && (!appData.university || field.type === 'INPUT_TEXT')) appData.university = value
+    }
     else if (label.includes('major')) appData.major = value
     else if (label.includes('year of study')) appData.year_of_study = value
     else if (label.includes('graduation')) appData.graduation_date = value
