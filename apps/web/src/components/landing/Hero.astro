@@ -551,7 +551,7 @@
     </div>
 
     <!-- ========== SLOT MACHINE ========== -->
-    <div class="hero-slot mt-2 opacity-0">
+    <div class="hero-slot mt-4 opacity-0 sm:mt-6">
       <div class="slot-cabinet">
         <!-- Top marquee -->
         <div class="slot-marquee">
@@ -645,43 +645,32 @@
       </div>
     </div>
 
-    <!-- CTA -->
-    <div class="hero-cta mt-6 flex flex-col items-center justify-center gap-3 opacity-0">
-      <a
-        href="/apply"
-        class="group relative inline-flex items-center justify-center gap-3 overflow-hidden bg-red px-10 py-4 font-body text-sm font-bold tracking-[0.15em] text-white-pure transition-all duration-300 hover:bg-red-bright hover:shadow-[0_0_50px_rgba(196,30,58,0.35)] hover:scale-[1.03]"
-      >
-        <span class="relative z-10 uppercase">Apply</span>
-        <span
-          class="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
-        ></span>
-      </a>
-      <a
-        href="/dashboard"
-        class="text-center font-serif italic text-sm text-white font-bold transition-colors hover:text-red-bright"
-      >
-        Already applied? <span
-          class="underline decoration-white/40 underline-offset-4 hover:decoration-red-bright"
-          >Login</span
+    <!-- CTA + Info -->
+    <div class="hero-cta mt-8 flex flex-col items-center gap-5 opacity-0 sm:mt-10">
+      <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+        <a
+          href="/apply"
+          class="group inline-flex items-center gap-2.5 border border-red/50 bg-red/10 px-8 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-red-bright transition-all duration-300 hover:border-red/80 hover:bg-red/20 hover:shadow-[0_0_30px_rgba(196,30,58,0.2)] sm:text-[11px]"
         >
-      </a>
+          Apply now
+          <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a
+          href="/dashboard"
+          class="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70 sm:text-[11px]"
+        >
+          Already applied? &rarr;
+        </a>
+      </div>
+
+      <p class="font-mono text-[10px] tracking-[0.15em] text-white/30 sm:text-[11px]">
+        Deadline extended to <span class="text-red-bright/70">March 27, 2026</span>
+        <span class="mx-2 text-white/15">&middot;</span>
+        Casino-night themed. <span class="text-white/50">No gambling involved.</span>
+      </p>
     </div>
-
-    <!-- Deadline -->
-    <p
-      class="hero-cta mt-4 font-mono italic text-[14px] tracking-[0.1em] text-white opacity-0"
-      style="text-shadow: 0 0 10px rgba(196,30,58,0.8);"
-    >
-      Application deadline has been extended until <span class="text-red">March 27, 2026</span>.
-    </p>
-
-    <!-- Disclaimer -->
-    <p class="hero-cta mt-4 mb-20 font-mono italic text-[13px] tracking-[0.15em] text-white/50 opacity-0">
-      Casino-night themed hackathon. <span
-        class="text-white"
-        style="text-shadow:0 0 8px rgba(255,255,255,0.6)">No gambling involved.</span
-      >
-    </p>
   </div>
 
   <!-- Skip intro button -->
@@ -976,20 +965,16 @@
   }
 
   /* ======================================================
-     SLOT MACHINE — physical cabinet design
+     SLOT MACHINE — minimal editorial countdown
      ====================================================== */
   .slot-cabinet {
     max-width: 520px;
     width: 100%;
     margin: 0 auto;
-    border-radius: 14px;
-    background: linear-gradient(180deg, #2a1218 0%, #1a0a0e 40%, #120609 100%);
-    border: 2px solid rgba(196, 30, 58, 0.2);
-    box-shadow:
-      0 12px 50px rgba(0, 0, 0, 0.8),
-      0 0 100px rgba(196, 30, 58, 0.05),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: none;
     position: relative;
     overflow: hidden;
   }
@@ -1000,34 +985,21 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 6px 16px;
-    background: linear-gradient(180deg, #3a1520 0%, #2a1018 100%);
-    border-bottom: 2px solid rgba(196, 30, 58, 0.15);
+    padding: 10px 16px;
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     position: relative;
   }
   .slot-marquee::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      rgba(196, 30, 58, 0.08),
-      rgba(196, 30, 58, 0.02) 30%,
-      rgba(196, 30, 58, 0.02) 70%,
-      rgba(196, 30, 58, 0.08)
-    );
+    display: none;
   }
 
   .marquee-bulb {
-    width: 6px;
-    height: 6px;
+    width: 3px;
+    height: 3px;
     border-radius: 50%;
-    background: radial-gradient(
-      circle at 40% 35%,
-      rgba(255, 200, 100, 0.9),
-      rgba(196, 30, 58, 0.6)
-    );
-    box-shadow: 0 0 6px rgba(255, 200, 100, 0.4);
+    background: rgba(196, 30, 58, 0.5);
+    box-shadow: 0 0 4px rgba(196, 30, 58, 0.3);
     animation: bulb-blink 2s ease-in-out infinite;
   }
   .marquee-bulb:nth-child(2) {
@@ -1049,22 +1021,20 @@
   @keyframes bulb-blink {
     0%,
     100% {
-      opacity: 0.4;
-      box-shadow: 0 0 4px rgba(255, 200, 100, 0.2);
+      opacity: 0.3;
     }
     50% {
       opacity: 1;
-      box-shadow: 0 0 10px rgba(255, 200, 100, 0.6);
     }
   }
 
   .marquee-text {
     font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.5em;
-    color: rgba(196, 30, 58, 0.6);
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: rgba(255, 255, 255, 0.3);
     text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(196, 30, 58, 0.2);
+    text-shadow: none;
     position: relative;
   }
 
@@ -1075,25 +1045,26 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 10px;
-    padding: 6px 16px;
-    background: rgba(20, 9, 13, 0.6);
+    padding: 8px 16px;
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   }
   .slot-info-cell {
-    font-family: var(--font-body);
-    font-size: 11px;
-    font-weight: 500;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
     letter-spacing: 0.2em;
-    color: var(--color-gray);
+    color: rgba(255, 255, 255, 0.25);
     text-transform: uppercase;
   }
   .slot-info-dot {
-    color: rgba(196, 30, 58, 0.3);
+    color: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
   }
   @media (min-width: 768px) {
     .slot-info-cell {
-      font-size: 12px;
+      font-size: 11px;
     }
     .slot-info {
       gap: 16px;
@@ -1103,41 +1074,21 @@
   /* ── Reel body ── */
   .slot-body {
     position: relative;
-    padding: 8px 20px 6px;
-    background: linear-gradient(180deg, rgba(15, 7, 10, 0.9) 0%, rgba(10, 4, 6, 0.95) 100%);
-    border-top: 1px solid rgba(196, 30, 58, 0.08);
-    border-bottom: 1px solid rgba(196, 30, 58, 0.08);
+    padding: 16px 20px 12px;
+    background: transparent;
+    border-top: none;
+    border-bottom: none;
   }
   @media (min-width: 768px) {
     .slot-body {
-      padding: 10px 28px 8px;
+      padding: 20px 28px 16px;
     }
   }
 
-  /* Payline arrows */
+  /* Payline arrows — hidden in new design */
   .slot-payline-left,
   .slot-payline-right {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-60%);
-    font-size: 8px;
-    color: rgba(196, 30, 58, 0.5);
-    text-shadow: 0 0 6px rgba(196, 30, 58, 0.3);
-    z-index: 2;
-  }
-  .slot-payline-left {
-    left: 8px;
-  }
-  .slot-payline-right {
-    right: 8px;
-  }
-  @media (min-width: 768px) {
-    .slot-payline-left {
-      left: 12px;
-    }
-    .slot-payline-right {
-      right: 12px;
-    }
+    display: none;
   }
 
   /* Reels container */
@@ -1145,11 +1096,11 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
   }
   @media (min-width: 768px) {
     .slot-reels {
-      gap: 10px;
+      gap: 12px;
     }
   }
 
@@ -1157,47 +1108,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
   }
 
-  /* Each reel window — sunken, deep, visible mechanics */
+  /* Each reel window — minimal, clean */
   .slot-reel-window {
     position: relative;
-    width: 56px;
-    height: 56px;
-    border-radius: 6px;
-    background: #0a0305;
-    border: 2px solid rgba(196, 30, 58, 0.18);
+    width: 60px;
+    height: 64px;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     overflow: hidden;
-    box-shadow:
-      inset 0 4px 16px rgba(0, 0, 0, 1),
-      inset 0 -4px 16px rgba(0, 0, 0, 1),
-      inset 2px 0 8px rgba(0, 0, 0, 0.6),
-      inset -2px 0 8px rgba(0, 0, 0, 0.6),
-      0 2px 0 rgba(196, 30, 58, 0.08),
-      0 -2px 0 rgba(196, 30, 58, 0.05);
+    box-shadow: none;
   }
   @media (min-width: 768px) {
     .slot-reel-window {
-      width: 76px;
-      height: 72px;
-      border-radius: 8px;
+      width: 80px;
+      height: 80px;
     }
   }
 
-  /* Glass shine overlay */
+  /* Glass shine overlay — subtle */
   .reel-shine {
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 3;
-    border-radius: 5px;
+    border-radius: 0;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.06) 0%,
-      transparent 30%,
-      transparent 70%,
-      rgba(0, 0, 0, 0.3) 100%
+      rgba(255, 255, 255, 0.02) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(0, 0, 0, 0.1) 100%
     );
   }
 
@@ -1213,12 +1157,11 @@
 
   .reel-digit {
     font-family: var(--font-mono);
-    font-size: 38px;
-    letter-spacing: 0.06em;
-    color: #c41e3a;
-    text-shadow:
-      0 0 20px rgba(196, 30, 58, 0.4),
-      0 0 40px rgba(196, 30, 58, 0.15);
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.08);
     line-height: 1;
     display: flex;
     align-items: center;
@@ -1227,12 +1170,12 @@
     height: 100%;
   }
   .reel-strip--sec .reel-digit {
-    color: rgba(196, 30, 58, 0.65);
-    text-shadow: 0 0 15px rgba(196, 30, 58, 0.2);
+    color: rgba(255, 255, 255, 0.4);
+    text-shadow: none;
   }
   @media (min-width: 768px) {
     .reel-digit {
-      font-size: 52px;
+      font-size: 48px;
     }
   }
 
@@ -1263,17 +1206,17 @@
   /* Colon separator */
   .reel-sep {
     font-family: var(--font-mono);
-    font-size: 32px;
-    color: rgba(196, 30, 58, 0.3);
-    padding-top: 12px;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.15);
+    padding-top: 16px;
     line-height: 1;
-    text-shadow: 0 0 8px rgba(196, 30, 58, 0.12);
+    text-shadow: none;
     animation: sep-pulse 2s ease-in-out infinite;
   }
   @media (min-width: 768px) {
     .reel-sep {
-      font-size: 44px;
-      padding-top: 14px;
+      font-size: 32px;
+      padding-top: 20px;
     }
   }
   @keyframes sep-pulse {
@@ -1282,15 +1225,15 @@
       opacity: 0.3;
     }
     50% {
-      opacity: 1;
+      opacity: 0.8;
     }
   }
 
   .reel-label {
     font-family: var(--font-mono);
     font-size: 8px;
-    letter-spacing: 0.4em;
-    color: var(--color-gray-darker);
+    letter-spacing: 0.3em;
+    color: rgba(255, 255, 255, 0.2);
   }
   @media (min-width: 768px) {
     .reel-label {
@@ -1298,58 +1241,22 @@
     }
   }
 
-  /* ── Lever ── */
+  /* ── Lever — hidden in editorial design ── */
   .slot-lever {
-    position: absolute;
-    right: -16px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: none;
   }
-  .lever-shaft {
-    width: 6px;
-    height: 40px;
-    background: linear-gradient(90deg, #4a2a30, #6a3a42, #4a2a30);
-    border-radius: 3px;
-    border: 1px solid rgba(196, 30, 58, 0.15);
-    box-shadow: 1px 0 4px rgba(0, 0, 0, 0.4);
-  }
-  .lever-knob {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #c41e3a, #7a1024);
-    border: 2px solid rgba(196, 30, 58, 0.3);
-    box-shadow:
-      0 2px 6px rgba(0, 0, 0, 0.5),
-      inset 0 1px 2px rgba(255, 255, 255, 0.15);
-    margin-top: -2px;
-  }
-  @media (max-width: 767px) {
-    .slot-lever {
-      display: none;
-    }
-  }
+  .lever-shaft, .lever-knob { display: none; }
 
   /* ── Bottom tray ── */
   .slot-tray {
-    padding: 5px 16px 6px;
-    background: linear-gradient(180deg, #1a0a0e 0%, #120608 100%);
+    padding: 0;
+    background: transparent;
   }
   .tray-inner {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 0 0 8px 8px;
-    padding: 6px;
-    border: 1px solid rgba(196, 30, 58, 0.06);
-    border-top: none;
-    text-align: center;
+    display: none;
   }
   .tray-text {
-    font-size: 10px;
-    color: rgba(196, 30, 58, 0.3);
-    letter-spacing: 0.4em;
+    display: none;
   }
 
   /* ======================================================
