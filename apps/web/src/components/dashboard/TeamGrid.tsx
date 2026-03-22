@@ -100,6 +100,7 @@ export default function TeamGrid() {
   const [joinCode, setJoinCode] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const [isJoiningByCode, setIsJoiningByCode] = useState(false);
+  const [isLeavingTeam, setIsLeavingTeam] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -192,6 +193,21 @@ export default function TeamGrid() {
     }
   }
 
+  async function handleLeaveTeam() {
+    if (!confirm('Are you sure you want to leave your current team?')) return;
+
+    try {
+      setIsLeavingTeam(true);
+      setActionError(null);
+      await api.leaveTeam();
+      await loadTeams();
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : 'Failed to leave team.');
+    } finally {
+      setIsLeavingTeam(false);
+    }
+  }
+
   function toggleTrack(trackName: string) {
     setNewTracks((previous) =>
       previous.includes(trackName)
@@ -270,6 +286,14 @@ export default function TeamGrid() {
                     {Math.max(myTeam.max_size - myTeam.members.length, 0)} / {myTeam.max_size}
                   </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={handleLeaveTeam}
+                  disabled={isLeavingTeam}
+                  className="rounded border border-red/30 bg-red/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isLeavingTeam ? 'Leaving...' : 'Leave team'}
+                </button>
               </div>
             </div>
           </div>

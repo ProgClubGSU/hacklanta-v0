@@ -53,6 +53,7 @@ export default function TeamDetailModal({
   const [team, setTeam] = useState<TeamDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLeavingTeam, setIsLeavingTeam] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -95,6 +96,22 @@ export default function TeamDetailModal({
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Failed to send join request.');
       setIsSubmitting(false);
+    }
+  }
+
+  async function handleLeaveTeam() {
+    if (!team) return;
+    if (!confirm(`Leave ${team.name}?`)) return;
+
+    try {
+      setIsLeavingTeam(true);
+      setError(null);
+      await api.leaveTeam();
+      onClose();
+      onJoinRequestSent();
+    } catch (leaveError) {
+      setError(leaveError instanceof Error ? leaveError.message : 'Failed to leave team.');
+      setIsLeavingTeam(false);
     }
   }
 
@@ -238,6 +255,29 @@ export default function TeamDetailModal({
                   ))}
                 </div>
               </div>
+
+              {team.viewer_is_member && (
+                <div className="rounded border border-red/20 bg-red/5 p-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-red/80">
+                        Team Controls
+                      </p>
+                      <p className="mt-1 text-sm text-white/65">
+                        Need to switch teams? You can leave this one here.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleLeaveTeam}
+                      disabled={isLeavingTeam}
+                      className="rounded border border-red/30 bg-red/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {isLeavingTeam ? 'Leaving...' : 'Leave team'}
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {team.join_request_status ? (
                 <div className="rounded border border-gold/40 bg-gold/10 p-4">
