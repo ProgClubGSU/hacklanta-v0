@@ -13,7 +13,7 @@ export function ProfileEditor() {
   const [linkedinUrl, setLinkedinUrl] = useState('');
   const [githubUrl, setGithubUrl] = useState('');
   const [portfolioUrl, setPortfolioUrl] = useState('');
-  const [lookingForTeam, setLookingForTeam] = useState(true);
+  const [lookingForTeam, setLookingForTeam] = useState(false);
 
   useEffect(() => {
     async function loadProfile() {
@@ -25,7 +25,7 @@ export function ProfileEditor() {
           setLinkedinUrl(profile.linkedin_url || '');
           setGithubUrl(profile.github_url || '');
           setPortfolioUrl(profile.portfolio_url || '');
-          setLookingForTeam(profile.looking_for_team ?? true);
+          setLookingForTeam(profile.looking_for_team ?? false);
         }
       } catch (err: unknown) {
         // 404 just means no profile yet, which is fine
