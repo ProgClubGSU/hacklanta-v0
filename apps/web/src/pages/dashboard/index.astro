@@ -11,11 +11,28 @@ if (!userId) {
 const supabase = createServerSupabaseClient();
 const { data: user } = await supabase
   .from('users')
-  .select('is_accepted')
+  .select('id, is_accepted, created_at')
   .eq('clerk_id', userId)
   .single();
 
 if (!user?.is_accepted) {
+  // Cutoff: March 21, 2026 6:00 PM EDT (10:00 PM UTC — EDT is UTC-4, DST active)
+  // Accounts created after this have tally+clerk linking, so we verify they applied
+  const LINKING_CUTOFF = new Date('2026-03-21T22:00:00Z');
+
+  if (user && new Date(user.created_at) >= LINKING_CUTOFF) {
+    const { data: application } = await supabase
+      .from('applications')
+      .select('id')
+      .eq('user_id', user.id)
+      .limit(1)
+      .maybeSingle();
+
+    if (!application) {
+      return Astro.redirect('/dashboard/no-application');
+    }
+  }
+
   return Astro.redirect('/dashboard/pending');
 }
 

@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const { userId } = await Astro.locals.auth();
+if (!userId) {
+  return Astro.redirect('/sign-in');
+}
+---
+
+<BaseLayout title="No Application Found | Hacklanta">
+  <main class="min-h-screen bg-black px-4 py-16 font-body">
+    <div class="mx-auto max-w-4xl">
+      <!-- Header -->
+      <div
+        class="mb-8 overflow-hidden rounded-lg border border-primary/20 bg-[linear-gradient(135deg,#161313_0%,#191414_58%,#241414_100%)] shadow-[0_16px_40px_rgba(0,0,0,0.28)]"
+      >
+        <div class="flex items-center justify-between gap-6 px-4 py-3 sm:px-6">
+          <a
+            href="/"
+            class="shrink-0 transition-opacity hover:opacity-85"
+            aria-label="Hacklanta home"
+          >
+            <img src="/logo_trimmed.png" alt="Hacklanta" class="h-6 w-auto object-contain sm:h-7" />
+          </a>
+          <div class="flex items-center gap-4">
+            <a
+              href="/"
+              class="font-body text-xs font-bold uppercase tracking-[0.08em] text-white/75 transition-colors hover:text-white"
+            >
+              Home
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Application Card -->
+      <div
+        class="relative overflow-hidden rounded-lg border border-red/30 bg-[linear-gradient(135deg,#161313_0%,#191414_58%,#241414_100%)] p-8 sm:p-12"
+      >
+        <div
+          class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(196,30,58,0.12),transparent_40%)]"
+        >
+        </div>
+
+        <div class="relative z-10 text-center">
+          <!-- Icon -->
+          <div class="mb-6 inline-flex items-center justify-center">
+            <div
+              class="relative flex h-20 w-20 items-center justify-center rounded-full border-2 border-red/40 bg-red/10"
+            >
+              <svg
+                class="h-10 w-10 text-red-bright"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Status Label -->
+          <div class="mb-3 font-mono text-xs uppercase tracking-[0.28em] text-red-bright">
+            System Status
+          </div>
+
+          <!-- Main Heading -->
+          <h1
+            class="mb-4 font-display text-4xl uppercase leading-tight tracking-[-0.04em] text-white sm:text-5xl"
+          >
+            No Application<br />
+            <span class="text-red-bright">Found</span>
+          </h1>
+
+          <!-- Description -->
+          <p
+            class="mx-auto mb-8 max-w-2xl font-body text-base leading-relaxed text-white/70 sm:text-lg"
+          >
+            We couldn't find an application linked to your account. If you haven't applied yet, submit your application to get started. If you already submitted a Tally form, make sure you used the same email address.
+          </p>
+
+          <!-- CTA -->
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="/"
+              class="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white/80 transition-colors hover:border-white/20 hover:bg-white/10 hover:text-white"
+            >
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+              </svg>
+              Back to Home
+            </a>
+            <a
+              href="/apply"
+              class="inline-flex items-center gap-2 rounded-lg bg-red px-6 py-3 font-body text-sm font-semibold uppercase tracking-wider text-white-pure transition-colors hover:bg-red-bright hover:shadow-[0_0_30px_rgba(196,30,58,0.3)]"
+            >
+              Apply Now
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+
+          <!-- Terminal-style accent -->
+          <div
+            class="mt-8 rounded border border-white/10 bg-black/60 p-4 font-mono text-xs text-white/40"
+          >
+            <span class="text-red-bright">$</span> access_status --user=current
+            <br />
+            <span class="text-white/60">&gt; STATUS: NO_APPLICATION</span>
+            <br />
+            <span class="text-white/60">&gt; ACCESS_LEVEL: RESTRICTED</span>
+            <br />
+            <span class="text-white/60">&gt; MESSAGE: Submit an application to continue...</span>
+          </div>
+        </div>
+
+        <!-- Decorative poker suit -->
+        <div
+          class="pointer-events-none absolute bottom-6 right-6 select-none text-6xl text-white/5"
+        >
+          ♦
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
