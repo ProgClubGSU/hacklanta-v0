@@ -110,7 +110,38 @@ export const POST: APIRoute = async ({ request }) => {
       .eq('clerk_id', clerkId)
       .limit(1)
       .single()
-    if (user) appData.user_id = user.id
+    if (user) {
+      appData.user_id = user.id
+    } else {
+      // User not in DB yet (Clerk webhook race condition) — sync from Clerk API
+      const clerkSecretKey = import.meta.env.CLERK_SECRET_KEY
+      if (clerkSecretKey) {
+        const clerkRes = await fetch(`https://api.clerk.com/v1/users/${clerkId}`, {
+          headers: { Authorization: `Bearer ${clerkSecretKey}` },
+        })
+        if (clerkRes.ok) {
+          const clerkUser = await clerkRes.json()
+          const clerkEmail = clerkUser.email_addresses?.[0]?.email_address
+          if (clerkEmail) {
+            const { data: synced } = await supabase
+              .from('users')
+              .upsert(
+                {
+                  clerk_id: clerkId,
+                  email: clerkEmail,
+                  first_name: clerkUser.first_name ?? null,
+                  last_name: clerkUser.last_name ?? null,
+                  avatar_url: clerkUser.image_url ?? null,
+                },
+                { onConflict: 'clerk_id' }
+              )
+              .select('id')
+              .single()
+            if (synced) appData.user_id = synced.id
+          }
+        }
+      }
+    }
   }
 
   // 2. Fallback: try matching by any email from the submission
