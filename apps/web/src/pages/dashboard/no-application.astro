@@ -59,9 +59,9 @@ if (gate.status === 'pending') {
       </nav>
 
       <!-- Main typography block -->
-      <div class="mb-16 select-none">
-        <!-- "No application" — outline italic -->
-        <div class="relative mb-2">
+      <div class="mb-16">
+        <!-- "No application" — outline italic with hover fill -->
+        <div class="gate-outline-wrap relative mb-2 cursor-default">
           <!-- Glow layer -->
           <h1
             class="gate-outline-glow absolute inset-0 font-serif italic text-[clamp(3rem,10vw,7rem)] leading-[0.9] tracking-tight"
@@ -73,14 +73,14 @@ if (gate.status === 'pending') {
           >No application</h1>
         </div>
 
-        <!-- "was" — red italic accent -->
+        <!-- "was" — red italic accent with hover glow -->
         <div class="mb-1 ml-[5%]">
-          <span class="font-serif italic text-[clamp(1.5rem,4vw,2.5rem)] text-red-bright">was</span>
+          <span class="gate-accent font-serif italic text-[clamp(1.5rem,4vw,2.5rem)] text-red-bright">was</span>
         </div>
 
-        <!-- "found" — solid white serif -->
+        <!-- "found" — solid white serif with hover glow -->
         <div class="ml-[20%] sm:ml-[30%]">
-          <h2 class="font-serif text-[clamp(3.5rem,12vw,9rem)] leading-[0.85] tracking-tight text-white">
+          <h2 class="gate-solid cursor-default font-serif text-[clamp(3.5rem,12vw,9rem)] leading-[0.85] tracking-tight text-white">
             found
           </h2>
         </div>
@@ -154,14 +154,49 @@ if (gate.status === 'pending') {
       background-size: 60px 60px;
     }
 
+    /* Outline text — sharp stroke */
     .gate-outline {
       -webkit-text-stroke: 1.5px rgba(255,255,255,0.7);
       color: transparent;
+      transition: color 0.4s ease, -webkit-text-stroke-color 0.4s ease, filter 0.4s ease;
     }
 
+    /* Outline text — glow behind */
     .gate-outline-glow {
       -webkit-text-stroke: 8px rgba(255,255,255,0.06);
       color: transparent;
+      transition: -webkit-text-stroke-color 0.4s ease;
+    }
+
+    /* Hover: outline fills in + red glow */
+    .gate-outline-wrap:hover .gate-outline {
+      color: rgba(230, 57, 70, 0.08);
+      -webkit-text-stroke-color: #E63946;
+      filter: drop-shadow(0 0 25px rgba(230, 57, 70, 0.35));
+    }
+
+    .gate-outline-wrap:hover .gate-outline-glow {
+      -webkit-text-stroke-color: rgba(230, 57, 70, 0.15);
+    }
+
+    /* Solid text — hover glow */
+    .gate-solid {
+      transition: filter 0.4s ease, text-shadow 0.4s ease;
+    }
+
+    .gate-solid:hover {
+      filter: drop-shadow(0 0 20px rgba(230, 57, 70, 0.3));
+      text-shadow: 0 0 40px rgba(230, 57, 70, 0.2);
+    }
+
+    /* Accent text — hover glow */
+    .gate-accent {
+      transition: filter 0.4s ease, text-shadow 0.4s ease;
+    }
+
+    .gate-accent:hover {
+      filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.5));
+      text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
     }
   </style>
 </BaseLayout>

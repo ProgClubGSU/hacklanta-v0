@@ -26,12 +26,12 @@ if (gate.status === 'no-application') {
 
     <!-- Radial glow -->
     <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-      <div class="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(201,168,76,0.06)_0%,transparent_70%)]"></div>
+      <div class="absolute left-1/2 top-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(196,30,58,0.06)_0%,transparent_70%)]"></div>
     </div>
 
     <!-- Decorative compass / star -->
     <div class="pointer-events-none absolute right-[8%] top-[12%] select-none opacity-[0.07]" aria-hidden="true">
-      <svg width="180" height="180" viewBox="0 0 100 100" fill="none" stroke="currentColor" class="text-gold">
+      <svg width="180" height="180" viewBox="0 0 100 100" fill="none" stroke="currentColor" class="text-red">
         <circle cx="50" cy="50" r="35" stroke-width="0.5" />
         <circle cx="50" cy="50" r="25" stroke-width="0.3" />
         <line x1="50" y1="10" x2="50" y2="90" stroke-width="0.5" />
@@ -45,7 +45,7 @@ if (gate.status === 'no-application') {
 
     <!-- Floating suit symbols -->
     <span class="pointer-events-none absolute left-[5%] top-[20%] select-none font-serif text-[12rem] leading-none text-white/[0.02]" aria-hidden="true">♠</span>
-    <span class="pointer-events-none absolute bottom-[10%] right-[12%] select-none font-serif text-[8rem] leading-none text-gold/[0.03]" aria-hidden="true">♦</span>
+    <span class="pointer-events-none absolute bottom-[10%] right-[12%] select-none font-serif text-[8rem] leading-none text-red/[0.03]" aria-hidden="true">♦</span>
 
     <div class="relative z-10 mx-auto w-full max-w-4xl">
 
@@ -60,9 +60,9 @@ if (gate.status === 'no-application') {
       </nav>
 
       <!-- Main typography block -->
-      <div class="mb-16 select-none">
-        <!-- "Your application" — outline italic -->
-        <div class="relative mb-2">
+      <div class="mb-16">
+        <!-- "Your application" — outline italic with hover fill -->
+        <div class="gate-outline-wrap relative mb-2 cursor-default">
           <!-- Glow layer -->
           <h1
             class="gate-outline-glow absolute inset-0 font-serif italic text-[clamp(3rem,10vw,7rem)] leading-[0.9] tracking-tight"
@@ -74,14 +74,14 @@ if (gate.status === 'no-application') {
           >Your application</h1>
         </div>
 
-        <!-- "is" — gold italic accent -->
+        <!-- "is" — red italic accent with hover glow -->
         <div class="mb-1 ml-[5%]">
-          <span class="font-serif italic text-[clamp(1.5rem,4vw,2.5rem)] text-gold">is</span>
+          <span class="gate-accent font-serif italic text-[clamp(1.5rem,4vw,2.5rem)] text-red-bright">is</span>
         </div>
 
-        <!-- "under review" — solid white serif -->
+        <!-- "under review" — solid white serif with hover glow -->
         <div class="ml-[15%] sm:ml-[20%]">
-          <h2 class="font-serif text-[clamp(3rem,11vw,8rem)] leading-[0.85] tracking-tight text-white">
+          <h2 class="gate-solid cursor-default font-serif text-[clamp(3rem,11vw,8rem)] leading-[0.85] tracking-tight text-white">
             under review
           </h2>
         </div>
@@ -103,8 +103,8 @@ if (gate.status === 'no-application') {
 
         <div class="space-y-6">
           <!-- Info cards -->
-          <div class="border-l-2 border-gold/30 pl-5">
-            <h3 class="mb-1 font-mono text-[10px] uppercase tracking-[0.25em] text-gold">What's next</h3>
+          <div class="border-l-2 border-red/30 pl-5">
+            <h3 class="mb-1 font-mono text-[10px] uppercase tracking-[0.25em] text-red-bright">What's next</h3>
             <p class="font-body text-sm text-white/50">
               We'll notify you via email as soon as your application has been processed.
             </p>
@@ -112,7 +112,7 @@ if (gate.status === 'no-application') {
           <div class="border-l-2 border-white/10 pl-5">
             <h3 class="mb-1 font-mono text-[10px] uppercase tracking-[0.25em] text-white/60">Need help?</h3>
             <p class="font-body text-sm text-white/50">
-              Reach out at <a href="mailto:official@progsu.com" class="text-gold/80 underline decoration-gold/30 transition-colors hover:text-gold">official@progsu.com</a>
+              Reach out at <a href="mailto:official@progsu.com" class="text-red-bright/80 underline decoration-red/30 transition-colors hover:text-red-bright">official@progsu.com</a>
             </p>
           </div>
         </div>
@@ -120,7 +120,7 @@ if (gate.status === 'no-application') {
 
       <!-- Terminal accent -->
       <div class="mt-16 rounded border border-white/[0.06] bg-white/[0.02] px-5 py-4 font-mono text-[11px] leading-relaxed text-white/30">
-        <span class="text-gold/60">$</span> access_status --user=current<br />
+        <span class="text-red-bright/60">$</span> access_status --user=current<br />
         <span class="text-white/40">&gt; STATUS: PENDING_REVIEW</span><br />
         <span class="text-white/40">&gt; ACCESS_LEVEL: LIMITED</span><br />
         <span class="text-white/40">&gt; MESSAGE: Awaiting authorization...</span>
@@ -147,14 +147,49 @@ if (gate.status === 'no-application') {
       background-size: 60px 60px;
     }
 
+    /* Outline text — sharp stroke */
     .gate-outline {
       -webkit-text-stroke: 1.5px rgba(255,255,255,0.7);
       color: transparent;
+      transition: color 0.4s ease, -webkit-text-stroke-color 0.4s ease, filter 0.4s ease;
     }
 
+    /* Outline text — glow behind */
     .gate-outline-glow {
       -webkit-text-stroke: 8px rgba(255,255,255,0.06);
       color: transparent;
+      transition: -webkit-text-stroke-color 0.4s ease;
+    }
+
+    /* Hover: outline fills in + red glow */
+    .gate-outline-wrap:hover .gate-outline {
+      color: rgba(230, 57, 70, 0.08);
+      -webkit-text-stroke-color: #E63946;
+      filter: drop-shadow(0 0 25px rgba(230, 57, 70, 0.35));
+    }
+
+    .gate-outline-wrap:hover .gate-outline-glow {
+      -webkit-text-stroke-color: rgba(230, 57, 70, 0.15);
+    }
+
+    /* Solid text — hover glow */
+    .gate-solid {
+      transition: filter 0.4s ease, text-shadow 0.4s ease;
+    }
+
+    .gate-solid:hover {
+      filter: drop-shadow(0 0 20px rgba(230, 57, 70, 0.3));
+      text-shadow: 0 0 40px rgba(230, 57, 70, 0.2);
+    }
+
+    /* Accent text — hover glow */
+    .gate-accent {
+      transition: filter 0.4s ease, text-shadow 0.4s ease;
+    }
+
+    .gate-accent:hover {
+      filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.5));
+      text-shadow: 0 0 30px rgba(230, 57, 70, 0.3);
     }
   </style>
 </BaseLayout>
