@@ -17,45 +17,106 @@ export const POST: APIRoute = async ({ locals, request }) => {
     return new Response(JSON.stringify({ error: 'Invalid JSON body' }), { status: 400 })
   }
 
-  const { application_ids, new_status, send_email = false } = body
+  const { application_ids, user_ids, new_status, send_email = false } = body
 
-  if (!Array.isArray(application_ids) || application_ids.length === 0) {
-    return new Response(JSON.stringify({ error: 'application_ids must be a non-empty array' }), { status: 400 })
+  if ((!Array.isArray(application_ids) || application_ids.length === 0) &&
+      (!Array.isArray(user_ids) || user_ids.length === 0)) {
+    return new Response(JSON.stringify({ error: 'application_ids or user_ids must be a non-empty array' }), { status: 400 })
   }
   if (!VALID_STATUSES.includes(new_status)) {
     return new Response(JSON.stringify({ error: `new_status must be one of: ${VALID_STATUSES.join(', ')}` }), { status: 400 })
   }
 
   const supabase = createServerSupabaseClient()
+  const now = new Date().toISOString()
+  let totalUpdated = 0
 
-  // Update application statuses
-  const { error: updateError, count } = await supabase
-    .from('applications')
-    .update({
-      status: new_status,
-      reviewed_at: new Date().toISOString(),
-      reviewed_by: null, // Could be set to admin's user ID if needed
-    })
-    .in('id', application_ids)
+  // If user_ids provided, create stub applications for users that don't have one
+  // and collect their application IDs for the status update
+  const allAppIds = [...(application_ids ?? [])]
 
-  if (updateError) {
-    return new Response(JSON.stringify({ error: updateError.message }), { status: 500 })
+  if (Array.isArray(user_ids) && user_ids.length > 0) {
+    // Find which users already have applications
+    const { data: existingApps } = await supabase
+      .from('applications')
+      .select('id, user_id')
+      .in('user_id', user_ids)
+
+    const usersWithApps = new Set((existingApps ?? []).map(a => a.user_id))
+    const existingAppIds = (existingApps ?? []).map(a => a.id)
+    allAppIds.push(...existingAppIds)
+
+    // Create stub applications for users without one
+    const usersWithoutApps = user_ids.filter((uid: string) => !usersWithApps.has(uid))
+    if (usersWithoutApps.length > 0) {
+      // Fetch user details for the stub applications
+      const { data: users } = await supabase
+        .from('users')
+        .select('id, email')
+        .in('id', usersWithoutApps)
+
+      if (users?.length) {
+        const stubs = users.map(u => ({
+          user_id: u.id,
+          email: u.email,
+          status: new_status,
+          university: 'N/A',
+          major: 'N/A',
+          year_of_study: 'N/A',
+          reviewed_at: now,
+        }))
+        const { data: inserted } = await supabase
+          .from('applications')
+          .insert(stubs)
+          .select('id')
+        if (inserted) {
+          allAppIds.push(...inserted.map(a => a.id))
+          totalUpdated += inserted.length
+        }
+      }
+    }
+
+    // Also update is_accepted directly on users table
+    if (new_status === 'accepted' || new_status === 'accepted_overflow') {
+      await supabase
+        .from('users')
+        .update({ is_accepted: true })
+        .in('id', user_ids)
+    }
   }
 
-  // If accepted/overflow, also set is_accepted on linked users
+  // Update application statuses (for both existing and newly created)
+  const uniqueAppIds = [...new Set(allAppIds)]
+  if (uniqueAppIds.length > 0) {
+    const { error: updateError, count } = await supabase
+      .from('applications')
+      .update({
+        status: new_status,
+        reviewed_at: now,
+        reviewed_by: null,
+      })
+      .in('id', uniqueAppIds)
+
+    if (updateError) {
+      return new Response(JSON.stringify({ error: updateError.message }), { status: 500 })
+    }
+    totalUpdated += (count ?? 0)
+  }
+
+  // If accepted/overflow, also set is_accepted on linked users (from application_ids path)
   if (new_status === 'accepted' || new_status === 'accepted_overflow') {
     const { data: apps } = await supabase
       .from('applications')
       .select('user_id')
-      .in('id', application_ids)
+      .in('id', uniqueAppIds)
       .not('user_id', 'is', null)
 
-    const userIds = (apps ?? []).map(a => a.user_id).filter(Boolean)
-    if (userIds.length > 0) {
+    const linkedUserIds = (apps ?? []).map(a => a.user_id).filter(Boolean)
+    if (linkedUserIds.length > 0) {
       await supabase
         .from('users')
         .update({ is_accepted: true })
-        .in('id', userIds)
+        .in('id', linkedUserIds)
     }
   }
 
@@ -67,7 +128,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
     const templateName = STATUS_TEMPLATE_MAP[new_status]
     if (!templateName) {
       return new Response(JSON.stringify({
-        updated: count ?? 0,
+        updated: totalUpdated,
         emails_sent: 0,
         emails_failed: 0,
         error: `No email template for status "${new_status}"`,
@@ -78,7 +139,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
     const { data: apps } = await supabase
       .from('applications')
       .select('email, user_id, users(email, first_name)')
-      .in('id', application_ids)
+      .in('id', uniqueAppIds)
 
     if (apps?.length) {
       const resend = createResendClient()
@@ -109,7 +170,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
   }
 
   return new Response(JSON.stringify({
-    updated: count ?? 0,
+    updated: totalUpdated,
     emails_sent: emailsSent,
     emails_failed: emailsFailed,
   }))

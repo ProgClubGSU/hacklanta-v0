@@ -109,7 +109,8 @@ export const adminApi = {
   },
 
   async updateStatus(params: {
-    application_ids: string[];
+    application_ids?: string[];
+    user_ids?: string[];
     new_status: string;
     send_email?: boolean;
   }): Promise<UpdateStatusResult> {
