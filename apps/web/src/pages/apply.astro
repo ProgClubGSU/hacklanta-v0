@@ -118,7 +118,7 @@ if (userId) {
       const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
       if (data && data.event === "Tally.FormSubmitted") {
         setTimeout(function () {
-          window.location.href = "/status";
+          window.location.href = "/dashboard";
         }, 1500);
       }
     } catch (_err) {
