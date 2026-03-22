@@ -3,16 +3,67 @@ import { api } from '@/lib/api';
 import { TRACKS } from '@/lib/tracks';
 import TeamDetailModal from './TeamDetailModal';
 
+interface TeamMemberUser {
+  avatar_url: string | null;
+  first_name: string | null;
+  last_name: string | null;
+}
+
+interface TeamMember {
+  id: string;
+  users: TeamMemberUser | null;
+}
+
 interface Team {
   id: string;
   name: string;
   description: string | null;
   tracks: string[] | null;
+  team_members: TeamMember[];
   member_count: number;
   max_size: number;
   is_full: boolean;
   is_looking_for_members: boolean;
   created_at: string;
+}
+
+const SUIT_SYMBOLS = ['♠', '♦', '♣', '♥'];
+
+function MemberAvatars({ team }: { team: Team }) {
+  const members = team.team_members ?? [];
+  const openSlots = Math.max(team.max_size - members.length, 0);
+
+  return (
+    <div className="flex items-center -space-x-1.5">
+      {members.map((m, i) => {
+        const user = m.users;
+        const initials = `${user?.first_name?.[0] ?? ''}${user?.last_name?.[0] ?? ''}`.toUpperCase() || '?';
+        return user?.avatar_url ? (
+          <img
+            key={m.id}
+            src={user.avatar_url}
+            alt=""
+            className="h-7 w-7 rounded-full border-2 border-[#1a1a1a] object-cover"
+          />
+        ) : (
+          <div
+            key={m.id}
+            className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-white/10 font-mono text-[9px] text-white/50"
+          >
+            {initials}
+          </div>
+        );
+      })}
+      {Array.from({ length: openSlots }).map((_, i) => (
+        <div
+          key={`slot-${i}`}
+          className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-dashed border-white/15 text-[11px] text-white/15"
+        >
+          {SUIT_SYMBOLS[i % SUIT_SYMBOLS.length]}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function TeamGrid() {
@@ -231,9 +282,12 @@ export default function TeamGrid() {
               )}
 
               <div className="mt-3 flex items-center justify-between border-t border-white/6 pt-3">
-                <span className="font-mono text-[11px] text-white/35">
-                  {team.member_count}/{team.max_size} members
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[11px] text-white/35">
+                    {team.member_count}/{team.max_size}
+                  </span>
+                  <MemberAvatars team={team} />
+                </div>
                 <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-white/25 transition-colors group-hover:text-red">
                   View &rarr;
                 </span>

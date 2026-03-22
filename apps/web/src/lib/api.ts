@@ -233,7 +233,7 @@ export const api = {
     const client = getClient()
     let query = client
       .from('teams')
-      .select('*, team_members(id)', { count: 'exact' })
+      .select('*, team_members(id, users(avatar_url, first_name, last_name))', { count: 'exact' })
       .order('created_at', { ascending: false })
 
     if (params?.offset) query = query.range(params.offset, params.offset + (params.limit ?? 50) - 1)
