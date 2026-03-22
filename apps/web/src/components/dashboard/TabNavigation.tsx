@@ -31,9 +31,9 @@ export default function TabNavigation() {
   }
 
   const tabs = [
-    { id: 'dashboard' as Tab, label: 'Dashboard' },
-    { id: 'teams' as Tab, label: 'Teams' },
-    { id: 'players' as Tab, label: 'Players' },
+    { id: 'dashboard' as Tab, label: 'Dashboard', icon: 'space_dashboard' },
+    { id: 'teams' as Tab, label: 'Teams', icon: 'groups' },
+    { id: 'players' as Tab, label: 'Players', icon: 'person_search' },
   ];
 
   const isTabLocked = (tabId: Tab) => !profileComplete && (tabId === 'teams' || tabId === 'players');
@@ -44,114 +44,151 @@ export default function TabNavigation() {
   }
 
   return (
-    <div className="relative">
-      {/* Flat nav bar */}
-      <nav className="flex items-center justify-between gap-6 pb-4">
-        <a href="/" className="shrink-0" aria-label="Hacklanta home">
+    <div className="flex min-h-[calc(100vh-4rem)] gap-0">
+      {/* Sidebar — desktop only */}
+      <aside className="hidden w-52 shrink-0 border-r border-white/6 pr-6 pt-2 md:block">
+        <a href="/" className="mb-10 block" aria-label="Hacklanta home">
           <TextLogo size="xs" className="opacity-85" />
         </a>
 
-        <div className="flex items-center gap-6 sm:gap-8">
+        <nav className="space-y-1">
           {tabs.map((tab) => {
             const locked = isTabLocked(tab.id);
+            const active = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => handleTabClick(tab.id)}
-                className={`pb-1 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-200 ${
+                className={`flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-left transition-all duration-150 ${
                   locked
                     ? 'cursor-not-allowed opacity-25'
-                    : activeTab === tab.id
-                      ? 'text-red'
-                      : 'text-white/45 hover:text-white/75'
+                    : active
+                      ? 'bg-white/6 text-white'
+                      : 'text-white/40 hover:bg-white/4 hover:text-white/70'
                 }`}
                 title={locked ? 'Complete your profile to unlock' : undefined}
               >
-                <span className="flex items-center gap-1.5">
+                <Icon name={locked ? 'lock' : tab.icon} className="text-[18px]" />
+                <span className="font-mono text-[11px] uppercase tracking-[0.1em]">
                   {tab.label}
-                  {locked && <Icon name="lock" className="text-[12px]" weight={600} />}
                 </span>
               </button>
             );
           })}
+        </nav>
+
+        <div className="mt-8 border-t border-white/6 pt-6">
+          <a
+            href="/"
+            className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.15em] text-white/25 transition-colors hover:text-white/50"
+          >
+            <Icon name="arrow_back" className="text-sm" />
+            Home
+          </a>
         </div>
-      </nav>
+      </aside>
 
-      {/* Thin divider */}
-      <div className="h-px bg-gradient-to-r from-red/30 via-red/10 to-transparent" />
-
-      {/* Section number */}
-      <div className="mt-6 mb-5 flex items-center gap-3 font-mono text-[11px] tracking-[0.3em] text-gray">
-        <span className="text-red/80">[0{tabs.findIndex((tab) => tab.id === activeTab) + 1}]</span>
-        <span className="h-px flex-1 bg-gradient-to-r from-border/60 to-transparent" />
-      </div>
-
-      {/* Content */}
-      <div className="animate-fadeIn" key={activeTab}>
-        {isCheckingProfile ? (
-          <div className="flex items-center justify-center py-12">
-            <div className="text-center">
-              <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></div>
-              <p className="font-mono text-sm uppercase tracking-widest text-white/50">Loading...</p>
-            </div>
+      {/* Mobile top nav */}
+      <div className="fixed inset-x-0 top-0 z-30 border-b border-white/6 bg-[#141414]/95 backdrop-blur-md px-4 py-3 md:hidden">
+        <div className="flex items-center justify-between">
+          <a href="/" aria-label="Hacklanta home">
+            <TextLogo size="xs" className="opacity-85" />
+          </a>
+          <div className="flex items-center gap-5">
+            {tabs.map((tab) => {
+              const locked = isTabLocked(tab.id);
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleTabClick(tab.id)}
+                  className={`font-mono text-[10px] uppercase tracking-[0.1em] transition-colors ${
+                    locked
+                      ? 'cursor-not-allowed opacity-25'
+                      : activeTab === tab.id
+                        ? 'text-red'
+                        : 'text-white/40'
+                  }`}
+                >
+                  {tab.label}
+                  {locked && <Icon name="lock" className="ml-1 text-[10px]" weight={600} />}
+                </button>
+              );
+            })}
           </div>
-        ) : (
-          <>
-            {activeTab === 'dashboard' && (
-              profileComplete === false ? (
-                <OnboardingCard
-                  clerkFirstName={window.Clerk?.user?.firstName ?? null}
-                  clerkLastName={window.Clerk?.user?.lastName ?? null}
-                  clerkEmail={window.Clerk?.user?.primaryEmailAddress?.emailAddress ?? ''}
-                  onComplete={() => {
-                    setProfileComplete(true);
-                    setActiveTab('dashboard');
-                  }}
-                />
-              ) : profileComplete === true ? (
-                <ProfileCard
-                  onBrowsePlayers={() => setActiveTab('players')}
-                  onBrowseTeams={() => setActiveTab('teams')}
-                />
-              ) : null
-            )}
-
-            {activeTab === 'teams' && (
-              profileComplete ? (
-                <TeamGrid />
-              ) : (
-                <div className="relative">
-                  <div className="pointer-events-none blur-md opacity-30 select-none">
-                    <TeamGrid />
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="font-mono text-sm uppercase tracking-wider text-white/60">
-                      Complete your profile to unlock
-                    </p>
-                  </div>
-                </div>
-              )
-            )}
-
-            {activeTab === 'players' && (
-              profileComplete ? (
-                <UserGrid />
-              ) : (
-                <div className="relative">
-                  <div className="pointer-events-none blur-md opacity-30 select-none">
-                    <UserGrid />
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <p className="font-mono text-sm uppercase tracking-wider text-white/60">
-                      Complete your profile to unlock
-                    </p>
-                  </div>
-                </div>
-              )
-            )}
-          </>
-        )}
+        </div>
       </div>
+
+      {/* Main content */}
+      <main className="min-w-0 flex-1 pt-2 md:pl-6">
+        {/* Mobile spacer for fixed nav */}
+        <div className="h-10 md:hidden" />
+
+        <div className="animate-fadeIn" key={activeTab}>
+          {isCheckingProfile ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-red"></div>
+                <p className="font-mono text-[11px] uppercase tracking-widest text-white/40">Loading...</p>
+              </div>
+            </div>
+          ) : (
+            <>
+              {activeTab === 'dashboard' && (
+                profileComplete === false ? (
+                  <OnboardingCard
+                    clerkFirstName={window.Clerk?.user?.firstName ?? null}
+                    clerkLastName={window.Clerk?.user?.lastName ?? null}
+                    clerkEmail={window.Clerk?.user?.primaryEmailAddress?.emailAddress ?? ''}
+                    onComplete={() => {
+                      setProfileComplete(true);
+                      setActiveTab('dashboard');
+                    }}
+                  />
+                ) : profileComplete === true ? (
+                  <ProfileCard
+                    onBrowsePlayers={() => setActiveTab('players')}
+                    onBrowseTeams={() => setActiveTab('teams')}
+                  />
+                ) : null
+              )}
+
+              {activeTab === 'teams' && (
+                profileComplete ? (
+                  <TeamGrid />
+                ) : (
+                  <div className="relative">
+                    <div className="pointer-events-none blur-md opacity-30 select-none">
+                      <TeamGrid />
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <p className="font-mono text-sm uppercase tracking-wider text-white/60">
+                        Complete your profile to unlock
+                      </p>
+                    </div>
+                  </div>
+                )
+              )}
+
+              {activeTab === 'players' && (
+                profileComplete ? (
+                  <UserGrid />
+                ) : (
+                  <div className="relative">
+                    <div className="pointer-events-none blur-md opacity-30 select-none">
+                      <UserGrid />
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <p className="font-mono text-sm uppercase tracking-wider text-white/60">
+                        Complete your profile to unlock
+                      </p>
+                    </div>
+                  </div>
+                )
+              )}
+            </>
+          )}
+        </div>
+      </main>
 
       <style>{`
         @keyframes fadeIn {
