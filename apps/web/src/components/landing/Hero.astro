@@ -1,5 +1,6 @@
 ---
 // Hero — slot machine countdown + dealt card hand
+const { userId } = await Astro.locals.auth();
 ---
 
 <section
@@ -648,21 +649,35 @@
     <!-- CTA + Info -->
     <div class="hero-cta mt-8 flex flex-col items-center gap-5 opacity-0 sm:mt-10">
       <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-        <a
-          href="/apply"
-          class="group inline-flex items-center gap-2.5 border border-red/50 bg-red/10 px-8 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-red-bright transition-all duration-300 hover:border-red/80 hover:bg-red/20 hover:shadow-[0_0_30px_rgba(196,30,58,0.2)] sm:text-[11px]"
-        >
-          Apply now
-          <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-        <a
-          href="/dashboard"
-          class="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70 sm:text-[11px]"
-        >
-          Already applied? &rarr;
-        </a>
+        {userId ? (
+          <a
+            href="/dashboard"
+            class="group inline-flex items-center gap-2.5 border border-white/[0.12] bg-white/[0.04] px-8 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/70 transition-all duration-300 hover:border-white/25 hover:bg-white/[0.08] hover:text-white hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] sm:text-[11px]"
+          >
+            Check status
+            <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        ) : (
+          <>
+            <a
+              href="/apply"
+              class="group inline-flex items-center gap-2.5 border border-red/50 bg-red/10 px-8 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-red-bright transition-all duration-300 hover:border-red/80 hover:bg-red/20 hover:shadow-[0_0_30px_rgba(196,30,58,0.2)] sm:text-[11px]"
+            >
+              Apply now
+              <svg class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a
+              href="/dashboard"
+              class="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70 sm:text-[11px]"
+            >
+              Already applied? &rarr;
+            </a>
+          </>
+        )}
       </div>
 
       <p class="font-mono text-[10px] tracking-[0.15em] text-white/30 sm:text-[11px]">
