@@ -1497,7 +1497,13 @@
 
   // ===== Skip intro support =====
   let introSkipped = false;
+  let countdownInterval: ReturnType<typeof setInterval> | null = null;
   const skipBtn = document.querySelector<HTMLElement>('.skip-intro');
+
+  function startCountdownInterval() {
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = setInterval(updateCountdown, 1000);
+  }
 
   function skipIntro() {
     introSkipped = true;
@@ -1543,8 +1549,13 @@
     // Fire jackpot event for other components
     window.dispatchEvent(new CustomEvent('jackpot'));
 
+    // Clear any leftover transforms on reel digits
+    for (const key of keys) {
+      gsap.set(reels[key], { clearProps: 'transform' });
+    }
+
     // Start live countdown
-    setInterval(updateCountdown, 1000);
+    startCountdownInterval();
 
     // Hide skip button
     if (skipBtn) skipBtn.style.display = 'none';
@@ -2067,15 +2078,23 @@
     startSpinning();
 
     await new Promise((r) => setTimeout(r, 600));
+    if (introSkipped) return;
 
     // Stop reels left to right with stagger
     await stopReel(0, WIN_REELS[0]);
+    if (introSkipped) return;
     await new Promise((r) => setTimeout(r, 60));
+    if (introSkipped) return;
     await stopReel(1, WIN_REELS[1]);
+    if (introSkipped) return;
     await new Promise((r) => setTimeout(r, 60));
+    if (introSkipped) return;
     await stopReel(2, WIN_REELS[2]);
+    if (introSkipped) return;
     await new Promise((r) => setTimeout(r, 60));
+    if (introSkipped) return;
     await stopReel(3, WIN_REELS[3]);
+    if (introSkipped) return;
 
     // === JACKPOT! ===
     // Flash the whole cabinet
@@ -2111,6 +2130,7 @@
 
     // Wait for jackpot celebration
     await new Promise((r) => setTimeout(r, 900));
+    if (introSkipped) return;
 
     // Signal other components that jackpot has landed
     window.dispatchEvent(new CustomEvent('jackpot'));
@@ -2220,6 +2240,7 @@
     }
 
     // === Transition to countdown ===
+    if (introSkipped) return;
     // Fade out jackpot text, swap, fade in as "TIME REMAINING"
     await new Promise<void>((res) => {
       gsap.to(marqueeText, {
@@ -2260,6 +2281,7 @@
     });
 
     // Swap symbols to countdown numbers — smooth scroll transition
+    if (introSkipped) return;
     const real = getCountdownVals();
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
@@ -2314,7 +2336,7 @@
     }
 
     // Start live countdown
-    setInterval(updateCountdown, 1000);
+    startCountdownInterval();
 
     // Hide skip button — intro is done
     if (skipBtn)
