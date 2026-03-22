@@ -4,7 +4,10 @@ import { checkDashboardAccess } from '../lib/dashboard-gate';
 
 const { userId } = await Astro.locals.auth();
 
-// If logged in, check if they've already applied or are accepted
+// Clerk middleware enforces sign-in for /apply — userId is always present here.
+// This guarantees clerk_id is passed to the Tally embed, ensuring application linking.
+
+// Check if they've already applied or are accepted
 if (userId) {
   const gate = await checkDashboardAccess(userId);
 

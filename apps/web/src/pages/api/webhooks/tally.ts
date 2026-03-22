@@ -206,9 +206,14 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
-  // Log a warning if we had a clerk_id but couldn't link to any user
+  // If clerk_id was provided but we still couldn't link, reject the webhook
+  // so Tally retries. This guarantees 100% linking for logged-in submissions.
   if (clerkId && !appData.user_id) {
-    console.error(`[tally-webhook] Failed to link application to user. clerk_id=${clerkId}, email=${appData.email}, tally_response_id=${responseId}`)
+    console.error(`[tally-webhook] REJECTING: Failed to link application to user. clerk_id=${clerkId}, email=${appData.email}, tally_response_id=${responseId}`)
+    return new Response(
+      JSON.stringify({ error: 'Could not link to user, will retry', clerk_id: clerkId }),
+      { status: 503 }
+    )
   }
 
   const { error } = await supabase.from('applications').upsert(appData, {
