@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <title>Hacklanta OG Image</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      background: #0e0e0e;
+      font-family: 'Instrument Serif', serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Subtle grid */
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Radial glow */
+    .glow {
+      position: absolute;
+      width: 900px;
+      height: 900px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,30,58,0.08) 0%, transparent 65%);
+    }
+
+    /* Compass decoration */
+    .compass {
+      position: absolute;
+      right: 80px;
+      top: 60px;
+      opacity: 0.06;
+    }
+
+    /* Suit decorations */
+    .suit-left {
+      position: absolute;
+      left: 60px;
+      bottom: 80px;
+      opacity: 0.03;
+    }
+    .suit-right {
+      position: absolute;
+      right: 120px;
+      bottom: 100px;
+      opacity: 0.025;
+    }
+
+    /* Corner accents */
+    .corner-tl, .corner-br {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+    }
+    .corner-tl {
+      top: 30px;
+      left: 30px;
+      border-top: 1px solid rgba(196,30,58,0.15);
+      border-left: 1px solid rgba(196,30,58,0.15);
+    }
+    .corner-br {
+      bottom: 30px;
+      right: 30px;
+      border-bottom: 1px solid rgba(196,30,58,0.15);
+      border-right: 1px solid rgba(196,30,58,0.15);
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+
+    /* Main title */
+    .title {
+      font-style: italic;
+      font-size: 140px;
+      line-height: 0.85;
+      letter-spacing: -0.03em;
+      color: white;
+    }
+
+    /* Divider */
+    .divider {
+      width: 120px;
+      height: 1px;
+      margin: 28px auto;
+      background: linear-gradient(90deg, transparent, rgba(196,30,58,0.5), transparent);
+    }
+
+    /* Subtitle line */
+    .subtitle {
+      font-style: italic;
+      font-size: 38px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Outline prize text */
+    .prize {
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(255,255,255,0.75);
+    }
+
+    /* Bottom tag */
+    .tag {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      z-index: 10;
+    }
+
+    .tag .dot {
+      color: rgba(196,30,58,0.5);
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+
+  <!-- Corner accents -->
+  <div class="corner-tl"></div>
+  <div class="corner-br"></div>
+
+  <!-- Compass -->
+  <div class="compass">
+    <svg width="160" height="160" viewBox="0 0 100 100" fill="none" stroke="white">
+      <circle cx="50" cy="50" r="35" stroke-width="0.5" />
+      <circle cx="50" cy="50" r="25" stroke-width="0.3" />
+      <line x1="50" y1="10" x2="50" y2="90" stroke-width="0.5" />
+      <line x1="10" y1="50" x2="90" y2="50" stroke-width="0.5" />
+      <line x1="22" y1="22" x2="78" y2="78" stroke-width="0.3" />
+      <line x1="78" y1="22" x2="22" y2="78" stroke-width="0.3" />
+      <path d="M50 15 L53 47 L85 50 L53 53 L50 85 L47 53 L15 50 L47 47 Z" stroke-width="0.5" fill="white" opacity="0.3" />
+    </svg>
+  </div>
+
+  <!-- Suit decorations -->
+  <div class="suit-left">
+    <svg width="100" height="100" viewBox="0 0 100 100" fill="white">
+      <path d="M50 10 C50 10 20 40 20 60 C20 75 35 85 50 70 C65 85 80 75 80 60 C80 40 50 10 50 10 Z M45 75 L35 95 L65 95 L55 75 Z"/>
+    </svg>
+  </div>
+  <div class="suit-right">
+    <svg width="70" height="70" viewBox="0 0 100 100" fill="rgba(196,30,58,0.6)">
+      <path d="M50 15 L61 40 L88 44 L68 63 L73 90 L50 78 L27 90 L32 63 L12 44 L39 40 Z"/>
+    </svg>
+  </div>
+
+  <div class="content">
+    <h1 class="title">Hacklanta</h1>
+    <div class="divider"></div>
+    <p class="subtitle"><span class="prize">$4,300 prizes.</span> start hacking</p>
+  </div>
+
+  <p class="tag">march 28, 2026 <span class="dot">&middot;</span> georgia state university <span class="dot">&middot;</span> 12 hours</p>
+</body>
+</html>
