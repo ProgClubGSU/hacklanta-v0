@@ -34,8 +34,8 @@ function MemberAvatars({ team }: { team: Team }) {
   const openSlots = Math.max(team.max_size - members.length, 0);
 
   return (
-    <div className="flex items-center -space-x-1.5">
-      {members.map((m, i) => {
+    <div className="flex items-center gap-1">
+      {members.map((m) => {
         const user = m.users;
         const initials = `${user?.first_name?.[0] ?? ''}${user?.last_name?.[0] ?? ''}`.toUpperCase() || '?';
         return user?.avatar_url ? (
@@ -43,12 +43,12 @@ function MemberAvatars({ team }: { team: Team }) {
             key={m.id}
             src={user.avatar_url}
             alt=""
-            className="h-7 w-7 rounded-full border-2 border-[#1a1a1a] object-cover"
+            className="h-6 w-6 rounded-full border border-[#1a1a1a] object-cover"
           />
         ) : (
           <div
             key={m.id}
-            className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-white/10 font-mono text-[9px] text-white/50"
+            className="flex h-6 w-6 items-center justify-center rounded-full border border-[#1a1a1a] bg-white/10 font-mono text-[8px] text-white/50"
           >
             {initials}
           </div>
@@ -57,7 +57,7 @@ function MemberAvatars({ team }: { team: Team }) {
       {Array.from({ length: openSlots }).map((_, i) => (
         <div
           key={`slot-${i}`}
-          className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-dashed border-white/15 text-[11px] text-white/15"
+          className="flex h-6 w-6 items-center justify-center rounded-full border border-dashed border-white/12 text-[10px] text-white/12"
         >
           {SUIT_SYMBOLS[i % SUIT_SYMBOLS.length]}
         </div>
