@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { adminApi, type Application, type ApplicationsResponse } from '../../lib/admin-api';
+import { adminApi, type Application, type ApplicationsResponse, type UpdateStatusResult } from '../../lib/admin-api';
 import ApplicantTable from './ApplicantTable';
 import BulkActionBar from './BulkActionBar';
 import ApplicantDetailModal from './ApplicantDetailModal';
@@ -141,14 +141,15 @@ export default function ApplicantManager() {
     setSelectedIds(new Set());
   };
 
-  // Bulk status update
-  const handleBulkUpdateStatus = async (newStatus: string, sendEmail: boolean) => {
-    await adminApi.updateStatus({
+  // Bulk status update — returns result so BulkActionBar can show feedback
+  const handleBulkUpdateStatus = async (newStatus: string, sendEmail: boolean): Promise<UpdateStatusResult> => {
+    const result = await adminApi.updateStatus({
       application_ids: Array.from(selectedIds),
       new_status: newStatus,
       send_email: sendEmail,
     });
     await loadApplications();
+    return result;
   };
 
   // Single status update (from detail modal)

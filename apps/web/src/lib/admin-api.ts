@@ -60,6 +60,8 @@ export interface UpdateStatusResult {
   updated: number;
   emails_sent: number;
   emails_failed: number;
+  email_error?: string;
+  email_error_details?: Array<{ email: string; error: string }>;
 }
 
 export interface EmailBlastResult {

@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
   // Build segmentation query
   // Use left join by default so unlinked applicants are included.
   // Use inner join only when filtering on users-table columns (is_accepted).
-  const joinType = segmentFilters.is_accepted !== undefined ? '!inner' : '!left'
+  const joinType = segmentFilters.is_accepted !== undefined ? '!user_id!inner' : '!user_id!left'
   let query = supabase
     .from('applications')
     .select(`email, users${joinType}(email, first_name)`)

@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import type { UpdateStatusResult } from '../../lib/admin-api';
 
 interface BulkActionBarProps {
   selectedCount: number;
-  onUpdateStatus: (newStatus: string, sendEmail: boolean) => Promise<void>;
+  onUpdateStatus: (newStatus: string, sendEmail: boolean) => Promise<UpdateStatusResult>;
   onClearSelection: () => void;
 }
 
@@ -19,6 +20,7 @@ export default function BulkActionBar({ selectedCount, onUpdateStatus, onClearSe
   const [sendEmail, setSendEmail] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<UpdateStatusResult | null>(null);
 
   const handleApply = async () => {
     const statusLabel = STATUS_OPTIONS.find((o) => o.value === newStatus)?.label ?? newStatus;
@@ -30,14 +32,34 @@ export default function BulkActionBar({ selectedCount, onUpdateStatus, onClearSe
 
     setIsApplying(true);
     setError(null);
+    setResult(null);
     try {
-      await onUpdateStatus(newStatus, sendEmail);
-      onClearSelection();
+      const res = await onUpdateStatus(newStatus, sendEmail);
+      setResult(res);
+
+      // If there's an email error, show it
+      if (res.email_error) {
+        setError(`Email error: ${res.email_error}`);
+      } else if (res.emails_failed > 0) {
+        setError(`${res.emails_failed} email(s) failed to send`);
+      } else {
+        // Success — clear selection after a short delay so user can see the result
+        setTimeout(() => {
+          onClearSelection();
+          setResult(null);
+        }, 3000);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update statuses');
     } finally {
       setIsApplying(false);
     }
+  };
+
+  const handleClear = () => {
+    setResult(null);
+    setError(null);
+    onClearSelection();
   };
 
   return (
@@ -48,8 +70,16 @@ export default function BulkActionBar({ selectedCount, onUpdateStatus, onClearSe
         </span>
 
         <div className="flex items-center gap-4">
+          {/* Result feedback */}
+          {result && !error && (
+            <span className="font-mono text-xs text-green-400">
+              Updated {result.updated}
+              {result.emails_sent > 0 && ` · ${result.emails_sent} email${result.emails_sent !== 1 ? 's' : ''} sent`}
+            </span>
+          )}
+
           {error && (
-            <span className="font-mono text-xs text-red-bright">{error}</span>
+            <span className="font-mono text-xs text-red-bright max-w-md truncate" title={error}>{error}</span>
           )}
 
           <select
@@ -85,7 +115,7 @@ export default function BulkActionBar({ selectedCount, onUpdateStatus, onClearSe
           </button>
 
           <button
-            onClick={onClearSelection}
+            onClick={handleClear}
             disabled={isApplying}
             className="rounded border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs text-white/50 transition-colors hover:bg-white/10 hover:text-white/70 disabled:opacity-50"
           >

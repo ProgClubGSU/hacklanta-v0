@@ -19,7 +19,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
 
   const { application_ids, user_ids, new_status, send_email = false } = body
 
-  console.log('[update-status] FULL REQUEST BODY:', JSON.stringify({ application_ids, user_ids, new_status, send_email }))
+  console.log('[update-status] Request:', JSON.stringify({ new_status, send_email, application_ids_count: application_ids?.length, user_ids_count: user_ids?.length }))
 
   if ((!Array.isArray(application_ids) || application_ids.length === 0) &&
       (!Array.isArray(user_ids) || user_ids.length === 0)) {
@@ -31,27 +31,21 @@ export const POST: APIRoute = async ({ locals, request }) => {
 
   const supabase = createServerSupabaseClient()
   const now = new Date().toISOString()
-  let totalUpdated = 0
 
-  // If user_ids provided, create stub applications for users that don't have one
-  // and collect their application IDs for the status update
+  // --- Collect all application IDs ---
   const allAppIds = [...(application_ids ?? [])]
 
   if (Array.isArray(user_ids) && user_ids.length > 0) {
-    // Find which users already have applications
     const { data: existingApps } = await supabase
       .from('applications')
       .select('id, user_id')
       .in('user_id', user_ids)
 
     const usersWithApps = new Set((existingApps ?? []).map(a => a.user_id))
-    const existingAppIds = (existingApps ?? []).map(a => a.id)
-    allAppIds.push(...existingAppIds)
+    allAppIds.push(...(existingApps ?? []).map(a => a.id))
 
-    // Create stub applications for users without one
     const usersWithoutApps = user_ids.filter((uid: string) => !usersWithApps.has(uid))
     if (usersWithoutApps.length > 0) {
-      // Fetch user details for the stub applications
       const { data: users } = await supabase
         .from('users')
         .select('id, email')
@@ -73,12 +67,10 @@ export const POST: APIRoute = async ({ locals, request }) => {
           .select('id')
         if (inserted) {
           allAppIds.push(...inserted.map(a => a.id))
-          totalUpdated += inserted.length
         }
       }
     }
 
-    // Also update is_accepted directly on users table
     if (new_status === 'accepted' || new_status === 'accepted_overflow') {
       await supabase
         .from('users')
@@ -87,25 +79,21 @@ export const POST: APIRoute = async ({ locals, request }) => {
     }
   }
 
-  // Update application statuses (for both existing and newly created)
+  // --- Update application statuses ---
   const uniqueAppIds = [...new Set(allAppIds)]
   if (uniqueAppIds.length > 0) {
-    const { error: updateError, count } = await supabase
+    const { error: updateError } = await supabase
       .from('applications')
-      .update({
-        status: new_status,
-        reviewed_at: now,
-        reviewed_by: null,
-      })
+      .update({ status: new_status, reviewed_at: now, reviewed_by: null })
       .in('id', uniqueAppIds)
 
     if (updateError) {
+      console.error('[update-status] Failed to update applications:', updateError.message)
       return new Response(JSON.stringify({ error: updateError.message }), { status: 500 })
     }
-    totalUpdated += (count ?? 0)
   }
 
-  // If accepted/overflow, also set is_accepted on linked users (from application_ids path)
+  // --- Set is_accepted for accepted statuses ---
   if (new_status === 'accepted' || new_status === 'accepted_overflow') {
     const { data: apps } = await supabase
       .from('applications')
@@ -122,76 +110,72 @@ export const POST: APIRoute = async ({ locals, request }) => {
     }
   }
 
-  // Send emails if requested
+  // --- Send emails ---
   let emailsSent = 0
   let emailsFailed = 0
-  const _debug: Record<string, unknown> = {
-    send_email,
-    new_status,
-    app_ids_count: uniqueAppIds?.length ?? 0,
-    unique_app_ids: uniqueAppIds,
-  }
+  let emailError: string | null = null
+  let emailErrorDetails: Array<{ email: string; error: string }> = []
 
   if (send_email) {
     const templateName = STATUS_TEMPLATE_MAP[new_status]
-    _debug.template_name = templateName
-
     if (!templateName) {
-      return new Response(JSON.stringify({
-        updated: totalUpdated,
-        emails_sent: 0,
-        emails_failed: 0,
-        error: `No email template for status "${new_status}"`,
-        _debug,
-      }))
-    }
+      emailError = `No email template exists for status "${new_status}"`
+      console.warn('[update-status]', emailError)
+    } else {
+      // Fetch applications with user data — use !user_id to disambiguate FK
+      const { data: apps, error: appsError } = await supabase
+        .from('applications')
+        .select('email, user_id, users!user_id(email, first_name)')
+        .in('id', uniqueAppIds)
 
-    // Fetch applications with user data for email personalization
-    const { data: apps, error: appsError } = await supabase
-      .from('applications')
-      .select('email, user_id, users(email, first_name)')
-      .in('id', uniqueAppIds)
+      if (appsError) {
+        emailError = `Failed to fetch application data for emails: ${appsError.message}`
+        console.error('[update-status]', emailError)
+      } else if (!apps?.length) {
+        emailError = `No applications found for IDs: ${uniqueAppIds.join(', ')}`
+        console.error('[update-status]', emailError)
+      } else {
+        const emails = apps.map(app => {
+          const user = (app as any).users
+          const recipientEmail = user?.email ?? app.email
+          if (!recipientEmail) {
+            console.warn('[update-status] No email address for application, user_id:', app.user_id)
+            return null
+          }
+          return { to: recipientEmail, ...templates[templateName]({ firstName: user?.first_name ?? null }) }
+        }).filter((e): e is NonNullable<typeof e> => e !== null)
 
-    _debug.apps_query_error = appsError?.message ?? null
-    _debug.apps_found = apps?.length ?? 0
-    _debug.apps_raw = apps
+        if (emails.length === 0) {
+          emailError = 'All applications were missing email addresses'
+          console.error('[update-status]', emailError)
+        } else {
+          const result = await sendBatchEmails(createResendClient(), emails)
+          emailsSent = result.sent
+          emailsFailed = result.errors
+          emailErrorDetails = result.errorDetails
 
-    if (apps?.length) {
-      const resend = createResendClient()
-      const emails = apps.map(app => {
-        const user = (app as any).users
-        const recipientEmail = user?.email ?? app.email
-        return recipientEmail ? { to: recipientEmail, ...templates[templateName]({ firstName: user?.first_name ?? null }) } : null
-      }).filter((e): e is NonNullable<typeof e> => e !== null)
-
-      _debug.emails_to_send = emails.map(e => ({ to: e.to, subject: e.subject }))
-
-      if (emails.length > 0) {
-        const result = await sendBatchEmails(resend, emails)
-        emailsSent = result.sent
-        emailsFailed = result.errors
-        _debug.resend_result = { sent: result.sent, errors: result.errors, errorDetails: result.errorDetails }
-      }
-
-      // Mark acceptance_sent_at for accepted users
-      if (new_status === 'accepted' || new_status === 'accepted_overflow') {
-        const userIds = apps.map(a => a.user_id).filter(Boolean)
-        if (userIds.length > 0) {
-          await supabase
-            .from('users')
-            .update({ acceptance_sent_at: new Date().toISOString() })
-            .in('id', userIds)
+          // Mark acceptance_sent_at for accepted users
+          if (new_status === 'accepted' || new_status === 'accepted_overflow') {
+            const userIds = apps.map(a => a.user_id).filter(Boolean)
+            if (userIds.length > 0) {
+              await supabase
+                .from('users')
+                .update({ acceptance_sent_at: now })
+                .in('id', userIds)
+            }
+          }
         }
       }
     }
   }
 
-  const responseBody = {
-    updated: totalUpdated,
+  console.log('[update-status] Done:', JSON.stringify({ updated: uniqueAppIds.length, emails_sent: emailsSent, emails_failed: emailsFailed, email_error: emailError }))
+
+  return new Response(JSON.stringify({
+    updated: uniqueAppIds.length,
     emails_sent: emailsSent,
     emails_failed: emailsFailed,
-    _debug,
-  }
-  console.log('[update-status] RESPONSE:', JSON.stringify(responseBody))
-  return new Response(JSON.stringify(responseBody))
+    ...(emailError ? { email_error: emailError } : {}),
+    ...(emailErrorDetails.length > 0 ? { email_error_details: emailErrorDetails } : {}),
+  }))
 }
