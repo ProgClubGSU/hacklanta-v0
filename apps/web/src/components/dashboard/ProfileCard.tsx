@@ -240,7 +240,7 @@ export default function ProfileCard() {
             <button
               type="button"
               onClick={openEditor}
-              className="ml-auto font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
+              className="button-heading ml-auto text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
             >
               Edit &rarr;
             </button>
@@ -303,7 +303,7 @@ export default function ProfileCard() {
               </div>
               <a
                 href="#teams"
-                className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
+                className="button-heading shrink-0 text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
               >
                 Browse teams &darr;
               </a>
@@ -390,7 +390,7 @@ export default function ProfileCard() {
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="font-mono text-lg text-white/50 transition-colors hover:text-white"
+                className="button-heading text-lg text-white/50 transition-colors hover:text-white"
               >
                 &times;
               </button>
@@ -492,14 +492,14 @@ export default function ProfileCard() {
               <button
                 type="button"
                 onClick={() => setIsEditing(false)}
-                className="px-4 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-white/50 transition-colors hover:text-white/80"
+                className="button-heading px-4 py-2 text-[11px] uppercase tracking-[0.15em] text-white/50 transition-colors hover:text-white/80"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSaving || !draft.displayName.trim()}
-                className="rounded border border-red/50 bg-red/10 px-5 py-2 font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-40"
+                className="button-heading rounded border border-red/50 bg-red/10 px-5 py-2 text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {isSaving ? 'Saving...' : 'Save'}
               </button>

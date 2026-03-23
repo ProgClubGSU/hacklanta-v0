@@ -271,7 +271,7 @@ export default function TeamDetailModal({
                       type="button"
                       onClick={handleLeaveTeam}
                       disabled={isLeavingTeam}
-                      className="rounded border border-red/30 bg-red/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="button-heading rounded border border-red/30 bg-red/10 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       {isLeavingTeam ? 'Leaving...' : 'Leave team'}
                     </button>
@@ -316,7 +316,7 @@ export default function TeamDetailModal({
                     type="button"
                     onClick={handleJoinRequest}
                     disabled={isSubmitting}
-                    className="w-full border border-red/40 bg-red/10 px-6 py-3 font-mono text-sm font-semibold uppercase tracking-wider text-red-bright transition-all hover:border-red/70 hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="button-heading w-full border border-red/40 bg-red/10 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-red-bright transition-all hover:border-red/70 hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)] disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isSubmitting ? 'Sending Request...' : 'Request to Join'}
                   </button>

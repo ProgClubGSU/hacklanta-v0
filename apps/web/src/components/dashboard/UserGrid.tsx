@@ -164,7 +164,7 @@ export default function UserGrid() {
                 key={player.id}
                 type="button"
                 onClick={() => setSelectedParticipant(player)}
-                className="rounded-lg border border-white/[0.08] bg-[#1a1a1a] p-5 text-left transition-colors hover:border-white/15"
+                className="button-heading rounded-lg border border-white/[0.08] bg-[#1a1a1a] p-5 text-left transition-colors hover:border-white/15"
               >
                 <div className="flex items-start gap-3">
                   {player.avatar_url ? (

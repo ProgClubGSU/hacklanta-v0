@@ -245,7 +245,7 @@ export default function TeamGrid() {
           <button
             type="button"
             onClick={() => setShowAvailableOnly(!showAvailableOnly)}
-            className={`rounded px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] transition-all ${
+            className={`button-heading rounded px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] transition-all ${
               showAvailableOnly
                 ? 'border border-red/30 bg-red/15 text-red'
                 : 'border border-white/10 bg-white/5 text-white/40 hover:text-white/60'
@@ -290,7 +290,7 @@ export default function TeamGrid() {
                   type="button"
                   onClick={handleLeaveTeam}
                   disabled={isLeavingTeam}
-                  className="rounded border border-red/30 bg-red/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="button-heading rounded border border-red/30 bg-red/10 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isLeavingTeam ? 'Leaving...' : 'Leave team'}
                 </button>
@@ -303,7 +303,7 @@ export default function TeamGrid() {
               <button
                 type="button"
                 onClick={() => setShowCreateForm(true)}
-                className="group flex min-h-[220px] flex-col items-center justify-center rounded-lg border border-dashed border-white/12 bg-white/[0.02] p-8 transition-all hover:border-red/40 hover:bg-red/[0.04]"
+                className="button-heading group flex min-h-[220px] flex-col items-center justify-center rounded-lg border border-dashed border-white/12 bg-white/[0.02] p-8 transition-all hover:border-red/40 hover:bg-red/[0.04]"
               >
                 <span className="mb-3 text-3xl text-white/20 transition-colors group-hover:text-red/60">
                   +
@@ -366,7 +366,7 @@ export default function TeamGrid() {
                   <button
                     type="submit"
                     disabled={isCreating || !newName.trim()}
-                    className="rounded border border-red/40 bg-red/15 px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-red transition-colors hover:bg-red/25 disabled:opacity-40"
+                    className="button-heading rounded border border-red/40 bg-red/15 px-4 py-1.5 text-[10px] uppercase tracking-[0.12em] text-red transition-colors hover:bg-red/25 disabled:opacity-40"
                   >
                     {isCreating ? 'Creating...' : 'Create'}
                   </button>
@@ -376,7 +376,7 @@ export default function TeamGrid() {
                       setShowCreateForm(false);
                       setActionError(null);
                     }}
-                    className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/35 hover:text-white/60"
+                    className="button-heading text-[10px] uppercase tracking-[0.12em] text-white/35 hover:text-white/60"
                   >
                     Cancel
                   </button>
@@ -409,7 +409,7 @@ export default function TeamGrid() {
                 <button
                   type="submit"
                   disabled={isJoiningByCode || joinCode.trim().length < 6}
-                  className="w-full rounded border border-white/10 bg-white/5 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                  className="button-heading w-full rounded border border-white/10 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isJoiningByCode ? 'Joining...' : 'Join team'}
                 </button>
@@ -430,7 +430,7 @@ export default function TeamGrid() {
               key={team.id}
               type="button"
               onClick={() => setSelectedTeam(team.id)}
-              className="group rounded-lg border border-white/8 bg-[#1a1a1a] p-5 text-left transition-all hover:border-white/15"
+              className="button-heading group rounded-lg border border-white/8 bg-[#1a1a1a] p-5 text-left transition-all hover:border-white/15"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">

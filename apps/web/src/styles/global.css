@@ -176,4 +176,32 @@ body::after {
   filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.3));
 }
 
+/* Button text treatment â€” reuses the landing logo/heading serif hover effect */
+.button-heading {
+  font-family: var(--font-display);
+  font-style: italic;
+  letter-spacing: 0.02em;
+  -webkit-text-stroke: 1px transparent;
+  transition:
+    color 0.35s ease,
+    -webkit-text-stroke-color 0.35s ease,
+    filter 0.35s ease,
+    opacity 0.35s ease,
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.button-heading:hover:not(:disabled),
+.button-heading:focus-visible:not(:disabled) {
+  color: transparent;
+  -webkit-text-stroke-color: currentColor;
+  filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.25));
+}
+
+.button-heading:disabled {
+  filter: none;
+  -webkit-text-stroke-color: transparent;
+}
+
 

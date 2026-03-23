@@ -230,7 +230,7 @@ export default function ParticipantDetailModal({
                     href={social.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded border border-white/10 bg-white/5 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-white/55 transition-colors hover:border-red/40 hover:text-white"
+                    className="button-heading rounded border border-white/10 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.12em] text-white/55 transition-colors hover:border-red/40 hover:text-white"
                   >
                     {social.label}
                   </a>
@@ -274,7 +274,7 @@ export default function ParticipantDetailModal({
                     type="button"
                     onClick={handleInvite}
                     disabled={isInviting}
-                    className="rounded border border-red/40 bg-red/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="button-heading rounded border border-red/40 bg-red/10 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isInviting ? 'Sending...' : 'Send invitation'}
                   </button>

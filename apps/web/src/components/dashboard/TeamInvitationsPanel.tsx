@@ -197,7 +197,7 @@ export default function TeamInvitationsPanel() {
                     type="button"
                     onClick={() => handleResponse(invitation.id, 'accepted')}
                     disabled={isProcessing}
-                    className="rounded border border-[#00ff88]/30 bg-[#00ff88]/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[#00ff88] transition-colors hover:bg-[#00ff88]/20 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="button-heading rounded border border-[#00ff88]/30 bg-[#00ff88]/10 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-[#00ff88] transition-colors hover:bg-[#00ff88]/20 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isProcessing ? 'Working...' : 'Accept'}
                   </button>
@@ -205,7 +205,7 @@ export default function TeamInvitationsPanel() {
                     type="button"
                     onClick={() => handleResponse(invitation.id, 'declined')}
                     disabled={isProcessing}
-                    className="rounded border border-white/10 bg-white/5 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-white/55 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    className="button-heading rounded border border-white/10 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.14em] text-white/55 transition-colors hover:bg-white/10 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     Decline
                   </button>

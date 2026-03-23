@@ -231,7 +231,7 @@ export default function OnboardingCard({
         <button
           type="submit"
           disabled={!requiredFilled || isSaving}
-          className="mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-[#C41E3A] px-6 py-3.5 font-body text-sm font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#E63946] disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/30"
+          className="button-heading mt-2 flex w-full items-center justify-center gap-2 rounded-lg bg-[#C41E3A] px-6 py-3.5 text-sm font-bold uppercase tracking-[0.08em] text-white transition-colors hover:bg-[#E63946] disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/30"
         >
           {isSaving ? (
             'Saving...'
