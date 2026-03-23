@@ -186,9 +186,16 @@ export const POST: APIRoute = async ({ locals, request }) => {
     console.log('[update-status] send_email=false, skipping email')
   }
 
-  return new Response(JSON.stringify({
+  const responseBody = {
     updated: totalUpdated,
     emails_sent: emailsSent,
     emails_failed: emailsFailed,
-  }))
+    _debug: {
+      send_email,
+      new_status,
+      app_ids_count: uniqueAppIds?.length ?? 0,
+    },
+  }
+  console.log('[update-status] RESPONSE:', JSON.stringify(responseBody))
+  return new Response(JSON.stringify(responseBody))
 }
