@@ -124,7 +124,7 @@ Confirm Spot: https://hacklanta.dev/dashboard
 
 Join the community on Discord: ${DISCORD_URL}
 
-—
+-
 HACKLANTA HQ
 Hosted by progsu @ Georgia State University`,
     }
@@ -147,7 +147,7 @@ Hosted by progsu @ Georgia State University`,
       `),
       text: `You're in, with a caveat.
 
-${g} We squeezed you in. You're an overflow admit — full access to the event, same experience, same 12 hours. Only catch: food and swag are not guaranteed for overflow spots.
+${g} We squeezed you in. You're an overflow admit: full access to the event, same experience, same 12 hours. Only catch, unfortunately food and swag are not guaranteed for overflow spots.
 
 This was the last wave of admits and these spots are non-transferable. Confirm now, set up your profile, find a team.
 

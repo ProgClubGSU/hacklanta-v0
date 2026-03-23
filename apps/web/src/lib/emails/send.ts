@@ -55,8 +55,7 @@ export async function sendBatchEmails(
       html: email.html,
       text: email.text,
       headers: {
-        'List-Unsubscribe': '<mailto:unsubscribe@progsu.com>',
-        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        'List-Unsubscribe': '<https://hacklanta.dev/dashboard>',
       },
     }))
 
