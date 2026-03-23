@@ -1,4 +1,4 @@
-# Hacklanta
+# Hacklanta by progsu
 
 A 12-hour hackathon hosted by [progsu](https://progsu.com) (Programming Club @ Georgia State University). Casino/poker themed hacker experience.
 
@@ -12,15 +12,15 @@ hacklanta/
 └── turbo.json         # Turborepo config
 ```
 
-| Layer      | Tech                                              |
-| ---------- | ------------------------------------------------- |
-| Frontend   | Astro 5, React 19 (islands), Tailwind CSS v4      |
-| Animations | GSAP (landing), Framer Motion (dashboard)          |
-| Database   | Supabase (hosted PostgreSQL + JS client)           |
-| Auth       | Clerk (JWT → Supabase RLS)                         |
-| Email      | Resend                                             |
-| Hosting    | Vercel (frontend + serverless API routes)           |
-| CI         | GitHub Actions                                     |
+| Layer      | Tech                                         |
+| ---------- | -------------------------------------------- |
+| Frontend   | Astro 5, React 19 (islands), Tailwind CSS v4 |
+| Animations | GSAP (landing), Framer Motion (dashboard)    |
+| Database   | Supabase (hosted PostgreSQL + JS client)     |
+| Auth       | Clerk (JWT → Supabase RLS)                   |
+| Email      | Resend                                       |
+| Hosting    | Vercel (frontend + serverless API routes)    |
+| CI         | GitHub Actions                               |
 
 ## Prerequisites
 
@@ -52,18 +52,18 @@ pnpm turbo dev
 ### 4. Verify
 
 - Landing page: http://localhost:4321
-- API routes: http://localhost:4321/api/*
+- API routes: http://localhost:4321/api/\*
 
 ## Commands
 
-| Command             | Description                                |
-| ------------------- | ------------------------------------------ |
-| `pnpm turbo dev`    | Start dev server                           |
-| `pnpm turbo build`  | Build all workspaces                       |
-| `pnpm turbo lint`   | Lint all workspaces                        |
-| `pnpm turbo test`   | Run all tests                              |
-| `pnpm format`       | Format code with Prettier                  |
-| `pnpm format:check` | Check formatting                           |
+| Command             | Description               |
+| ------------------- | ------------------------- |
+| `pnpm turbo dev`    | Start dev server          |
+| `pnpm turbo build`  | Build all workspaces      |
+| `pnpm turbo lint`   | Lint all workspaces       |
+| `pnpm turbo test`   | Run all tests             |
+| `pnpm format`       | Format code with Prettier |
+| `pnpm format:check` | Check formatting          |
 
 ## Project Structure
 
