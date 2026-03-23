@@ -1,7 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 import { notifyProfileChanged, notifyTeamChanged } from './dashboard-events';
-import { createClerkSupabaseClient } from './supabase';
+import { createClerkSupabaseClient, waitForClerk } from './supabase';
 
 interface UserRow {
   id: string;
@@ -142,6 +142,7 @@ function formatParticipant(
 }
 
 async function resolveCurrentUserId(client: SupabaseClient): Promise<string> {
+  await waitForClerk();
   const clerkId = window.Clerk?.user?.id;
   if (!clerkId) throw new Error('Not authenticated');
 
