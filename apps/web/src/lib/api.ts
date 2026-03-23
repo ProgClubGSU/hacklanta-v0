@@ -690,7 +690,7 @@ export const api = {
     const client = getClient();
     const { data, error } = await client
       .from('team_join_requests')
-      .select('*, users(id, first_name, last_name, avatar_url, email)')
+      .select('*, users!team_join_requests_user_id_fkey(id, first_name, last_name, avatar_url, email)')
       .eq('team_id', teamId)
       .eq('status', statusFilter)
       .order('created_at', { ascending: false });
@@ -760,7 +760,7 @@ export const api = {
       })
       .eq('id', requestId)
       .eq('team_id', teamId)
-      .select('*, users(id, first_name, last_name, avatar_url, email)')
+      .select('*, users!team_join_requests_user_id_fkey(id, first_name, last_name, avatar_url, email)')
       .single();
 
     if (updateError) throw new Error(updateError.message);
