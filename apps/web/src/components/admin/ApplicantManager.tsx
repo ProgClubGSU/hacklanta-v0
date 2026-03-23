@@ -11,6 +11,7 @@ const STATUS_PILLS = [
   { value: 'pending', label: 'Pending' },
   { value: 'accepted', label: 'Accepted' },
   { value: 'accepted_overflow', label: 'Overflow' },
+  { value: 'confirmed,confirmed_overflow', label: 'Confirmed' },
   { value: 'rejected', label: 'Rejected' },
   { value: 'waitlisted', label: 'Waitlisted' },
 ];
