@@ -4,6 +4,7 @@ import { api } from '@/lib/api';
 import { TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
 import { TRACKS } from '@/lib/tracks';
 
+import JoinRequestManager from './JoinRequestManager';
 import TeamDetailModal from './TeamDetailModal';
 import CardSuitDivider from './casino/CardSuitDivider';
 import PokerChipGraphic from './casino/PokerChipGraphic';
@@ -40,6 +41,7 @@ interface MyTeam {
   description: string | null;
   invite_code: string;
   max_size: number;
+  viewer_role: string;
   members: Array<{
     user_id: string;
     role: string;
@@ -137,6 +139,7 @@ export default function TeamGrid() {
               description: currentTeam.description,
               invite_code: currentTeam.invite_code,
               max_size: currentTeam.max_size,
+              viewer_role: currentTeam.viewer_role,
               members: currentTeam.members.map((member: { user_id: string; role: string }) => ({
                 user_id: member.user_id,
                 role: member.role,
@@ -296,6 +299,15 @@ export default function TeamGrid() {
                 </button>
               </div>
             </div>
+
+            {myTeam.viewer_role === 'leader' && (
+              <div className="mt-4 border-t border-[#00ff88]/15 pt-4">
+                <JoinRequestManager
+                  teamId={myTeam.id}
+                  onRequestProcessed={() => void loadTeams()}
+                />
+              </div>
+            )}
           </div>
         ) : (
           <div className="grid gap-4 lg:grid-cols-2">

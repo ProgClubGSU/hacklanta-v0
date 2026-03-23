@@ -14,12 +14,16 @@ export default function TabNavigation() {
     checkProfile();
   }, []);
 
-  async function checkProfile() {
+  async function checkProfile(retries = 1) {
     try {
       const profile = await api.getProfile();
       const complete = !!(profile?.display_name && profile?.linkedin_url && profile?.discord_username);
       setProfileComplete(complete);
     } catch {
+      if (retries > 0) {
+        await new Promise((r) => setTimeout(r, 1000));
+        return checkProfile(retries - 1);
+      }
       setProfileComplete(false);
     } finally {
       setIsCheckingProfile(false);

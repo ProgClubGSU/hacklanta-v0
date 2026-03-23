@@ -107,12 +107,14 @@ create policy "Accepted users can create teams"
     )
   );
 
-create policy "Team creator can update team"
+create policy "Team members can update their team"
   on teams for update
   to authenticated
   using (
-    created_by in (
-      select id from users where clerk_id = (select auth.jwt()->>'sub')
+    id in (
+      select tm.team_id from team_members tm
+      join users u on u.id = tm.user_id
+      where u.clerk_id = (select auth.jwt()->>'sub')
     )
   );
 
@@ -137,13 +139,33 @@ create policy "Accepted users can view team members"
   using (is_accepted_user());
 
 -- Only accepted users can join teams
-create policy "Accepted users can join teams (insert own membership)"
+create policy "Accepted users can join teams or leaders can add members"
   on team_members for insert
   to authenticated
   with check (
     is_accepted_user()
-    and user_id in (
-      select id from users where clerk_id = (select auth.jwt()->>'sub')
+    and (
+      -- Users can add themselves (join by code, accept invitation)
+      user_id in (
+        select id from users where clerk_id = (select auth.jwt()->>'sub')
+      )
+      -- OR team leaders can add members (approve join request)
+      or team_id in (
+        select tm.team_id from team_members tm
+        join users u on u.id = tm.user_id
+        where u.clerk_id = (select auth.jwt()->>'sub') and tm.role = 'leader'
+      )
+    )
+  );
+
+create policy "Team leaders can update member roles"
+  on team_members for update
+  to authenticated
+  using (
+    team_id in (
+      select tm.team_id from team_members tm
+      join users u on u.id = tm.user_id
+      where u.clerk_id = (select auth.jwt()->>'sub') and tm.role = 'leader'
     )
   );
 
@@ -193,6 +215,59 @@ create policy "Users can withdraw own requests, leaders can update team requests
   to authenticated
   using (
     user_id in (select id from users where clerk_id = (select auth.jwt()->>'sub'))
+    or team_id in (
+      select tm.team_id from team_members tm
+      join users u on u.id = tm.user_id
+      where u.clerk_id = (select auth.jwt()->>'sub') and tm.role = 'leader'
+    )
+  );
+
+-- ============================================================
+-- TEAM_INVITATIONS TABLE
+-- ============================================================
+alter table team_invitations enable row level security;
+
+-- Accepted users can see invitations where they are the invitee,
+-- the inviter, or a leader of the team.
+create policy "Accepted users can view relevant team invitations"
+  on team_invitations for select
+  to authenticated
+  using (
+    is_accepted_user()
+    and (
+      user_id in (select id from users where clerk_id = (select auth.jwt()->>'sub'))
+      or invited_by in (select id from users where clerk_id = (select auth.jwt()->>'sub'))
+      or team_id in (
+        select tm.team_id from team_members tm
+        join users u on u.id = tm.user_id
+        where u.clerk_id = (select auth.jwt()->>'sub') and tm.role = 'leader'
+      )
+    )
+  );
+
+-- Team leaders can send invitations.
+create policy "Team leaders can create team invitations"
+  on team_invitations for insert
+  to authenticated
+  with check (
+    is_accepted_user()
+    and invited_by in (
+      select id from users where clerk_id = (select auth.jwt()->>'sub')
+    )
+    and team_id in (
+      select tm.team_id from team_members tm
+      join users u on u.id = tm.user_id
+      where u.clerk_id = (select auth.jwt()->>'sub') and tm.role = 'leader'
+    )
+  );
+
+-- Invitees can respond (accept/decline), inviters and leaders can revoke.
+create policy "Invitees can respond, inviters and leaders can update invitations"
+  on team_invitations for update
+  to authenticated
+  using (
+    user_id in (select id from users where clerk_id = (select auth.jwt()->>'sub'))
+    or invited_by in (select id from users where clerk_id = (select auth.jwt()->>'sub'))
     or team_id in (
       select tm.team_id from team_members tm
       join users u on u.id = tm.user_id
