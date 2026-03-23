@@ -232,8 +232,8 @@ export default function ProfileCard() {
       )}
 
       {/* Unified container — profile + team + invitations */}
-      <div className="relative overflow-hidden rounded-lg border border-white/8 bg-[linear-gradient(135deg,#181818_0%,#1a1a1a_58%,#1e1a1a_100%)]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(196,30,58,0.08),transparent_40%)]" />
+      <div className="relative overflow-hidden rounded-lg border border-white/8 bg-[linear-gradient(135deg,#050505_0%,#0a0a0a_58%,#0f0f0f_100%)]">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.04),transparent_40%)]" />
 
         <div className="relative z-10 space-y-8 px-8 py-6">
           {/* Top bar: label + edit */}
@@ -253,7 +253,7 @@ export default function ProfileCard() {
           {/* Name with Welcome prefix */}
           <div>
             <h1 className="font-display text-[clamp(2.5rem,8vw,5rem)] leading-[0.9] uppercase tracking-[-0.04em]">
-              <span className="text-[#C41E3A]">Welcome,</span>{' '}
+              <span className="text-white">Welcome,</span>{' '}
               <span className="text-[#C41E3A]">{welcomeName}</span>
             </h1>
 
