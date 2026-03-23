@@ -19,6 +19,8 @@ export const POST: APIRoute = async ({ locals, request }) => {
 
   const { application_ids, user_ids, new_status, send_email = false } = body
 
+  console.log('[update-status] FULL REQUEST BODY:', JSON.stringify({ application_ids, user_ids, new_status, send_email }))
+
   if ((!Array.isArray(application_ids) || application_ids.length === 0) &&
       (!Array.isArray(user_ids) || user_ids.length === 0)) {
     return new Response(JSON.stringify({ error: 'application_ids or user_ids must be a non-empty array' }), { status: 400 })
