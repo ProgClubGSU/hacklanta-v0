@@ -87,12 +87,19 @@ function getFullName(user: Partial<UserRow> | null | undefined) {
 
 function flattenMember(member: TeamMemberRow) {
   const { users, ...rest } = member;
+  const profile = (users as Record<string, unknown>)?.profiles as
+    | { discord_username?: string | null; linkedin_url?: string | null }
+    | Array<{ discord_username?: string | null; linkedin_url?: string | null }>
+    | null;
+  const profileData = Array.isArray(profile) ? profile[0] : profile;
 
   return {
     ...rest,
     first_name: users?.first_name ?? null,
     last_name: users?.last_name ?? null,
     avatar_url: users?.avatar_url ?? null,
+    discord_username: profileData?.discord_username ?? null,
+    linkedin_url: profileData?.linkedin_url ?? null,
   };
 }
 
@@ -617,7 +624,7 @@ export const api = {
     ] = await Promise.all([
       client
         .from('teams')
-        .select('*, team_members(*, users(id, first_name, last_name, avatar_url))')
+        .select('*, team_members(*, users(id, first_name, last_name, avatar_url, profiles(discord_username, linkedin_url)))')
         .eq('id', teamId)
         .single(),
       client

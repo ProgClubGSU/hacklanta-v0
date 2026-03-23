@@ -10,6 +10,8 @@ interface TeamMember {
   first_name: string | null;
   last_name: string | null;
   avatar_url: string | null;
+  discord_username: string | null;
+  linkedin_url: string | null;
 }
 
 interface TeamDetail {
@@ -266,6 +268,21 @@ export default function TeamDetailModal({
                             <span className="rounded border border-transparent bg-transparent px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-white">
                               Leader
                             </span>
+                          )}
+                        </div>
+                        <div className="mt-0.5 flex items-center gap-3">
+                          {member.discord_username && (
+                            <span className="text-xs text-white/40">{member.discord_username}</span>
+                          )}
+                          {member.linkedin_url && (
+                            <a
+                              href={member.linkedin_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-white/40 underline decoration-white/15 hover:text-white/60"
+                            >
+                              LinkedIn
+                            </a>
                           )}
                         </div>
                       </div>
