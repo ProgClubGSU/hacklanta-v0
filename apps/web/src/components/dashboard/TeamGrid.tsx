@@ -106,6 +106,7 @@ export default function TeamGrid() {
   const [isJoiningByCode, setIsJoiningByCode] = useState(false);
   const [isLeavingTeam, setIsLeavingTeam] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
+  const [codeCopied, setCodeCopied] = useState(false);
 
   useEffect(() => {
     void loadTeams();
@@ -275,12 +276,34 @@ export default function TeamGrid() {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <div className="rounded border border-white/10 bg-white/5 px-4 py-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(myTeam.invite_code);
+                    setCodeCopied(true);
+                    setTimeout(() => setCodeCopied(false), 1500);
+                  }}
+                  className="group/code rounded border border-white/10 bg-white/5 px-4 py-2 text-left transition-colors hover:border-white/20 hover:bg-white/[0.08]"
+                  title="Click to copy invite code"
+                >
                   <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/35">
                     Team code
                   </p>
-                  <p className="mt-1 font-mono text-sm text-white/85">{myTeam.invite_code}</p>
-                </div>
+                  <p className="mt-1 flex items-center gap-2 font-mono text-sm font-semibold text-white/90">
+                    {myTeam.invite_code}
+                    <span className={`transition-all ${codeCopied ? 'opacity-100' : 'opacity-0 group-hover/code:opacity-60'}`}>
+                      {codeCopied ? (
+                        <svg className="h-3.5 w-3.5 text-[#00ff88]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      ) : (
+                        <svg className="h-3.5 w-3.5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      )}
+                    </span>
+                  </p>
+                </button>
                 <div className="rounded border border-white/10 bg-white/5 px-4 py-2">
                   <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/35">
                     Open slots
