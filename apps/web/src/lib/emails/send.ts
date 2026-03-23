@@ -13,7 +13,7 @@ export interface BatchSendResult {
   errorDetails: Array<{ email: string; error: string }>
 }
 
-const FROM = 'Hacklanta <noreply@hacklanta.dev>'
+const FROM = 'Hacklanta <official@progsu.com>'
 const BATCH_SIZE = 100
 const BATCH_DELAY_MS = 250
 
