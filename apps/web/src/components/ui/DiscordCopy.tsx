@@ -3,9 +3,14 @@ import { useState } from 'react';
 interface DiscordCopyProps {
   username: string;
   size?: 'sm' | 'md';
+  className?: string;
 }
 
-export default function DiscordCopy({ username, size = 'md' }: DiscordCopyProps) {
+export default function DiscordCopy({
+  username,
+  size = 'md',
+  className = '',
+}: DiscordCopyProps) {
   const [copied, setCopied] = useState(false);
 
   async function handleCopy() {
@@ -25,7 +30,9 @@ export default function DiscordCopy({ username, size = 'md' }: DiscordCopyProps)
       } hover:bg-[#5865F2]/10`}
       title="Click to copy Discord username"
     >
-      <span className={`font-semibold ${isMd ? 'text-white' : 'text-white/80 text-xs'}`}>
+      <span
+        className={`font-semibold ${isMd ? 'text-white' : 'text-white/80 text-xs'} ${className}`}
+      >
         {username}
       </span>
       <span

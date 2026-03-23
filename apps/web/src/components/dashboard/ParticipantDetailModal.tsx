@@ -99,6 +99,14 @@ function SocialIcon({ label }: { label: string }) {
   );
 }
 
+function DiscordIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.317 4.369A19.791 19.791 0 0015.558 3c-.206.375-.444.88-.608 1.275a18.27 18.27 0 00-5.9 0A12.64 12.64 0 008.442 3a19.736 19.736 0 00-4.76 1.369C.533 9.037-.32 13.579.107 18.057a19.9 19.9 0 005.993 3.043c.485-.666.918-1.37 1.296-2.106-.714-.268-1.396-.598-2.038-.98.17-.124.336-.253.496-.387 3.93 1.848 8.188 1.848 12.072 0 .162.134.328.263.496.387-.644.383-1.327.713-2.042.98.378.737.812 1.44 1.297 2.106a19.88 19.88 0 005.995-3.043c.5-5.19-.854-9.691-3.355-13.688zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.334.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.956 2.419-2.157 2.419zm7.961 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.334.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z" />
+    </svg>
+  );
+}
+
 export default function ParticipantDetailModal({
   participant,
   viewerTeam,
@@ -222,8 +230,13 @@ export default function ParticipantDetailModal({
                 <div className="space-y-1 text-sm text-white/55">
                   {participant.discord_username && (
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-white/35">Discord</span>
-                      <DiscordCopy username={participant.discord_username} />
+                      <span className="text-[#5865F2]">
+                        <DiscordIcon />
+                      </span>
+                      <DiscordCopy
+                        username={participant.discord_username}
+                        className="font-mono text-[#5865F2]"
+                      />
                     </div>
                   )}
                   {participant.current_team ? (
@@ -269,8 +282,13 @@ export default function ParticipantDetailModal({
               <div className="space-y-2">
                 {participant.discord_username && (
                   <div className="flex items-center gap-2.5 rounded border border-[#5865F2]/30 bg-[#5865F2]/10 px-4 py-2.5">
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-[#5865F2]">Discord</span>
-                    <DiscordCopy username={participant.discord_username} />
+                    <span className="text-[#5865F2]">
+                      <DiscordIcon />
+                    </span>
+                    <DiscordCopy
+                      username={participant.discord_username}
+                      className="font-mono text-[#5865F2]"
+                    />
                   </div>
                 )}
                 <div className="flex flex-wrap gap-2">
