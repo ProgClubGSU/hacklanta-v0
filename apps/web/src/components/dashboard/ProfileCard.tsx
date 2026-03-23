@@ -232,8 +232,7 @@ export default function ProfileCard() {
       )}
 
       {/* Unified container — profile + team + invitations */}
-      <div className="relative overflow-hidden rounded-lg border border-white/8 bg-[linear-gradient(135deg,#050505_0%,#0a0a0a_58%,#0f0f0f_100%)]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.04),transparent_40%)]" />
+      <div className="relative overflow-hidden bg-[#1a0a0e]">
 
         <div className="relative z-10 space-y-8 px-8 py-6">
           {/* Top bar: edit */}
@@ -355,14 +354,8 @@ export default function ProfileCard() {
                 </div>
               </div>
             ) : (
-              <div className="mt-4 flex items-center gap-5">
+              <div className="mt-4">
                 <p className="font-body text-sm text-white/35">You're not on a team yet.</p>
-                <a
-                  href="#teams"
-                  className="font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:text-red-bright"
-                >
-                  Browse teams &darr;
-                </a>
               </div>
             )}
           </div>
