@@ -550,6 +550,29 @@ export const api = {
     notifyTeamChanged();
   },
 
+  kickMember: async (teamId: string, targetUserId: string) => {
+    const client = getClient();
+    const userId = await resolveCurrentUserId(client);
+
+    if (userId === targetUserId) throw new Error('You cannot kick yourself. Use "Leave team" instead.');
+
+    const membership = await getCurrentMembership(client, userId);
+    if (!membership || membership.team_id !== teamId || membership.role !== 'leader') {
+      throw new Error('Only team leaders can remove members.');
+    }
+
+    const { error: deleteError } = await client
+      .from('team_members')
+      .delete()
+      .eq('user_id', targetUserId)
+      .eq('team_id', teamId);
+
+    if (deleteError) throw new Error(deleteError.message);
+
+    await syncTeamOpenStatus(client, teamId);
+    notifyTeamChanged();
+  },
+
   listTeams: async (params?: { offset?: number; limit?: number; has_openings?: boolean }) => {
     const client = getClient();
     let query = client
@@ -620,6 +643,7 @@ export const api = {
       join_request_id: joinRequest?.id ?? null,
       viewer_team_id: membership?.team_id ?? null,
       viewer_is_member: membership?.team_id === teamId,
+      viewer_role: membership?.team_id === teamId ? (membership?.role as string) ?? null : null,
     };
   },
 

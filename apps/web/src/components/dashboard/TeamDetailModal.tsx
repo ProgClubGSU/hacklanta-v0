@@ -26,6 +26,7 @@ interface TeamDetail {
   join_request_id: string | null;
   viewer_team_id: string | null;
   viewer_is_member: boolean;
+  viewer_role: string | null;
 }
 
 interface TeamDetailModalProps {
@@ -54,6 +55,7 @@ export default function TeamDetailModal({
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLeavingTeam, setIsLeavingTeam] = useState(false);
+  const [kickingMemberId, setKickingMemberId] = useState<string | null>(null);
   const [message, setMessage] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -115,6 +117,24 @@ export default function TeamDetailModal({
     }
   }
 
+  async function handleKickMember(memberId: string, memberName: string) {
+    if (!team) return;
+    if (!confirm(`Remove ${memberName} from ${team.name}?`)) return;
+
+    try {
+      setKickingMemberId(memberId);
+      setError(null);
+      await api.kickMember(team.id, memberId);
+      await loadTeamDetails();
+      onJoinRequestSent();
+    } catch (kickError) {
+      setError(kickError instanceof Error ? kickError.message : 'Failed to remove member.');
+    } finally {
+      setKickingMemberId(null);
+    }
+  }
+
+  const isViewerLeader = team?.viewer_role === 'leader';
   const isFull = team ? team.members.length >= team.max_size : false;
   const alreadyOnAnotherTeam = team
     ? Boolean(team.viewer_team_id && !team.viewer_is_member)
@@ -251,6 +271,20 @@ export default function TeamDetailModal({
                         </div>
                         {member.email && <p className="text-xs text-white/40">{member.email}</p>}
                       </div>
+
+                      {isViewerLeader && member.role !== 'leader' && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleKickMember(member.user_id, getMemberName(member));
+                          }}
+                          disabled={kickingMemberId === member.user_id}
+                          className="shrink-0 rounded border border-red/30 bg-red/10 px-2.5 py-1 font-mono text-[9px] uppercase tracking-wider text-red transition-colors hover:bg-red/20 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          {kickingMemberId === member.user_id ? '...' : 'Remove'}
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>

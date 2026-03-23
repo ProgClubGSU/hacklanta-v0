@@ -169,12 +169,19 @@ create policy "Team leaders can update member roles"
     )
   );
 
-create policy "Users can leave teams (delete own membership)"
+create policy "Members can leave or leaders can kick"
   on team_members for delete
   to authenticated
   using (
+    -- Users can delete their own membership (leave)
     user_id in (
       select id from users where clerk_id = (select auth.jwt()->>'sub')
+    )
+    -- OR team leaders can delete any member's row (kick)
+    or team_id in (
+      select tm.team_id from team_members tm
+      join users u on u.id = tm.user_id
+      where u.clerk_id = (select auth.jwt()->>'sub') and tm.role = 'leader'
     )
   );
 
