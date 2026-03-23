@@ -373,9 +373,11 @@ export const api = {
     for (const membership of (memberships ?? []) as Array<{
       user_id: string;
       role: string;
-      teams?: Array<{ id: string; name: string }> | null;
+      teams?: { id: string; name: string } | Array<{ id: string; name: string }> | null;
     }>) {
-      const team = membership.teams?.[0] ?? null;
+      const team = Array.isArray(membership.teams)
+        ? membership.teams[0] ?? null
+        : membership.teams ?? null;
       membershipByUserId.set(membership.user_id, {
         team_id: team?.id ?? '',
         role: membership.role,
