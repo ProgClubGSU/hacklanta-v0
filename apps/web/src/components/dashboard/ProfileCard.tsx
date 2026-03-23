@@ -236,15 +236,12 @@ export default function ProfileCard() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.04),transparent_40%)]" />
 
         <div className="relative z-10 space-y-8 px-8 py-6">
-          {/* Top bar: label + edit */}
+          {/* Top bar: edit */}
           <div className="flex items-center justify-between">
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-gold">
-              {profile.lookingForTeam ? 'Looking for team' : 'Player profile'}
-            </span>
             <button
               type="button"
               onClick={openEditor}
-              className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
+              className="ml-auto font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
             >
               Edit &rarr;
             </button>
@@ -298,10 +295,7 @@ export default function ProfileCard() {
           <div>
             <div className="flex items-start justify-between gap-4">
               <div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-gold">
-                  {team ? 'Your team' : 'Team'}
-                </span>
-                <h2 className="mt-1 font-display text-2xl uppercase tracking-[-0.03em] text-white">
+                <h2 className="font-display text-2xl uppercase tracking-[-0.03em] text-white">
                   {teamName}
                 </h2>
                 {teamDescription && (
@@ -399,9 +393,6 @@ export default function ProfileCard() {
                 <h2 className="font-display text-2xl uppercase tracking-[-0.03em] text-white">
                   Edit Profile
                 </h2>
-                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
-                  Team finder profile
-                </p>
               </div>
               <button
                 type="button"

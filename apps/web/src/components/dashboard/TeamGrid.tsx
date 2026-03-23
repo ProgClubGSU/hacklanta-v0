@@ -389,10 +389,7 @@ export default function TeamGrid() {
               className="flex min-h-[220px] flex-col justify-between rounded-lg border border-white/8 bg-[#1a1a1a] p-5"
             >
               <div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
-                  Join With Code
-                </div>
-                <h4 className="mt-2 font-display text-xl uppercase tracking-[-0.03em] text-white">
+                <h4 className="font-display text-xl uppercase tracking-[-0.03em] text-white">
                   Already have a team code?
                 </h4>
                 <p className="mt-2 text-sm text-white/45">
