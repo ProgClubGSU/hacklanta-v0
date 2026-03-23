@@ -47,24 +47,28 @@ export async function sendBatchEmails(
     const chunk = chunks[i]
 
     try {
-      const { error } = await resend.batch.send(
-        chunk.map(email => ({
-          from: FROM,
-          to: email.to,
-          subject: email.subject,
-          html: email.html,
-        })),
-      )
+      const payload = chunk.map(email => ({
+        from: FROM,
+        to: email.to,
+        subject: email.subject,
+        html: email.html,
+      }))
+      console.log('[sendBatchEmails] Sending chunk', i + 1, 'of', chunks.length, '- emails:', payload.map(p => ({ to: p.to, subject: p.subject })))
+
+      const { data, error } = await resend.batch.send(payload)
 
       if (error) {
+        console.error('[sendBatchEmails] Resend API error:', error)
         errors += chunk.length
         for (const email of chunk) {
           errorDetails.push({ email: email.to, error: error.message })
         }
       } else {
+        console.log('[sendBatchEmails] Chunk sent successfully, IDs:', data)
         sent += chunk.length
       }
     } catch (err) {
+      console.error('[sendBatchEmails] Exception:', err)
       errors += chunk.length
       const message = err instanceof Error ? err.message : 'Unknown error'
       for (const email of chunk) {

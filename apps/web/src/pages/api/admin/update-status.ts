@@ -125,8 +125,10 @@ export const POST: APIRoute = async ({ locals, request }) => {
   let emailsFailed = 0
 
   if (send_email) {
+    console.log('[update-status] send_email=true, new_status=', new_status)
     const templateName = STATUS_TEMPLATE_MAP[new_status]
     if (!templateName) {
+      console.warn('[update-status] No email template for status:', new_status)
       return new Response(JSON.stringify({
         updated: totalUpdated,
         emails_sent: 0,
@@ -136,25 +138,34 @@ export const POST: APIRoute = async ({ locals, request }) => {
     }
 
     // Fetch applications with user data for email personalization
-    const { data: apps } = await supabase
+    const { data: apps, error: appsError } = await supabase
       .from('applications')
       .select('email, user_id, users(email, first_name)')
       .in('id', uniqueAppIds)
+
+    console.log('[update-status] apps query result:', { count: apps?.length ?? 0, error: appsError?.message ?? null })
 
     if (apps?.length) {
       const resend = createResendClient()
       const emails = apps.map(app => {
         const user = (app as any).users
         const recipientEmail = user?.email ?? app.email
-        if (!recipientEmail) return null
+        if (!recipientEmail) {
+          console.warn('[update-status] No email for app, skipping:', { user_id: app.user_id, app_email: app.email })
+          return null
+        }
 
         const template = templates[templateName]({ firstName: user?.first_name ?? null })
         return { to: recipientEmail, ...template }
       }).filter((e): e is NonNullable<typeof e> => e !== null)
 
+      console.log('[update-status] Sending', emails.length, 'emails via Resend')
+
       const result = await sendBatchEmails(resend, emails)
       emailsSent = result.sent
       emailsFailed = result.errors
+
+      console.log('[update-status] Resend result:', { sent: result.sent, errors: result.errors, errorDetails: result.errorDetails })
 
       // Mark acceptance_sent_at for accepted users
       if (new_status === 'accepted' || new_status === 'accepted_overflow') {
@@ -166,7 +177,11 @@ export const POST: APIRoute = async ({ locals, request }) => {
             .in('id', userIds)
         }
       }
+    } else {
+      console.warn('[update-status] No apps found for email sending, uniqueAppIds:', uniqueAppIds)
     }
+  } else {
+    console.log('[update-status] send_email=false, skipping email')
   }
 
   return new Response(JSON.stringify({
