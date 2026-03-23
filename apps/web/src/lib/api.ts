@@ -454,7 +454,7 @@ export const api = {
 
     const { data, error } = await client
       .from('teams')
-      .select('*, team_members(*, users(id, first_name, last_name, avatar_url))')
+      .select('*, team_members(*, users(id, first_name, last_name, avatar_url, profiles(discord_username, linkedin_url)))')
       .eq('id', membership.team_id)
       .single();
 

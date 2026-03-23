@@ -12,6 +12,8 @@ interface TeamMember {
   first_name: string | null;
   last_name: string | null;
   avatar_url: string | null;
+  discord_username: string | null;
+  linkedin_url: string | null;
 }
 
 interface TeamData {
@@ -92,6 +94,42 @@ function getMemberInitials(member: TeamMember) {
   const first = member.first_name?.[0] ?? '';
   const last = member.last_name?.[0] ?? '';
   return (first + last).toUpperCase() || '??';
+}
+
+function InviteCodeCard({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopy() {
+    await navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      className="group/code flex items-center rounded border border-white/8 bg-white/4 px-4 py-2.5 transition-colors hover:border-white/15 hover:bg-white/[0.06]"
+      title="Click to copy invite code"
+    >
+      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">Code</span>
+      <span className="ml-2 font-mono text-sm font-semibold text-white/90">{code}</span>
+      <span className={`ml-2 transition-all ${copied ? 'opacity-100' : 'opacity-0 group-hover/code:opacity-60'}`}>
+        {copied ? (
+          <svg className="h-3.5 w-3.5 text-[#00ff88]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        ) : (
+          <svg className="h-3.5 w-3.5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        )}
+      </span>
+      {copied && (
+        <span className="ml-1 font-mono text-[9px] uppercase tracking-wider text-[#00ff88]">Copied</span>
+      )}
+    </button>
+  );
 }
 
 export default function ProfileCard() {
@@ -310,47 +348,72 @@ export default function ProfileCard() {
             </div>
 
             {team ? (
-              <div className="mt-6 flex flex-wrap items-center gap-4">
-                <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
-                    Code
-                  </span>
-                  <span className="ml-2 font-mono text-sm text-white/80">{team.invite_code}</span>
-                </div>
-                <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
-                    Slots
-                  </span>
-                  <span className="ml-2 font-mono text-sm text-white/80">
-                    {availableSlots} / {team.max_size} open
-                  </span>
-                </div>
-                <div className="h-6 w-px bg-white/8" />
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-2">
-                    {team.members.map((member) =>
-                      member.avatar_url ? (
-                        <img
-                          key={member.id}
-                          src={member.avatar_url}
-                          alt={getMemberName(member)}
-                          className="h-8 w-8 rounded-full border-2 border-black-card"
-                          title={getMemberName(member)}
-                        />
-                      ) : (
-                        <div
-                          key={member.id}
-                          className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-black-card bg-white/10 font-mono text-[10px] text-white/60"
-                          title={getMemberName(member)}
-                        >
-                          {getMemberInitials(member)}
-                        </div>
-                      ),
-                    )}
+              <div className="mt-6 space-y-5">
+                {/* Code & Slots row */}
+                <div className="flex flex-wrap items-stretch gap-3">
+                  <InviteCodeCard code={team.invite_code} />
+                  <div className="flex items-center rounded border border-white/8 bg-white/4 px-4 py-2.5">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
+                      Slots
+                    </span>
+                    <span className="ml-2 font-mono text-sm text-white/80">
+                      {availableSlots} / {team.max_size} open
+                    </span>
                   </div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">
-                    {team.members.length} member{team.members.length !== 1 ? 's' : ''}
-                  </span>
+                </div>
+
+                {/* Team members list */}
+                <div className="space-y-2">
+                  <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-white/40">
+                    Team Members ({team.members.length})
+                  </p>
+                  <div className="space-y-1.5">
+                    {team.members.map((member) => (
+                      <div
+                        key={member.id}
+                        className="flex items-center gap-3 rounded border border-white/8 bg-white/[0.03] px-4 py-3"
+                      >
+                        {member.avatar_url ? (
+                          <img
+                            src={member.avatar_url}
+                            alt={getMemberName(member)}
+                            className="h-9 w-9 shrink-0 rounded-full border-2 border-white/15 object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-white/15 bg-white/10 font-mono text-[10px] font-bold text-white/70">
+                            {getMemberInitials(member)}
+                          </div>
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className="truncate text-sm font-medium text-white">{getMemberName(member)}</span>
+                            {member.role === 'leader' && (
+                              <span className="font-mono text-[9px] font-bold uppercase tracking-wider text-white/50">Leader</span>
+                            )}
+                          </div>
+                          <div className="mt-0.5 flex items-center gap-3">
+                            {member.discord_username && (
+                              <span className="flex items-center gap-1 text-xs">
+                                <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-[#5865F2]/70">Discord</span>
+                                <DiscordCopy username={member.discord_username} size="sm" />
+                              </span>
+                            )}
+                            {member.linkedin_url && (
+                              <a
+                                href={member.linkedin_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 text-xs"
+                              >
+                                <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-white/40">LinkedIn</span>
+                                <span className="text-white/60 underline decoration-white/20 hover:text-white/80">Profile</span>
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             ) : (
