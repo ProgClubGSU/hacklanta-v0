@@ -5,7 +5,6 @@ import { TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
 import { TRACKS } from '@/lib/tracks';
 
 import TeamDetailModal from './TeamDetailModal';
-import TeamInvitationsPanel from './TeamInvitationsPanel';
 import CardSuitDivider from './casino/CardSuitDivider';
 import PokerChipGraphic from './casino/PokerChipGraphic';
 import TerminalPrompt from './casino/TerminalPrompt';
@@ -235,8 +234,6 @@ export default function TeamGrid() {
   return (
     <>
       <div className="space-y-6">
-        <TeamInvitationsPanel />
-
         <div className="flex items-center justify-between gap-4">
           <div>
             <h3 className="font-display text-2xl uppercase tracking-[-0.03em] text-white">Teams</h3>

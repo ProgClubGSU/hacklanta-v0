@@ -2,6 +2,7 @@ import { useAuth } from '@clerk/astro/react';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { PROFILE_CHANGED_EVENT, TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
+import TeamInvitationsPanel from './TeamInvitationsPanel';
 
 interface TeamMember {
   id: string;
@@ -222,20 +223,20 @@ export default function ProfileCard() {
   }
 
   return (
-    <div className="space-y-8">
+    <>
       {loadError && (
         <div className="rounded border border-red/30 bg-red/10 px-4 py-3 text-sm text-red-200">
           {loadError}
         </div>
       )}
 
-      {/* Hero — name + bio + socials in one cohesive block */}
+      {/* Unified container — profile + team + invitations */}
       <div className="relative overflow-hidden rounded-lg border border-white/8 bg-[linear-gradient(135deg,#181818_0%,#1a1a1a_58%,#1e1a1a_100%)]">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(196,30,58,0.08),transparent_40%)]" />
 
-        <div className="relative z-10 px-8 pb-8 pt-6">
+        <div className="relative z-10 space-y-8 px-8 py-6">
           {/* Top bar: label + edit */}
-          <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-gold">
               {profile.lookingForTeam ? 'Looking for team' : 'Player profile'}
             </span>
@@ -248,123 +249,137 @@ export default function ProfileCard() {
             </button>
           </div>
 
-          {/* Name */}
-          <h1 className="font-display text-[clamp(2.5rem,8vw,5rem)] leading-[0.9] uppercase tracking-[-0.04em] text-white">
-            {welcomeName}
-          </h1>
-
-          {/* Bio */}
-          {profile.bio && (
-            <p className="mt-4 max-w-2xl font-body text-[15px] leading-relaxed text-white/55">
-              {profile.bio}
-            </p>
-          )}
-
-          {/* Socials — inline, minimal */}
-          {socials.length > 0 && (
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
-              {socials.map((s) =>
-                s.href ? (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40 transition-colors hover:text-red"
-                  >
-                    {s.label}
-                  </a>
-                ) : (
-                  <span
-                    key={s.label}
-                    className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40"
-                  >
-                    {s.label}: <span className="text-white/55">{s.value}</span>
-                  </span>
-                ),
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Team section */}
-      <div className="rounded-lg border border-white/8 bg-black-card/60 px-8 py-6">
-        <div className="flex items-start justify-between gap-4">
+          {/* Name with Welcome prefix */}
           <div>
-            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-gold">
-              {team ? 'Your team' : 'Team'}
-            </span>
-            <h2 className="mt-1 font-display text-2xl uppercase tracking-[-0.03em] text-white">
-              {teamName}
-            </h2>
-            {teamDescription && (
-              <p className="mt-2 max-w-xl font-body text-sm text-white/45">{teamDescription}</p>
-            )}
-          </div>
-          <a
-            href="#teams"
-            className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
-          >
-            Browse teams &darr;
-          </a>
-        </div>
+            <h1 className="font-display text-[clamp(2.5rem,8vw,5rem)] leading-[0.9] uppercase tracking-[-0.04em]">
+              <span className="text-[#C41E3A]">Welcome,</span>{' '}
+              <span className="text-[#C41E3A]">{welcomeName}</span>
+            </h1>
 
-        {team ? (
-          <div className="mt-6 flex flex-wrap items-center gap-4">
-            <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
-                Code
-              </span>
-              <span className="ml-2 font-mono text-sm text-white/80">{team.invite_code}</span>
-            </div>
-            <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
-                Slots
-              </span>
-              <span className="ml-2 font-mono text-sm text-white/80">
-                {availableSlots} / {team.max_size} open
-              </span>
-            </div>
-            <div className="h-6 w-px bg-white/8" />
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                {team.members.map((member) =>
-                  member.avatar_url ? (
-                    <img
-                      key={member.id}
-                      src={member.avatar_url}
-                      alt={getMemberName(member)}
-                      className="h-8 w-8 rounded-full border-2 border-black-card"
-                      title={getMemberName(member)}
-                    />
-                  ) : (
-                    <div
-                      key={member.id}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-black-card bg-white/10 font-mono text-[10px] text-white/60"
-                      title={getMemberName(member)}
+            {/* Bio */}
+            {profile.bio && (
+              <p className="mt-4 max-w-2xl font-body text-[15px] leading-relaxed text-white/55">
+                {profile.bio}
+              </p>
+            )}
+
+            {/* Socials — inline, minimal */}
+            {socials.length > 0 && (
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+                {socials.map((s) =>
+                  s.href ? (
+                    <a
+                      key={s.label}
+                      href={s.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40 transition-colors hover:text-red"
                     >
-                      {getMemberInitials(member)}
-                    </div>
+                      {s.label}
+                    </a>
+                  ) : (
+                    <span
+                      key={s.label}
+                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40"
+                    >
+                      {s.label}: <span className="text-white/55">{s.value}</span>
+                    </span>
                   ),
                 )}
               </div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">
-                {team.members.length} member{team.members.length !== 1 ? 's' : ''}
-              </span>
+            )}
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-white/8" />
+
+          {/* Team section (no box) */}
+          <div>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-gold">
+                  {team ? 'Your team' : 'Team'}
+                </span>
+                <h2 className="mt-1 font-display text-2xl uppercase tracking-[-0.03em] text-white">
+                  {teamName}
+                </h2>
+                {teamDescription && (
+                  <p className="mt-2 max-w-xl font-body text-sm text-white/45">{teamDescription}</p>
+                )}
+              </div>
+              <a
+                href="#teams"
+                className="shrink-0 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
+              >
+                Browse teams &darr;
+              </a>
             </div>
+
+            {team ? (
+              <div className="mt-6 flex flex-wrap items-center gap-4">
+                <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
+                    Code
+                  </span>
+                  <span className="ml-2 font-mono text-sm text-white/80">{team.invite_code}</span>
+                </div>
+                <div className="rounded border border-white/8 bg-white/4 px-4 py-2.5">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/35">
+                    Slots
+                  </span>
+                  <span className="ml-2 font-mono text-sm text-white/80">
+                    {availableSlots} / {team.max_size} open
+                  </span>
+                </div>
+                <div className="h-6 w-px bg-white/8" />
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {team.members.map((member) =>
+                      member.avatar_url ? (
+                        <img
+                          key={member.id}
+                          src={member.avatar_url}
+                          alt={getMemberName(member)}
+                          className="h-8 w-8 rounded-full border-2 border-black-card"
+                          title={getMemberName(member)}
+                        />
+                      ) : (
+                        <div
+                          key={member.id}
+                          className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-black-card bg-white/10 font-mono text-[10px] text-white/60"
+                          title={getMemberName(member)}
+                        >
+                          {getMemberInitials(member)}
+                        </div>
+                      ),
+                    )}
+                  </div>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/30">
+                    {team.members.length} member{team.members.length !== 1 ? 's' : ''}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-4 flex items-center gap-5">
+                <p className="font-body text-sm text-white/35">You're not on a team yet.</p>
+                <a
+                  href="#teams"
+                  className="font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:text-red-bright"
+                >
+                  Browse teams &darr;
+                </a>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="mt-4 flex items-center gap-5">
-            <p className="font-body text-sm text-white/35">You're not on a team yet.</p>
-            <a
-              href="#teams"
-              className="font-mono text-[11px] uppercase tracking-[0.15em] text-red transition-colors hover:text-red-bright"
-            >
-              Browse teams &darr;
-            </a>
+
+          {/* Divider */}
+          <div className="h-px bg-white/8" />
+
+          {/* Invitations section */}
+          <div>
+            <TeamInvitationsPanel />
           </div>
-        )}
+        </div>
       </div>
 
       {/* Editor modal */}
@@ -507,6 +522,6 @@ export default function ProfileCard() {
           </form>
         </div>
       )}
-    </div>
+    </>
   );
 }
