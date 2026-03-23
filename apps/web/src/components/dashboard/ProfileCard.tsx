@@ -302,10 +302,10 @@ export default function ProfileCard() {
                 )}
               </div>
               <a
-                href="#teams"
+                href="/dashboard/teams"
                 className="button-heading shrink-0 text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
               >
-                Browse teams &darr;
+                Browse teams &rarr;
               </a>
             </div>
 
@@ -354,8 +354,17 @@ export default function ProfileCard() {
                 </div>
               </div>
             ) : (
-              <div className="mt-4">
-                <p className="font-body text-sm text-white/35">You're not on a team yet.</p>
+              <div className="mt-4 space-y-3">
+                <p className="font-body text-sm text-white/50">You're not on a team yet.</p>
+                <a
+                  href="/dashboard/teams"
+                  className="inline-flex items-center gap-2 rounded border border-red/40 bg-red/10 px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-red-bright transition-all hover:border-red/60 hover:bg-red/20 hover:shadow-[0_0_20px_rgba(196,30,58,0.15)]"
+                >
+                  Find a team &rarr;
+                </a>
+                <p className="font-mono text-[10px] uppercase tracking-wider text-white/30">
+                  Browse teams, request to join, or create your own
+                </p>
               </div>
             )}
           </div>
