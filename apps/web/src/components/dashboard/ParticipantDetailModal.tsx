@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { api } from '@/lib/api';
 import Icon from '@/components/ui/Icon';
+import DiscordCopy from '@/components/ui/DiscordCopy';
 
 interface ParticipantTeamSummary {
   id: string;
@@ -183,10 +184,10 @@ export default function ParticipantDetailModal({
 
                 <div className="space-y-1 text-sm text-white/55">
                   {participant.discord_username && (
-                    <p className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5">
                       <span className="font-mono text-[10px] uppercase tracking-wider text-white/35">Discord</span>
-                      <span className="font-semibold text-white">{participant.discord_username}</span>
-                    </p>
+                      <DiscordCopy username={participant.discord_username} />
+                    </div>
                   )}
                   {participant.linkedin_url && (
                     <p className="flex items-center gap-1.5">
@@ -240,7 +241,7 @@ export default function ParticipantDetailModal({
                 {participant.discord_username && (
                   <div className="flex items-center gap-2.5 rounded border border-[#5865F2]/30 bg-[#5865F2]/10 px-4 py-2.5">
                     <span className="font-mono text-[10px] uppercase tracking-wider text-[#5865F2]">Discord</span>
-                    <span className="font-semibold text-white">{participant.discord_username}</span>
+                    <DiscordCopy username={participant.discord_username} />
                   </div>
                 )}
                 <div className="flex flex-wrap gap-2">

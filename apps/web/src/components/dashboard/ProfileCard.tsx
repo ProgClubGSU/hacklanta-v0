@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { PROFILE_CHANGED_EVENT, TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
 import TeamInvitationsPanel from './TeamInvitationsPanel';
+import DiscordCopy from '@/components/ui/DiscordCopy';
 
 interface TeamMember {
   id: string;
@@ -264,7 +265,7 @@ export default function ProfileCard() {
                 {profile.discord && (
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-[10px] uppercase tracking-wider text-[#5865F2]">Discord</span>
-                    <span className="text-sm font-semibold text-white">{profile.discord}</span>
+                    <DiscordCopy username={profile.discord} />
                   </div>
                 )}
                 {socials.length > 0 && (

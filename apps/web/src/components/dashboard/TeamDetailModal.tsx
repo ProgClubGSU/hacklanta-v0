@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { api } from '@/lib/api';
 import { TRACKS } from '@/lib/tracks';
+import DiscordCopy from '@/components/ui/DiscordCopy';
 
 interface TeamMember {
   id: string;
@@ -274,7 +275,7 @@ export default function TeamDetailModal({
                           {member.discord_username && (
                             <span className="flex items-center gap-1 text-xs">
                               <span className="font-mono text-[9px] uppercase tracking-wider text-white/30">Discord</span>
-                              <span className="font-semibold text-white/80">{member.discord_username}</span>
+                              <DiscordCopy username={member.discord_username} size="sm" />
                             </span>
                           )}
                           {member.linkedin_url && (
