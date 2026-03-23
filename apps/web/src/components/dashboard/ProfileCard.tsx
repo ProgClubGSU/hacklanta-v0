@@ -383,8 +383,9 @@ export default function ProfileCard() {
           <div>
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h2 className="font-display text-2xl uppercase tracking-[-0.03em] text-white">
-                  {teamName}
+                <h2 className="font-display text-2xl uppercase tracking-[-0.03em]">
+                  <span className="text-white">Team </span>
+                  <span className="text-[#C41E3A]">{teamName}</span>
                 </h2>
                 {teamDescription && (
                   <p className="mt-2 max-w-xl font-body text-sm text-white/45">{teamDescription}</p>

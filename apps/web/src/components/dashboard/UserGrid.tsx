@@ -241,8 +241,9 @@ export default function UserGrid() {
                 <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/6 pt-3">
                   <div className="flex flex-wrap items-center gap-2">
                     {player.current_team ? (
-                      <span className="rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-white">
-                        {player.current_team.name}
+                      <span className="rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em]">
+                        <span className="text-white">Team </span>
+                        <span className="text-[#C41E3A]">{player.current_team.name}</span>
                       </span>
                     ) : player.looking_for_team ? (
                       <span className="rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] text-white">

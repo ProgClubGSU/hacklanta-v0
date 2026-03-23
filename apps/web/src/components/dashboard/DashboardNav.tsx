@@ -24,10 +24,10 @@ export default function DashboardNav({ activePage }: DashboardNavProps) {
               <a
                 key={item.id}
                 href={item.href}
-                className={`rounded px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors ${
+                className={`px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] transition-colors ${
                   isActive
-                    ? 'bg-white/10 font-semibold text-white'
-                    : 'text-white/40 hover:bg-white/5 hover:text-white/70'
+                    ? 'font-semibold text-red'
+                    : 'text-white/40 hover:text-white/70'
                 }`}
               >
                 {item.label}
