@@ -3,10 +3,14 @@ import ProfileCard from './ProfileCard.tsx';
 import OnboardingCard from './OnboardingCard';
 import UserGrid from './UserGrid.tsx';
 import TeamGrid from './TeamGrid.tsx';
-import { TextLogo } from '../ui/TextLogoReact.tsx';
+import DashboardNav from './DashboardNav.tsx';
 import { api } from '../../lib/api';
 
-export default function TabNavigation() {
+interface TabNavigationProps {
+  page?: 'home' | 'teams';
+}
+
+export default function TabNavigation({ page = 'home' }: TabNavigationProps) {
   const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
 
@@ -45,59 +49,37 @@ export default function TabNavigation() {
   if (profileComplete === false) {
     return (
       <div>
-        <header className="mb-8 flex items-center justify-between">
-          <a href="/" aria-label="Hacklanta home">
-            <TextLogo size="xs" className="opacity-85" />
-          </a>
-          <a href="/" className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/25 transition-colors hover:text-white/50">
-            &larr; Home
-          </a>
-        </header>
-        <OnboardingCard
-          clerkFirstName={window.Clerk?.user?.firstName ?? null}
-          clerkLastName={window.Clerk?.user?.lastName ?? null}
-          clerkEmail={window.Clerk?.user?.primaryEmailAddress?.emailAddress ?? ''}
-          onComplete={() => setProfileComplete(true)}
-        />
+        <DashboardNav activePage={page} />
+        <div className="mt-8">
+          <OnboardingCard
+            clerkFirstName={window.Clerk?.user?.firstName ?? null}
+            clerkLastName={window.Clerk?.user?.lastName ?? null}
+            clerkEmail={window.Clerk?.user?.primaryEmailAddress?.emailAddress ?? ''}
+            onComplete={() => setProfileComplete(true)}
+          />
+        </div>
       </div>
     );
   }
 
-  // Full dashboard — single scrollable page
   return (
-    <div className="space-y-12">
-      {/* Top bar */}
-      <header id="top" className="flex items-center justify-between">
-        <a href="/" aria-label="Hacklanta home">
-          <TextLogo size="xs" className="opacity-85" />
-        </a>
-        <a href="/" className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/25 transition-colors hover:text-white/50">
-          &larr; Home
-        </a>
-      </header>
+    <div className="space-y-10">
+      <DashboardNav activePage={page} />
 
-      {/* Profile */}
-      <ProfileCard />
+      {page === 'home' && (
+        <>
+          <ProfileCard />
+          <section id="players">
+            <UserGrid />
+          </section>
+        </>
+      )}
 
-      {/* Teams */}
-      <section id="teams">
-        <TeamGrid />
-      </section>
-
-      {/* Players */}
-      <section id="players">
-        <UserGrid />
-      </section>
-
-      {/* Back to top */}
-      <div className="flex justify-center pb-4">
-        <a
-          href="#top"
-          className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/20 transition-colors hover:text-white/50"
-        >
-          &uarr; Back to profile
-        </a>
-      </div>
+      {page === 'teams' && (
+        <section id="teams">
+          <TeamGrid />
+        </section>
+      )}
     </div>
   );
 }
