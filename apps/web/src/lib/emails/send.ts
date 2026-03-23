@@ -4,6 +4,7 @@ interface EmailPayload {
   to: string
   subject: string
   html: string
+  text: string
 }
 
 export interface BatchSendResult {
@@ -52,6 +53,11 @@ export async function sendBatchEmails(
       to: email.to,
       subject: email.subject,
       html: email.html,
+      text: email.text,
+      headers: {
+        'List-Unsubscribe': '<mailto:unsubscribe@hacklanta.dev>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      },
     }))
 
     try {

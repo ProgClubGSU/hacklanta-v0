@@ -7,6 +7,7 @@ const DISCORD_URL = 'https://discord.com/invite/BgKg9gskM2'
 interface TemplateResult {
   subject: string
   html: string
+  text: string
 }
 
 interface RecipientData {
@@ -97,12 +98,13 @@ function editorialBody(content: string): string {
 
 export const templates = {
   acceptance(data: RecipientData): TemplateResult {
+    const g = greeting(data.firstName)
     return {
       subject: "Hacklanta: You're In",
       html: wrapInLayout(`
         ${heroHeadline("You're in.", "in.", '#C9A84C')}
         ${editorialBody(`
-          ${bodyText(`${greeting(data.firstName)} You made the cut. Your spot is locked in but <span style="color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">it might get taken soon</span>, head to the dashboard and confirm before someone else takes it.`)}
+          ${bodyText(`${g} You made the cut. Your spot is locked in but <span style="color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">it might get taken soon</span>, head to the dashboard and confirm before someone else takes it.`)}
           ${bodyText(`<span style="color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">Spots are limited and we have a waitlist full of people who would love yours.</span> Set up your profile, find a team, and get ready. 12 hours. One night.`)}
           ${metaLine('Status sync: Live / Last updated moments ago')}
         `)}
@@ -110,16 +112,32 @@ export const templates = {
         ${ctaButton('Confirm Spot', 'https://hacklanta.dev/dashboard', '#C9A84C')}
         ${communitySection()}
       `),
+      text: `You're in.
+
+${g} You made the cut. Your spot is locked in but it might get taken soon — head to the dashboard and confirm before someone else takes it.
+
+Spots are limited and we have a waitlist full of people who would love yours. Set up your profile, find a team, and get ready. 12 hours. One night.
+
+Oh btw, prize pool just hit $5,000.
+
+Confirm Spot: https://hacklanta.dev/dashboard
+
+Join the community on Discord: ${DISCORD_URL}
+
+—
+HACKLANTA HQ
+Hosted by progsu @ Georgia State University`,
     }
   },
 
   acceptance_overflow(data: RecipientData): TemplateResult {
+    const g = greeting(data.firstName)
     return {
       subject: "Hacklanta: Overflow Admit",
       html: wrapInLayout(`
         ${heroHeadline("You're in, with a caveat.", "caveat.", '#C9A84C')}
         ${editorialBody(`
-          ${bodyText(`${greeting(data.firstName)} We squeezed you in. You're an overflow admit. <span style="color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">full access to the event</span>, same experience, same 12 hours. Only catch: food and swag are <span style="color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">not guaranteed</span> for overflow spots.`)}
+          ${bodyText(`${g} We squeezed you in. You're an overflow admit. <span style="color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">full access to the event</span>, same experience, same 12 hours. Only catch: food and swag are <span style="color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">not guaranteed</span> for overflow spots.`)}
           ${bodyText(`This was the <span style="color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">last wave of admits</span> and these spots are non-transferable. Confirm now, set up your profile, find a team.`)}
           ${metaLine('Status sync: Live / Last updated moments ago')}
         `)}
@@ -127,40 +145,82 @@ export const templates = {
         ${ctaButton('Confirm Spot', 'https://hacklanta.dev/dashboard', '#C9A84C')}
         ${communitySection()}
       `),
+      text: `You're in, with a caveat.
+
+${g} We squeezed you in. You're an overflow admit — full access to the event, same experience, same 12 hours. Only catch: food and swag are not guaranteed for overflow spots.
+
+This was the last wave of admits and these spots are non-transferable. Confirm now, set up your profile, find a team.
+
+Oh btw, prize pool just hit $5,000.
+
+Confirm Spot: https://hacklanta.dev/dashboard
+
+Join the community on Discord: ${DISCORD_URL}
+
+—
+HACKLANTA HQ
+Hosted by progsu @ Georgia State University`,
     }
   },
 
   rejection(data: RecipientData): TemplateResult {
+    const g = greeting(data.firstName)
     return {
       subject: 'Hacklanta: Application Update',
       html: wrapInLayout(`
         ${heroHeadline('Thanks for applying.', 'applying.', '#5C564F')}
         ${editorialBody(`
-          ${bodyText(`${greeting(data.firstName)} We appreciate your interest in Hacklanta. Unfortunately, we weren't able to offer you a spot this time. We had a record number of applicants and had to make some tough calls.`)}
+          ${bodyText(`${g} We appreciate your interest in Hacklanta. Unfortunately, we weren't able to offer you a spot this time. We had a record number of applicants and had to make some tough calls.`)}
           ${bodyText('Stay connected with progsu for future events. We\'d love to see you next time.')}
         `)}
         ${ctaButton('Stay Connected', 'https://progsu.com', '#5C564F')}
         ${communitySection()}
       `),
+      text: `Thanks for applying.
+
+${g} We appreciate your interest in Hacklanta. Unfortunately, we weren't able to offer you a spot this time. We had a record number of applicants and had to make some tough calls.
+
+Stay connected with progsu for future events. We'd love to see you next time.
+
+Stay Connected: https://progsu.com
+
+Join the community on Discord: ${DISCORD_URL}
+
+—
+HACKLANTA HQ
+Hosted by progsu @ Georgia State University`,
     }
   },
 
   waitlist(data: RecipientData): TemplateResult {
+    const g = greeting(data.firstName)
     return {
       subject: "Hacklanta: You're on the Waitlist",
       html: wrapInLayout(`
         ${heroHeadline("You're on the waitlist.", "waitlist.", '#C9A84C')}
         ${editorialBody(`
-          ${bodyText(`${greeting(data.firstName)} Hacklanta has officially reached capacity for this cohort. While we wish we could host everyone, we are currently maintaining a curated waitlist. <span style="font-style: italic; color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">We will reach out immediately</span> if a spot opens up for your application.`)}
+          ${bodyText(`${g} Hacklanta has officially reached capacity for this cohort. While we wish we could host everyone, we are currently maintaining a curated waitlist. <span style="font-style: italic; color: #ffffff; font-weight: 600; text-shadow: 0 0 12px rgba(255, 255, 255, 0.15);">We will reach out immediately</span> if a spot opens up for your application.`)}
           ${metaLine('Status sync: Live / Last updated moments ago')}
         `)}
         ${ctaButton('Check Status', 'https://hacklanta.dev/status', '#C9A84C')}
         ${communitySection()}
       `),
+      text: `You're on the waitlist.
+
+${g} Hacklanta has officially reached capacity for this cohort. While we wish we could host everyone, we are currently maintaining a curated waitlist. We will reach out immediately if a spot opens up for your application.
+
+Check Status: https://hacklanta.dev/status
+
+Join the community on Discord: ${DISCORD_URL}
+
+—
+HACKLANTA HQ
+Hosted by progsu @ Georgia State University`,
     }
   },
 
   announcement(data: AnnouncementData): TemplateResult {
+    const g = greeting(data.firstName)
     const paragraphs = data.body
       .split(/\n\n+/)
       .map(p => bodyText(p.replace(/\n/g, '<br />')))
@@ -169,10 +229,19 @@ export const templates = {
     return {
       subject: data.subject,
       html: wrapInLayout(`
-        ${leadText(greeting(data.firstName).replace(',', ''))}
+        ${leadText(g.replace(',', ''))}
         ${editorialBody(paragraphs)}
         ${communitySection()}
       `),
+      text: `${g}
+
+${data.body}
+
+Join the community on Discord: ${DISCORD_URL}
+
+—
+HACKLANTA HQ
+Hosted by progsu @ Georgia State University`,
     }
   },
 }

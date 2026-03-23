@@ -11,17 +11,17 @@ export function wrapInLayout(content: string, options?: { hideSocials?: boolean 
               <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
                 <tr>
                   <td style="padding: 0 12px;">
-                    <a href="${DISCORD_URL}" target="_blank" style="font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: #353534; text-decoration: none;">
+                    <a href="${DISCORD_URL}" target="_blank" style="font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8a89; text-decoration: none;">
                       Discord
                     </a>
                   </td>
                   <td style="padding: 0 12px;">
-                    <a href="${INSTAGRAM_URL}" target="_blank" style="font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: #353534; text-decoration: none;">
+                    <a href="${INSTAGRAM_URL}" target="_blank" style="font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8a89; text-decoration: none;">
                       Instagram
                     </a>
                   </td>
                   <td style="padding: 0 12px;">
-                    <a href="https://hacklanta.dev" style="font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: #353534; text-decoration: underline; text-underline-offset: 4px;">
+                    <a href="https://hacklanta.dev" style="font-family: 'Courier New', Courier, monospace; font-size: 10px; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8a89; text-decoration: underline; text-underline-offset: 4px;">
                       hacklanta.dev
                     </a>
                   </td>
@@ -81,10 +81,10 @@ export function wrapInLayout(content: string, options?: { hideSocials?: boolean 
                 HACKLANTA HQ
               </p>
 ${socialsBlock}
-              <p style="margin: 20px 0 0; font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #353534; line-height: 1.6;">
+              <p style="margin: 20px 0 0; font-family: 'Courier New', Courier, monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #8a8a89; line-height: 1.6;">
                 Hosted by progsu @ Georgia State University
               </p>
-              <p style="margin: 16px 0 0; font-family: 'Courier New', Courier, monospace; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(53, 53, 52, 0.4);">
+              <p style="margin: 16px 0 0; font-family: 'Courier New', Courier, monospace; font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: #6a6a69;">
                 Sent from the digital broadsheet system v.2.0
               </p>
             </td>
