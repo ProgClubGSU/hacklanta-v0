@@ -210,6 +210,14 @@ async function syncTeamOpenStatus(client: SupabaseClient, teamId: string) {
   if (updateError) throw new Error(updateError.message);
 }
 
+async function withdrawPendingJoinRequests(client: SupabaseClient, userId: string) {
+  await client
+    .from('team_join_requests')
+    .update({ status: 'withdrawn' })
+    .eq('user_id', userId)
+    .eq('status', 'pending');
+}
+
 async function markInviteAcceptedByCode(client: SupabaseClient, userId: string, teamId: string) {
   const { data, error } = await client
     .from('team_invitations')
@@ -489,6 +497,7 @@ export const api = {
     await Promise.all([
       syncTeamOpenStatus(client, team.id),
       markInviteAcceptedByCode(client, userId, team.id),
+      withdrawPendingJoinRequests(client, userId),
     ]);
 
     notifyTeamChanged();
@@ -735,7 +744,10 @@ export const api = {
 
       if (memberError) throw new Error(memberError.message);
 
-      await syncTeamOpenStatus(client, teamId);
+      await Promise.all([
+        syncTeamOpenStatus(client, teamId),
+        withdrawPendingJoinRequests(client, request.user_id),
+      ]);
       notifyTeamChanged();
     }
 
@@ -983,7 +995,10 @@ export const api = {
 
       if (memberError) throw new Error(memberError.message);
 
-      await syncTeamOpenStatus(client, invitation.team_id);
+      await Promise.all([
+        syncTeamOpenStatus(client, invitation.team_id),
+        withdrawPendingJoinRequests(client, userId),
+      ]);
       notifyTeamChanged();
     }
 
