@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import { TRACKS } from '@/lib/tracks';
 import DiscordCopy from '@/components/ui/DiscordCopy';
+import LoadingHand from './casino/LoadingHand';
 
 interface TeamMember {
   id: string;
@@ -156,10 +157,7 @@ export default function TeamDetailModal({
       <div className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg border border-red/40 bg-black-card shadow-[0_0_40px_rgba(196,30,58,0.2)]">
         {isLoading ? (
           <div className="flex items-center justify-center p-12">
-            <div className="text-center">
-              <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-red/20 border-t-red"></div>
-              <p className="font-mono text-sm uppercase tracking-widest text-gray">Loading...</p>
-            </div>
+            <LoadingHand label="Turning the next card..." compact />
           </div>
         ) : team ? (
           <>

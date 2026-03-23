@@ -4,6 +4,7 @@ import OnboardingCard from './OnboardingCard';
 import UserGrid from './UserGrid.tsx';
 import TeamGrid from './TeamGrid.tsx';
 import DashboardNav from './DashboardNav.tsx';
+import LoadingHand from './casino/LoadingHand';
 import { api } from '../../lib/api';
 
 interface TabNavigationProps {
@@ -37,10 +38,7 @@ export default function TabNavigation({ page = 'home' }: TabNavigationProps) {
   if (isCheckingProfile) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-red"></div>
-          <p className="font-mono text-[11px] uppercase tracking-widest text-white/40">Loading...</p>
-        </div>
+        <LoadingHand label="Shuffling the dashboard..." />
       </div>
     );
   }

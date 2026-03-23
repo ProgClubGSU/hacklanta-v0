@@ -7,6 +7,7 @@ import { TRACKS } from '@/lib/tracks';
 import JoinRequestManager from './JoinRequestManager';
 import TeamDetailModal from './TeamDetailModal';
 import CardSuitDivider from './casino/CardSuitDivider';
+import LoadingHand from './casino/LoadingHand';
 import PokerChipGraphic from './casino/PokerChipGraphic';
 import TerminalPrompt from './casino/TerminalPrompt';
 
@@ -225,12 +226,7 @@ export default function TeamGrid() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-white/10 border-t-red"></div>
-          <p className="font-mono text-[11px] uppercase tracking-widest text-white/40">
-            Loading teams...
-          </p>
-        </div>
+        <LoadingHand label="Dealing teams..." />
       </div>
     );
   }

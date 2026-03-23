@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import ParticipantDetailModal from './ParticipantDetailModal';
+import LoadingHand from './casino/LoadingHand';
 import { api } from '../../lib/api';
 import { PROFILE_CHANGED_EVENT, TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
 
@@ -158,12 +159,7 @@ export default function UserGrid() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-red/20 border-t-red"></div>
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/40">
-            Loading participants...
-          </p>
-        </div>
+        <LoadingHand label="Finding participants..." />
       </div>
     );
   }

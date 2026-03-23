@@ -4,6 +4,7 @@ import { api } from '@/lib/api';
 import { PROFILE_CHANGED_EVENT, TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
 import TeamInvitationsPanel from './TeamInvitationsPanel';
 import DiscordCopy from '@/components/ui/DiscordCopy';
+import LoadingHand from './casino/LoadingHand';
 
 interface TeamMember {
   id: string;
@@ -252,10 +253,7 @@ export default function ProfileCard() {
   if (!isLoaded || isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <div className="mb-4 inline-block h-8 w-8 animate-spin rounded-full border-4 border-primary/20 border-t-primary"></div>
-          <p className="font-mono text-sm uppercase tracking-widest text-white/50">Loading...</p>
-        </div>
+        <LoadingHand label="Dealing your profile..." />
       </div>
     );
   }
