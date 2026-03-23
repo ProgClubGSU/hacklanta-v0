@@ -129,7 +129,7 @@ function formatParticipant(
     github_url: profile?.github_url ?? null,
     portfolio_url: profile?.portfolio_url ?? null,
     discord_username: profile?.discord_username ?? null,
-    looking_for_team: profile?.looking_for_team ?? false,
+    looking_for_team: membership?.team_id ? false : (profile?.looking_for_team ?? false),
     has_profile: Boolean(profile),
     current_team: membership?.team_id
       ? {
