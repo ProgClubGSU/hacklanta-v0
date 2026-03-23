@@ -272,16 +272,20 @@ export default function TeamDetailModal({
                         </div>
                         <div className="mt-0.5 flex items-center gap-3">
                           {member.discord_username && (
-                            <span className="text-xs text-white/40">{member.discord_username}</span>
+                            <span className="flex items-center gap-1 text-xs">
+                              <span className="font-mono text-[9px] uppercase tracking-wider text-white/30">Discord</span>
+                              <span className="font-semibold text-white/80">{member.discord_username}</span>
+                            </span>
                           )}
                           {member.linkedin_url && (
                             <a
                               href={member.linkedin_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-xs text-white/40 underline decoration-white/15 hover:text-white/60"
+                              className="flex items-center gap-1 text-xs"
                             >
-                              LinkedIn
+                              <span className="font-mono text-[9px] uppercase tracking-wider text-white/30">LinkedIn</span>
+                              <span className="text-white/50 underline decoration-white/15 hover:text-white/70">Profile</span>
                             </a>
                           )}
                         </div>

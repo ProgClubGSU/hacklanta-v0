@@ -183,12 +183,16 @@ export default function ParticipantDetailModal({
 
                 <div className="space-y-1 text-sm text-white/55">
                   {participant.discord_username && (
-                    <p>Discord: <span className="text-white/80">{participant.discord_username}</span></p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-white/35">Discord</span>
+                      <span className="font-semibold text-white">{participant.discord_username}</span>
+                    </p>
                   )}
                   {participant.linkedin_url && (
-                    <p>
-                      <a href={participant.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-white/80 underline decoration-white/20 hover:text-white hover:decoration-white/40">
-                        LinkedIn
+                    <p className="flex items-center gap-1.5">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-white/35">LinkedIn</span>
+                      <a href={participant.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-white/60 underline decoration-white/20 hover:text-white hover:decoration-white/40">
+                        Profile
                       </a>
                     </p>
                   )}
@@ -232,23 +236,26 @@ export default function ParticipantDetailModal({
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/35">
                 Contact
               </p>
-              <div className="flex flex-wrap gap-2">
-                {socials.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="button-heading rounded border border-white/10 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.12em] text-white/55 transition-colors hover:border-red/40 hover:text-white"
-                  >
-                    {social.label}
-                  </a>
-                ))}
+              <div className="space-y-2">
                 {participant.discord_username && (
-                  <div className="rounded border border-white/10 bg-white/5 px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-white/55">
-                    Discord: <span className="text-white/80">{participant.discord_username}</span>
+                  <div className="flex items-center gap-2.5 rounded border border-[#5865F2]/30 bg-[#5865F2]/10 px-4 py-2.5">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-[#5865F2]">Discord</span>
+                    <span className="font-semibold text-white">{participant.discord_username}</span>
                   </div>
                 )}
+                <div className="flex flex-wrap gap-2">
+                  {socials.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="button-heading rounded border border-white/10 bg-white/5 px-3 py-2 text-[10px] uppercase tracking-[0.12em] text-white/55 transition-colors hover:border-red/40 hover:text-white"
+                    >
+                      {social.label}
+                    </a>
+                  ))}
+                </div>
               </div>
             </section>
           )}

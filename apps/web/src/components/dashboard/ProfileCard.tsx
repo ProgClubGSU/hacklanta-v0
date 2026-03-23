@@ -183,7 +183,6 @@ export default function ProfileCard() {
     { label: 'LinkedIn', value: profile.linkedin, href: normalizeHref(profile.linkedin) },
     { label: 'GitHub', value: profile.github, href: normalizeHref(profile.github) },
     { label: 'Portfolio', value: profile.portfolio, href: normalizeHref(profile.portfolio) },
-    { label: 'Discord', value: profile.discord, href: '' },
   ].filter((s) => s.value);
 
   function openEditor() {
@@ -260,27 +259,28 @@ export default function ProfileCard() {
             )}
 
             {/* Socials — inline, minimal */}
-            {socials.length > 0 && (
-              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
-                {socials.map((s) =>
-                  s.href ? (
-                    <a
-                      key={s.label}
-                      href={s.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40 transition-colors hover:text-red"
-                    >
-                      {s.label}
-                    </a>
-                  ) : (
-                    <span
-                      key={s.label}
-                      className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40"
-                    >
-                      {s.label}: <span className="text-white/55">{s.value}</span>
-                    </span>
-                  ),
+            {(profile.discord || socials.length > 0) && (
+              <div className="mt-6 space-y-3">
+                {profile.discord && (
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-[#5865F2]">Discord</span>
+                    <span className="text-sm font-semibold text-white">{profile.discord}</span>
+                  </div>
+                )}
+                {socials.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                    {socials.map((s) => (
+                      <a
+                        key={s.label}
+                        href={s.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/40 transition-colors hover:text-red"
+                      >
+                        {s.label}
+                      </a>
+                    ))}
+                  </div>
                 )}
               </div>
             )}
