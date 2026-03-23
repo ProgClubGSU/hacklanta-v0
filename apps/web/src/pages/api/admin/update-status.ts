@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro'
 import { verifyAdmin } from '../../../lib/admin'
 import { createServerSupabaseClient } from '../../../lib/supabase-server'
 import { createResendClient, sendBatchEmails } from '../../../lib/emails/send'
-import { templates, STATUS_TEMPLATE_MAP } from '../../../lib/emails/templates-minimal'
+import { templates, STATUS_TEMPLATE_MAP } from '../../../lib/emails/templates'
 
 const VALID_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'rejected', 'waitlisted']
 

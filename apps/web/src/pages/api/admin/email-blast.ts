@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro'
 import { verifyAdmin } from '../../../lib/admin'
 import { createServerSupabaseClient } from '../../../lib/supabase-server'
 import { createResendClient, sendBatchEmails } from '../../../lib/emails/send'
-import { templates } from '../../../lib/emails/templates-minimal'
+import { templates } from '../../../lib/emails/templates'
 
 interface SegmentFilter {
   status?: string[]
