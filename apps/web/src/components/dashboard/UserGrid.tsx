@@ -159,12 +159,18 @@ export default function UserGrid() {
                 ? 'Looking for team'
                 : null;
 
+            const hasBio = Boolean(player.bio?.trim());
+
             return (
               <button
                 key={player.id}
                 type="button"
                 onClick={() => setSelectedParticipant(player)}
-                className="button-heading rounded-lg border border-white/[0.08] bg-[#1a1a1a] p-5 text-left transition-colors hover:border-white/15"
+                className={`button-heading rounded-lg border p-5 text-left transition-colors hover:border-white/20 ${
+                  hasBio
+                    ? 'border-white/[0.12] bg-[#1f1f1f]'
+                    : 'border-white/[0.08] bg-[#1a1a1a]'
+                }`}
               >
                 <div className="flex items-start gap-3">
                   {player.avatar_url ? (
@@ -193,7 +199,9 @@ export default function UserGrid() {
                       )}
                     </div>
 
-                    <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-white/45">
+                    <p className={`mt-1 line-clamp-2 text-sm leading-relaxed ${
+                      hasBio ? 'text-white/70' : 'text-white/40 italic'
+                    }`}>
                       {player.bio?.trim() || 'Open this participant profile to learn more.'}
                     </p>
                   </div>
