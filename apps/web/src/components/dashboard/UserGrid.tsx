@@ -157,7 +157,7 @@ export default function UserGrid() {
               ? `On ${player.current_team.name}`
               : player.looking_for_team
                 ? 'Looking for team'
-                : 'Open profile';
+                : null;
 
             return (
               <button
@@ -187,7 +187,7 @@ export default function UserGrid() {
                         {player.display_name}
                       </p>
                       {isCurrentUser && (
-                        <span className="rounded border border-red/30 bg-red/10 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-red">
+                        <span className="rounded border border-transparent bg-transparent px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-white">
                           You
                         </span>
                       )}
@@ -201,19 +201,19 @@ export default function UserGrid() {
 
                 <div className="mt-4 flex items-center justify-between border-t border-white/6 pt-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span
-                      className={`rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] ${
-                        player.current_team
-                          ? 'bg-white/5 text-white/35'
-                          : player.looking_for_team
-                            ? 'bg-[#00ff88]/10 text-[#00ff88]'
-                            : 'bg-white/5 text-white/35'
-                      }`}
-                    >
-                      {statusLabel}
-                    </span>
+                    {statusLabel && (
+                      <span
+                        className={`rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em] ${
+                          player.current_team
+                            ? 'border-transparent bg-transparent text-white'
+                            : 'border-transparent bg-transparent text-white'
+                        }`}
+                      >
+                        {statusLabel}
+                      </span>
+                    )}
                     {!player.has_profile && (
-                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-gold/80">
+                      <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-white">
                         No profile yet
                       </span>
                     )}

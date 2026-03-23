@@ -149,16 +149,16 @@ export default function TeamDetailModal({
                       {team.name}
                     </h2>
                     {team.viewer_is_member && (
-                      <span className="rounded border border-[#00ff88]/30 bg-[#00ff88]/10 px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-[#00ff88]">
+                      <span className="rounded border border-transparent bg-transparent px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-white">
                         Your team
                       </span>
                     )}
                     {isFull ? (
-                      <span className="rounded border border-gray/40 bg-gray/10 px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-gray">
+                      <span className="rounded border border-transparent bg-transparent px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-white">
                         Full
                       </span>
                     ) : (
-                      <span className="rounded border border-green-500/40 bg-green-500/10 px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-green-500">
+                      <span className="rounded border border-transparent bg-transparent px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-white">
                         Open
                       </span>
                     )}
@@ -244,7 +244,7 @@ export default function TeamDetailModal({
                         <div className="flex items-center gap-2">
                           <p className="font-medium text-white">{getMemberName(member)}</p>
                           {member.role === 'leader' && (
-                            <span className="rounded bg-gold/20 px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-gold">
+                            <span className="rounded border border-transparent bg-transparent px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-white">
                               Leader
                             </span>
                           )}

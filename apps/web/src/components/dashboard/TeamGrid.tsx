@@ -438,14 +438,16 @@ export default function TeamGrid() {
                     {team.name}
                   </h4>
                   {myTeam?.id === team.id && (
-                    <span className="mt-2 inline-flex rounded border border-[#00ff88]/20 bg-[#00ff88]/10 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-[#00ff88]">
+                    <span className="mt-2 inline-flex rounded border border-transparent bg-transparent px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-white">
                       Your team
                     </span>
                   )}
                 </div>
                 <span
                   className={`shrink-0 rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] ${
-                    team.is_full ? 'bg-white/5 text-white/30' : 'bg-[#00ff88]/10 text-[#00ff88]'
+                    team.is_full
+                      ? 'border-transparent bg-transparent text-white'
+                      : 'border-transparent bg-transparent text-white'
                   }`}
                 >
                   {team.is_full ? 'Full' : 'Open'}

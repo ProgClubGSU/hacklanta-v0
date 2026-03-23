@@ -145,7 +145,7 @@ export default function TeamInvitationsPanel() {
                         {team?.name ?? 'Team'}
                       </h4>
                       {team && (
-                        <span className="rounded border border-white/10 bg-white/5 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-white/45">
+                        <span className="rounded border border-transparent bg-transparent px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-white">
                           {team.member_count}/{team.max_size}
                         </span>
                       )}

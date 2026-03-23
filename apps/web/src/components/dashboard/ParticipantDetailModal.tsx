@@ -173,8 +173,8 @@ export default function ParticipantDetailModal({
                   <span
                     className={`rounded border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] ${
                       participant.looking_for_team
-                        ? 'border-[#00ff88]/30 bg-[#00ff88]/10 text-[#00ff88]'
-                        : 'border-white/10 bg-white/5 text-white/45'
+                        ? 'border-transparent bg-transparent text-white'
+                        : 'border-transparent bg-transparent text-white'
                     }`}
                   >
                     {participant.looking_for_team ? 'Looking for team' : 'Participant'}
