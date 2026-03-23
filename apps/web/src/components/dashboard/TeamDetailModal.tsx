@@ -185,7 +185,7 @@ export default function TeamDetailModal({
                       </span>
                     )}
                   </div>
-                  <p className="mt-1 font-mono text-xs tracking-wider text-red">
+                  <p className="mt-1 font-mono text-xs font-medium tracking-wider text-red-bright">
                     Members {team.members.length}/{team.max_size}
                   </p>
                 </div>
@@ -210,16 +210,16 @@ export default function TeamDetailModal({
             <div className="space-y-6 p-6">
               {team.description && (
                 <div>
-                  <h3 className="mb-2 font-mono text-xs uppercase tracking-wider text-red/80">
+                  <h3 className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-red">
                     Description
                   </h3>
-                  <p className="text-sm leading-relaxed text-white/80">{team.description}</p>
+                  <p className="text-sm leading-relaxed text-white/90">{team.description}</p>
                 </div>
               )}
 
               {team.tracks && team.tracks.length > 0 && (
                 <div>
-                  <h3 className="mb-2 font-mono text-xs uppercase tracking-wider text-red/80">
+                  <h3 className="mb-2 font-mono text-[11px] font-semibold uppercase tracking-wider text-red">
                     Tracks
                   </h3>
                   <div className="flex flex-wrap gap-1.5">
@@ -230,7 +230,7 @@ export default function TeamDetailModal({
                       return (
                         <span
                           key={track.id}
-                          className={`rounded-sm border px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] ${track.bgClass}`}
+                          className={`rounded-sm border px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.1em] ${track.bgClass}`}
                         >
                           {track.name}
                         </span>
@@ -241,23 +241,23 @@ export default function TeamDetailModal({
               )}
 
               <div>
-                <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-red/80">
+                <h3 className="mb-3 font-mono text-[11px] font-semibold uppercase tracking-wider text-red">
                   Team Members
                 </h3>
                 <div className="space-y-2">
                   {team.members.map((member) => (
                     <div
                       key={member.id}
-                      className="flex items-center gap-3 rounded border border-red/20 bg-red/5 p-3"
+                      className="flex items-center gap-3 rounded border border-white/10 bg-white/[0.04] p-3"
                     >
                       {member.avatar_url ? (
                         <img
                           src={member.avatar_url}
                           alt={getMemberName(member)}
-                          className="h-10 w-10 rounded-full border-2 border-red/30 object-cover"
+                          className="h-10 w-10 rounded-full border-2 border-white/20 object-cover"
                         />
                       ) : (
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-red/30 bg-white/5 font-mono text-[10px] text-white/60">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white/20 bg-white/10 font-mono text-[10px] font-bold text-white/80">
                           {getMemberInitials(member)}
                         </div>
                       )}
@@ -274,7 +274,7 @@ export default function TeamDetailModal({
                         <div className="mt-0.5 flex items-center gap-3">
                           {member.discord_username && (
                             <span className="flex items-center gap-1 text-xs">
-                              <span className="font-mono text-[9px] uppercase tracking-wider text-white/30">Discord</span>
+                              <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-[#5865F2]/70">Discord</span>
                               <DiscordCopy username={member.discord_username} size="sm" />
                             </span>
                           )}
@@ -285,8 +285,8 @@ export default function TeamDetailModal({
                               rel="noopener noreferrer"
                               className="flex items-center gap-1 text-xs"
                             >
-                              <span className="font-mono text-[9px] uppercase tracking-wider text-white/30">LinkedIn</span>
-                              <span className="text-white/50 underline decoration-white/15 hover:text-white/70">Profile</span>
+                              <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-white/45">LinkedIn</span>
+                              <span className="text-white/65 underline decoration-white/25 hover:text-white/90">Profile</span>
                             </a>
                           )}
                         </div>
@@ -311,13 +311,13 @@ export default function TeamDetailModal({
               </div>
 
               {team.viewer_is_member && (
-                <div className="rounded border border-red/20 bg-red/5 p-4">
+                <div className="rounded border border-white/10 bg-white/[0.03] p-4">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-red/80">
+                      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-red">
                         Team Controls
                       </p>
-                      <p className="mt-1 text-sm text-white/65">
+                      <p className="mt-1 text-sm text-white/75">
                         Need to switch teams? You can leave this one here.
                       </p>
                     </div>
@@ -338,7 +338,7 @@ export default function TeamDetailModal({
                   <p className="font-mono text-sm uppercase tracking-wider text-gold">
                     Request {team.join_request_status}
                   </p>
-                  <p className="mt-1 text-sm text-white/70">
+                  <p className="mt-1 text-sm text-white/80">
                     {team.join_request_status === 'pending' &&
                       'Your join request is pending review by the team leader.'}
                     {team.join_request_status === 'approved' &&
@@ -350,7 +350,7 @@ export default function TeamDetailModal({
               ) : canRequestJoin ? (
                 <div className="space-y-3">
                   <div>
-                    <label className="mb-2 block font-mono text-xs uppercase tracking-wider text-red/80">
+                    <label className="mb-2 block font-mono text-[11px] font-semibold uppercase tracking-wider text-red">
                       Message to Team (Optional)
                     </label>
                     <textarea
@@ -376,7 +376,7 @@ export default function TeamDetailModal({
                   </button>
                 </div>
               ) : (
-                <div className="rounded border border-white/10 bg-white/5 p-4 text-sm text-white/60">
+                <div className="rounded border border-white/10 bg-white/[0.03] p-4 text-sm text-white/75">
                   {team.viewer_is_member && 'You are already on this team.'}
                   {!team.viewer_is_member &&
                     alreadyOnAnotherTeam &&
