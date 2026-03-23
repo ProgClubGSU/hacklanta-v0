@@ -125,17 +125,24 @@ export const POST: APIRoute = async ({ locals, request }) => {
   // Send emails if requested
   let emailsSent = 0
   let emailsFailed = 0
+  const _debug: Record<string, unknown> = {
+    send_email,
+    new_status,
+    app_ids_count: uniqueAppIds?.length ?? 0,
+    unique_app_ids: uniqueAppIds,
+  }
 
   if (send_email) {
-    console.log('[update-status] send_email=true, new_status=', new_status)
     const templateName = STATUS_TEMPLATE_MAP[new_status]
+    _debug.template_name = templateName
+
     if (!templateName) {
-      console.warn('[update-status] No email template for status:', new_status)
       return new Response(JSON.stringify({
         updated: totalUpdated,
         emails_sent: 0,
         emails_failed: 0,
         error: `No email template for status "${new_status}"`,
+        _debug,
       }))
     }
 
@@ -145,29 +152,26 @@ export const POST: APIRoute = async ({ locals, request }) => {
       .select('email, user_id, users(email, first_name)')
       .in('id', uniqueAppIds)
 
-    console.log('[update-status] apps query result:', { count: apps?.length ?? 0, error: appsError?.message ?? null })
+    _debug.apps_query_error = appsError?.message ?? null
+    _debug.apps_found = apps?.length ?? 0
+    _debug.apps_raw = apps
 
     if (apps?.length) {
       const resend = createResendClient()
       const emails = apps.map(app => {
         const user = (app as any).users
         const recipientEmail = user?.email ?? app.email
-        if (!recipientEmail) {
-          console.warn('[update-status] No email for app, skipping:', { user_id: app.user_id, app_email: app.email })
-          return null
-        }
-
-        const template = templates[templateName]({ firstName: user?.first_name ?? null })
-        return { to: recipientEmail, ...template }
+        return recipientEmail ? { to: recipientEmail, ...templates[templateName]({ firstName: user?.first_name ?? null }) } : null
       }).filter((e): e is NonNullable<typeof e> => e !== null)
 
-      console.log('[update-status] Sending', emails.length, 'emails via Resend')
+      _debug.emails_to_send = emails.map(e => ({ to: e.to, subject: e.subject }))
 
-      const result = await sendBatchEmails(resend, emails)
-      emailsSent = result.sent
-      emailsFailed = result.errors
-
-      console.log('[update-status] Resend result:', { sent: result.sent, errors: result.errors, errorDetails: result.errorDetails })
+      if (emails.length > 0) {
+        const result = await sendBatchEmails(resend, emails)
+        emailsSent = result.sent
+        emailsFailed = result.errors
+        _debug.resend_result = { sent: result.sent, errors: result.errors, errorDetails: result.errorDetails }
+      }
 
       // Mark acceptance_sent_at for accepted users
       if (new_status === 'accepted' || new_status === 'accepted_overflow') {
@@ -179,22 +183,14 @@ export const POST: APIRoute = async ({ locals, request }) => {
             .in('id', userIds)
         }
       }
-    } else {
-      console.warn('[update-status] No apps found for email sending, uniqueAppIds:', uniqueAppIds)
     }
-  } else {
-    console.log('[update-status] send_email=false, skipping email')
   }
 
   const responseBody = {
     updated: totalUpdated,
     emails_sent: emailsSent,
     emails_failed: emailsFailed,
-    _debug: {
-      send_email,
-      new_status,
-      app_ids_count: uniqueAppIds?.length ?? 0,
-    },
+    _debug,
   }
   console.log('[update-status] RESPONSE:', JSON.stringify(responseBody))
   return new Response(JSON.stringify(responseBody))
