@@ -93,7 +93,6 @@ function flattenMember(member: TeamMemberRow) {
     first_name: users?.first_name ?? null,
     last_name: users?.last_name ?? null,
     avatar_url: users?.avatar_url ?? null,
-    email: users?.email ?? null,
   };
 }
 
@@ -105,7 +104,6 @@ function flattenJoinRequest(request: TeamJoinRequestRow) {
     user_first_name: users?.first_name ?? null,
     user_last_name: users?.last_name ?? null,
     user_avatar_url: users?.avatar_url ?? null,
-    user_email: users?.email ?? null,
   };
 }
 
@@ -119,7 +117,6 @@ function formatParticipant(
   return {
     id: user.id,
     user_id: user.id,
-    email: user.email,
     first_name: user.first_name,
     last_name: user.last_name,
     avatar_url: user.avatar_url,
@@ -296,7 +293,7 @@ export const api = {
     const client = getClient();
     const { data, error } = await client
       .from('profiles')
-      .select('*, users(first_name, last_name, avatar_url, email)')
+      .select('*, users(first_name, last_name, avatar_url)')
       .eq('looking_for_team', true);
 
     if (error) throw new Error(error.message);
@@ -351,7 +348,7 @@ export const api = {
     ] = await Promise.all([
       client
         .from('users')
-        .select('id, clerk_id, email, first_name, last_name, avatar_url')
+        .select('id, clerk_id, first_name, last_name, avatar_url')
         .order('created_at', { ascending: false }),
       client.from('profiles').select('*'),
       client.from('team_members').select('user_id, role, teams(id, name)'),
@@ -450,7 +447,7 @@ export const api = {
 
     const { data, error } = await client
       .from('teams')
-      .select('*, team_members(*, users(id, first_name, last_name, avatar_url, email))')
+      .select('*, team_members(*, users(id, first_name, last_name, avatar_url))')
       .eq('id', membership.team_id)
       .single();
 
@@ -620,7 +617,7 @@ export const api = {
     ] = await Promise.all([
       client
         .from('teams')
-        .select('*, team_members(*, users(id, first_name, last_name, avatar_url, email))')
+        .select('*, team_members(*, users(id, first_name, last_name, avatar_url))')
         .eq('id', teamId)
         .single(),
       client
@@ -716,7 +713,7 @@ export const api = {
     const client = getClient();
     const { data, error } = await client
       .from('team_join_requests')
-      .select('*, users!team_join_requests_user_id_fkey(id, first_name, last_name, avatar_url, email)')
+      .select('*, users!team_join_requests_user_id_fkey(id, first_name, last_name, avatar_url)')
       .eq('team_id', teamId)
       .eq('status', statusFilter)
       .order('created_at', { ascending: false });
@@ -786,7 +783,7 @@ export const api = {
       })
       .eq('id', requestId)
       .eq('team_id', teamId)
-      .select('*, users!team_join_requests_user_id_fkey(id, first_name, last_name, avatar_url, email)')
+      .select('*, users!team_join_requests_user_id_fkey(id, first_name, last_name, avatar_url)')
       .single();
 
     if (updateError) throw new Error(updateError.message);

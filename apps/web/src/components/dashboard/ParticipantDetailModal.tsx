@@ -182,7 +182,16 @@ export default function ParticipantDetailModal({
                 </div>
 
                 <div className="space-y-1 text-sm text-white/55">
-                  {participant.email && <p>{participant.email}</p>}
+                  {participant.discord_username && (
+                    <p>Discord: <span className="text-white/80">{participant.discord_username}</span></p>
+                  )}
+                  {participant.linkedin_url && (
+                    <p>
+                      <a href={participant.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-white/80 underline decoration-white/20 hover:text-white hover:decoration-white/40">
+                        LinkedIn
+                      </a>
+                    </p>
+                  )}
                   {participant.current_team ? (
                     <p>
                       On team <span className="text-white/80">{participant.current_team.name}</span>

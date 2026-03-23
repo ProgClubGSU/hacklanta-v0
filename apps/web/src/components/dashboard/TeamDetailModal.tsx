@@ -10,7 +10,6 @@ interface TeamMember {
   first_name: string | null;
   last_name: string | null;
   avatar_url: string | null;
-  email: string | null;
 }
 
 interface TeamDetail {
@@ -37,7 +36,7 @@ interface TeamDetailModalProps {
 
 function getMemberName(member: TeamMember) {
   const fullName = `${member.first_name ?? ''} ${member.last_name ?? ''}`.trim();
-  return fullName || member.email || 'Anonymous Hacker';
+  return fullName || 'Anonymous Hacker';
 }
 
 function getMemberInitials(member: TeamMember) {
@@ -269,7 +268,6 @@ export default function TeamDetailModal({
                             </span>
                           )}
                         </div>
-                        {member.email && <p className="text-xs text-white/40">{member.email}</p>}
                       </div>
 
                       {isViewerLeader && member.role !== 'leader' && (

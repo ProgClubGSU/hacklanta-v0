@@ -14,7 +14,6 @@ interface JoinRequest {
   user_first_name: string | null;
   user_last_name: string | null;
   user_avatar_url: string | null;
-  user_email: string | null;
 }
 
 interface JoinRequestManagerProps {
@@ -154,9 +153,6 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
               />
               <div className="min-w-0 flex-1">
                 <h5 className="font-medium text-white">{displayName}</h5>
-                {request.user_email && (
-                  <p className="truncate font-mono text-xs text-on-surface/60">{request.user_email}</p>
-                )}
                 <p className="mt-1 flex items-center gap-1 font-label text-xs text-secondary-fixed/70">
                   <Icon name="schedule" className="text-xs" />
                   {new Date(request.created_at).toLocaleDateString()}

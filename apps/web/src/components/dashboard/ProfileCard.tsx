@@ -11,7 +11,6 @@ interface TeamMember {
   first_name: string | null;
   last_name: string | null;
   avatar_url: string | null;
-  email: string | null;
 }
 
 interface TeamData {
@@ -85,7 +84,7 @@ function mapProfileData(
 
 function getMemberName(member: TeamMember) {
   const fullName = `${member.first_name ?? ''} ${member.last_name ?? ''}`.trim();
-  return fullName || member.email || 'Anonymous Hacker';
+  return fullName || 'Anonymous Hacker';
 }
 
 function getMemberInitials(member: TeamMember) {
