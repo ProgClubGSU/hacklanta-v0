@@ -293,36 +293,53 @@ export default function TeamManager({
 
   if (compactWhenNoTeam) {
     return (
-      <div className="rounded-lg border border-white/10 bg-black/80 p-6">
-        <div className="mb-3 flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-white/50">
-          <Icon name="group" className="text-base" />
-          Team Status
+      <div className="relative overflow-hidden rounded-lg border border-[#C41E3A]/20 bg-[#1a0a0e]/90 p-6 shadow-[0_0_40px_rgba(196,30,58,0.1)] transition-all hover:border-[#C41E3A]/30 hover:shadow-[0_0_60px_rgba(196,30,58,0.15)]">
+        {/* Decorative glow effect */}
+        <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 bg-[radial-gradient(circle,rgba(196,30,58,0.08)_0%,transparent_60%)]" />
+
+        {/* Header with section label and card suits */}
+        <div className="relative z-10 mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-white/50">
+            <span className="text-[#C41E3A]/60">[00]</span>
+            <Icon name="group" className="text-base" />
+            Team Status
+          </div>
+          <div className="flex gap-2 text-xl">
+            <span className="text-white/20">♠</span>
+            <span className="text-[#C41E3A]/40">♦</span>
+          </div>
         </div>
 
-        <h3 className="font-headline text-2xl font-bold text-white">No Team Yet</h3>
-        <p className="mt-2 text-sm text-white/60">
-          Create your own team here, or head to the Teams tab to join a crew that is already recruiting.
+        <h3 className="relative z-10 font-display text-2xl font-bold tracking-wide text-white">
+          FLYING SOLO?
+        </h3>
+        <p className="relative z-10 mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-[#C41E3A]/60">
+          // ready_to_ante_up
+        </p>
+        <p className="relative z-10 mt-3 text-sm leading-relaxed text-white/60">
+          Create your own crew here, or head to the Teams tab to join a table that's already hot.
         </p>
 
-        <div className="mt-5 flex flex-wrap gap-3">
+        <div className="relative z-10 mt-5 flex flex-wrap gap-3">
           <button
             type="button"
             onClick={() => setShowQuickCreate((current) => !current)}
-            className="rounded border border-primary/60 bg-primary/10 px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.08em] text-primary transition-colors hover:bg-primary/20"
+            className="group flex items-center gap-2 rounded-lg border border-[#C41E3A]/60 bg-[#C41E3A]/10 px-5 py-2.5 font-body text-xs font-bold uppercase tracking-[0.15em] text-[#C41E3A] transition-all hover:bg-[#C41E3A]/20 hover:shadow-[0_0_30px_rgba(196,30,58,0.2)]"
           >
-            {showQuickCreate ? 'Hide Form' : 'Create Team'}
+            <span>⚡</span>
+            {showQuickCreate ? 'Hide Form' : 'Deal Me In'}
           </button>
           <button
             type="button"
             onClick={onBrowseTeams}
-            className="rounded border border-white/10 bg-white/5 px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.08em] text-white/75 transition-colors hover:bg-white/10 hover:text-white"
+            className="rounded-lg border border-white/10 bg-white/5 px-5 py-2.5 font-body text-xs font-bold uppercase tracking-[0.15em] text-white/75 transition-all hover:bg-white/10 hover:text-white"
           >
-            Browse Teams
+            Join The Table →
           </button>
         </div>
 
         {showQuickCreate && (
-          <form onSubmit={handleCreate} className="mt-5 space-y-4 rounded-lg border border-white/10 bg-white/5 p-4">
+          <form onSubmit={handleCreate} className="relative z-10 mt-5 space-y-4 rounded-lg border border-white/10 bg-white/5 p-4">
             <div>
               <label className="mb-2 block font-mono text-[11px] uppercase tracking-[0.18em] text-white/60">
                 Team Name

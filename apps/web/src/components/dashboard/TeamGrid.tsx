@@ -6,6 +6,9 @@ import { TRACKS } from '@/lib/tracks';
 
 import TeamDetailModal from './TeamDetailModal';
 import TeamInvitationsPanel from './TeamInvitationsPanel';
+import CardSuitDivider from './casino/CardSuitDivider';
+import PokerChipGraphic from './casino/PokerChipGraphic';
+import TerminalPrompt from './casino/TerminalPrompt';
 
 interface TeamMemberUser {
   avatar_url: string | null;
@@ -495,9 +498,24 @@ export default function TeamGrid() {
         </div>
 
         {teams.length === 0 && (
-          <p className="py-8 text-center font-body text-sm text-white/30">
-            No teams yet. Be the first to create one.
-          </p>
+          <div className="flex flex-col items-center justify-center rounded-lg border border-white/8 bg-[#1a1a1a] py-16 px-8 text-center">
+            <CardSuitDivider size="md" className="mb-6" />
+
+            <PokerChipGraphic size={100} color="red" className="mb-6" />
+
+            <h3 className="mb-2 font-display text-3xl uppercase tracking-wide text-white">
+              THE TABLE IS EMPTY
+            </h3>
+            <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-[#C9A84C]">
+              // waiting_for_first_dealer
+            </p>
+
+            <p className="max-w-md font-body text-sm leading-relaxed text-white/40">
+              No crews formed yet. Create the first team and become the house.
+            </p>
+
+            <TerminalPrompt prefix="$" text="deal_in" color="red" className="mt-6" />
+          </div>
         )}
       </div>
 

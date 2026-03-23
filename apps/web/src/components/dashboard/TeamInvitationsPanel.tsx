@@ -4,6 +4,7 @@ import Icon from '@/components/ui/Icon';
 import { api } from '@/lib/api';
 import { TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
 import { TRACKS } from '@/lib/tracks';
+import CasinoSpinner from './casino/CasinoSpinner';
 
 interface InvitationTeam {
   id: string;
@@ -82,16 +83,32 @@ export default function TeamInvitationsPanel() {
     return (
       <div className="rounded-lg border border-white/8 bg-white/[0.02] p-5">
         <div className="flex items-center gap-3 text-white/45">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-red"></div>
+          <CasinoSpinner variant="chip-flip" size={20} color="red" />
           <span className="font-mono text-[11px] uppercase tracking-[0.16em]">
-            Loading invitations...
+            Shuffling the deck...
           </span>
         </div>
       </div>
     );
   }
 
-  if (invitations.length === 0 && !error) return null;
+  if (invitations.length === 0 && !error) {
+    return (
+      <div className="rounded-lg border border-white/8 bg-white/[0.02] p-4">
+        <div className="flex items-center gap-3">
+          <span className="text-xl text-white/30">♠</span>
+          <div>
+            <p className="font-mono text-xs uppercase tracking-[0.15em] text-white/50">
+              NO INVITES IN HAND
+            </p>
+            <p className="mt-1 font-body text-xs text-white/35">
+              Team leaders will send you invites when they want you at their table.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 rounded-lg border border-gold/20 bg-gold/5 p-5">

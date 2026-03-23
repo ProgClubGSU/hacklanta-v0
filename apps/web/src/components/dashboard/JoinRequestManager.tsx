@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import Icon from '@/components/ui/Icon';
+import CasinoSpinner from './casino/CasinoSpinner';
 
 interface JoinRequest {
   id: string;
@@ -73,9 +74,11 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="text-center">
-          <div className="mb-3 inline-block h-6 w-6 animate-spin rounded-full border-4 border-secondary-fixed/20 border-t-secondary-fixed"></div>
-          <p className="font-label text-xs uppercase tracking-widest text-outline">Loading requests...</p>
+        <div className="flex items-center gap-3 text-center">
+          <CasinoSpinner variant="chip-flip" size={24} color="gold" />
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">
+            Reading the table...
+          </p>
         </div>
       </div>
     );
@@ -83,9 +86,38 @@ export default function JoinRequestManager({ teamId, onRequestProcessed }: JoinR
 
   if (requests.length === 0) {
     return (
-      <div className="flex items-center justify-center gap-2 rounded border border-secondary-container/20 bg-secondary-container/5 p-6 text-center">
-        <Icon name="inbox" className="text-secondary-fixed/60" />
-        <p className="font-label text-sm text-secondary-fixed/80">No pending join requests</p>
+      <div className="relative overflow-hidden rounded-lg border border-[#C9A84C]/20 bg-[#C9A84C]/5 p-6">
+        {/* Diagonal stripe pattern (subtle) */}
+        <div className="pointer-events-none absolute inset-0 opacity-5" style={{
+          backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(201,168,76,0.1) 10px, rgba(201,168,76,0.1) 20px)'
+        }} />
+
+        <div className="relative z-10">
+          {/* Section label */}
+          <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#C9A84C]/40">
+            [00]
+          </div>
+
+          {/* Header with icon */}
+          <div className="mb-2 flex items-center gap-3">
+            <Icon name="inbox" className="text-[#C9A84C]/60 text-2xl" />
+            <h4 className="font-mono text-sm uppercase tracking-[0.15em] text-[#C9A84C]">
+              DEALER'S TRAY: EMPTY
+            </h4>
+          </div>
+
+          {/* Description */}
+          <p className="font-body text-xs leading-relaxed text-white/55">
+            No players waiting to join your table. Share your invite code to fill the seats.
+          </p>
+
+          {/* Decorative card suits */}
+          <div className="mt-4 flex justify-end gap-2 text-base">
+            <span className="text-[#C9A84C]/20">♦</span>
+            <span className="text-white/15">♣</span>
+            <span className="text-[#C9A84C]/20">♥</span>
+          </div>
+        </div>
       </div>
     );
   }
