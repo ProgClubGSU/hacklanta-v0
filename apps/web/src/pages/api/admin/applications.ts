@@ -61,10 +61,23 @@ export const GET: APIRoute = async ({ locals, url }) => {
     dataQuery = dataQuery.in('status', statuses)
   }
 
-  // Apply search filter (case-insensitive on application-level columns)
+  // Apply search filter (searches application email, university, AND user name/email)
   if (search) {
     const pattern = `%${search}%`
-    const orFilter = `email.ilike.${pattern},university.ilike.${pattern}`
+
+    // Find users matching by name or Clerk email
+    const { data: matchedUsers } = await supabase
+      .from('users')
+      .select('id')
+      .or(`email.ilike.${pattern},first_name.ilike.${pattern},last_name.ilike.${pattern}`)
+
+    const matchedIds = (matchedUsers ?? []).map(u => u.id)
+
+    let orFilter = `email.ilike.${pattern},university.ilike.${pattern}`
+    if (matchedIds.length > 0) {
+      orFilter += `,user_id.in.(${matchedIds.join(',')})`
+    }
+
     countQuery = countQuery.or(orFilter)
     dataQuery = dataQuery.or(orFilter)
   }
