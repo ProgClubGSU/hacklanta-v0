@@ -451,6 +451,7 @@ export const api = {
     return {
       ...team,
       members: (team.team_members ?? []).map(flattenMember),
+      viewer_role: membership.role as string,
     };
   },
 
