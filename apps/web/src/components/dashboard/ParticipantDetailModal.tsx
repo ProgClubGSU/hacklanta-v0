@@ -57,7 +57,8 @@ function getInitials(name: string) {
 
 function normalizeHref(value: string | null) {
   if (!value?.trim()) return '';
-  return /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  if (/^http:\/\//i.test(value)) return value.replace(/^http:/i, 'https:');
+  return /^https:\/\//i.test(value) ? value : `https://${value}`;
 }
 
 export default function ParticipantDetailModal({

@@ -56,8 +56,8 @@ export default function TeamInvitationsPanel() {
       setError(null);
       const data = await api.listReceivedTeamInvitations();
       setInvitations(data as TeamInvitation[]);
-    } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : 'Failed to load team invitations.');
+    } catch {
+      // No invitations or table inaccessible — treat as empty
       setInvitations([]);
     } finally {
       setIsLoading(false);

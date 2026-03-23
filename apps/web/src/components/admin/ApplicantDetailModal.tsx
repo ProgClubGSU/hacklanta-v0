@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import type { Application } from '../../lib/admin-api';
 
+function normalizeHref(value: string | null | undefined) {
+  if (!value?.trim()) return '';
+  if (/^http:\/\//i.test(value)) return value.replace(/^http:/i, 'https:');
+  return /^https:\/\//i.test(value) ? value : `https://${value}`;
+}
+
 interface ApplicantDetailModalProps {
   application: Application;
   onClose: () => void;
@@ -170,7 +176,7 @@ export default function ApplicantDetailModal({ application, onClose, onStatusCha
                 )}
                 {application.github_url && (
                   <a
-                    href={application.github_url}
+                    href={normalizeHref(application.github_url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded border border-white/10 bg-white/5 px-3 py-1.5 font-mono text-xs text-white/70 transition-colors hover:border-red/40 hover:text-white"
@@ -183,7 +189,7 @@ export default function ApplicantDetailModal({ application, onClose, onStatusCha
                 )}
                 {application.linkedin_url && (
                   <a
-                    href={application.linkedin_url}
+                    href={normalizeHref(application.linkedin_url)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded border border-white/10 bg-white/5 px-3 py-1.5 font-mono text-xs text-white/70 transition-colors hover:border-red/40 hover:text-white"
