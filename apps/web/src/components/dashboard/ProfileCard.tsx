@@ -1,7 +1,7 @@
 import { useAuth } from '@clerk/astro/react';
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
-import { PROFILE_CHANGED_EVENT, TEAM_CHANGED_EVENT } from '@/lib/dashboard-events';
+import { PROFILE_CHANGED_EVENT, TEAM_CHANGED_EVENT, OPEN_EDITOR_FOR_CONFIRM_EVENT, PROFILE_SAVED_FOR_CONFIRM_EVENT } from '@/lib/dashboard-events';
 import TeamInvitationsPanel from './TeamInvitationsPanel';
 import DiscordCopy from '@/components/ui/DiscordCopy';
 import LoadingHand from './casino/LoadingHand';
@@ -36,6 +36,8 @@ interface ProfileData {
   portfolio: string;
   discord: string;
   lookingForTeam: boolean;
+  university: string;
+  major: string;
 }
 
 const EMPTY_PROFILE: ProfileData = {
@@ -46,7 +48,26 @@ const EMPTY_PROFILE: ProfileData = {
   portfolio: '',
   discord: '',
   lookingForTeam: false,
+  university: '',
+  major: '',
 };
+
+const CONFIRM_REQUIRED_FIELDS = ['displayName', 'bio', 'linkedin', 'discord'] as const;
+
+function validateConfirmFields(profile: ProfileData): string[] {
+  const missing: string[] = [];
+  if (!profile.displayName.trim()) missing.push('displayName');
+  if (!profile.bio.trim()) missing.push('bio');
+  if (!profile.linkedin.trim()) missing.push('linkedin');
+  if (!profile.discord.trim()) missing.push('discord');
+  return missing;
+}
+
+function isValidLinkedIn(value: string): boolean {
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  return /^https?:\/\//i.test(trimmed) || /linkedin\.com/i.test(trimmed);
+}
 
 function getClerkFirstName() {
   const clerkUser = window.Clerk?.user;
@@ -73,6 +94,8 @@ function mapProfileData(
     portfolio_url?: string | null;
     discord_username?: string | null;
     looking_for_team?: boolean | null;
+    university?: string | null;
+    major?: string | null;
   } | null,
 ): ProfileData {
   if (!profile) return EMPTY_PROFILE;
@@ -85,6 +108,8 @@ function mapProfileData(
     portfolio: profile.portfolio_url?.trim() || '',
     discord: profile.discord_username?.trim() || '',
     lookingForTeam: profile.looking_for_team ?? false,
+    university: profile.university?.trim() || '',
+    major: profile.major?.trim() || '',
   };
 }
 
@@ -191,6 +216,8 @@ export default function ProfileCard() {
   const [profile, setProfile] = useState<ProfileData>(EMPTY_PROFILE);
   const [draft, setDraft] = useState<ProfileData>(EMPTY_PROFILE);
   const [team, setTeam] = useState<TeamData | null>(null);
+  const [confirmAfterSave, setConfirmAfterSave] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
 
   async function loadDashboardData(cancelledRef?: { current: boolean }) {
     setIsLoading(true);
@@ -240,13 +267,19 @@ export default function ProfileCard() {
       void loadDashboardData(cancelled);
     };
 
+    const handleOpenForConfirm = () => {
+      openEditor(true);
+    };
+
     window.addEventListener(PROFILE_CHANGED_EVENT, handleRefresh);
     window.addEventListener(TEAM_CHANGED_EVENT, handleRefresh);
+    window.addEventListener(OPEN_EDITOR_FOR_CONFIRM_EVENT, handleOpenForConfirm);
 
     return () => {
       cancelled.current = true;
       window.removeEventListener(PROFILE_CHANGED_EVENT, handleRefresh);
       window.removeEventListener(TEAM_CHANGED_EVENT, handleRefresh);
+      window.removeEventListener(OPEN_EDITOR_FOR_CONFIRM_EVENT, handleOpenForConfirm);
     };
   }, [isLoaded]);
 
@@ -269,8 +302,10 @@ export default function ProfileCard() {
     { label: 'Portfolio', value: profile.portfolio, href: normalizeHref(profile.portfolio) },
   ].filter((s) => s.value);
 
-  function openEditor() {
+  function openEditor(forConfirm = false) {
     setSaveError(null);
+    setValidationErrors(forConfirm ? validateConfirmFields(profile) : []);
+    setConfirmAfterSave(forConfirm);
     setDraft({
       ...profile,
       displayName: profile.displayName || clerkFirstName,
@@ -280,6 +315,22 @@ export default function ProfileCard() {
 
   async function saveEditor(e: React.FormEvent) {
     e.preventDefault();
+
+    // Validate required fields when saving for confirmation
+    if (confirmAfterSave) {
+      const missing = validateConfirmFields(draft);
+      if (missing.length > 0) {
+        setValidationErrors(missing);
+        setSaveError('Please fill in all required fields to confirm your spot.');
+        return;
+      }
+      if (!isValidLinkedIn(draft.linkedin)) {
+        setValidationErrors(['linkedin']);
+        setSaveError('Please enter a valid LinkedIn URL.');
+        return;
+      }
+    }
+
     setIsSaving(true);
     setSaveError(null);
 
@@ -292,12 +343,20 @@ export default function ProfileCard() {
         portfolio_url: draft.portfolio.trim() || undefined,
         discord_username: draft.discord.trim() || undefined,
         looking_for_team: draft.lookingForTeam,
+        major: draft.major.trim() || undefined,
       });
 
       const mappedProfile = mapProfileData(savedProfile);
       setProfile(mappedProfile);
       setDraft(mappedProfile);
       setIsEditing(false);
+      setValidationErrors([]);
+
+      // Auto-trigger confirmation after successful save
+      if (confirmAfterSave) {
+        setConfirmAfterSave(false);
+        window.dispatchEvent(new CustomEvent(PROFILE_SAVED_FOR_CONFIRM_EVENT));
+      }
     } catch (error) {
       setSaveError(error instanceof Error ? error.message : 'Failed to save your profile.');
     } finally {
@@ -321,7 +380,7 @@ export default function ProfileCard() {
           <div className="flex items-center justify-between">
             <button
               type="button"
-              onClick={openEditor}
+              onClick={() => openEditor()}
               className="button-heading ml-auto text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
             >
               Edit &rarr;
@@ -544,56 +603,61 @@ export default function ProfileCard() {
                 &times;
               </button>
             </div>
+            {confirmAfterSave && (
+              <div className="mb-4 rounded border border-[#C41E3A]/30 bg-[#C41E3A]/[0.06] px-4 py-3 font-body text-xs text-white/60">
+                Fill in the required fields below to confirm your spot.
+              </div>
+            )}
             <div className="space-y-4">
               <div>
-                <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
-                  Display Name
+                <label className={`mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] ${validationErrors.includes('displayName') ? 'text-[#C41E3A]' : 'text-white/45'}`}>
+                  Display Name {confirmAfterSave && <span className="text-[#C41E3A]">*</span>}
                 </label>
                 <input
                   type="text"
                   required
                   maxLength={100}
                   value={draft.displayName}
-                  onChange={(e) => setDraft({ ...draft, displayName: e.target.value })}
-                  className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                  onChange={(e) => { setDraft({ ...draft, displayName: e.target.value }); setValidationErrors(v => v.filter(f => f !== 'displayName')); }}
+                  className={`w-full rounded border bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:outline-none ${validationErrors.includes('displayName') ? 'border-[#C41E3A]/50 focus:border-[#C41E3A]' : 'border-white/10 focus:border-red'}`}
                   placeholder="How should your name appear?"
                 />
               </div>
               <div>
-                <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
-                  Bio
+                <label className={`mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] ${validationErrors.includes('bio') ? 'text-[#C41E3A]' : 'text-white/45'}`}>
+                  Bio {confirmAfterSave && <span className="text-[#C41E3A]">*</span>}
                 </label>
                 <textarea
                   rows={3}
                   maxLength={500}
                   value={draft.bio}
-                  onChange={(e) => setDraft({ ...draft, bio: e.target.value })}
-                  className="w-full resize-none rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                  onChange={(e) => { setDraft({ ...draft, bio: e.target.value }); setValidationErrors(v => v.filter(f => f !== 'bio')); }}
+                  className={`w-full resize-none rounded border bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:outline-none ${validationErrors.includes('bio') ? 'border-[#C41E3A]/50 focus:border-[#C41E3A]' : 'border-white/10 focus:border-red'}`}
                   placeholder="Skills, interests, what you want to build..."
                 />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
-                    LinkedIn
+                  <label className={`mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] ${validationErrors.includes('linkedin') ? 'text-[#C41E3A]' : 'text-white/45'}`}>
+                    LinkedIn {confirmAfterSave && <span className="text-[#C41E3A]">*</span>}
                   </label>
                   <input
                     type="text"
                     value={draft.linkedin}
-                    onChange={(e) => setDraft({ ...draft, linkedin: e.target.value })}
-                    className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                    onChange={(e) => { setDraft({ ...draft, linkedin: e.target.value }); setValidationErrors(v => v.filter(f => f !== 'linkedin')); }}
+                    className={`w-full rounded border bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:outline-none ${validationErrors.includes('linkedin') ? 'border-[#C41E3A]/50 focus:border-[#C41E3A]' : 'border-white/10 focus:border-red'}`}
                     placeholder="linkedin.com/in/..."
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
-                    Discord
+                  <label className={`mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] ${validationErrors.includes('discord') ? 'text-[#C41E3A]' : 'text-white/45'}`}>
+                    Discord {confirmAfterSave && <span className="text-[#C41E3A]">*</span>}
                   </label>
                   <input
                     type="text"
                     value={draft.discord}
-                    onChange={(e) => setDraft({ ...draft, discord: e.target.value })}
-                    className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                    onChange={(e) => { setDraft({ ...draft, discord: e.target.value }); setValidationErrors(v => v.filter(f => f !== 'discord')); }}
+                    className={`w-full rounded border bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:outline-none ${validationErrors.includes('discord') ? 'border-[#C41E3A]/50 focus:border-[#C41E3A]' : 'border-white/10 focus:border-red'}`}
                     placeholder="username"
                   />
                 </div>
@@ -622,6 +686,38 @@ export default function ProfileCard() {
                   />
                 </div>
               </div>
+              {/* University (read-only) + Major (editable) — only shown when populated */}
+              {(profile.university || profile.major) && (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {profile.university && (
+                    <div>
+                      <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                        University <span className="text-white/25">(from application)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={draft.university}
+                        readOnly
+                        className="w-full cursor-not-allowed rounded border border-white/5 bg-white/[0.03] px-4 py-2.5 font-body text-sm text-white/40"
+                      />
+                    </div>
+                  )}
+                  {profile.major && (
+                    <div>
+                      <label className="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.2em] text-white/45">
+                        Major
+                      </label>
+                      <input
+                        type="text"
+                        value={draft.major}
+                        onChange={(e) => setDraft({ ...draft, major: e.target.value })}
+                        className="w-full rounded border border-white/10 bg-black/40 px-4 py-2.5 font-body text-sm text-white placeholder:text-white/25 focus:border-red focus:outline-none"
+                        placeholder="Your major"
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
               <label className="flex items-center gap-3 rounded border border-white/8 bg-black/30 px-4 py-2.5 text-white/70">
                 <input
                   type="checkbox"

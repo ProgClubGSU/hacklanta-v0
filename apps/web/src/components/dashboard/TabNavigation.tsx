@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ProfileCard from './ProfileCard.tsx';
 import OnboardingCard from './OnboardingCard';
+import ConfirmationBanner from './ConfirmationBanner';
 import UserGrid from './UserGrid.tsx';
 import TeamGrid from './TeamGrid.tsx';
 import DashboardNav from './DashboardNav.tsx';
@@ -9,9 +10,10 @@ import { api } from '../../lib/api';
 
 interface TabNavigationProps {
   page?: 'home' | 'teams';
+  isConfirmed?: boolean;
 }
 
-export default function TabNavigation({ page = 'home' }: TabNavigationProps) {
+export default function TabNavigation({ page = 'home', isConfirmed = false }: TabNavigationProps) {
   const [profileComplete, setProfileComplete] = useState<boolean | null>(null);
   const [isCheckingProfile, setIsCheckingProfile] = useState(true);
 
@@ -47,7 +49,7 @@ export default function TabNavigation({ page = 'home' }: TabNavigationProps) {
   if (profileComplete === false) {
     return (
       <div>
-        <DashboardNav activePage={page} />
+        <DashboardNav activePage={page} isConfirmed={isConfirmed} />
         <div className="mt-8">
           <OnboardingCard
             clerkFirstName={window.Clerk?.user?.firstName ?? null}
@@ -66,6 +68,7 @@ export default function TabNavigation({ page = 'home' }: TabNavigationProps) {
 
       {page === 'home' && (
         <>
+          <ConfirmationBanner />
           <ProfileCard />
           <section id="players">
             <UserGrid />

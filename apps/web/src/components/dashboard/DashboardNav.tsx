@@ -2,14 +2,15 @@ import { TextLogo } from '../ui/TextLogoReact.tsx';
 
 interface DashboardNavProps {
   activePage: 'home' | 'teams';
+  isConfirmed?: boolean;
 }
 
 const NAV_ITEMS = [
-  { id: 'home' as const, label: 'Dashboard', href: '/dashboard/team' },
-  { id: 'teams' as const, label: 'Teams', href: '/dashboard/teams' },
+  { id: 'home' as const, label: 'Dashboard', href: '/dashboard/team', requiresConfirm: false },
+  { id: 'teams' as const, label: 'Teams', href: '/dashboard/teams', requiresConfirm: true },
 ];
 
-export default function DashboardNav({ activePage }: DashboardNavProps) {
+export default function DashboardNav({ activePage, isConfirmed = false }: DashboardNavProps) {
   return (
     <header className="flex items-center justify-between border-b border-white/8 pb-4">
       <div className="flex items-center gap-8">
@@ -18,7 +19,7 @@ export default function DashboardNav({ activePage }: DashboardNavProps) {
         </a>
 
         <nav className="flex items-center gap-1">
-          {NAV_ITEMS.map((item) => {
+          {NAV_ITEMS.filter(item => !item.requiresConfirm || isConfirmed).map((item) => {
             const isActive = item.id === activePage;
             return (
               <a

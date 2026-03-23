@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro'
 import { createServerSupabaseClient } from '../../../lib/supabase-server'
 
-const APP_FIELDS = 'id, status, university, major, year_of_study, experience_level, created_at, reviewed_at'
+const APP_FIELDS = 'id, status, university, major, year_of_study, experience_level, created_at, reviewed_at, confirmed_at'
 
 // Pre-cutoff users submitted apps before clerk+tally linking was deployed.
 // Their apps may not be linked — always show "pending" instead of "not found".

@@ -5,6 +5,7 @@ import { createServerSupabaseClient } from './supabase-server'
 const LINKING_CUTOFF = new Date('2026-03-21T22:00:00Z')
 
 export type GateResult =
+  | { status: 'confirmed' }
   | { status: 'accepted' }
   | { status: 'pending' }
   | { status: 'no-application' }
@@ -19,7 +20,7 @@ export async function checkDashboardAccess(clerkUserId: string): Promise<GateRes
   // Look up user in Supabase
   let { data: user } = await supabase
     .from('users')
-    .select('id, is_accepted, created_at')
+    .select('id, is_accepted, is_confirmed, created_at')
     .eq('clerk_id', clerkUserId)
     .maybeSingle()
 
@@ -48,7 +49,7 @@ export async function checkDashboardAccess(clerkUserId: string): Promise<GateRes
             },
             { onConflict: 'clerk_id' }
           )
-          .select('id, is_accepted, created_at')
+          .select('id, is_accepted, is_confirmed, created_at')
           .single()
 
         user = synced
@@ -65,6 +66,10 @@ export async function checkDashboardAccess(clerkUserId: string): Promise<GateRes
   // If we still can't find/create the user, they have no application
   if (!user) {
     return { status: 'no-application' }
+  }
+
+  if (user.is_confirmed) {
+    return { status: 'confirmed' }
   }
 
   if (user.is_accepted) {

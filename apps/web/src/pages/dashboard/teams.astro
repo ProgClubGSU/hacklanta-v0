@@ -16,12 +16,16 @@ if (gate.status === 'no-application') {
 if (gate.status === 'pending') {
   return Astro.redirect('/dashboard/pending');
 }
+// Only confirmed users can access the team finder
+if (gate.status === 'accepted') {
+  return Astro.redirect('/dashboard/team');
+}
 ---
 
 <BaseLayout title="Teams | Hacklanta">
   <main class="min-h-screen bg-[#1a0a0e] px-4 py-8 font-body md:px-8">
     <div class="mx-auto max-w-5xl">
-      <TabNavigation client:load page="teams" />
+      <TabNavigation client:load page="teams" isConfirmed={true} />
     </div>
   </main>
 </BaseLayout>

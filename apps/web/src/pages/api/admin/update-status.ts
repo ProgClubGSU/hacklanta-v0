@@ -4,7 +4,7 @@ import { createServerSupabaseClient } from '../../../lib/supabase-server'
 import { createResendClient, sendBatchEmails } from '../../../lib/emails/send'
 import { templates, STATUS_TEMPLATE_MAP } from '../../../lib/emails/templates'
 
-const VALID_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'rejected', 'waitlisted']
+const VALID_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'confirmed', 'confirmed_overflow', 'rejected', 'waitlisted']
 
 export const POST: APIRoute = async ({ locals, request }) => {
   const auth = await verifyAdmin(locals)

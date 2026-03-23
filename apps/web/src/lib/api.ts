@@ -282,10 +282,11 @@ export const api = {
     portfolio_url?: string;
     discord_username?: string;
     looking_for_team?: boolean;
+    major?: string;
   }) => {
     const client = getClient();
     const userId = await resolveCurrentUserId(client);
-    const payload = {
+    const payload: Record<string, unknown> = {
       user_id: userId,
       display_name: profileData.display_name,
       bio: profileData.bio ?? null,
@@ -295,6 +296,10 @@ export const api = {
       discord_username: profileData.discord_username ?? null,
       looking_for_team: profileData.looking_for_team ?? false,
     };
+    // Only include major if explicitly provided (never include university — server-set only)
+    if (profileData.major !== undefined) {
+      payload.major = profileData.major;
+    }
 
     const { data, error } = await client
       .from('profiles')
@@ -1058,6 +1063,25 @@ export const api = {
       .single();
 
     if (error) throw new Error(error.message);
+    return data;
+  },
+
+  confirmAttendance: async (): Promise<{ result: 'confirmed' | 'confirmed_overflow' | 'already_confirmed' | 'waitlisted'; missing?: string[] }> => {
+    const res = await fetch('/api/applications/confirm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (data.error === 'incomplete_profile') {
+        return { result: 'confirmed', missing: data.missing }; // caller checks missing
+      }
+      throw new Error(data.error || `Confirmation failed (${res.status})`);
+    }
+
     return data;
   },
 };

@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro'
 import { verifyAdmin } from '../../../lib/admin'
 import { createServerSupabaseClient } from '../../../lib/supabase-server'
 
-const VALID_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'rejected', 'waitlisted']
+const VALID_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'confirmed', 'confirmed_overflow', 'rejected', 'waitlisted']
 const VALID_SORT_COLUMNS = ['created_at', 'status', 'university', 'email', 'experience_level', 'year_of_study']
 const MAX_LIMIT = 200
 const DEFAULT_LIMIT = 50
