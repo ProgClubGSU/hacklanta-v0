@@ -88,8 +88,18 @@ function getFullName(user: Partial<UserRow> | null | undefined) {
 function flattenMember(member: TeamMemberRow) {
   const { users, ...rest } = member;
   const profile = (users as Record<string, unknown>)?.profiles as
-    | { discord_username?: string | null; linkedin_url?: string | null }
-    | Array<{ discord_username?: string | null; linkedin_url?: string | null }>
+    | {
+        discord_username?: string | null;
+        linkedin_url?: string | null;
+        github_url?: string | null;
+        portfolio_url?: string | null;
+      }
+    | Array<{
+        discord_username?: string | null;
+        linkedin_url?: string | null;
+        github_url?: string | null;
+        portfolio_url?: string | null;
+      }>
     | null;
   const profileData = Array.isArray(profile) ? profile[0] : profile;
 
@@ -100,6 +110,8 @@ function flattenMember(member: TeamMemberRow) {
     avatar_url: users?.avatar_url ?? null,
     discord_username: profileData?.discord_username ?? null,
     linkedin_url: profileData?.linkedin_url ?? null,
+    github_url: profileData?.github_url ?? null,
+    portfolio_url: profileData?.portfolio_url ?? null,
   };
 }
 
@@ -454,7 +466,9 @@ export const api = {
 
     const { data, error } = await client
       .from('teams')
-      .select('*, team_members(*, users(id, first_name, last_name, avatar_url, profiles(discord_username, linkedin_url)))')
+      .select(
+        '*, team_members(*, users(id, first_name, last_name, avatar_url, profiles(discord_username, linkedin_url, github_url, portfolio_url)))',
+      )
       .eq('id', membership.team_id)
       .single();
 

@@ -14,6 +14,8 @@ interface TeamMember {
   avatar_url: string | null;
   discord_username: string | null;
   linkedin_url: string | null;
+  github_url: string | null;
+  portfolio_url: string | null;
 }
 
 interface TeamData {
@@ -463,6 +465,30 @@ export default function ProfileCard() {
                                 aria-label="LinkedIn"
                               >
                                 <SocialIcon label="LinkedIn" />
+                              </a>
+                            )}
+                            {member.github_url && (
+                              <a
+                                href={normalizeHref(member.github_url)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 text-xs text-white/60 hover:text-white/80"
+                                title="GitHub"
+                                aria-label="GitHub"
+                              >
+                                <SocialIcon label="GitHub" />
+                              </a>
+                            )}
+                            {member.portfolio_url && (
+                              <a
+                                href={normalizeHref(member.portfolio_url)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 text-xs text-white/60 hover:text-white/80"
+                                title="Portfolio"
+                                aria-label="Portfolio"
+                              >
+                                <SocialIcon label="Portfolio" />
                               </a>
                             )}
                           </div>
