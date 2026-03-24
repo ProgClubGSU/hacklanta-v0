@@ -18,6 +18,8 @@ export const GET: APIRoute = async ({ locals, url }) => {
   // Parse query params
   const statusParam = url.searchParams.get('status')
   const search = url.searchParams.get('search')?.trim() ?? ''
+  const dateFrom = url.searchParams.get('date_from')?.trim() ?? ''
+  const dateTo = url.searchParams.get('date_to')?.trim() ?? ''
   const sortBy = url.searchParams.get('sort_by') ?? 'created_at'
   const sortDir = url.searchParams.get('sort_dir') ?? 'desc'
   const offset = Math.max(0, parseInt(url.searchParams.get('offset') ?? '0', 10) || 0)
@@ -59,6 +61,20 @@ export const GET: APIRoute = async ({ locals, url }) => {
   if (statuses?.length) {
     countQuery = countQuery.in('status', statuses)
     dataQuery = dataQuery.in('status', statuses)
+  }
+
+  // Apply date range filter
+  if (dateFrom) {
+    countQuery = countQuery.gte('created_at', dateFrom)
+    dataQuery = dataQuery.gte('created_at', dateFrom)
+  }
+  if (dateTo) {
+    // Add a day so "2026-03-23" includes the whole day
+    const toDate = new Date(dateTo)
+    toDate.setDate(toDate.getDate() + 1)
+    const toStr = toDate.toISOString().split('T')[0]
+    countQuery = countQuery.lt('created_at', toStr)
+    dataQuery = dataQuery.lt('created_at', toStr)
   }
 
   // Apply search filter (searches application email, university, AND user name/email)
