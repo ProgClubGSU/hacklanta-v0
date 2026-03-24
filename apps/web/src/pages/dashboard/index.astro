@@ -8,9 +8,6 @@ if (!userId) {
 
 const gate = await checkDashboardAccess(userId);
 
-if (gate.status === 'no-application') {
-  return Astro.redirect('/dashboard/no-application');
-}
 if (gate.status === 'pending') {
   return Astro.redirect('/dashboard/pending');
 }

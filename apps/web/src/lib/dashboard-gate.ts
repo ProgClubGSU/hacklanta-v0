@@ -1,14 +1,9 @@
 import { createServerSupabaseClient } from './supabase-server'
 
-// Cutoff: March 21, 2026 6:00 PM EDT (10:00 PM UTC — EDT is UTC-4, DST active)
-// Accounts created after this have tally+clerk linking, so we verify they applied
-const LINKING_CUTOFF = new Date('2026-03-21T22:00:00Z')
-
 export type GateResult =
   | { status: 'confirmed' }
   | { status: 'accepted' }
   | { status: 'pending' }
-  | { status: 'no-application' }
 
 /**
  * Checks whether a user should be allowed into the dashboard.
@@ -63,9 +58,9 @@ export async function checkDashboardAccess(clerkUserId: string): Promise<GateRes
     }
   }
 
-  // If we still can't find/create the user, they have no application
+  // If we still can't find/create the user, treat as pending
   if (!user) {
-    return { status: 'no-application' }
+    return { status: 'pending' }
   }
 
   if (user.is_confirmed) {
@@ -74,20 +69,6 @@ export async function checkDashboardAccess(clerkUserId: string): Promise<GateRes
 
   if (user.is_accepted) {
     return { status: 'accepted' }
-  }
-
-  // Post-cutoff accounts: verify they actually have a linked application
-  if (new Date(user.created_at) >= LINKING_CUTOFF) {
-    const { data: application } = await supabase
-      .from('applications')
-      .select('id')
-      .eq('user_id', user.id)
-      .limit(1)
-      .maybeSingle()
-
-    if (!application) {
-      return { status: 'no-application' }
-    }
   }
 
   return { status: 'pending' }

@@ -6,12 +6,91 @@ import { createResendClient } from '../../../lib/emails/send'
 const AUDIENCE_NAME = 'Hacklanta Contacts'
 const BATCH_SIZE = 50
 const BATCH_DELAY_MS = 200
+const SEGMENT_CONCURRENCY = 10
+
+// Segment definitions — name → filter function over resend_contacts rows
+const SEGMENT_DEFINITIONS: Record<string, (c: Record<string, unknown>) => boolean> = {
+  'Unconfirmed': (c) => c.is_accepted === true && !c.is_confirmed,
+  'Confirmed': (c) => c.is_confirmed === true,
+  'No Team': (c) => c.is_confirmed === true && !c.has_team,
+  'Looking for Team': (c) => c.looking_for_team === true,
+  'Has Team': (c) => c.has_team === true,
+}
+
+async function resolveSegmentIds(resend: ReturnType<typeof createResendClient>): Promise<Record<string, string>> {
+  const { data } = await resend.segments.list()
+  const map: Record<string, string> = {}
+  for (const seg of data?.data ?? []) {
+    if (seg.name in SEGMENT_DEFINITIONS) {
+      map[seg.name] = seg.id
+    }
+  }
+  return map
+}
+
+async function syncSegments(
+  resend: ReturnType<typeof createResendClient>,
+  contacts: Record<string, unknown>[],
+  unsubscribedEmails: Set<string>,
+): Promise<{ segments_synced: Record<string, number>; segment_errors: number }> {
+  const segmentIds = await resolveSegmentIds(resend)
+  const result: Record<string, number> = {}
+  let segmentErrors = 0
+
+  for (const [name, filterFn] of Object.entries(SEGMENT_DEFINITIONS)) {
+    const segmentId = segmentIds[name]
+    if (!segmentId) {
+      console.warn(`[sync-resend] Segment "${name}" not found in Resend — skipping`)
+      continue
+    }
+
+    const matching = contacts.filter(c => {
+      if (unsubscribedEmails.has((c.email as string).toLowerCase())) return false
+      return filterFn(c)
+    })
+
+    let added = 0
+    for (let i = 0; i < matching.length; i += SEGMENT_CONCURRENCY) {
+      const batch = matching.slice(i, i + SEGMENT_CONCURRENCY)
+
+      const results = await Promise.allSettled(
+        batch.map(contact =>
+          resend.contacts.segments.add({
+            email: contact.email as string,
+            segmentId,
+          })
+        )
+      )
+
+      for (let j = 0; j < results.length; j++) {
+        const r = results[j]
+        if (r.status === 'fulfilled') {
+          added++
+        } else {
+          const msg = r.reason instanceof Error ? r.reason.message : String(r.reason)
+          if (msg.includes('already') || msg.includes('exists')) {
+            added++
+          } else {
+            segmentErrors++
+            console.error(`[sync-resend] Failed to add ${batch[j].email} to "${name}": ${msg}`)
+          }
+        }
+      }
+    }
+
+    result[name] = added
+    console.log(`[sync-resend] Segment "${name}": ${added}/${matching.length} contacts`)
+  }
+
+  return { segments_synced: result, segment_errors: segmentErrors }
+}
 
 export const POST: APIRoute = async ({ locals, url }) => {
   const auth = await verifyAdmin(locals)
   if (!auth.authorized) return auth.response
 
   const dryRun = url.searchParams.get('dry_run') === 'true'
+  const segmentsOnly = url.searchParams.get('segments_only') === 'true'
   const supabase = createServerSupabaseClient()
   const resend = createResendClient()
 
@@ -71,12 +150,32 @@ export const POST: APIRoute = async ({ locals, url }) => {
   })
 
   if (dryRun) {
+    // Show segment counts in dry run too
+    const segmentCounts: Record<string, number> = {}
+    for (const [name, filterFn] of Object.entries(SEGMENT_DEFINITIONS)) {
+      segmentCounts[name] = contacts.filter(c => {
+        if (unsubscribedEmails.has(c.email.toLowerCase())) return false
+        return filterFn(c)
+      }).length
+    }
     return new Response(JSON.stringify({
       dry_run: true,
       total_in_db: contacts.length,
       already_in_resend: existingEmails.size,
       unsubscribed: unsubscribedEmails.size,
       new_to_sync: newContacts.length,
+      segment_counts: segmentCounts,
+    }))
+  }
+
+  // Segments-only mode — skip contact creation, just assign segments
+  if (segmentsOnly) {
+    const segmentResult = await syncSegments(resend, contacts, unsubscribedEmails)
+    console.log(`[sync-resend] Segments-only sync complete`)
+    return new Response(JSON.stringify({
+      segments_only: true,
+      total_in_db: contacts.length,
+      ...segmentResult,
     }))
   }
 
@@ -116,6 +215,9 @@ export const POST: APIRoute = async ({ locals, url }) => {
     }
   }
 
+  // Sync segments — assign contacts to segments based on their data
+  const segmentResult = await syncSegments(resend, contacts, unsubscribedEmails)
+
   console.log(`[sync-resend] Done: new=${synced}, existing=${skippedExisting}, unsubscribed=${skippedUnsubscribed}, failed=${failed}`)
 
   return new Response(JSON.stringify({
@@ -125,6 +227,7 @@ export const POST: APIRoute = async ({ locals, url }) => {
     already_in_resend: skippedExisting,
     unsubscribed_skipped: skippedUnsubscribed,
     failed,
+    ...segmentResult,
     ...(errors.length > 0 ? { errors: errors.slice(0, 20) } : {}),
   }))
 }

@@ -16,7 +16,7 @@ export const POST: APIRoute = async ({ locals }) => {
   // Resolve Clerk ID to internal user
   const { data: user } = await supabase
     .from('users')
-    .select('id')
+    .select('id, is_accepted, is_confirmed')
     .eq('clerk_id', clerkUserId)
     .single()
 
@@ -24,26 +24,27 @@ export const POST: APIRoute = async ({ locals }) => {
     return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 })
   }
 
-  // Fetch application
+  if (!user.is_accepted) {
+    return new Response(JSON.stringify({ error: 'User is not accepted' }), { status: 400 })
+  }
+
+  // Idempotent: already confirmed
+  if (user.is_confirmed) {
+    return new Response(JSON.stringify({ result: 'already_confirmed' }))
+  }
+
+  // Fetch application (optional — some accepted users don't have one)
   const { data: application } = await supabase
     .from('applications')
     .select('id, status, university, major')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
     .limit(1)
-    .single()
+    .maybeSingle()
 
-  if (!application) {
-    return new Response(JSON.stringify({ error: 'No application found' }), { status: 404 })
-  }
-
-  // Idempotent: already confirmed
-  if (application.status === 'confirmed' || application.status === 'confirmed_overflow') {
-    return new Response(JSON.stringify({ result: 'already_confirmed' }))
-  }
-
-  // Must be accepted or accepted_overflow
-  if (application.status !== 'accepted' && application.status !== 'accepted_overflow') {
+  // If they have an application, it must be in an accepted state
+  if (application && application.status !== 'accepted' && application.status !== 'accepted_overflow'
+    && application.status !== 'confirmed' && application.status !== 'confirmed_overflow') {
     return new Response(JSON.stringify({ error: 'Application is not in an accepted state' }), { status: 400 })
   }
 
@@ -64,32 +65,43 @@ export const POST: APIRoute = async ({ locals }) => {
     return new Response(JSON.stringify({ error: 'incomplete_profile', missing }), { status: 400 })
   }
 
-  // Count current confirmations
+  // Count current confirmations from users table (includes users with and without applications)
   const { count: confirmedCount } = await supabase
-    .from('applications')
+    .from('users')
     .select('id', { count: 'exact', head: true })
-    .in('status', ['confirmed', 'confirmed_overflow'])
+    .eq('is_confirmed', true)
 
   const currentCount = confirmedCount ?? 0
 
   // Cap reached — waitlist the user
   if (currentCount >= OVERALL_CAP) {
-    await supabase
-      .from('applications')
-      .update({ status: 'waitlisted' })
-      .eq('id', application.id)
-
+    if (application) {
+      await supabase
+        .from('applications')
+        .update({ status: 'waitlisted' })
+        .eq('id', application.id)
+    }
     return new Response(JSON.stringify({ result: 'waitlisted' }))
   }
 
-  // Confirm the user
-  const newStatus = application.status === 'accepted_overflow' ? 'confirmed_overflow' : 'confirmed'
-  const now = new Date().toISOString()
+  // Update application status if one exists
+  if (application) {
+    const newStatus = application.status === 'accepted_overflow' ? 'confirmed_overflow' : 'confirmed'
+    const now = new Date().toISOString()
 
-  await supabase
-    .from('applications')
-    .update({ status: newStatus, confirmed_at: now })
-    .eq('id', application.id)
+    await supabase
+      .from('applications')
+      .update({ status: newStatus, confirmed_at: now })
+      .eq('id', application.id)
+
+    // Overflow sweep: if we just crossed the 300 threshold, convert remaining accepted -> accepted_overflow
+    if (currentCount < CONFIRMATION_THRESHOLD && currentCount + 1 >= CONFIRMATION_THRESHOLD) {
+      await supabase
+        .from('applications')
+        .update({ status: 'accepted_overflow' })
+        .eq('status', 'accepted')
+    }
+  }
 
   // Mark user as confirmed (gates team finder access via RLS)
   await supabase
@@ -97,16 +109,8 @@ export const POST: APIRoute = async ({ locals }) => {
     .update({ is_confirmed: true })
     .eq('id', user.id)
 
-  // Overflow sweep: if we just crossed the 300 threshold, convert remaining accepted -> accepted_overflow
-  if (currentCount < CONFIRMATION_THRESHOLD && currentCount + 1 >= CONFIRMATION_THRESHOLD) {
-    await supabase
-      .from('applications')
-      .update({ status: 'accepted_overflow' })
-      .eq('status', 'accepted')
-  }
-
-  // Auto-populate university + major on profile
-  if (application.university || application.major) {
+  // Auto-populate university + major on profile from application (if available)
+  if (application?.university || application?.major) {
     const profileUpdate: Record<string, string> = {}
     if (application.university) profileUpdate.university = application.university
     if (application.major) profileUpdate.major = application.major
@@ -117,5 +121,5 @@ export const POST: APIRoute = async ({ locals }) => {
       .eq('user_id', user.id)
   }
 
-  return new Response(JSON.stringify({ result: newStatus }))
+  return new Response(JSON.stringify({ result: application ? 'confirmed' : 'confirmed_no_app' }))
 }

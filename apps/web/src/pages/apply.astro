@@ -11,14 +11,10 @@ const { userId } = await Astro.locals.auth();
 if (userId) {
   const gate = await checkDashboardAccess(userId);
 
-  if (gate.status === 'accepted') {
+  if (gate.status === 'accepted' || gate.status === 'confirmed') {
     return Astro.redirect('/dashboard/team');
   }
-  // Pre-cutoff users OR post-cutoff users with a linked application → under review
-  if (gate.status === 'pending') {
-    return Astro.redirect('/dashboard/pending');
-  }
-  // gate.status === 'no-application' → let them through to the Tally form
+  // gate.status === 'pending' → let them through to the Tally form
 }
 ---
 
