@@ -106,13 +106,9 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                 </div>
               </div>
 
-              <div className="justify-self-center text-center sm:justify-self-end">
+              <div className="justify-self-center text-center sm:justify-self-end sm:mr-10">
                 <p
-                  className="font-display text-4xl font-bold uppercase tracking-[-0.02em] text-gold sm:text-5xl"
-                  style={{
-                    textShadow:
-                      '0 0 20px rgba(255,215,0,0.4), 0 0 40px rgba(255,215,0,0.2)',
-                  }}
+                  className="font-display text-5xl font-bold uppercase tracking-[-0.02em] text-gold sm:text-6xl"
                 >
                   $5,000+
                 </p>
