@@ -384,7 +384,7 @@ export default function ProfileCard() {
             <button
               type="button"
               onClick={() => openEditor()}
-              className="button-heading ml-auto text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
+              className="button-heading ml-auto text-sm font-semibold uppercase tracking-[0.2em] text-white/70 transition-colors hover:text-white"
             >
               Edit &rarr;
             </button>
@@ -453,7 +453,7 @@ export default function ProfileCard() {
               </div>
               <a
                 href="/dashboard/teams"
-                className="button-heading shrink-0 text-[10px] uppercase tracking-[0.2em] text-white/40 transition-colors hover:text-white/70"
+                className="button-heading shrink-0 text-sm font-semibold uppercase tracking-[0.2em] text-white/70 transition-colors hover:text-white"
               >
                 Browse teams &rarr;
               </a>
