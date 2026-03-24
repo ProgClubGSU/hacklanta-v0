@@ -6,13 +6,8 @@ interface DashboardNavProps {
 }
 
 const NAV_ITEMS = [
-<<<<<<< HEAD
-  { id: 'home' as const, label: 'Dashboard', href: '/dashboard/team' },
-  { id: 'teams' as const, label: 'Team', href: '/dashboard/teams' },
-=======
   { id: 'home' as const, label: 'Dashboard', href: '/dashboard/team', requiresConfirm: false },
-  { id: 'teams' as const, label: 'Teams', href: '/dashboard/teams', requiresConfirm: true },
->>>>>>> 3e78fbe972d9c8fc0f8bae3682a50f0fdb9107c2
+  { id: 'teams' as const, label: 'Team', href: '/dashboard/teams', requiresConfirm: true },
 ];
 
 export default function DashboardNav({ activePage, isConfirmed = false }: DashboardNavProps) {

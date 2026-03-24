@@ -64,7 +64,7 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
 
   return (
     <div className="space-y-10">
-      <DashboardNav activePage={page} />
+      <DashboardNav activePage={page} isConfirmed={isConfirmed} />
 
       {page === 'home' && (
         <>
