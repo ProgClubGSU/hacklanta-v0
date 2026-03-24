@@ -86,7 +86,7 @@ const tracks = [
           <div class="placemat absolute inset-0 rounded-xl border-2 border-dashed border-red/10 transition-colors duration-500 group-hover:border-red/20" style="aspect-ratio: 5/7;"></div>
 
           <!-- The card -->
-          <div class="track-card" data-index={i}>
+          <div class:list={['track-card', { 'track-card--sponsored': track.centerLogo }]} data-index={i}>
             <div class="track-card-flipper" data-flip="false">
               <!-- BACK FACE — Bicycle rider back -->
               <div class="card-back">
@@ -183,6 +183,13 @@ const tracks = [
     width: 100%;
     height: 100%;
     position: relative;
+  }
+  .track-card--sponsored {
+    border-radius: 12px;
+    box-shadow: 0 0 0 2px rgba(201,168,76,0.4), 0 0 20px rgba(201,168,76,0.12), 0 0 40px rgba(201,168,76,0.06);
+  }
+  .track-card--sponsored:hover {
+    box-shadow: 0 0 0 2px rgba(201,168,76,0.6), 0 0 30px rgba(201,168,76,0.2), 0 0 60px rgba(201,168,76,0.1);
   }
   .track-card-flipper {
     width: 100%;
