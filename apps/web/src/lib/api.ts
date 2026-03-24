@@ -362,18 +362,22 @@ export const api = {
     };
   },
 
-  listParticipantDirectory: async () => {
+  listParticipantDirectory: async (params?: { offset?: number; limit?: number }) => {
     const client = getClient();
+    const limit = params?.limit ?? 24;
+    const offset = params?.offset ?? 0;
 
     const [
-      { data: users, error: usersError },
+      { data: users, error: usersError, count },
       { data: profiles, error: profilesError },
       { data: memberships, error: membershipsError },
     ] = await Promise.all([
       client
         .from('users')
-        .select('id, clerk_id, first_name, last_name, avatar_url')
-        .order('created_at', { ascending: false }),
+        .select('id, clerk_id, first_name, last_name, avatar_url', { count: 'exact' })
+        .eq('is_confirmed', true)
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1),
       client.from('profiles').select('*'),
       client.from('team_members').select('user_id, role, teams(id, name)'),
     ]);
@@ -406,9 +410,12 @@ export const api = {
       });
     }
 
-    return ((users ?? []) as UserRow[]).map((user) =>
-      formatParticipant(user, profileByUserId.get(user.id), membershipByUserId.get(user.id)),
-    );
+    return {
+      data: ((users ?? []) as UserRow[]).map((user) =>
+        formatParticipant(user, profileByUserId.get(user.id), membershipByUserId.get(user.id)),
+      ),
+      meta: { total: count ?? 0, offset, limit },
+    };
   },
 
   createTeam: async (teamData: { name: string; description?: string; tracks?: string[] }) => {
