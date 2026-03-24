@@ -106,9 +106,9 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                 </div>
               </div>
 
-              <div className="justify-self-center text-center sm:justify-self-end sm:mr-10">
+              <div className="group justify-self-center text-center sm:justify-self-end sm:mr-20">
                 <p
-                  className="font-display text-5xl font-bold uppercase tracking-[-0.02em] text-gold sm:text-6xl"
+                  className="font-display text-5xl font-bold uppercase tracking-[-0.02em] text-gold transition-all duration-300 group-hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.35)] sm:text-6xl"
                 >
                   $5,000+
                 </p>
