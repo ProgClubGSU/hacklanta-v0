@@ -94,16 +94,16 @@ export default function ConfirmationBanner() {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-lg border px-6 py-5 ${
+      className={`relative overflow-hidden rounded-lg border-2 ${
         isConfirmed
-          ? 'border-[#00ff88]/30 bg-[#00ff88]/[0.06]'
-          : 'border-[#C41E3A]/30 bg-[#C41E3A]/[0.06]'
+          ? 'border-[#00ff88]/30 bg-[#00ff88]/[0.06] px-6 py-5'
+          : 'border-[#C41E3A]/40 bg-[#C41E3A]/[0.08] px-8 py-8'
       }`}
     >
       {/* Glow effect */}
       <div
-        className={`pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full blur-3xl ${
-          isConfirmed ? 'bg-[#00ff88]/10' : 'bg-[#C41E3A]/10'
+        className={`pointer-events-none absolute -right-20 -top-20 rounded-full blur-3xl ${
+          isConfirmed ? 'h-40 w-40 bg-[#00ff88]/10' : 'h-60 w-60 bg-[#C41E3A]/15'
         }`}
       />
 
@@ -126,15 +126,18 @@ export default function ConfirmationBanner() {
           ) : (
             <>
               <div className="flex items-center gap-2">
-                <div className="h-2 w-2 animate-pulse rounded-full bg-[#C41E3A] shadow-[0_0_8px_rgba(196,30,58,0.5)]" />
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#C41E3A]">
+                <div className="h-3 w-3 animate-pulse rounded-full bg-[#C41E3A] shadow-[0_0_12px_rgba(196,30,58,0.6)]" />
+                <span className="font-mono text-sm font-bold uppercase tracking-[0.2em] text-[#C41E3A]" style={{ textShadow: '0 0 15px rgba(196,30,58,0.4)' }}>
                   Action Required
                 </span>
               </div>
-              <p className="mt-2 font-body text-sm text-white/60">
+              <h3 className="mt-3 font-display text-2xl uppercase tracking-[-0.02em] text-white sm:text-3xl">
+                Confirm your attendance
+              </h3>
+              <p className="mt-2 max-w-lg font-body text-sm leading-relaxed text-white/70">
                 {isOverflow
-                  ? "You're an overflow admit \u2014 full access to the hackathon, but food and swag are not guaranteed. Confirm to lock in your spot."
-                  : 'Your spot is reserved. Confirm your attendance to lock it in.'}
+                  ? "You're an overflow admit \u2014 full access to the hackathon, but food and swag are not guaranteed. Confirm now to lock in your spot."
+                  : "Your spot is reserved but not locked in yet. Confirm now so we know you're coming."}
               </p>
             </>
           )}
@@ -145,7 +148,8 @@ export default function ConfirmationBanner() {
             type="button"
             onClick={handleConfirm}
             disabled={isConfirming}
-            className="shrink-0 rounded border border-[#C41E3A]/50 bg-[#C41E3A]/20 px-6 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-all hover:border-[#C41E3A]/80 hover:bg-[#C41E3A]/30 hover:shadow-[0_0_30px_rgba(196,30,58,0.25)] disabled:cursor-not-allowed disabled:opacity-50"
+            className="shrink-0 rounded border-2 border-[#C41E3A]/60 bg-[#C41E3A]/25 px-8 py-4 font-mono text-sm font-bold uppercase tracking-[0.18em] text-white transition-all hover:border-[#C41E3A] hover:bg-[#C41E3A]/40 hover:shadow-[0_0_40px_rgba(196,30,58,0.35)] disabled:cursor-not-allowed disabled:opacity-50"
+            style={{ textShadow: '0 0 10px rgba(255,255,255,0.2)' }}
           >
             {isConfirming ? 'Confirming...' : 'Confirm My Spot'}
           </button>
