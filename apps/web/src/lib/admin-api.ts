@@ -80,6 +80,8 @@ export const adminApi = {
   async getApplications(params: {
     status?: string;
     search?: string;
+    date_from?: string;
+    date_to?: string;
     sort_by?: string;
     sort_dir?: 'asc' | 'desc';
     offset?: number;
@@ -89,6 +91,8 @@ export const adminApi = {
     const query = new URLSearchParams();
     if (params.status) query.set('status', params.status);
     if (params.search) query.set('search', params.search);
+    if (params.date_from) query.set('date_from', params.date_from);
+    if (params.date_to) query.set('date_to', params.date_to);
     if (params.sort_by) query.set('sort_by', params.sort_by);
     if (params.sort_dir) query.set('sort_dir', params.sort_dir);
     if (params.offset !== undefined) query.set('offset', String(params.offset));

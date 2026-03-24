@@ -282,10 +282,11 @@ export const api = {
     portfolio_url?: string;
     discord_username?: string;
     looking_for_team?: boolean;
+    major?: string;
   }) => {
     const client = getClient();
     const userId = await resolveCurrentUserId(client);
-    const payload = {
+    const payload: Record<string, unknown> = {
       user_id: userId,
       display_name: profileData.display_name,
       bio: profileData.bio ?? null,
@@ -295,6 +296,10 @@ export const api = {
       discord_username: profileData.discord_username ?? null,
       looking_for_team: profileData.looking_for_team ?? false,
     };
+    // Only include major if explicitly provided (never include university — server-set only)
+    if (profileData.major !== undefined) {
+      payload.major = profileData.major;
+    }
 
     const { data, error } = await client
       .from('profiles')
@@ -357,18 +362,22 @@ export const api = {
     };
   },
 
-  listParticipantDirectory: async () => {
+  listParticipantDirectory: async (params?: { offset?: number; limit?: number }) => {
     const client = getClient();
+    const limit = params?.limit ?? 24;
+    const offset = params?.offset ?? 0;
 
     const [
-      { data: users, error: usersError },
+      { data: users, error: usersError, count },
       { data: profiles, error: profilesError },
       { data: memberships, error: membershipsError },
     ] = await Promise.all([
       client
         .from('users')
-        .select('id, clerk_id, first_name, last_name, avatar_url')
-        .order('created_at', { ascending: false }),
+        .select('id, clerk_id, first_name, last_name, avatar_url', { count: 'exact' })
+        .eq('is_confirmed', true)
+        .order('created_at', { ascending: false })
+        .range(offset, offset + limit - 1),
       client.from('profiles').select('*'),
       client.from('team_members').select('user_id, role, teams(id, name)'),
     ]);
@@ -401,9 +410,12 @@ export const api = {
       });
     }
 
-    return ((users ?? []) as UserRow[]).map((user) =>
-      formatParticipant(user, profileByUserId.get(user.id), membershipByUserId.get(user.id)),
-    );
+    return {
+      data: ((users ?? []) as UserRow[]).map((user) =>
+        formatParticipant(user, profileByUserId.get(user.id), membershipByUserId.get(user.id)),
+      ),
+      meta: { total: count ?? 0, offset, limit },
+    };
   },
 
   createTeam: async (teamData: { name: string; description?: string; tracks?: string[] }) => {
@@ -1058,6 +1070,25 @@ export const api = {
       .single();
 
     if (error) throw new Error(error.message);
+    return data;
+  },
+
+  confirmAttendance: async (): Promise<{ result: 'confirmed' | 'confirmed_overflow' | 'already_confirmed' | 'waitlisted'; missing?: string[] }> => {
+    const res = await fetch('/api/applications/confirm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (data.error === 'incomplete_profile') {
+        return { result: 'confirmed', missing: data.missing }; // caller checks missing
+      }
+      throw new Error(data.error || `Confirmation failed (${res.status})`);
+    }
+
     return data;
   },
 };

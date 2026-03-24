@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro'
 import { verifyAdmin } from '../../../lib/admin'
 import { createServerSupabaseClient } from '../../../lib/supabase-server'
 
-const VALID_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'rejected', 'waitlisted']
+const VALID_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'confirmed', 'confirmed_overflow', 'rejected', 'waitlisted']
 const VALID_SORT_COLUMNS = ['created_at', 'status', 'university', 'email', 'experience_level', 'year_of_study']
 const MAX_LIMIT = 200
 const DEFAULT_LIMIT = 50
@@ -18,6 +18,8 @@ export const GET: APIRoute = async ({ locals, url }) => {
   // Parse query params
   const statusParam = url.searchParams.get('status')
   const search = url.searchParams.get('search')?.trim() ?? ''
+  const dateFrom = url.searchParams.get('date_from')?.trim() ?? ''
+  const dateTo = url.searchParams.get('date_to')?.trim() ?? ''
   const sortBy = url.searchParams.get('sort_by') ?? 'created_at'
   const sortDir = url.searchParams.get('sort_dir') ?? 'desc'
   const offset = Math.max(0, parseInt(url.searchParams.get('offset') ?? '0', 10) || 0)
@@ -61,10 +63,37 @@ export const GET: APIRoute = async ({ locals, url }) => {
     dataQuery = dataQuery.in('status', statuses)
   }
 
-  // Apply search filter (case-insensitive on application-level columns)
+  // Apply date range filter
+  if (dateFrom) {
+    countQuery = countQuery.gte('created_at', dateFrom)
+    dataQuery = dataQuery.gte('created_at', dateFrom)
+  }
+  if (dateTo) {
+    // Add a day so "2026-03-23" includes the whole day
+    const toDate = new Date(dateTo)
+    toDate.setDate(toDate.getDate() + 1)
+    const toStr = toDate.toISOString().split('T')[0]
+    countQuery = countQuery.lt('created_at', toStr)
+    dataQuery = dataQuery.lt('created_at', toStr)
+  }
+
+  // Apply search filter (searches application email, university, AND user name/email)
   if (search) {
     const pattern = `%${search}%`
-    const orFilter = `email.ilike.${pattern},university.ilike.${pattern}`
+
+    // Find users matching by name or Clerk email
+    const { data: matchedUsers } = await supabase
+      .from('users')
+      .select('id')
+      .or(`email.ilike.${pattern},first_name.ilike.${pattern},last_name.ilike.${pattern}`)
+
+    const matchedIds = (matchedUsers ?? []).map(u => u.id)
+
+    let orFilter = `email.ilike.${pattern},university.ilike.${pattern}`
+    if (matchedIds.length > 0) {
+      orFilter += `,user_id.in.(${matchedIds.join(',')})`
+    }
+
     countQuery = countQuery.or(orFilter)
     dataQuery = dataQuery.or(orFilter)
   }

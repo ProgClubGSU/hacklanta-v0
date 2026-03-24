@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface ApplicationData {
   id: string;
-  status: 'pending' | 'accepted' | 'accepted_overflow' | 'rejected' | 'waitlisted';
+  status: 'pending' | 'accepted' | 'accepted_overflow' | 'confirmed' | 'confirmed_overflow' | 'rejected' | 'waitlisted';
   university: string;
   major: string;
   year_of_study: string;
@@ -35,7 +35,19 @@ const STATUS_CONFIG = {
     label: 'OVERFLOW ADMIT',
     color: '#00ff88',
     glow: 'rgba(0, 255, 136, 0.15)',
-    message: 'You\u2019re in, but as an overflow admit — food and swag are not guaranteed. Check your email for next steps.',
+    message: 'You\u2019re in, but as an overflow admit \u2014 food and swag are not guaranteed. Check your email for next steps.',
+  },
+  confirmed: {
+    label: 'CONFIRMED',
+    color: '#00ff88',
+    glow: 'rgba(0, 255, 136, 0.15)',
+    message: 'You\u2019re locked in. See you at Hacklanta.',
+  },
+  confirmed_overflow: {
+    label: 'CONFIRMED (OVERFLOW)',
+    color: '#00ff88',
+    glow: 'rgba(0, 255, 136, 0.15)',
+    message: 'You\u2019re locked in. Food and swag are not guaranteed.',
   },
   rejected: {
     label: 'NOT SELECTED',

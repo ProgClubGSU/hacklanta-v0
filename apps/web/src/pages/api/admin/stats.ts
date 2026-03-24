@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro'
 import { verifyAdmin } from '../../../lib/admin'
 import { createServerSupabaseClient } from '../../../lib/supabase-server'
 
-const ALL_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'rejected', 'waitlisted']
+const ALL_STATUSES = ['pending', 'accepted', 'accepted_overflow', 'confirmed', 'confirmed_overflow', 'rejected', 'waitlisted']
 
 export const GET: APIRoute = async ({ locals }) => {
   if (!import.meta.env.DEV) {

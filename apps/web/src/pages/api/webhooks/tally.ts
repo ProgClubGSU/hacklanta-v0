@@ -117,8 +117,14 @@ export const POST: APIRoute = async ({ request }) => {
     else if (label.includes('hear about')) appData.how_did_you_hear = value
   }
 
-  // Clerk user ID passed as URL parameter from the embedded form
-  const clerkId = payload.data?.urlParameters?.clerk_id ?? ''
+  // Clerk user ID — check URL parameters first, then form fields (hidden field)
+  let clerkId = payload.data?.urlParameters?.clerk_id ?? ''
+  if (!clerkId) {
+    const clerkField = fields.find((f: { label?: string }) =>
+      (f.label ?? '').toLowerCase().includes('clerk_id') || (f.label ?? '').toLowerCase() === 'clerk_id'
+    )
+    if (clerkField) clerkId = extractValue(clerkField)
+  }
 
   appData.email = schoolEmail || personalEmail
   appData.university = appData.university || 'N/A'

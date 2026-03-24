@@ -11,6 +11,7 @@ const STATUS_PILLS = [
   { value: 'pending', label: 'Pending' },
   { value: 'accepted', label: 'Accepted' },
   { value: 'accepted_overflow', label: 'Overflow' },
+  { value: 'confirmed,confirmed_overflow', label: 'Confirmed' },
   { value: 'rejected', label: 'Rejected' },
   { value: 'waitlisted', label: 'Waitlisted' },
 ];
@@ -29,6 +30,8 @@ export default function ApplicantManager() {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [sortBy, setSortBy] = useState('created_at');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [page, setPage] = useState(0); // offset
@@ -56,6 +59,8 @@ export default function ApplicantManager() {
       const result: ApplicationsResponse = await adminApi.getApplications({
         status: statusFilter || undefined,
         search: debouncedSearch || undefined,
+        date_from: dateFrom || undefined,
+        date_to: dateTo || undefined,
         sort_by: sortBy,
         sort_dir: sortDir,
         offset: page,
@@ -69,7 +74,7 @@ export default function ApplicantManager() {
     } finally {
       setIsLoading(false);
     }
-  }, [debouncedSearch, statusFilter, sortBy, sortDir, page]);
+  }, [debouncedSearch, statusFilter, dateFrom, dateTo, sortBy, sortDir, page]);
 
   useEffect(() => {
     loadApplications();
@@ -141,6 +146,24 @@ export default function ApplicantManager() {
     setSelectedIds(new Set());
   };
 
+  const handleSelectAllMatching = async () => {
+    try {
+      const result: ApplicationsResponse = await adminApi.getApplications({
+        status: statusFilter || undefined,
+        search: debouncedSearch || undefined,
+        date_from: dateFrom || undefined,
+        date_to: dateTo || undefined,
+        sort_by: 'created_at',
+        sort_dir: 'desc',
+        offset: 0,
+        limit: 200,
+      });
+      setSelectedIds(new Set(result.data.map((a) => a.id)));
+    } catch {
+      // fall back to current page selection
+    }
+  };
+
   // Bulk status update — returns result so BulkActionBar can show feedback
   const handleBulkUpdateStatus = async (newStatus: string, sendEmail: boolean): Promise<UpdateStatusResult> => {
     const result = await adminApi.updateStatus({
@@ -202,24 +225,51 @@ export default function ApplicantManager() {
           />
         </div>
 
-        {/* Status pills */}
-        <div className="flex flex-wrap gap-2">
-          {STATUS_PILLS.map((pill) => {
-            const active = isStatusActive(pill.value);
-            return (
+        {/* Status pills + date range */}
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap gap-2">
+            {STATUS_PILLS.map((pill) => {
+              const active = isStatusActive(pill.value);
+              return (
+                <button
+                  key={pill.value}
+                  onClick={() => handleStatusFilter(pill.value)}
+                  className={`rounded border px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider transition-colors ${
+                    active
+                      ? 'border-red/40 bg-red/20 text-red'
+                      : 'border-white/10 bg-white/5 text-white/50 hover:bg-white/10'
+                  }`}
+                >
+                  {pill.label}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-white/30">From</span>
+            <input
+              type="date"
+              value={dateFrom}
+              onChange={(e) => { setDateFrom(e.target.value); setPage(0); }}
+              className="rounded border border-white/10 bg-black/40 px-2.5 py-1.5 font-mono text-xs text-white focus:border-red focus:outline-none [color-scheme:dark]"
+            />
+            <span className="font-mono text-[10px] uppercase tracking-wider text-white/30">To</span>
+            <input
+              type="date"
+              value={dateTo}
+              onChange={(e) => { setDateTo(e.target.value); setPage(0); }}
+              className="rounded border border-white/10 bg-black/40 px-2.5 py-1.5 font-mono text-xs text-white focus:border-red focus:outline-none [color-scheme:dark]"
+            />
+            {(dateFrom || dateTo) && (
               <button
-                key={pill.value}
-                onClick={() => handleStatusFilter(pill.value)}
-                className={`rounded border px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider transition-colors ${
-                  active
-                    ? 'border-red/40 bg-red/20 text-red'
-                    : 'border-white/10 bg-white/5 text-white/50 hover:bg-white/10'
-                }`}
+                onClick={() => { setDateFrom(''); setDateTo(''); setPage(0); }}
+                className="font-mono text-[10px] uppercase tracking-wider text-white/40 hover:text-white/70"
               >
-                {pill.label}
+                Clear
               </button>
-            );
-          })}
+            )}
+          </div>
         </div>
       </div>
 
@@ -253,6 +303,22 @@ export default function ApplicantManager() {
           limit={meta.limit}
           onPageChange={handlePageChange}
         />
+      )}
+
+      {/* Select all matching banner */}
+      {selectedIds.size > 0 && selectedIds.size < meta.total && (
+        <div className="flex items-center justify-center gap-3 rounded border border-white/10 bg-white/5 px-4 py-3">
+          <p className="font-mono text-xs text-white/60">
+            {selectedIds.size} of {meta.total} selected.
+          </p>
+          <button
+            type="button"
+            onClick={handleSelectAllMatching}
+            className="font-mono text-xs font-bold uppercase tracking-wider text-red-bright hover:underline"
+          >
+            Select all {meta.total} matching
+          </button>
+        </div>
       )}
 
       {/* Bulk action bar */}

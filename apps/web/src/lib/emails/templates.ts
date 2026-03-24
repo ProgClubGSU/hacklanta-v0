@@ -167,5 +167,7 @@ export const STATUS_TEMPLATE_MAP: Record<string, Exclude<TemplateName, 'announce
   accepted_overflow: 'acceptance_overflow',
   rejected: 'rejection',
   waitlisted: 'waitlist',
+  confirmed: null,
+  confirmed_overflow: null,
   pending: null,
 }

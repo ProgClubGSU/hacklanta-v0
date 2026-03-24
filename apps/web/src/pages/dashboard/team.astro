@@ -21,7 +21,7 @@ if (gate.status === 'pending') {
 <BaseLayout title="Dashboard | Hacklanta">
   <main class="min-h-screen bg-[#1a0a0e] px-4 py-8 font-body md:px-8">
     <div class="mx-auto max-w-5xl">
-      <TabNavigation client:load page="home" />
+      <TabNavigation client:load page="home" isConfirmed={gate.status === 'confirmed'} />
     </div>
   </main>
 </BaseLayout>

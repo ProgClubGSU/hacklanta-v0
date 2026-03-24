@@ -86,8 +86,12 @@ function SocialIcon({ label }: { label: string }) {
   );
 }
 
+const PAGE_SIZE = 24;
+
 export default function UserGrid() {
   const [players, setPlayers] = useState<ParticipantCard[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [viewerUserId, setViewerUserId] = useState<string | null>(null);
   const [viewerTeam, setViewerTeam] = useState<ViewerTeam | null>(null);
@@ -107,31 +111,20 @@ export default function UserGrid() {
       window.removeEventListener(PROFILE_CHANGED_EVENT, handleRefresh);
       window.removeEventListener(TEAM_CHANGED_EVENT, handleRefresh);
     };
-  }, []);
+  }, [page]);
 
   async function loadPlayers() {
     try {
       setIsLoading(true);
 
-      const [directory, currentUserId, myTeam] = await Promise.all([
-        api.listParticipantDirectory(),
+      const [result, currentUserId, myTeam] = await Promise.all([
+        api.listParticipantDirectory({ offset: page * PAGE_SIZE, limit: PAGE_SIZE }),
         api.getCurrentUserId(),
         api.getMyTeam(),
       ]);
 
-      const sortedDirectory = (directory as ParticipantCard[]).sort((left, right) => {
-        if (left.user_id === currentUserId) return -1;
-        if (right.user_id === currentUserId) return 1;
-        if (left.looking_for_team !== right.looking_for_team) {
-          return left.looking_for_team ? -1 : 1;
-        }
-        if (left.has_profile !== right.has_profile) {
-          return left.has_profile ? -1 : 1;
-        }
-        return left.display_name.localeCompare(right.display_name);
-      });
-
-      setPlayers(sortedDirectory);
+      setPlayers(result.data as ParticipantCard[]);
+      setTotal(result.meta.total);
       setViewerUserId(currentUserId);
       setViewerTeam(
         myTeam
@@ -180,7 +173,7 @@ export default function UserGrid() {
       <div className="space-y-6">
         <div className="flex items-baseline gap-3">
           <h3 className="font-display text-2xl uppercase text-white">Participants</h3>
-          <span className="font-mono text-[11px] text-white/40">({players.length})</span>
+          <span className="font-mono text-[11px] text-white/40">({total})</span>
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -298,6 +291,31 @@ export default function UserGrid() {
             );
           })}
         </div>
+
+        {/* Pagination */}
+        {total > PAGE_SIZE && (
+          <div className="flex items-center justify-center gap-4 pt-2">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              disabled={page === 0}
+              className="rounded border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs uppercase tracking-wider text-white/60 transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              &larr; Prev
+            </button>
+            <span className="font-mono text-xs text-white/40">
+              Page {page + 1} of {Math.ceil(total / PAGE_SIZE)}
+            </span>
+            <button
+              type="button"
+              onClick={() => setPage((p) => p + 1)}
+              disabled={(page + 1) * PAGE_SIZE >= total}
+              className="rounded border border-white/10 bg-white/5 px-4 py-2 font-mono text-xs uppercase tracking-wider text-white/60 transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              Next &rarr;
+            </button>
+          </div>
+        )}
       </div>
 
       {selectedParticipant && (
