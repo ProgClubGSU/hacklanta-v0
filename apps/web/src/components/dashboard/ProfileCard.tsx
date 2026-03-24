@@ -26,6 +26,7 @@ interface TeamData {
   invite_code: string;
   max_size: number;
   members: TeamMember[];
+  viewer_role: string;
 }
 
 interface ProfileData {
@@ -295,6 +296,8 @@ export default function ProfileCard() {
   const teamName = team?.name || 'No Team Yet';
   const teamDescription = team?.description?.trim() || '';
   const availableSlots = team ? Math.max(team.max_size - team.members.length, 0) : null;
+  const isLeader = team?.viewer_role === 'leader';
+  const isFull = team ? team.members.length >= team.max_size : false;
 
   const socials = [
     { label: 'LinkedIn', value: profile.linkedin, href: normalizeHref(profile.linkedin) },
@@ -555,6 +558,25 @@ export default function ProfileCard() {
                     ))}
                   </div>
                 </div>
+
+                {/* Leader hint or full roster message */}
+                {isFull ? (
+                  <div className="mt-4 rounded border border-[#00ff88]/20 bg-[#00ff88]/[0.06] px-4 py-3">
+                    <p className="font-mono text-sm font-bold uppercase tracking-wider text-[#00ff88]" style={{ textShadow: '0 0 12px rgba(0,255,136,0.3)' }}>
+                      Good sh*t — you got a whole roster now
+                    </p>
+                  </div>
+                ) : isLeader ? (
+                  <div className="mt-4 rounded border border-white/8 bg-white/[0.03] px-4 py-3">
+                    <p className="font-body text-sm text-white/50">
+                      Invite participants by clicking on their profile in the{' '}
+                      <a href="#players" className="font-semibold text-red-bright underline decoration-red/30 hover:decoration-red">
+                        Participants
+                      </a>{' '}
+                      section below.
+                    </p>
+                  </div>
+                ) : null}
               </div>
             ) : (
               <div className="mt-4">
