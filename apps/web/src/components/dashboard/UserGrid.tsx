@@ -198,32 +198,32 @@ export default function UserGrid() {
 
             <div className="relative z-10">
               <div className="mb-4 flex items-center gap-2">
-                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#ffd700]">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#ffd700]">
                   ♠ Organizer
                 </span>
               </div>
 
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-5">
                 {featuredPlayer.avatar_url ? (
                   <img
                     src={featuredPlayer.avatar_url}
                     alt={featuredPlayer.display_name}
-                    className="h-14 w-14 shrink-0 rounded-full border border-[#ffd700]/20 object-cover shadow-[0_0_12px_rgba(255,215,0,0.1)]"
+                    className="h-20 w-20 shrink-0 rounded-full border border-[#ffd700]/20 object-cover shadow-[0_0_12px_rgba(255,215,0,0.1)]"
                   />
                 ) : (
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#ffd700]/20 bg-[#ffd700]/[0.08]">
-                    <span className="font-mono text-sm font-semibold text-[#ffd700]/70">
+                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border border-[#ffd700]/20 bg-[#ffd700]/[0.08]">
+                    <span className="font-mono text-lg font-semibold text-[#ffd700]/70">
                       {getInitials(featuredPlayer.display_name)}
                     </span>
                   </div>
                 )}
 
                 <div className="min-w-0 flex-1">
-                  <p className="font-body text-base font-semibold text-white">
+                  <p className="font-display text-2xl uppercase tracking-[-0.02em] text-white sm:text-3xl">
                     {featuredPlayer.display_name}
                   </p>
                   {featuredPlayer.bio && (
-                    <p className="mt-1 line-clamp-2 font-body text-sm leading-relaxed text-white/60">
+                    <p className="mt-2 line-clamp-2 font-body text-sm leading-relaxed text-white/60">
                       {featuredPlayer.bio}
                     </p>
                   )}

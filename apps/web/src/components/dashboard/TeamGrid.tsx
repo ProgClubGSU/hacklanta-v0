@@ -471,15 +471,15 @@ export default function TeamGrid() {
             <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-[#ffd700]/[0.03] blur-2xl" />
 
             <div className="relative z-10">
-              <div className="mb-3 flex items-center gap-2">
-                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#ffd700]">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#ffd700]">
                   ♠ Organizer's Team
                 </span>
               </div>
 
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h4 className="line-clamp-1 font-display text-xl uppercase tracking-[-0.02em] text-white">
+                  <h4 className="line-clamp-1 font-display text-3xl uppercase tracking-[-0.02em] text-white sm:text-4xl">
                     {featuredTeam.name}
                   </h4>
                   {myTeam?.id === featuredTeam.id && (
