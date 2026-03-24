@@ -3,6 +3,7 @@ import { TextLogo } from '../ui/TextLogoReact.tsx';
 import ApplicantManager from './ApplicantManager';
 import EmailBlastPanel from './EmailBlastPanel';
 import StatsOverview from './StatsOverview';
+import ResendSyncButton from './ResendSyncButton';
 
 type Tab = 'applications' | 'email' | 'overview';
 
@@ -61,7 +62,14 @@ export default function AdminPanel() {
         <div className="animate-fadeIn" key={activeTab}>
           {activeTab === 'applications' && <ApplicantManager />}
           {activeTab === 'email' && <EmailBlastPanel />}
-          {activeTab === 'overview' && <StatsOverview />}
+          {activeTab === 'overview' && (
+            <>
+              <StatsOverview />
+              <div className="mt-8">
+                <ResendSyncButton />
+              </div>
+            </>
+          )}
         </div>
       </div>
 
