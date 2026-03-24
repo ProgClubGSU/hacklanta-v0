@@ -135,7 +135,7 @@ export default function OnboardingCard({
         <ProgressRing percent={percent} />
         <div className="text-center sm:text-left">
           <h2 className="font-display text-3xl uppercase tracking-[-0.04em] text-white">
-            Complete your profile
+            Confirm attendance &amp; find team
           </h2>
           <p className="mt-2 max-w-xl font-body text-sm leading-6 text-white/60">
             Before you find a team, let others find you. This is how prospective teammates will
