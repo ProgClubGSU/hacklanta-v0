@@ -134,8 +134,9 @@ export default function OnboardingCard({
       <div className="mb-8 flex flex-col items-center gap-5 sm:flex-row sm:items-start">
         <ProgressRing percent={percent} />
         <div className="text-center sm:text-left">
-          <h2 className="font-display text-3xl uppercase tracking-[-0.04em] text-white">
-            Confirm attendance &amp; find team
+          <h2 className="font-display text-4xl uppercase tracking-[-0.04em] sm:text-5xl">
+            <span className="font-bold text-red-bright" style={{ textShadow: '0 0 20px rgba(196,30,58,0.5), 0 0 40px rgba(196,30,58,0.25)' }}>Confirm attendance</span>{' '}
+            <span className="italic text-white">&amp; find team</span>
           </h2>
           <p className="mt-2 max-w-xl font-body text-sm leading-6 text-white/60">
             Before you find a team, let others find you. This is how prospective teammates will
