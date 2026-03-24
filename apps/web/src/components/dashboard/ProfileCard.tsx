@@ -561,8 +561,8 @@ export default function ProfileCard() {
 
                 {/* Leader hint or full roster message */}
                 {isFull ? (
-                  <div className="mt-4 rounded border border-[#00ff88]/20 bg-[#00ff88]/[0.06] px-4 py-3">
-                    <p className="font-mono text-sm font-bold uppercase tracking-wider text-[#00ff88]" style={{ textShadow: '0 0 12px rgba(0,255,136,0.3)' }}>
+                  <div className="mt-4 rounded border border-transparent bg-[#1a0a0e] px-4 py-3">
+                    <p className="font-mono text-sm font-bold uppercase italic tracking-wider text-[#00ff88]">
                       Good sh*t — you got a whole roster now
                     </p>
                   </div>
