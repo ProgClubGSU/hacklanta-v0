@@ -180,7 +180,7 @@ export default function TeamDetailModal({
         aria-label="Close team profile"
       />
 
-      <div className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg border border-red/40 bg-black-card shadow-[0_0_40px_rgba(196,30,58,0.2)]">
+      <div className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-lg border border-red/40 bg-black-card">
         {isLoading ? (
           <div className="flex items-center justify-center p-12">
             <LoadingHand label="Turning the next card..." compact />
@@ -200,11 +200,11 @@ export default function TeamDetailModal({
                       </span>
                     )}
                     {isFull ? (
-                      <span className="rounded border border-transparent bg-transparent px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-white">
+                      <span className="rounded border border-transparent bg-transparent px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-red">
                         Full
                       </span>
                     ) : (
-                      <span className="rounded border border-transparent bg-transparent px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-white">
+                      <span className="rounded border border-transparent bg-transparent px-2 py-1 font-mono text-xs font-bold uppercase tracking-wider text-[#00ff88]">
                         Open
                       </span>
                     )}

@@ -477,8 +477,8 @@ export default function TeamGrid() {
                 <span
                   className={`shrink-0 rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] ${
                     team.is_full
-                      ? 'border-transparent bg-transparent text-white'
-                      : 'border-transparent bg-transparent text-white'
+                      ? 'border-transparent bg-transparent text-red'
+                      : 'border-transparent bg-transparent text-[#00ff88]'
                   }`}
                 >
                   {team.is_full ? 'Full' : 'Open'}
@@ -516,9 +516,6 @@ export default function TeamGrid() {
                   </span>
                   <MemberAvatars team={team} />
                 </div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-white/25 transition-colors group-hover:text-red">
-                  View
-                </span>
               </div>
             </button>
           ))}

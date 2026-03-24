@@ -225,7 +225,7 @@ export default function UserGrid() {
                       )}
                     </div>
 
-                    <p className={`mt-1 line-clamp-2 text-sm leading-relaxed ${
+                    <p className={`mt-1 line-clamp-2 font-body not-italic text-sm leading-relaxed ${
                       hasBio ? 'text-white/70' : 'text-white/40 italic'
                     }`}>
                       {player.bio?.trim() || 'Open this participant profile to learn more.'}
