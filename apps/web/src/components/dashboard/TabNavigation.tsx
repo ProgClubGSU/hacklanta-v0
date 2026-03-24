@@ -75,7 +75,7 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
 
           <div className="relative overflow-hidden rounded-lg border-2 border-gold/30 bg-gradient-to-r from-gold/[0.08] to-transparent px-8 py-7">
             <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-gold/10 blur-3xl" />
-            <div className="relative z-10 space-y-5">
+            <div className="relative z-10 grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
               <div>
                 <h3 className="font-display text-2xl uppercase tracking-[-0.02em] text-white sm:text-3xl">
                   Hacker Guide &amp; Tracks
@@ -86,8 +86,7 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                 </p>
               </div>
 
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-                <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5 sm:items-end">
                   <div>
                   <p
                     className="font-display text-4xl font-bold uppercase tracking-[-0.02em] text-gold sm:text-5xl"
@@ -103,7 +102,7 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                   </p>
                   </div>
 
-                  <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+                  <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:justify-end">
                     <a
                       href="https://miniature-door-703.notion.site/5-000-Hacklanta-2026-Hacker-Guide-31542ba1a9a080acbdd7d20f1fed873a?source=copy_link"
                       target="_blank"
@@ -129,7 +128,6 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                       Join Our Server
                     </a>
                   </div>
-                </div>
               </div>
             </div>
           </div>
