@@ -88,15 +88,26 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                   Everything you need to know — tracks, rules, prizes, schedule, and what to bring.
                 </p>
               </div>
-              <a
-                href="https://miniature-door-703.notion.site/5-000-Hacklanta-2026-Hacker-Guide-31542ba1a9a080acbdd7d20f1fed873a?source=copy_link"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center gap-2 rounded border-2 border-gold/50 bg-gold/20 px-7 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-white transition-all hover:border-gold/80 hover:bg-gold/30 hover:shadow-[0_0_30px_rgba(255,215,0,0.2)]"
-                style={{ textShadow: '0 0 8px rgba(255,255,255,0.15)' }}
-              >
-                View Pre-Packet &rarr;
-              </a>
+              <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+                <a
+                  href="https://miniature-door-703.notion.site/5-000-Hacklanta-2026-Hacker-Guide-31542ba1a9a080acbdd7d20f1fed873a?source=copy_link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded border-2 border-gold/50 bg-gold/20 px-7 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-white transition-all hover:border-gold/80 hover:bg-gold/30 hover:shadow-[0_0_30px_rgba(255,215,0,0.2)]"
+                  style={{ textShadow: '0 0 8px rgba(255,255,255,0.15)' }}
+                >
+                  View Pre-Packet &rarr;
+                </a>
+                <a
+                  href="https://discord.gg/5SnWkBq2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded border-2 border-[#5865F2]/50 bg-[#5865F2]/20 px-7 py-3.5 font-mono text-sm font-bold uppercase tracking-[0.16em] text-white transition-all hover:border-[#5865F2]/80 hover:bg-[#5865F2]/30 hover:shadow-[0_0_30px_rgba(88,101,242,0.25)]"
+                  style={{ textShadow: '0 0 8px rgba(255,255,255,0.15)' }}
+                >
+                  Join Our Server
+                </a>
+              </div>
             </div>
           </div>
 
