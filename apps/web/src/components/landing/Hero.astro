@@ -1498,7 +1498,7 @@ const { userId } = await Astro.locals.auth();
 
   // Slot machine fades in first
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-  tl.to('.hero-slot', { opacity: 1, y: 0, duration: 0.8 }, 0.3);
+  tl.to('.hero-slot', { opacity: 1, y: 0, duration: 0.5 }, 0.2);
 
   // ===== Countdown =====
   const EVENT_DATE = new Date('2026-03-28T09:00:00-04:00');
@@ -1911,7 +1911,7 @@ const { userId } = await Astro.locals.auth();
   function startSpinning() {
     reelEls.forEach((el, i) => {
       const targetSpeed = 0.04 + i * 0.004;
-      let speed = 0.12;
+      let speed = 0.07;
       let running = true;
 
       function cycle() {
@@ -1944,7 +1944,7 @@ const { userId } = await Astro.locals.auth();
     const el = reelEls[index];
 
     // Deceleration: progressively slower cycles
-    const durs = [0.05, 0.08, 0.12];
+    const durs = [0.03, 0.05, 0.07];
     for (const dur of durs) {
       await new Promise<void>((res) => {
         gsap.to(el, {
@@ -1964,14 +1964,14 @@ const { userId } = await Astro.locals.auth();
     await new Promise<void>((res) => {
       gsap.to(el, {
         y: yUp,
-        duration: 0.14,
+        duration: 0.08,
         ease: 'power2.in',
         onComplete: () => {
           setSymbol(el, target);
           gsap.set(el, { y: yDown });
           gsap.to(el, {
             y: 0,
-            duration: 0.18,
+            duration: 0.11,
             ease: 'back.out(1.4)',
             onComplete: () => {
               const reelWindow = el.closest('.slot-reel-window') as HTMLElement;
@@ -2007,21 +2007,21 @@ const { userId } = await Astro.locals.auth();
 
     startSpinning();
 
-    await new Promise((r) => setTimeout(r, 600));
+    await new Promise((r) => setTimeout(r, 360));
     if (introSkipped) return;
 
     // Stop reels left to right with stagger
     await stopReel(0, WIN_REELS[0]);
     if (introSkipped) return;
-    await new Promise((r) => setTimeout(r, 60));
+    await new Promise((r) => setTimeout(r, 36));
     if (introSkipped) return;
     await stopReel(1, WIN_REELS[1]);
     if (introSkipped) return;
-    await new Promise((r) => setTimeout(r, 60));
+    await new Promise((r) => setTimeout(r, 36));
     if (introSkipped) return;
     await stopReel(2, WIN_REELS[2]);
     if (introSkipped) return;
-    await new Promise((r) => setTimeout(r, 60));
+    await new Promise((r) => setTimeout(r, 36));
     if (introSkipped) return;
     await stopReel(3, WIN_REELS[3]);
     if (introSkipped) return;
@@ -2059,7 +2059,7 @@ const { userId } = await Astro.locals.auth();
     });
 
     // Wait for jackpot celebration
-    await new Promise((r) => setTimeout(r, 900));
+    await new Promise((r) => setTimeout(r, 540));
     if (introSkipped) return;
 
     // Signal other components that jackpot has landed
