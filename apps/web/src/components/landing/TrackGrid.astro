@@ -19,6 +19,8 @@ const tracks = [
     fullPrompt: 'Build an AI-powered solution that solves a real problem and creates positive impact for communities or the world around us. The strongest projects will use AI thoughtfully, show clear practical value, and demonstrate potential beyond Hacklanta.',
     accentRgb: '201,168,76',
     suitColor: '#C9A84C',
+    centerLogo: '/images/sponsors/cox-icon.svg',
+    footerLogo: '/images/sponsors/cox-full.svg',
   },
   {
     name: 'All-In',
@@ -30,6 +32,8 @@ const tracks = [
     fullPrompt: 'Build something that feels like the start of a real company. Your project should solve a meaningful problem for a clear user, show strong product thinking, and demonstrate why it could continue beyond demo day. This track rewards teams that combine execution with startup instinct: not just what you built, but why it matters, who it serves, and why it could win in the real world.',
     accentRgb: '196,30,58',
     suitColor: '#C41E3A',
+    centerLogo: '/images/sponsors/nexlayer-icon.png',
+    footerLogo: '/images/sponsors/nexlayer-full.png',
   },
   {
     name: 'Jackpot',
@@ -113,12 +117,22 @@ const tracks = [
                     <span class="card-suit-sm" set:html={track.suit}></span>
                   </div>
                   <div class="card-center">
-                    <span class="card-suit-lg" set:html={track.suit}></span>
+                    {track.centerLogo ? (
+                      <img src={track.centerLogo} alt={track.sponsor} class="card-sponsor-logo-center" />
+                    ) : (
+                      <span class="card-suit-lg" set:html={track.suit}></span>
+                    )}
                     <span class="card-track-name">{track.name.toUpperCase()}</span>
                     <span class="card-track-sponsor">{track.sponsor}</span>
                     <div class="card-divider"></div>
                     <span class="card-track-desc">{track.desc}</span>
                   </div>
+                  {track.footerLogo && (
+                    <div class="card-sponsor-footer">
+                      <span class="card-sponsor-footer-label">Sponsored by</span>
+                      <img src={track.footerLogo} alt={track.sponsor} class="card-sponsor-logo-footer" />
+                    </div>
+                  )}
                   <span class="card-label">{track.label}</span>
                   <div class="card-inner-border"></div>
                 </div>
@@ -330,6 +344,35 @@ const tracks = [
     letter-spacing: 0.15em;
     color: #1a1a1a;
     line-height: 1.1;
+  }
+  .card-sponsor-logo-center {
+    width: clamp(40px, 10vw, 70px);
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 4px;
+  }
+  .card-sponsor-footer {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    z-index: 2;
+  }
+  .card-sponsor-footer-label {
+    font-family: var(--font-mono);
+    font-size: clamp(5px, 0.9vw, 7px);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+  .card-sponsor-logo-footer {
+    width: clamp(50px, 12vw, 90px);
+    height: auto;
+    object-fit: contain;
   }
   .card-track-sponsor {
     font-family: var(--font-mono);
