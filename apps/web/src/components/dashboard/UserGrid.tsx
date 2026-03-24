@@ -49,6 +49,12 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
+function normalizeHref(value: string | null) {
+  if (!value?.trim()) return '';
+  if (/^http:\/\//i.test(value)) return value.replace(/^http:/i, 'https:');
+  return /^https:\/\//i.test(value) ? value : `https://${value}`;
+}
+
 function SocialIcon({ label }: { label: string }) {
   if (label === 'GitHub') {
     return (
@@ -248,7 +254,7 @@ export default function UserGrid() {
                   <div className="flex items-center gap-2 text-white/35">
                     {player.linkedin_url && (
                       <a
-                        href={player.linkedin_url}
+                        href={normalizeHref(player.linkedin_url)}
                         target="_blank"
                         rel="noreferrer"
                         onClick={(event) => event.stopPropagation()}
@@ -261,7 +267,7 @@ export default function UserGrid() {
                     )}
                     {player.github_url && (
                       <a
-                        href={player.github_url}
+                        href={normalizeHref(player.github_url)}
                         target="_blank"
                         rel="noreferrer"
                         onClick={(event) => event.stopPropagation()}
@@ -274,7 +280,7 @@ export default function UserGrid() {
                     )}
                     {player.portfolio_url && (
                       <a
-                        href={player.portfolio_url}
+                        href={normalizeHref(player.portfolio_url)}
                         target="_blank"
                         rel="noreferrer"
                         onClick={(event) => event.stopPropagation()}

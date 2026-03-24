@@ -49,6 +49,12 @@ function getMemberInitials(member: TeamMember) {
   return (first + last).toUpperCase() || '??';
 }
 
+function normalizeHref(value: string | null) {
+  if (!value?.trim()) return '';
+  if (/^http:\/\//i.test(value)) return value.replace(/^http:/i, 'https:');
+  return /^https:\/\//i.test(value) ? value : `https://${value}`;
+}
+
 function SocialIcon({ label }: { label: string }) {
   return (
     <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -304,7 +310,7 @@ export default function TeamDetailModal({
                           )}
                           {member.linkedin_url && (
                             <a
-                              href={member.linkedin_url}
+                              href={normalizeHref(member.linkedin_url)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center gap-1 text-xs text-white/60 hover:text-white/80"

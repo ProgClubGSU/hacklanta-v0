@@ -518,7 +518,7 @@ export default function ProfileCard() {
                             )}
                             {member.linkedin_url && (
                               <a
-                                href={member.linkedin_url}
+                                href={normalizeHref(member.linkedin_url)}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-1 text-xs text-white/60 hover:text-white/80"
