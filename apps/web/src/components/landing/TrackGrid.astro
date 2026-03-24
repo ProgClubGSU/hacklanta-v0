@@ -10,40 +10,48 @@ const suitSvg = {
 
 const tracks = [
   {
-    name: 'Bluff Track',
-    suit: suitSvg.spade,
+    name: 'House Pick',
+    sponsor: 'Cox Track',
+    suit: suitSvg.diamond,
     rank: 'A',
-    label: 'ACE OF SPADES',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    label: 'ACE OF DIAMONDS',
+    desc: 'Put your chips on something bigger than yourself. Build an AI-powered project that makes life better for communities, cities, or the world around us.',
+    fullPrompt: 'Build an AI-powered solution that solves a real problem and creates positive impact for communities or the world around us. The strongest projects will use AI thoughtfully, show clear practical value, and demonstrate potential beyond Hacklanta.',
+    accentRgb: '201,168,76',
+    suitColor: '#C9A84C',
+  },
+  {
+    name: 'All-In',
+    sponsor: 'Nexlayer Track',
+    suit: suitSvg.spade,
+    rank: 'K',
+    label: 'KING OF SPADES',
+    desc: 'Go all-in on something worth building. Create a product with real market potential, then pitch why it deserves to exist beyond Hacklanta.',
+    fullPrompt: 'Build something that feels like the start of a real company. Your project should solve a meaningful problem for a clear user, show strong product thinking, and demonstrate why it could continue beyond demo day. This track rewards teams that combine execution with startup instinct: not just what you built, but why it matters, who it serves, and why it could win in the real world.',
     accentRgb: '196,30,58',
     suitColor: '#C41E3A',
   },
   {
-    name: 'Jackpot Track',
+    name: 'Jackpot',
+    sponsor: 'Finance Track',
     suit: suitSvg.heart,
-    rank: 'K',
-    label: 'KING OF HEARTS',
-    desc: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.',
+    rank: 'Q',
+    label: 'QUEEN OF HEARTS',
+    desc: 'The house always wins\u2026 unless you build something better. Create a product around money, markets, or financial access, then prove it has more upside than a lucky hand at Hacklanta.',
+    fullPrompt: 'Build a product that makes smarter money moves than the average casino guest. Your project could tackle personal finance, payments, investing, fraud prevention, lending, budgeting, business finance, or financial access; anything that helps people or businesses better manage, move, protect, or grow money.',
     accentRgb: '230,57,70',
     suitColor: '#E63946',
   },
   {
-    name: 'Highroller',
+    name: 'Jack of All Trades',
+    sponsor: 'Most Creative',
     suit: suitSvg.club,
-    rank: 'Q',
-    label: 'QUEEN OF CLUBS',
-    desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+    rank: 'J',
+    label: 'JACK OF CLUBS',
+    desc: 'Make something so absurdly creative that it feels illegal at the table, but it still walks away with the chips.',
+    fullPrompt: 'Build something bold, weird, and impossible to ignore. This track is for teams that take creative risks, combine ideas in unexpected ways, and make projects that feel fresh, memorable, or completely unhinged in the best way.',
     accentRgb: '196,30,58',
     suitColor: '#C41E3A',
-  },
-  {
-    name: 'House Pick',
-    suit: suitSvg.diamond,
-    rank: 'J',
-    label: 'JACK OF DIAMONDS',
-    desc: 'Excepteur sint occaecat cupidatat non proident.',
-    accentRgb: '201,168,76',
-    suitColor: '#C9A84C',
   },
 ];
 ---
@@ -107,6 +115,7 @@ const tracks = [
                   <div class="card-center">
                     <span class="card-suit-lg" set:html={track.suit}></span>
                     <span class="card-track-name">{track.name.toUpperCase()}</span>
+                    <span class="card-track-sponsor">{track.sponsor}</span>
                     <div class="card-divider"></div>
                     <span class="card-track-desc">{track.desc}</span>
                   </div>
@@ -321,6 +330,15 @@ const tracks = [
     letter-spacing: 0.15em;
     color: #1a1a1a;
     line-height: 1.1;
+  }
+  .card-track-sponsor {
+    font-family: var(--font-mono);
+    font-size: clamp(7px, 1.2vw, 10px);
+    letter-spacing: 0.12em;
+    color: var(--card-accent);
+    text-transform: uppercase;
+    margin-top: 2px;
+    opacity: 0.8;
   }
   .card-divider {
     width: 50%;
