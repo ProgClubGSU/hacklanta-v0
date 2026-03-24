@@ -28,14 +28,6 @@ export const POST: APIRoute = async ({ locals, url }) => {
     return new Response(JSON.stringify({ error: 'No contacts found' }), { status: 404 })
   }
 
-  if (dryRun) {
-    return new Response(JSON.stringify({
-      dry_run: true,
-      total_contacts: contacts.length,
-      sample: contacts.slice(0, 5).map(c => ({ email: c.email, first_name: c.first_name })),
-    }))
-  }
-
   // Find or create audience
   let audienceId: string | null = null
   try {
@@ -55,13 +47,48 @@ export const POST: APIRoute = async ({ locals, url }) => {
     return new Response(JSON.stringify({ error: 'Could not resolve audience ID' }), { status: 500 })
   }
 
-  // Push contacts in batches
+  // Fetch existing contacts from Resend to check unsubscribes
+  const existingEmails = new Set<string>()
+  const unsubscribedEmails = new Set<string>()
+  try {
+    const { data: resendContacts } = await resend.contacts.list({ audienceId })
+    for (const c of resendContacts?.data ?? []) {
+      existingEmails.add(c.email.toLowerCase())
+      if (c.unsubscribed) {
+        unsubscribedEmails.add(c.email.toLowerCase())
+      }
+    }
+  } catch {
+    // First sync — no existing contacts, proceed
+  }
+
+  // Filter out unsubscribed contacts and already-synced contacts
+  const newContacts = contacts.filter(c => {
+    const email = c.email.toLowerCase()
+    if (unsubscribedEmails.has(email)) return false // respect unsubscribe
+    if (existingEmails.has(email)) return false // already in Resend
+    return true
+  })
+
+  if (dryRun) {
+    return new Response(JSON.stringify({
+      dry_run: true,
+      total_in_db: contacts.length,
+      already_in_resend: existingEmails.size,
+      unsubscribed: unsubscribedEmails.size,
+      new_to_sync: newContacts.length,
+    }))
+  }
+
+  // Push only new contacts
   let synced = 0
+  let skippedExisting = existingEmails.size
+  let skippedUnsubscribed = unsubscribedEmails.size
   let failed = 0
   const errors: Array<{ email: string; error: string }> = []
 
-  for (let i = 0; i < contacts.length; i += BATCH_SIZE) {
-    const batch = contacts.slice(i, i + BATCH_SIZE)
+  for (let i = 0; i < newContacts.length; i += BATCH_SIZE) {
+    const batch = newContacts.slice(i, i + BATCH_SIZE)
 
     for (const contact of batch) {
       try {
@@ -74,10 +101,9 @@ export const POST: APIRoute = async ({ locals, url }) => {
         })
         synced++
       } catch (err: unknown) {
-        // If contact already exists, try to update
         const errMsg = err instanceof Error ? err.message : String(err)
         if (errMsg.includes('already exists')) {
-          synced++ // already there, count as success
+          synced++
         } else {
           failed++
           errors.push({ email: contact.email, error: errMsg })
@@ -85,17 +111,19 @@ export const POST: APIRoute = async ({ locals, url }) => {
       }
     }
 
-    if (i + BATCH_SIZE < contacts.length) {
+    if (i + BATCH_SIZE < newContacts.length) {
       await new Promise(r => setTimeout(r, BATCH_DELAY_MS))
     }
   }
 
-  console.log(`[sync-resend] Done: synced=${synced}, failed=${failed}`)
+  console.log(`[sync-resend] Done: new=${synced}, existing=${skippedExisting}, unsubscribed=${skippedUnsubscribed}, failed=${failed}`)
 
   return new Response(JSON.stringify({
     audienceId,
-    total_contacts: contacts.length,
-    synced,
+    total_in_db: contacts.length,
+    new_synced: synced,
+    already_in_resend: skippedExisting,
+    unsubscribed_skipped: skippedUnsubscribed,
     failed,
     ...(errors.length > 0 ? { errors: errors.slice(0, 20) } : {}),
   }))

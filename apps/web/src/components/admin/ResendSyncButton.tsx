@@ -2,8 +2,12 @@ import { useState } from 'react';
 
 interface SyncResult {
   audienceId?: string;
-  total_contacts?: number;
-  synced?: number;
+  total_in_db?: number;
+  new_synced?: number;
+  new_to_sync?: number;
+  already_in_resend?: number;
+  unsubscribed?: number;
+  unsubscribed_skipped?: number;
   failed?: number;
   errors?: Array<{ email: string; error: string }>;
   dry_run?: boolean;
@@ -70,10 +74,17 @@ export default function ResendSyncButton() {
           {result.error ? (
             <p className="text-red-bright">{result.error}</p>
           ) : result.dry_run ? (
-            <p>Dry run: {result.total_contacts} contacts would be synced</p>
+            <div className="space-y-1">
+              <p>Total in DB: {result.total_in_db}</p>
+              <p>Already in Resend: {result.already_in_resend}</p>
+              <p>Unsubscribed (will skip): {result.unsubscribed}</p>
+              <p className="text-white">New to sync: {result.new_to_sync}</p>
+            </div>
           ) : (
             <div className="space-y-1">
-              <p>Synced: {result.synced} / {result.total_contacts}</p>
+              <p>New contacts synced: {result.new_synced}</p>
+              <p>Already in Resend: {result.already_in_resend}</p>
+              <p>Unsubscribed (skipped): {result.unsubscribed_skipped}</p>
               {(result.failed ?? 0) > 0 && <p className="text-red-bright">Failed: {result.failed}</p>}
               <p className="text-white/40">Audience ID: {result.audienceId}</p>
             </div>
