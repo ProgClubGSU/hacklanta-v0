@@ -173,6 +173,8 @@ const tracks = [
   .track-slot {
     aspect-ratio: 5 / 7;
     position: relative;
+    max-width: 280px;
+    margin-inline: auto;
   }
   .placemat {
     box-shadow: inset 0 0 30px rgba(196,30,58,0.03);
@@ -186,9 +188,18 @@ const tracks = [
   }
   .track-card--sponsored {
     border-radius: 12px;
-    box-shadow: 0 0 0 2px rgba(201,168,76,0.4), 0 0 20px rgba(201,168,76,0.12), 0 0 40px rgba(201,168,76,0.06);
   }
-  .track-card--sponsored:hover {
+  .track-card--sponsored::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    box-shadow: 0 0 0 2px rgba(201,168,76,0.4), 0 0 20px rgba(201,168,76,0.12), 0 0 40px rgba(201,168,76,0.06);
+    pointer-events: none;
+    z-index: 10;
+    transition: box-shadow 0.3s ease;
+  }
+  .track-card--sponsored:hover::after {
     box-shadow: 0 0 0 2px rgba(201,168,76,0.6), 0 0 30px rgba(201,168,76,0.2), 0 0 60px rgba(201,168,76,0.1);
   }
   .track-card-flipper {
@@ -458,7 +469,7 @@ const tracks = [
   const heroBottomY = heroRect.bottom - 80; // 80px above hero bottom edge
 
   // Cap fan card height so cards don't overwhelm the hero on large screens
-  const MAX_FAN_CARD_H = 320;
+  const MAX_FAN_CARD_H = 280;
 
   const fanPositions = cards.map((card, i) => {
     const rect = card.getBoundingClientRect();
