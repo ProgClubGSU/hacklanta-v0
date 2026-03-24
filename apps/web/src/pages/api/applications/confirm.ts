@@ -121,5 +121,5 @@ export const POST: APIRoute = async ({ locals }) => {
       .eq('user_id', user.id)
   }
 
-  return new Response(JSON.stringify({ result: application ? 'confirmed' : 'confirmed_no_app' }))
+  return new Response(JSON.stringify({ result: 'confirmed' }))
 }

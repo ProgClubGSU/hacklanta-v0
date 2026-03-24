@@ -94,16 +94,16 @@ export default function ConfirmationBanner() {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-lg border-2 ${
+      className={`relative overflow-hidden rounded-lg border-2 px-8 py-8 ${
         isConfirmed
-          ? 'border-[#00ff88]/30 bg-[#00ff88]/[0.06] px-6 py-5'
-          : 'border-[#C41E3A]/40 bg-[#C41E3A]/[0.08] px-8 py-8'
+          ? 'border-[#00ff88]/30 bg-[#00ff88]/[0.06]'
+          : 'border-[#C41E3A]/40 bg-[#C41E3A]/[0.08]'
       }`}
     >
       {/* Glow effect */}
       <div
-        className={`pointer-events-none absolute -right-20 -top-20 rounded-full blur-3xl ${
-          isConfirmed ? 'h-40 w-40 bg-[#00ff88]/10' : 'h-60 w-60 bg-[#C41E3A]/15'
+        className={`pointer-events-none absolute -right-20 -top-20 h-60 w-60 rounded-full blur-3xl ${
+          isConfirmed ? 'bg-[#00ff88]/10' : 'bg-[#C41E3A]/15'
         }`}
       />
 
