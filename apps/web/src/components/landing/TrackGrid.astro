@@ -20,6 +20,7 @@ const tracks = [
     accentRgb: '201,168,76',
     suitColor: '#C9A84C',
     centerLogo: '/images/sponsors/cox-icon.svg',
+    centerLogoLg: true,
     footerLogo: '/images/sponsors/cox-full.svg',
   },
   {
@@ -118,7 +119,7 @@ const tracks = [
                   </div>
                   <div class="card-center">
                     {track.centerLogo ? (
-                      <img src={track.centerLogo} alt={track.sponsor} class="card-sponsor-logo-center" />
+                      <img src={track.centerLogo} alt={track.sponsor} class:list={['card-sponsor-logo-center', { 'card-sponsor-logo-center--lg': track.centerLogoLg }]} />
                     ) : (
                       <span class="card-suit-lg" set:html={track.suit}></span>
                     )}
@@ -346,10 +347,13 @@ const tracks = [
     line-height: 1.1;
   }
   .card-sponsor-logo-center {
-    width: clamp(80px, 20vw, 140px);
+    width: clamp(40px, 10vw, 70px);
     height: auto;
     object-fit: contain;
     margin-bottom: 4px;
+  }
+  .card-sponsor-logo-center--lg {
+    width: clamp(80px, 20vw, 140px);
   }
   .card-sponsor-footer {
     position: absolute;
