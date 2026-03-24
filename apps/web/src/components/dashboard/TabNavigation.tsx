@@ -75,10 +75,13 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
             <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-gold/10 blur-3xl" />
             <div className="relative z-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-gold" style={{ textShadow: '0 0 12px rgba(255,215,0,0.3)' }}>
-                  $5,000+ Prize Pool
+                <p className="font-display text-4xl font-bold uppercase tracking-[-0.02em] text-gold sm:text-5xl" style={{ textShadow: '0 0 20px rgba(255,215,0,0.4), 0 0 40px rgba(255,215,0,0.2)' }}>
+                  $5,000+
                 </p>
-                <h3 className="mt-2 font-display text-2xl uppercase tracking-[-0.02em] text-white sm:text-3xl">
+                <p className="mt-1 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-gold/70">
+                  Prize Pool
+                </p>
+                <h3 className="mt-3 font-display text-2xl uppercase tracking-[-0.02em] text-white sm:text-3xl">
                   Hacker Guide &amp; Tracks
                 </h3>
                 <p className="mt-2 max-w-md font-body text-sm leading-relaxed text-white/60">
