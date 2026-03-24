@@ -6,7 +6,7 @@ interface DashboardNavProps {
 
 const NAV_ITEMS = [
   { id: 'home' as const, label: 'Dashboard', href: '/dashboard/team' },
-  { id: 'teams' as const, label: 'Teams', href: '/dashboard/teams' },
+  { id: 'teams' as const, label: 'Team', href: '/dashboard/teams' },
 ];
 
 export default function DashboardNav({ activePage }: DashboardNavProps) {

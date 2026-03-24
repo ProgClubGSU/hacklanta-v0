@@ -49,6 +49,26 @@ function getMemberInitials(member: TeamMember) {
   return (first + last).toUpperCase() || '??';
 }
 
+function SocialIcon({ label }: { label: string }) {
+  return (
+    <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        fillRule="evenodd"
+        d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
+function DiscordIcon() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.317 4.369A19.791 19.791 0 0015.558 3c-.206.375-.444.88-.608 1.275a18.27 18.27 0 00-5.9 0A12.64 12.64 0 008.442 3a19.736 19.736 0 00-4.76 1.369C.533 9.037-.32 13.579.107 18.057a19.9 19.9 0 005.993 3.043c.485-.666.918-1.37 1.296-2.106-.714-.268-1.396-.598-2.038-.98.17-.124.336-.253.496-.387 3.93 1.848 8.188 1.848 12.072 0 .162.134.328.263.496.387-.644.383-1.327.713-2.042.98.378.737.812 1.44 1.297 2.106a19.88 19.88 0 005.995-3.043c.5-5.19-.854-9.691-3.355-13.688zM8.02 15.331c-1.183 0-2.157-1.085-2.157-2.419 0-1.334.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.956 2.419-2.157 2.419zm7.961 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.334.955-2.419 2.157-2.419 1.211 0 2.176 1.095 2.157 2.419 0 1.334-.946 2.419-2.157 2.419z" />
+    </svg>
+  );
+}
+
 export default function TeamDetailModal({
   teamId,
   onClose,
@@ -272,8 +292,14 @@ export default function TeamDetailModal({
                         <div className="mt-0.5 flex items-center gap-3">
                           {member.discord_username && (
                             <span className="flex items-center gap-1 text-xs">
-                              <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-[#5865F2]/70">Discord</span>
-                              <DiscordCopy username={member.discord_username} size="sm" />
+                              <span className="text-[#5865F2]/80">
+                                <DiscordIcon />
+                              </span>
+                              <DiscordCopy
+                                username={member.discord_username}
+                                size="sm"
+                                className="font-mono text-[#5865F2]"
+                              />
                             </span>
                           )}
                           {member.linkedin_url && (
@@ -281,10 +307,11 @@ export default function TeamDetailModal({
                               href={member.linkedin_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-xs"
+                              className="flex items-center gap-1 text-xs text-white/60 hover:text-white/80"
+                              title="LinkedIn"
+                              aria-label="LinkedIn"
                             >
-                              <span className="font-mono text-[9px] font-medium uppercase tracking-wider text-white/45">LinkedIn</span>
-                              <span className="text-white/65 underline decoration-white/25 hover:text-white/90">Profile</span>
+                              <SocialIcon label="LinkedIn" />
                             </a>
                           )}
                         </div>
