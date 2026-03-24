@@ -146,6 +146,24 @@ export default function ApplicantManager() {
     setSelectedIds(new Set());
   };
 
+  const handleSelectAllMatching = async () => {
+    try {
+      const result: ApplicationsResponse = await adminApi.getApplications({
+        status: statusFilter || undefined,
+        search: debouncedSearch || undefined,
+        date_from: dateFrom || undefined,
+        date_to: dateTo || undefined,
+        sort_by: 'created_at',
+        sort_dir: 'desc',
+        offset: 0,
+        limit: 200,
+      });
+      setSelectedIds(new Set(result.data.map((a) => a.id)));
+    } catch {
+      // fall back to current page selection
+    }
+  };
+
   // Bulk status update — returns result so BulkActionBar can show feedback
   const handleBulkUpdateStatus = async (newStatus: string, sendEmail: boolean): Promise<UpdateStatusResult> => {
     const result = await adminApi.updateStatus({
@@ -285,6 +303,22 @@ export default function ApplicantManager() {
           limit={meta.limit}
           onPageChange={handlePageChange}
         />
+      )}
+
+      {/* Select all matching banner */}
+      {selectedIds.size > 0 && selectedIds.size < meta.total && (
+        <div className="flex items-center justify-center gap-3 rounded border border-white/10 bg-white/5 px-4 py-3">
+          <p className="font-mono text-xs text-white/60">
+            {selectedIds.size} of {meta.total} selected.
+          </p>
+          <button
+            type="button"
+            onClick={handleSelectAllMatching}
+            className="font-mono text-xs font-bold uppercase tracking-wider text-red-bright hover:underline"
+          >
+            Select all {meta.total} matching
+          </button>
+        </div>
       )}
 
       {/* Bulk action bar */}
