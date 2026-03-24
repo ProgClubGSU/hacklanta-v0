@@ -1,17 +1,9 @@
 ---
-import { checkDashboardAccess } from '../../lib/dashboard-gate';
-
 const { userId } = await Astro.locals.auth();
 if (!userId) {
   return Astro.redirect('/sign-in');
 }
 
-const gate = await checkDashboardAccess(userId);
-
-if (gate.status === 'pending') {
-  return Astro.redirect('/dashboard/pending');
-}
-
-// Accepted — redirect to team matcher
+// All authenticated users go to the dashboard
 return Astro.redirect('/dashboard/team');
 ---

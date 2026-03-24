@@ -3,7 +3,6 @@ import { createServerSupabaseClient } from './supabase-server'
 export type GateResult =
   | { status: 'confirmed' }
   | { status: 'accepted' }
-  | { status: 'pending' }
 
 /**
  * Checks whether a user should be allowed into the dashboard.
@@ -58,18 +57,15 @@ export async function checkDashboardAccess(clerkUserId: string): Promise<GateRes
     }
   }
 
-  // If we still can't find/create the user, treat as pending
+  // If we still can't find/create the user, still let them in as accepted
   if (!user) {
-    return { status: 'pending' }
+    return { status: 'accepted' }
   }
 
   if (user.is_confirmed) {
     return { status: 'confirmed' }
   }
 
-  if (user.is_accepted) {
-    return { status: 'accepted' }
-  }
-
-  return { status: 'pending' }
+  // Any authenticated user can access the dashboard and confirm
+  return { status: 'accepted' }
 }

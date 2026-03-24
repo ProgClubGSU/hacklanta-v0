@@ -9,10 +9,6 @@ if (!userId) {
 }
 
 const gate = await checkDashboardAccess(userId);
-
-if (gate.status === 'pending') {
-  return Astro.redirect('/dashboard/pending');
-}
 ---
 
 <BaseLayout title="Dashboard | Hacklanta">

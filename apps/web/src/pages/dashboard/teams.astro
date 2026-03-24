@@ -10,9 +10,6 @@ if (!userId) {
 
 const gate = await checkDashboardAccess(userId);
 
-if (gate.status === 'pending') {
-  return Astro.redirect('/dashboard/pending');
-}
 // Only confirmed users can access the team finder
 if (gate.status === 'accepted') {
   return Astro.redirect('/dashboard/team');

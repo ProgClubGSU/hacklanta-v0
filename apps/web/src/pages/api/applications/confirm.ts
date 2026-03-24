@@ -24,10 +24,6 @@ export const POST: APIRoute = async ({ locals }) => {
     return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 })
   }
 
-  if (!user.is_accepted) {
-    return new Response(JSON.stringify({ error: 'User is not accepted' }), { status: 400 })
-  }
-
   // Idempotent: already confirmed
   if (user.is_confirmed) {
     return new Response(JSON.stringify({ result: 'already_confirmed' }))
@@ -41,12 +37,6 @@ export const POST: APIRoute = async ({ locals }) => {
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle()
-
-  // If they have an application, it must be in an accepted state
-  if (application && application.status !== 'accepted' && application.status !== 'accepted_overflow'
-    && application.status !== 'confirmed' && application.status !== 'confirmed_overflow') {
-    return new Response(JSON.stringify({ error: 'Application is not in an accepted state' }), { status: 400 })
-  }
 
   // Validate profile completeness
   const { data: profile } = await supabase

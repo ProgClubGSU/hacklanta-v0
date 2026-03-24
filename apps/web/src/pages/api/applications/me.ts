@@ -3,10 +3,6 @@ import { createServerSupabaseClient } from '../../../lib/supabase-server'
 
 const APP_FIELDS = 'id, status, university, major, year_of_study, experience_level, created_at, reviewed_at, confirmed_at'
 
-// Pre-cutoff users submitted apps before clerk+tally linking was deployed.
-// Their apps may not be linked — always show "pending" instead of "not found".
-const LINKING_CUTOFF = new Date('2026-03-21T22:00:00Z')
-
 export const GET: APIRoute = async ({ locals }) => {
   const { isAuthenticated, userId } = locals.auth()
 
@@ -108,21 +104,25 @@ export const GET: APIRoute = async ({ locals }) => {
   }
 
   if (!application) {
-    // Pre-cutoff users applied before clerk+tally linking — show pending, not "not found"
-    if (new Date(user.created_at) < LINKING_CUTOFF) {
-      return new Response(JSON.stringify({
-        id: user.id,
-        status: 'pending',
-        university: 'N/A',
-        major: 'N/A',
-        year_of_study: 'N/A',
-        experience_level: null,
-        created_at: user.created_at,
-        reviewed_at: null,
-      }))
-    }
-    console.warn(`[applications/me] No application found for user. clerk_id=${userId}, supabase_email=${user.email}, clerk_emails=${allEmails?.join(',') ?? '(not fetched)'}`)
-    return new Response(JSON.stringify({ error: 'No application found', step: 'app_lookup', user_id: user.id }), { status: 404 })
+    // No application — check user flags to determine status for the dashboard
+    const { data: userFlags } = await supabase
+      .from('users')
+      .select('is_accepted, is_confirmed')
+      .eq('id', user.id)
+      .single()
+
+    const syntheticStatus = userFlags?.is_confirmed ? 'confirmed' : 'accepted'
+
+    return new Response(JSON.stringify({
+      id: user.id,
+      status: syntheticStatus,
+      university: null,
+      major: null,
+      year_of_study: null,
+      experience_level: null,
+      created_at: user.created_at,
+      reviewed_at: null,
+    }))
   }
 
   // Auto-link ALL unlinked applications matching this user's emails
