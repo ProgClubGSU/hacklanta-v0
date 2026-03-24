@@ -86,10 +86,10 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                 </p>
               </div>
 
-              <div className="flex flex-col gap-5 sm:items-end">
-                  <div>
+              <div className="flex flex-col gap-5 sm:min-h-full sm:items-start sm:justify-end">
+                  <div className="sm:ml-10">
                   <p
-                    className="font-display text-4xl font-bold uppercase tracking-[-0.02em] text-gold sm:text-5xl"
+                    className="font-display text-5xl font-bold uppercase tracking-[-0.02em] text-gold sm:text-6xl"
                     style={{
                       textShadow:
                         '0 0 20px rgba(255,215,0,0.4), 0 0 40px rgba(255,215,0,0.2)',
@@ -102,7 +102,7 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                   </p>
                   </div>
 
-                  <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:justify-end">
+                  <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:justify-start">
                     <a
                       href="https://miniature-door-703.notion.site/5-000-Hacklanta-2026-Hacker-Guide-31542ba1a9a080acbdd7d20f1fed873a?source=copy_link"
                       target="_blank"
@@ -114,7 +114,7 @@ export default function TabNavigation({ page = 'home', isConfirmed = false }: Ta
                         <path strokeLinecap="round" strokeLinejoin="round" d="M14 3.75v5h5" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 13h6M9 16.5h6" />
                       </svg>
-                      View Pre-Packet &rarr;
+                      View Pre-Packet
                     </a>
                     <a
                       href="https://discord.gg/5SnWkBq2"
