@@ -93,9 +93,11 @@ function SocialIcon({ label }: { label: string }) {
 }
 
 const PAGE_SIZE = 24;
+const FEATURED_USER_ID = '92961dc0-ab26-41f4-8a94-110dc0796169'; // Joey Zhang
 
 export default function UserGrid() {
   const [players, setPlayers] = useState<ParticipantCard[]>([]);
+  const [featuredPlayer, setFeaturedPlayer] = useState<ParticipantCard | null>(null);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -129,7 +131,10 @@ export default function UserGrid() {
         api.getMyTeam(),
       ]);
 
-      setPlayers(result.data as ParticipantCard[]);
+      const allPlayers = result.data as ParticipantCard[];
+      const featured = allPlayers.find((p) => p.user_id === FEATURED_USER_ID) ?? null;
+      setFeaturedPlayer(featured);
+      setPlayers(allPlayers.filter((p) => p.user_id !== FEATURED_USER_ID));
       setTotal(result.meta.total);
       setViewerUserId(currentUserId);
       setViewerTeam(
@@ -181,6 +186,74 @@ export default function UserGrid() {
           <h3 className="font-display text-2xl uppercase text-white">Participants</h3>
           <span className="font-mono text-[11px] text-white/40">({total})</span>
         </div>
+
+        {featuredPlayer && (
+          <button
+            type="button"
+            onClick={() => setSelectedParticipant(featuredPlayer)}
+            className="button-heading relative mb-6 w-full overflow-hidden rounded-lg border border-[#ffd700]/30 bg-gradient-to-br from-[#ffd700]/[0.06] via-[#1f1f1f] to-[#ffd700]/[0.03] p-6 text-left transition-all hover:border-[#ffd700]/50 hover:shadow-[0_0_30px_rgba(255,215,0,0.08)]"
+          >
+            <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#ffd700]/[0.04] blur-3xl" />
+            <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-[#ffd700]/[0.03] blur-2xl" />
+
+            <div className="relative z-10">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#ffd700]">
+                  ♠ Organizer
+                </span>
+              </div>
+
+              <div className="flex items-start gap-4">
+                {featuredPlayer.avatar_url ? (
+                  <img
+                    src={featuredPlayer.avatar_url}
+                    alt={featuredPlayer.display_name}
+                    className="h-14 w-14 shrink-0 rounded-full border border-[#ffd700]/20 object-cover shadow-[0_0_12px_rgba(255,215,0,0.1)]"
+                  />
+                ) : (
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#ffd700]/20 bg-[#ffd700]/[0.08]">
+                    <span className="font-mono text-sm font-semibold text-[#ffd700]/70">
+                      {getInitials(featuredPlayer.display_name)}
+                    </span>
+                  </div>
+                )}
+
+                <div className="min-w-0 flex-1">
+                  <p className="font-body text-base font-semibold text-white">
+                    {featuredPlayer.display_name}
+                  </p>
+                  {featuredPlayer.bio && (
+                    <p className="mt-1 line-clamp-2 font-body text-sm leading-relaxed text-white/60">
+                      {featuredPlayer.bio}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between border-t border-[#ffd700]/10 pt-3">
+                <div className="flex items-center gap-2">
+                  {featuredPlayer.current_team && (
+                    <span className="rounded px-2 py-1 font-mono text-[9px] uppercase tracking-[0.12em]">
+                      <span className="text-white/70">Team </span>
+                      <span className="text-[#ffd700]">{featuredPlayer.current_team.name}</span>
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-[#ffd700]/40">
+                  {featuredPlayer.linkedin_url && (
+                    <a href={normalizeHref(featuredPlayer.linkedin_url)} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="transition-colors hover:text-[#ffd700]" title="LinkedIn" aria-label="LinkedIn"><SocialIcon label="LinkedIn" /></a>
+                  )}
+                  {featuredPlayer.github_url && (
+                    <a href={normalizeHref(featuredPlayer.github_url)} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="transition-colors hover:text-[#ffd700]" title="GitHub" aria-label="GitHub"><SocialIcon label="GitHub" /></a>
+                  )}
+                  {featuredPlayer.portfolio_url && (
+                    <a href={normalizeHref(featuredPlayer.portfolio_url)} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="transition-colors hover:text-[#ffd700]" title="Portfolio" aria-label="Portfolio"><SocialIcon label="Portfolio" /></a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </button>
+        )}
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {players.map((player) => {

@@ -91,8 +91,11 @@ function MemberAvatars({ team }: { team: Team }) {
   );
 }
 
+const FEATURED_TEAM_ID = 'e74a677a-4442-4db2-a3b3-c77e5e8be031'; // auramaxxers
+
 export default function TeamGrid() {
   const [teams, setTeams] = useState<Team[]>([]);
+  const [featuredTeam, setFeaturedTeam] = useState<Team | null>(null);
   const [myTeam, setMyTeam] = useState<MyTeam | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -132,7 +135,10 @@ export default function TeamGrid() {
         api.getMyTeam(),
       ]);
 
-      setTeams((teamsResult.data ?? []) as Team[]);
+      const allTeams = (teamsResult.data ?? []) as Team[];
+      const featured = allTeams.find((t) => t.id === FEATURED_TEAM_ID) ?? null;
+      setFeaturedTeam(featured);
+      setTeams(allTeams.filter((t) => t.id !== FEATURED_TEAM_ID));
       setMyTeam(
         currentTeam
           ? {
@@ -453,6 +459,70 @@ export default function TeamGrid() {
           <div className="rounded border border-red/30 bg-red/10 px-4 py-3 text-sm text-red-200">
             {actionError}
           </div>
+        )}
+
+        {featuredTeam && (
+          <button
+            type="button"
+            onClick={() => setSelectedTeam(featuredTeam.id)}
+            className="button-heading group relative mb-6 w-full overflow-hidden rounded-lg border border-[#ffd700]/30 bg-gradient-to-br from-[#ffd700]/[0.06] via-[#1a1a1a] to-[#ffd700]/[0.03] p-6 text-left transition-all hover:border-[#ffd700]/50 hover:shadow-[0_0_30px_rgba(255,215,0,0.08)]"
+          >
+            <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#ffd700]/[0.04] blur-3xl" />
+            <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-[#ffd700]/[0.03] blur-2xl" />
+
+            <div className="relative z-10">
+              <div className="mb-3 flex items-center gap-2">
+                <span className="font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#ffd700]">
+                  ♠ Organizer's Team
+                </span>
+              </div>
+
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <h4 className="line-clamp-1 font-display text-xl uppercase tracking-[-0.02em] text-white">
+                    {featuredTeam.name}
+                  </h4>
+                  {myTeam?.id === featuredTeam.id && (
+                    <span className="mt-1 inline-flex font-mono text-[9px] uppercase tracking-[0.12em] text-[#ffd700]/60">
+                      Your team
+                    </span>
+                  )}
+                </div>
+                <span className={`shrink-0 rounded px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em] ${featuredTeam.is_full ? 'text-red' : 'text-[#00ff88]'}`}>
+                  {featuredTeam.is_full ? 'Full' : 'Open'}
+                </span>
+              </div>
+
+              {featuredTeam.description && (
+                <p className="mt-2 line-clamp-2 font-body text-[13px] leading-relaxed text-white/50">
+                  {featuredTeam.description}
+                </p>
+              )}
+
+              {featuredTeam.tracks && featuredTeam.tracks.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-1">
+                  {featuredTeam.tracks.map((trackName) => {
+                    const track = TRACKS.find((item) => item.name === trackName);
+                    if (!track) return null;
+                    return (
+                      <span key={track.id} className={`rounded-sm border px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.08em] ${track.bgClass}`}>
+                        {track.id}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+
+              <div className="mt-3 flex items-center justify-between border-t border-[#ffd700]/10 pt-3">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[11px] text-[#ffd700]/40">
+                    {featuredTeam.member_count}/{featuredTeam.max_size}
+                  </span>
+                  <MemberAvatars team={featuredTeam} />
+                </div>
+              </div>
+            </div>
+          </button>
         )}
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
