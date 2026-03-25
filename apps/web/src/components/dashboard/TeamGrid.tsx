@@ -479,7 +479,7 @@ export default function TeamGrid() {
 
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h4 className="line-clamp-1 font-display text-3xl uppercase tracking-[-0.02em] text-white sm:text-4xl">
+                  <h4 className="line-clamp-1 font-body text-xl font-semibold not-italic text-white sm:text-2xl">
                     {featuredTeam.name}
                   </h4>
                   {myTeam?.id === featuredTeam.id && (
@@ -535,7 +535,7 @@ export default function TeamGrid() {
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h4 className="line-clamp-1 font-display text-lg uppercase tracking-[-0.02em] text-white">
+                  <h4 className="line-clamp-1 font-body text-sm font-semibold not-italic text-white">
                     {team.name}
                   </h4>
                   {myTeam?.id === team.id && (
