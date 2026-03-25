@@ -251,10 +251,10 @@ export default function TeamGrid() {
           <button
             type="button"
             onClick={() => setShowAvailableOnly(!showAvailableOnly)}
-            className={`button-heading rounded px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] transition-all ${
+            className={`button-heading px-1 py-1 text-[10px] uppercase tracking-[0.2em] transition-colors ${
               showAvailableOnly
-                ? 'border border-red/30 bg-red/15 text-red'
-                : 'border border-white/10 bg-white/5 text-white/40 hover:text-white/60'
+                ? 'text-red'
+                : 'text-white/40 hover:text-white/70'
             }`}
           >
             {showAvailableOnly ? 'Showing open' : 'Show open only'}
@@ -465,7 +465,7 @@ export default function TeamGrid() {
           <button
             type="button"
             onClick={() => setSelectedTeam(featuredTeam.id)}
-            className="button-heading group relative mb-6 w-full overflow-hidden rounded-lg border border-[#ffd700]/30 bg-gradient-to-br from-[#ffd700]/[0.06] via-[#1a1a1a] to-[#ffd700]/[0.03] p-6 text-left transition-all hover:border-[#ffd700]/50 hover:shadow-[0_0_30px_rgba(255,215,0,0.08)]"
+            className="button-heading group relative mb-6 w-full overflow-hidden rounded-lg border border-[#ffd700]/30 bg-gradient-to-br from-[#ffd700]/[0.06] via-[#1a1a1a] to-[#ffd700]/[0.03] p-6 text-left transition-all hover:border-[#ffd700]/50 hover:shadow-[0_0_36px_rgba(255,255,255,0.1)]"
           >
             <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#ffd700]/[0.04] blur-3xl" />
             <div className="pointer-events-none absolute -left-8 -bottom-8 h-32 w-32 rounded-full bg-[#ffd700]/[0.03] blur-2xl" />
@@ -479,7 +479,7 @@ export default function TeamGrid() {
 
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h4 className="line-clamp-1 font-body text-xl font-semibold not-italic text-white sm:text-2xl">
+                  <h4 className="line-clamp-1 font-body text-xl font-semibold italic text-white sm:text-2xl">
                     {featuredTeam.name}
                   </h4>
                   {myTeam?.id === featuredTeam.id && (
@@ -531,11 +531,11 @@ export default function TeamGrid() {
               key={team.id}
               type="button"
               onClick={() => setSelectedTeam(team.id)}
-              className="button-heading group rounded-lg border border-white/8 bg-[#1a1a1a] p-5 text-left transition-all hover:border-white/15"
+              className="button-heading group rounded-lg border border-white/8 bg-[#1a1a1a] p-5 text-left transition-all hover:border-white/15 hover:shadow-[0_0_30px_rgba(255,255,255,0.09)]"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <h4 className="line-clamp-1 font-body text-sm font-semibold not-italic text-white">
+                  <h4 className="line-clamp-1 font-body text-sm font-semibold italic text-white">
                     {team.name}
                   </h4>
                   {myTeam?.id === team.id && (
