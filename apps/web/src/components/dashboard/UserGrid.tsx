@@ -125,15 +125,31 @@ export default function UserGrid() {
     try {
       setIsLoading(true);
 
-      const [result, currentUserId, myTeam] = await Promise.all([
+      const promises: [
+        ReturnType<typeof api.listParticipantDirectory>,
+        ReturnType<typeof api.getCurrentUserId>,
+        ReturnType<typeof api.getMyTeam>,
+        ReturnType<typeof api.listParticipantDirectory> | Promise<null>,
+      ] = [
         api.listParticipantDirectory({ offset: page * PAGE_SIZE, limit: PAGE_SIZE }),
         api.getCurrentUserId(),
         api.getMyTeam(),
-      ]);
+        !featuredPlayer
+          ? api.listParticipantDirectory({ offset: 0, limit: 200 })
+          : Promise.resolve(null),
+      ];
+
+      const [result, currentUserId, myTeam, featuredSearch] = await Promise.all(promises);
+
+      // Find featured player from broad search on first load
+      if (featuredSearch && !featuredPlayer) {
+        const found = (featuredSearch.data as ParticipantCard[]).find(
+          (p) => p.user_id === FEATURED_USER_ID
+        ) ?? null;
+        setFeaturedPlayer(found);
+      }
 
       const allPlayers = result.data as ParticipantCard[];
-      const featured = allPlayers.find((p) => p.user_id === FEATURED_USER_ID) ?? null;
-      setFeaturedPlayer(featured);
       setPlayers(allPlayers.filter((p) => p.user_id !== FEATURED_USER_ID));
       setTotal(result.meta.total);
       setViewerUserId(currentUserId);
