@@ -1,0 +1,96 @@
+---
+// Minimal footer for the recap page
+import TextLogo from '../ui/TextLogo.astro';
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="relative overflow-hidden px-4 py-12" style="background: #05050a;">
+  <div
+    class="absolute inset-x-0 top-0 h-px"
+    style="background: linear-gradient(to right, transparent, rgba(139,92,246,0.15), transparent);"
+  ></div>
+
+  <div class="relative z-10 mx-auto max-w-5xl">
+    <div class="flex flex-col items-center gap-5 text-center">
+
+      <a
+        href="/archive/spring26"
+        class="footer-s26-btn inline-flex items-center gap-2 border px-5 py-2.5 font-mono text-[10px] tracking-[0.25em] uppercase"
+        style="border-color: rgba(139,92,246,0.25); color: rgba(167,139,250,0.7); background: rgba(139,92,246,0.05);"
+        onmouseover="this.style.borderColor='rgba(167,139,250,0.5)'; this.style.color='rgba(196,181,253,1)'; this.style.background='rgba(139,92,246,0.12)'; this.style.boxShadow='0 0 20px rgba(139,92,246,0.15)';"
+        onmouseout="this.style.borderColor='rgba(139,92,246,0.25)'; this.style.color='rgba(167,139,250,0.7)'; this.style.background='rgba(139,92,246,0.05)'; this.style.boxShadow='none';"
+      >
+        View S26 Site
+        <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5" />
+        </svg>
+      </a>
+
+      <a href="/" class="footer-logo-link inline-block">
+        <TextLogo size="sm" />
+      </a>
+
+      <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        <a
+          href="https://discord.com/invite/BgKg9gskM2"
+          target="_blank" rel="noopener noreferrer"
+          class="font-mono text-[10px] tracking-[0.2em] uppercase transition-colors"
+          style="color: rgba(255,255,255,0.3);"
+          onmouseover="this.style.color='rgba(167,139,250,0.7)'"
+          onmouseout="this.style.color='rgba(255,255,255,0.3)'"
+        >Discord</a>
+        <span style="color: rgba(255,255,255,0.1);">·</span>
+        <a
+          href="https://www.instagram.com/progsuhq/"
+          target="_blank" rel="noopener noreferrer"
+          class="font-mono text-[10px] tracking-[0.2em] uppercase transition-colors"
+          style="color: rgba(255,255,255,0.3);"
+          onmouseover="this.style.color='rgba(167,139,250,0.7)'"
+          onmouseout="this.style.color='rgba(255,255,255,0.3)'"
+        >Instagram</a>
+        <span style="color: rgba(255,255,255,0.1);">·</span>
+        <a
+          href="mailto:official@progsu.com"
+          class="font-mono text-[10px] tracking-[0.2em] uppercase transition-colors"
+          style="color: rgba(255,255,255,0.3);"
+          onmouseover="this.style.color='rgba(167,139,250,0.7)'"
+          onmouseout="this.style.color='rgba(255,255,255,0.3)'"
+        >Contact</a>
+      </div>
+
+      <p class="font-mono text-[9px] tracking-[0.2em]" style="color: rgba(255,255,255,0.15);">
+        &copy; {currentYear}
+        <a
+          href="https://progsu.com/"
+          target="_blank" rel="noopener noreferrer"
+          class="footer-progsu-link"
+        >progsu</a>
+        &nbsp;·&nbsp; No gambling involved.
+      </p>
+
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-logo-link {
+    opacity: 0.55;
+    transition: opacity 0.35s ease, filter 0.35s ease;
+  }
+  .footer-logo-link:hover {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(167,139,250,0.5)) drop-shadow(0 0 28px rgba(139,92,246,0.25));
+  }
+  /* The TextLogo inside also gets the stroke effect */
+  .footer-logo-link:hover .text-logo {
+    color: transparent !important;
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.85);
+  }
+  .footer-progsu-link {
+    transition: color 0.2s, text-shadow 0.2s;
+  }
+  .footer-progsu-link:hover {
+    color: rgba(167,139,250,0.9) !important;
+    text-shadow: 0 0 12px rgba(167,139,250,0.45);
+  }
+</style>

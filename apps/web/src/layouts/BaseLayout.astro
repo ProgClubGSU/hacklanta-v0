@@ -51,6 +51,7 @@ const socialImageUrl = new URL(socialImagePath, Astro.site ?? Astro.url).toStrin
     />
 
     <title>{title}</title>
+    <script>history.scrollRestoration = 'manual'; window.scrollTo(0, 0);</script>
   </head>
   <Analytics />
   <body>

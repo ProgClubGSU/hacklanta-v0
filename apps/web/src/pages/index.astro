@@ -1,18 +1,18 @@
 ---
 import LandingLayout from '../layouts/LandingLayout.astro';
-import Hero from '../components/landing/Hero.astro';
-import TrackGrid from '../components/landing/TrackGrid.astro';
-import Schedule from '../components/landing/Schedule.astro';
-import Sponsors from '../components/landing/Sponsors.astro';
-import FAQ from '../components/landing/FAQ.astro';
-import Footer from '../components/landing/Footer.astro';
+import Nav from '../components/landing/Nav.astro';
+import FallTeaser from '../components/landing/FallTeaser.astro';
+import SectionTransition from '../components/landing/SectionTransition.astro';
+import SpringRecap from '../components/landing/SpringRecap.astro';
+import Participants from '../components/landing/Participants.astro';
+import RecapFooter from '../components/landing/RecapFooter.astro';
 ---
 
-<LandingLayout>
-  <Hero />
-  <TrackGrid />
-  <Schedule />
-  <Sponsors />
-  <FAQ />
-  <Footer />
+<LandingLayout title="Hacklanta — Spring 2026 Recap">
+  <Nav />
+  <FallTeaser />
+  <SectionTransition />
+  <SpringRecap />
+  <Participants />
+  <RecapFooter />
 </LandingLayout>

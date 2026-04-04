@@ -33,7 +33,7 @@
 }
 
 html {
-  background-color: var(--color-black);
+  background-color: #05050a;
   color: var(--color-white);
   font-family: var(--font-body);
   scroll-behavior: smooth;

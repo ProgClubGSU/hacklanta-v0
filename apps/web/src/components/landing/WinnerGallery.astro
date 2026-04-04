@@ -1,0 +1,332 @@
+---
+// [07] Winner Gallery — scroll-driven card-cut photo reveal
+
+const IMAGES = [
+  { src: '/images/winner/IMG_4622.webp',  alt: 'Hacklanta Spring 2026' },
+  { src: '/images/winner/IMG_4678.webp',  alt: 'Hacklanta Spring 2026' },
+  { src: '/images/winner/IMG_4680.webp',  alt: 'Hacklanta Spring 2026' },
+  { src: '/images/winner/IMG_4682.webp',  alt: 'Hacklanta Spring 2026' },
+  { src: '/images/winner/IMG_4683.png',   alt: 'Hacklanta Spring 2026' },
+  { src: '/images/winner/coxtrack1.png',  alt: 'Cox Track Winners' },
+  { src: '/images/winner/coxtrack2.webp', alt: 'Cox Track Winners' },
+  { src: '/images/winner/creative1.webp', alt: 'Most Creative Winners' },
+  { src: '/images/winner/creative2.webp', alt: 'Most Creative Winners' },
+  { src: '/images/winner/finance1.webp',  alt: 'Finance Track Winners' },
+  { src: '/images/winner/finance2.webp',  alt: 'Finance Track Winners' },
+  { src: '/images/winner/nexlayer1.webp', alt: 'Nexlayer Track Winners' },
+  { src: '/images/winner/nexlayer2.webp', alt: 'Nexlayer Track Winners' },
+];
+const total = IMAGES.length;
+---
+
+<!-- Scroll container: tall enough to drive the animation -->
+<section
+  id="winner-gallery"
+  class="winner-gallery-section"
+  style={`height: ${total * 100}vh;`}
+>
+  <!-- Sticky viewport — stays fixed while parent scrolls -->
+  <div class="winner-gallery-sticky">
+
+    <!-- Ambient glow -->
+    <div
+      class="pointer-events-none absolute inset-0"
+      style="background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(196,30,58,0.07) 0%, transparent 70%);"
+    ></div>
+
+    <!-- Top rule matching SpringRecap -->
+    <div
+      class="absolute inset-x-0 top-0 h-px"
+      style="background: linear-gradient(to right, transparent, rgba(196,30,58,0.5), transparent);"
+    ></div>
+
+    <!-- Section label -->
+    <div class="gallery-header">
+      <div class="flex items-center gap-3">
+        <div class="h-px w-6" style="background: rgba(196,30,58,0.6);"></div>
+        <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color: rgba(196,30,58,0.65);">
+          // winner.gallery
+        </span>
+      </div>
+      <span id="gallery-counter" class="font-mono text-[10px] tracking-[0.3em]" style="color: rgba(255,255,255,0.22);">
+        {`01 / ${String(total).padStart(2, '0')}`}
+      </span>
+    </div>
+
+    <!-- Scroll hint (fades out once past first step) -->
+    <p id="gallery-hint" class="gallery-hint font-mono text-[9px] tracking-[0.35em] uppercase" style="color: rgba(255,255,255,0.18);">
+      scroll to deal
+    </p>
+
+    <!-- Card deck -->
+    <div class="card-deck-wrapper">
+      <div class="card-deck" id="card-deck">
+        {IMAGES.map((img, i) => (
+          <div class="winner-card" data-index={i}>
+            <img
+              src={img.src}
+              alt={img.alt}
+              loading={i < 3 ? 'eager' : 'lazy'}
+              draggable="false"
+            />
+            <!-- Subtle vignette -->
+            <div class="winner-card-vignette"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Progress pips -->
+    <div class="gallery-progress" id="gallery-progress">
+      {IMAGES.map((_, i) => (
+        <div class="gallery-pip" data-pip={i}></div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .winner-gallery-section {
+    position: relative;
+    background: #0e0108;
+  }
+
+  /* Sticky panel — full viewport, centered */
+  .winner-gallery-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Header row */
+  .gallery-header {
+    position: absolute;
+    top: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(92vw, 620px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Scroll hint */
+  .gallery-hint {
+    position: absolute;
+    bottom: 4.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    transition: opacity 0.4s;
+  }
+
+  /* Card deck container — landscape 4:3 */
+  .card-deck-wrapper {
+    position: relative;
+    width: min(88vw, 600px);
+    aspect-ratio: 4 / 3;
+  }
+
+  .card-deck {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Individual photo cards */
+  .winner-card {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(196, 30, 58, 0.18);
+    box-shadow:
+      0 12px 48px rgba(0, 0, 0, 0.8),
+      0 3px 10px rgba(0, 0, 0, 0.5),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    will-change: transform, opacity;
+    transform-origin: center center;
+  }
+
+  .winner-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Inner vignette for depth */
+  .winner-card-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.35) 100%);
+  }
+
+  /* Progress pips */
+  .gallery-progress {
+    position: absolute;
+    bottom: 1.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 7px;
+    align-items: center;
+  }
+
+  .gallery-pip {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    transition: background 0.35s ease, transform 0.35s ease;
+    flex-shrink: 0;
+  }
+
+  .gallery-pip.pip-active {
+    background: rgba(196, 30, 58, 0.9);
+    transform: scale(1.5);
+  }
+
+  .gallery-pip.pip-done {
+    background: rgba(196, 30, 58, 0.3);
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  const section   = document.querySelector('#winner-gallery') as HTMLElement;
+  const cards     = Array.from(section.querySelectorAll<HTMLElement>('.winner-card'));
+  const pips      = Array.from(section.querySelectorAll<HTMLElement>('.gallery-pip'));
+  const counter   = section.querySelector<HTMLElement>('#gallery-counter');
+  const hint      = section.querySelector<HTMLElement>('#gallery-hint');
+  const total     = cards.length;
+
+  // Deck visual constants
+  const OFFSET_PX   = 5;   // px shift per depth level
+  const SCALE_STEP  = 0.018; // scale reduction per depth
+  const MAX_VISIBLE = 4;    // max cards visible behind the top
+
+  /** Place a card at its resting deck depth (0 = top). */
+  function setDeckRest(card: HTMLElement, depth: number) {
+    const clampedDepth = Math.min(depth, MAX_VISIBLE);
+    gsap.set(card, {
+      zIndex: total - depth,
+      y: clampedDepth * OFFSET_PX,
+      yPercent: 0,
+      scale: 1 - clampedDepth * SCALE_STEP,
+      rotation: 0,
+      opacity: depth > MAX_VISIBLE ? 0 : 1,
+    });
+  }
+
+  // Initialise all cards in deck order
+  cards.forEach((card, i) => setDeckRest(card, i));
+  pips[0]?.classList.add('pip-active');
+
+  // Single ScrollTrigger driving everything via onUpdate
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1.2,
+    onUpdate(self) {
+      const rawStep  = self.progress * (total - 1);
+      const step     = Math.floor(rawStep);          // index of card currently lifting
+      const progress = rawStep - step;               // 0→1 within this card's step
+
+      // ── Counter ──
+      const display = Math.min(step + 1, total);
+      if (counter) {
+        counter.textContent =
+          `${String(display).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      }
+
+      // ── Scroll hint fades after first step ──
+      if (hint) hint.style.opacity = String(Math.max(0, 1 - rawStep * 3));
+
+      // ── Pips ──
+      pips.forEach((pip, i) => {
+        pip.classList.remove('pip-active', 'pip-done');
+        if (i < step)       pip.classList.add('pip-done');
+        else if (i === step) pip.classList.add('pip-active');
+      });
+
+      // ── Cards ──
+      cards.forEach((card, i) => {
+
+        if (i < step) {
+          // ── Dealt cards — sit at the back of the remaining deck ──
+          const remaining  = total - 1 - step;          // how many cards are still "in front"
+          const backDepth  = remaining + (step - i);    // their depth position from the new top
+          setDeckRest(card, backDepth);
+
+        } else if (i === step) {
+          // ── Current card — lifting upward ──
+          // Phase 1 (0→0.75): card climbs off the top, slight scale + rotation
+          // Phase 2 (0.75→1.0): fade out as it clears the frame
+          const liftY    = progress * -130;           // yPercent: 0 → -130%
+          const liftScale = 1 + progress * 0.04;     // tiny scale-up (feels physical)
+          const liftRot  = -(progress * 7);           // slight counter-clockwise tilt
+          const fadeOut  = Math.max(0, (progress - 0.75) / 0.25); // fade last 25%
+
+          gsap.set(card, {
+            zIndex: total + 1,
+            y: 0,
+            yPercent: liftY,
+            scale: liftScale,
+            rotation: liftRot,
+            opacity: 1 - fadeOut,
+          });
+
+        } else {
+          // ── Waiting deck cards — gradually rise as current card lifts ──
+          // depth 0 = next card (reveals into top spot), depth 1 = one below, …
+          const depth = i - step - 1;
+          // During the lift, the "next" card (depth 0) shifts from 1 OFFSET down → 0
+          // giving the illusion the whole deck is rising to meet you
+          const shiftFraction = 1 - progress;   // 1 → 0 as current card leaves
+          const adjustedDepth = depth + shiftFraction;
+
+          const clampedDepth = Math.min(adjustedDepth, MAX_VISIBLE);
+          gsap.set(card, {
+            zIndex: total - depth - 1,
+            y: clampedDepth * OFFSET_PX,
+            yPercent: 0,
+            scale: 1 - clampedDepth * SCALE_STEP,
+            rotation: 0,
+            opacity: adjustedDepth > MAX_VISIBLE ? 0 : 1,
+          });
+        }
+      });
+    },
+  });
+
+  // Entrance fade for the whole section
+  gsap.from('.card-deck-wrapper', {
+    scrollTrigger: { trigger: section, start: 'top 85%', once: true },
+    opacity: 0,
+    y: 32,
+    duration: 1,
+    ease: 'power3.out',
+  });
+  gsap.from('.gallery-header', {
+    scrollTrigger: { trigger: section, start: 'top 85%', once: true },
+    opacity: 0,
+    y: 16,
+    duration: 0.8,
+    ease: 'power3.out',
+    delay: 0.15,
+  });
+</script>

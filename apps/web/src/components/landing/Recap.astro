@@ -1,0 +1,256 @@
+---
+// [06] Recap — Hacklanta Spring 2026 wrap-up
+
+const POSTERS = [
+  '/images/posters/poster-1.png',
+  '/images/posters/poster-2.png',
+  '/images/posters/poster-3.png',
+  '/images/posters/poster-4.png',
+  '/images/posters/poster-5.png',
+];
+
+const moments = [
+  {
+    suit: '♠',
+    title: 'Opening Night',
+    desc: 'Doors opened, teams formed, and the clock started — all within the first hour. The energy hit immediately.',
+  },
+  {
+    suit: '♦',
+    title: 'Midnight Grind',
+    desc: 'Every table full. Every screen lit. The kind of quiet intensity that only happens when people are locked in.',
+  },
+  {
+    suit: '♣',
+    title: 'Final Pitches',
+    desc: 'Four tracks, one shot. Teams stepped up to a panel of industry judges and showed what 12 hours looks like.',
+  },
+  {
+    suit: '♥',
+    title: 'Adopt-a-Hack',
+    desc: 'Sponsors went beyond branding — they challenged, mentored, and put real money behind student ideas.',
+  },
+];
+
+const sponsors = ['[Sponsor Name]', '[Sponsor Name]', '[Sponsor Name]'];
+---
+
+<section id="recap" class="relative overflow-hidden bg-black px-4 py-20 md:py-28">
+  <!-- Top gradient border -->
+  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-red/30 to-transparent"></div>
+
+  <!-- Ambient glows -->
+  <div
+    class="pointer-events-none absolute left-[15%] top-[20%] h-[500px] w-[500px] rounded-full"
+    style="background: radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 65%);"
+  ></div>
+  <div
+    class="pointer-events-none absolute right-[10%] bottom-[20%] h-[400px] w-[400px] rounded-full"
+    style="background: radial-gradient(circle, rgba(196,30,58,0.04) 0%, transparent 65%);"
+  ></div>
+
+  <div class="relative z-10 mx-auto max-w-5xl">
+
+    <!-- ── Section header ── -->
+    <div class="recap-header mb-14">
+      <div class="mb-4 flex items-center gap-3">
+        <span class="font-mono text-[10px] tracking-[0.35em] text-white/20">[06]</span>
+        <span class="font-mono text-[10px] tracking-[0.3em] text-red/60 uppercase">// event.recap</span>
+      </div>
+      <h2
+        class="section-heading font-display text-[clamp(2rem,7vw,4.5rem)] italic leading-[0.92] tracking-tight text-white"
+      >
+        Spring 2026<br />Recap
+      </h2>
+      <div class="mt-6 h-px w-12 bg-gradient-to-r from-red/50 to-transparent"></div>
+    </div>
+
+    <!-- ── Summary + Sponsors ── -->
+    <div class="recap-body mb-16 grid gap-8 md:grid-cols-[1fr_1px_1fr]">
+      <div class="space-y-4">
+        <p class="font-body text-sm leading-[1.9] text-gray">
+          Hacklanta Spring 2026 brought together Atlanta's sharpest student builders for a high-stakes,
+          12-hour build sprint — casino-themed, no apologies. From the moment the doors opened, the
+          energy was immediate: the low hum of laptops and the quiet intensity of people who came to win.
+        </p>
+        <p class="font-body text-sm leading-[1.9] text-gray">
+          Teams went all-in across four tracks. By the final hand, what was built in a single night
+          genuinely surprised everyone in the room.
+        </p>
+      </div>
+
+      <!-- Divider -->
+      <div class="hidden bg-border/40 md:block"></div>
+
+      <div>
+        <p class="mb-4 font-mono text-[10px] tracking-[0.3em] text-gold/60 uppercase">
+          // supported_by
+        </p>
+        <ul class="space-y-2.5">
+          {
+            sponsors.map((s) => (
+              <li class="flex items-center gap-2.5">
+                <span class="font-mono text-[10px] text-red/40">♦</span>
+                <span class="font-body text-sm italic text-white/40">{s}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-5 font-body text-xs leading-relaxed text-gray-darker">
+          Their support made the night possible — resources, mentorship, and prizes that pushed teams
+          further than they expected.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Event image grid ── -->
+    <div class="recap-images mb-16">
+      <p class="mb-6 font-mono text-[10px] tracking-[0.3em] text-white/25 uppercase">
+        // moments.captured
+      </p>
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {
+          [1, 2, 3, 4, 5, 6].map((n) => (
+            <div class="recap-img-card group aspect-[4/3] overflow-hidden rounded-[2px] border border-border/60 bg-black-elevated relative">
+              {/* <!-- Insert event image here --> */}
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span class="font-mono text-[9px] tracking-widest text-white/10 uppercase">
+                  event photo {n}
+                </span>
+              </div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- ── Key moments ── -->
+    <div class="recap-moments mb-16">
+      <p class="mb-6 font-mono text-[10px] tracking-[0.3em] text-red/50 uppercase">// key.moments</p>
+      <div class="grid gap-3 sm:grid-cols-2">
+        {
+          moments.map((m) => (
+            <div class="moment-card rounded-[2px] border border-border/60 bg-black-card p-5 transition-colors duration-200 hover:border-border-light/80">
+              <div class="flex items-start gap-3">
+                <span class="mt-0.5 font-mono text-sm text-gold/50">{m.suit}</span>
+                <div>
+                  <p class="mb-1.5 font-mono text-[10px] tracking-[0.2em] text-white uppercase">
+                    {m.title}
+                  </p>
+                  <p class="font-body text-xs leading-relaxed text-gray-dark">{m.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- ── Poster strip ── -->
+    <div class="recap-posters mb-14">
+      <p class="mb-5 font-mono text-[10px] tracking-[0.3em] text-white/25 uppercase">
+        // official.artwork
+      </p>
+      <div class="flex gap-3 overflow-x-auto pb-3 snap-x scrollbar-none">
+        {
+          POSTERS.map((src, i) => (
+            <div class="snap-start flex-shrink-0 w-36 aspect-[2/3] overflow-hidden rounded-[2px] border border-border/60 bg-black-elevated relative">
+              <img
+                src={src}
+                alt={`Hacklanta Spring 2026 poster ${i + 1}`}
+                class="h-full w-full object-cover"
+                loading="lazy"
+                draggable="false"
+              />
+              {/* <!-- Insert poster image here --> */}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- ── Gallery CTA ── -->
+    <div class="recap-gallery flex flex-col gap-3 sm:flex-row sm:items-center">
+      <a
+        href="https://lifeoftito.pixieset.com/hacklanta/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="gallery-btn group inline-flex items-center gap-3 rounded-[2px] border border-gold/25 bg-gold/[0.04] px-6 py-3 text-gold transition-all duration-200 hover:border-gold/50 hover:bg-gold/[0.08]"
+      >
+        <span class="font-mono text-[11px] tracking-[0.3em] uppercase">View Gallery</span>
+        <span
+          class="font-mono text-xs text-gold/40 transition-all duration-200 group-hover:text-gold/80 group-hover:translate-x-0.5"
+          aria-hidden="true">→</span
+        >
+      </a>
+      <span class="font-mono text-[10px] tracking-[0.2em] text-white/20 uppercase"
+        >Photography by Tito</span
+      >
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Header fade-in
+  gsap.from('.recap-header', {
+    scrollTrigger: { trigger: '.recap-header', start: 'top 82%', once: true },
+    opacity: 0,
+    y: 36,
+    duration: 0.9,
+    ease: 'power3.out',
+  });
+
+  // Body columns
+  gsap.from('.recap-body', {
+    scrollTrigger: { trigger: '.recap-body', start: 'top 85%', once: true },
+    opacity: 0,
+    y: 24,
+    duration: 0.8,
+    ease: 'power3.out',
+    delay: 0.1,
+  });
+
+  // Image cards stagger
+  gsap.from('.recap-img-card', {
+    scrollTrigger: { trigger: '.recap-images', start: 'top 85%', once: true },
+    opacity: 0,
+    y: 20,
+    scale: 0.97,
+    stagger: 0.07,
+    duration: 0.55,
+    ease: 'power3.out',
+  });
+
+  // Moment cards stagger
+  gsap.from('.moment-card', {
+    scrollTrigger: { trigger: '.recap-moments', start: 'top 85%', once: true },
+    opacity: 0,
+    y: 16,
+    stagger: 0.08,
+    duration: 0.5,
+    ease: 'power3.out',
+  });
+
+  // Poster strip + gallery CTA
+  gsap.from('.recap-posters', {
+    scrollTrigger: { trigger: '.recap-posters', start: 'top 88%', once: true },
+    opacity: 0,
+    y: 20,
+    duration: 0.7,
+    ease: 'power3.out',
+  });
+
+  gsap.from('.recap-gallery', {
+    scrollTrigger: { trigger: '.recap-gallery', start: 'top 90%', once: true },
+    opacity: 0,
+    y: 16,
+    duration: 0.6,
+    ease: 'power3.out',
+  });
+</script>
