@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./clerk-types.d.ts" />
 
 // Helper to get auth headers with Clerk token

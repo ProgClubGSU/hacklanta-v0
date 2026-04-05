@@ -10,9 +10,9 @@ export const POST: APIRoute = async ({ locals, request }) => {
   const auth = await verifyAdmin(locals)
   if (!auth.authorized) return auth.response
 
-  let body: any
+  let body: Record<string, unknown>
   try {
-    body = await request.json()
+    body = await request.json() as Record<string, unknown>
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid JSON body' }), { status: 400 })
   }
@@ -136,7 +136,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
         console.error('[update-status]', emailError)
       } else {
         const emails = apps.map(app => {
-          const user = (app as any).users
+          const user = (app as Record<string, unknown>).users as { email?: string } | undefined
           const recipientEmail = user?.email ?? app.email
           if (!recipientEmail) {
             console.warn('[update-status] No email address for application, user_id:', app.user_id)

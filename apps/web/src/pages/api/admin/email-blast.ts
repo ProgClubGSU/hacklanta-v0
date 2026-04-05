@@ -16,14 +16,14 @@ export const POST: APIRoute = async ({ locals, request }) => {
   const auth = await verifyAdmin(locals)
   if (!auth.authorized) return auth.response
 
-  let body: any
+  let body: Record<string, unknown>
   try {
-    body = await request.json()
+    body = await request.json() as Record<string, unknown>
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid JSON body' }), { status: 400 })
   }
 
-  const { subject, body: emailBody, filters = {}, dry_run = false } = body
+  const { subject, body: emailBody, filters = {}, dry_run = false } = body as { subject: string; body: string; filters?: Record<string, unknown>; dry_run?: boolean }
 
   if (!subject || typeof subject !== 'string') {
     return new Response(JSON.stringify({ error: 'subject is required' }), { status: 400 })
@@ -68,7 +68,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
   // Deduplicate by email address
   const recipientMap = new Map<string, { email: string; firstName: string | null }>()
   for (const row of rows ?? []) {
-    const user = (row as any).users
+    const user = (row as Record<string, unknown>).users as { email?: string; first_name?: string } | undefined
     const email = (user?.email ?? row.email)?.toLowerCase()
     if (!email) continue
     if (!recipientMap.has(email)) {

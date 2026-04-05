@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-undef */
 /**
  * One-off script to populate Resend segments from Supabase data.
  * Respects Resend rate limit: 5 requests/second for segment add.
