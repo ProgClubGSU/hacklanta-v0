@@ -68,8 +68,9 @@ export const POST: APIRoute = async ({ locals, request }) => {
   // Deduplicate by email address
   const recipientMap = new Map<string, { email: string; firstName: string | null }>()
   for (const row of rows ?? []) {
-    const user = (row as Record<string, unknown>).users as { email?: string; first_name?: string } | undefined
-    const email = (user?.email ?? row.email)?.toLowerCase()
+    const rowRecord = row as unknown as Record<string, unknown>
+    const user = rowRecord.users as { email?: string; first_name?: string } | undefined
+    const email = (user?.email ?? (rowRecord.email as string | undefined))?.toLowerCase()
     if (!email) continue
     if (!recipientMap.has(email)) {
       recipientMap.set(email, { email, firstName: user?.first_name ?? null })

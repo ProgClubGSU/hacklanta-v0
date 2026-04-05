@@ -19,13 +19,13 @@ export const POST: APIRoute = async ({ locals, request }) => {
 
   const { application_ids, user_ids, new_status, send_email = false } = body
 
-  console.log('[update-status] Request:', JSON.stringify({ new_status, send_email, application_ids_count: application_ids?.length, user_ids_count: user_ids?.length }))
+  console.log('[update-status] Request:', JSON.stringify({ new_status, send_email, application_ids_count: Array.isArray(application_ids) ? application_ids.length : undefined, user_ids_count: Array.isArray(user_ids) ? user_ids.length : undefined }))
 
   if ((!Array.isArray(application_ids) || application_ids.length === 0) &&
       (!Array.isArray(user_ids) || user_ids.length === 0)) {
     return new Response(JSON.stringify({ error: 'application_ids or user_ids must be a non-empty array' }), { status: 400 })
   }
-  if (!VALID_STATUSES.includes(new_status)) {
+  if (!VALID_STATUSES.includes(new_status as string)) {
     return new Response(JSON.stringify({ error: `new_status must be one of: ${VALID_STATUSES.join(', ')}` }), { status: 400 })
   }
 
@@ -33,7 +33,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
   const now = new Date().toISOString()
 
   // --- Collect all application IDs ---
-  const allAppIds = [...(application_ids ?? [])]
+  const allAppIds = [...((application_ids as string[] | undefined) ?? [])]
 
   if (Array.isArray(user_ids) && user_ids.length > 0) {
     const { data: existingApps } = await supabase
@@ -117,7 +117,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
   let emailErrorDetails: Array<{ email: string; error: string }> = []
 
   if (send_email) {
-    const templateName = STATUS_TEMPLATE_MAP[new_status]
+    const templateName = STATUS_TEMPLATE_MAP[new_status as string]
     if (!templateName) {
       emailError = `No email template exists for status "${new_status}"`
       console.warn('[update-status]', emailError)
@@ -136,7 +136,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
         console.error('[update-status]', emailError)
       } else {
         const emails = apps.map(app => {
-          const user = (app as Record<string, unknown>).users as { email?: string } | undefined
+          const user = (app as Record<string, unknown>).users as { email?: string; first_name?: string | null } | undefined
           const recipientEmail = user?.email ?? app.email
           if (!recipientEmail) {
             console.warn('[update-status] No email address for application, user_id:', app.user_id)
