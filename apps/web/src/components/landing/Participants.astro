@@ -1,0 +1,764 @@
+---
+// Spring 2026 — Winners
+
+const tracks = [
+  {
+    suit: '♦',
+    accentColor: '#d4a843',
+    accentRgb: '212,168,67',
+    sponsor: 'Cox',
+    name: 'House Pick',
+    first: 'Quest',        firstUrl: 'https://devspot.app/projects/1730',
+    hm: 'MedaPath',        hmUrl:    'https://devspot.app/projects/1721',
+  },
+  {
+    suit: '♠',
+    accentColor: '#c41e3a',
+    accentRgb: '196,30,58',
+    sponsor: 'Nexlayer',
+    name: 'All-In',
+    first: 'Landlord Flip', firstUrl: 'https://devspot.app/projects/1791',
+    hm: 'OLEV',             hmUrl:    'https://devspot.app/projects/1750',
+  },
+  {
+    suit: '♥',
+    accentColor: '#e63946',
+    accentRgb: '230,57,70',
+    sponsor: 'Finance',
+    name: 'Jackpot',
+    first: 'JuiceArb',     firstUrl: 'https://devspot.app/projects/1746',
+    hm: 'TariffCheck',     hmUrl:    'https://devspot.app/projects/1745',
+  },
+  {
+    suit: '♣',
+    accentColor: '#a78bfa',
+    accentRgb: '167,139,250',
+    sponsor: 'Creative',
+    name: 'Jack of All Trades',
+    first: 'LinkedOut',         firstUrl: 'https://devspot.app/projects/1765',
+    hm: 'LIM Video Editor',     hmUrl:    'https://devspot.app/projects/1767',
+  },
+];
+
+const adoptChallenges = [
+  { sponsor: 'Bogdan Boyko',    challenge: 'Meanest AI / LLM',          prize: '$500', winner: 'The House',         winnerUrl: 'https://devspot.app/projects/1717' },
+  { sponsor: 'Bogdan Boyko',    challenge: 'Most Useless Feature',       prize: '$500', winner: 'CounterStack',      winnerUrl: 'https://devspot.app/projects/1781' },
+  { sponsor: 'Bogdan Boyko',    challenge: 'Most Auramaxxing',           prize: '$500', winner: 'Guess The Brainrot',winnerUrl: 'https://devspot.app/projects/1744' },
+  { sponsor: 'Bogdan Boyko',    challenge: 'Best Demo Video',            prize: '$500', winner: 'Guess The Brainrot',winnerUrl: 'https://devspot.app/projects/1744' },
+  { sponsor: 'Nick San George', challenge: 'Best Corporate Larp',        prize: '$200', winner: 'LinkedOut',         winnerUrl: 'https://devspot.app/projects/1765' },
+  { sponsor: 'Google',          challenge: 'Best Use of Gemini API',     prize: '',     winner: 'LIM Video Editor',  winnerUrl: 'https://devspot.app/projects/1767' },
+  { sponsor: 'Hacklanta',       challenge: 'Best Solo Project',          prize: '',     winner: 'Brand Factory',     winnerUrl: 'https://devspot.app/projects/1824' },
+];
+
+---
+
+<section id="participants" class="relative overflow-hidden px-4 pt-12 pb-24 md:pt-16 md:pb-32" style="background: #100208;">
+
+  <!-- Ambient -->
+  <div
+    class="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[700px] -translate-x-1/2 rounded-full"
+    style="background: radial-gradient(ellipse, rgba(140,10,30,0.04) 0%, transparent 65%);"
+  ></div>
+  <div
+    class="absolute inset-x-0 top-0 h-px"
+    style="background: linear-gradient(to right, transparent, rgba(196,30,58,0.12), transparent);"
+  ></div>
+
+  <div class="relative z-10 mx-auto max-w-5xl">
+
+    <!-- ── Section label ── -->
+    <div class="participants-label mb-16">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="h-px w-6" style="background: rgba(196,30,58,0.55);"></div>
+        <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color: rgba(196,30,58,0.65);">Spring 2026</span>
+      </div>
+      <h2
+        class="font-display italic leading-[0.9] tracking-tight text-white"
+        style="font-size: clamp(2.4rem, 8vw, 5rem);"
+      >
+        Winners
+      </h2>
+      <p class="mt-4 max-w-sm font-body text-sm leading-[1.85]" style="color: rgba(255,255,255,0.35);">
+        The teams that went all-in and came out on top.
+      </p>
+    </div>
+
+    <!-- ── Track winner cards ── -->
+    <div class="track-winners mb-8">
+      <p class="mb-8 font-mono text-[10px] tracking-[0.35em] uppercase" style="color: rgba(196,30,58,0.55);">// track winners</p>
+      <div class="track-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {tracks.map((t, i) => (
+          <div
+            class="track-card"
+            data-index={i}
+            style={`--card-accent: ${t.accentColor}; --card-accent-rgb: ${t.accentRgb};`}
+          >
+            <!-- Left stripe -->
+            <div class="track-card-stripe"></div>
+
+            <!-- Corner suit TL -->
+            <span class="track-card-corner" aria-hidden="true">{t.suit}</span>
+
+            <!-- Ghost suit watermark -->
+            <span class="track-card-wm" aria-hidden="true">{t.suit}</span>
+
+            <!-- Sponsor + track name header -->
+            <div class="track-card-header">
+              <span class="track-card-sponsor">{t.sponsor}</span>
+              <span class="track-card-trackname">{t.name}</span>
+            </div>
+
+            <!-- 1st place -->
+            <div class="track-card-place-block">
+              <span class="track-card-eyebrow track-card-eyebrow--1st">1st place</span>
+              <a
+                href={t.firstUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="track-card-name track-card-name--1st"
+              >{t.first}</a>
+            </div>
+
+            <!-- Divider -->
+            <div class="track-card-divider"></div>
+
+            <!-- 2nd place -->
+            <div class="track-card-place-block">
+              <span class="track-card-eyebrow track-card-eyebrow--2nd">2nd place</span>
+              <a
+                href={t.hmUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="track-card-name track-card-name--2nd"
+              >{t.hm}</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── Adopt-a-Hack challenges ── -->
+    <div class="adopt-challenges mb-20">
+      <p class="mb-6 font-mono text-[10px] tracking-[0.35em] uppercase" style="color: rgba(196,30,58,0.55);">// adopt-a-hack challenges</p>
+
+      <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {adoptChallenges.map((c) => (
+          <div
+            class="challenge-card border px-5 py-4"
+            style="border-color: rgba(255,215,0,0.08); background: rgba(8,5,18,0.8);"
+          >
+            <p class="font-mono text-[9px] tracking-[0.2em] uppercase mb-2" style="color: rgba(255,215,0,0.45);">
+              {c.sponsor}
+            </p>
+            <p class="font-body text-sm font-medium text-white mb-3">{c.challenge}</p>
+            <div class="flex items-center justify-between">
+              {c.winner
+                ? <a href={c.winnerUrl} target="_blank" rel="noopener noreferrer" class="challenge-winner-link font-mono text-white" style="font-size: 0.65rem; letter-spacing: 0.05em;">{c.winner}</a>
+                : <div class="h-3 w-20 rounded-sm" style="background: rgba(255,255,255,0.05); border: 1px dashed rgba(255,255,255,0.08);"></div>
+              }
+              {c.prize && <span class="font-mono text-xs" style="color: rgba(255,215,0,0.6);">{c.prize}</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── Winner photos — card-cut gallery ── -->
+    <div class="event-moments mb-16">
+      <div class="flex items-center justify-between mb-6">
+        <p class="font-mono text-[10px] tracking-[0.35em] uppercase" style="color: rgba(196,30,58,0.55);">// winner photos</p>
+        <span id="wg-counter" class="font-mono text-[10px] tracking-[0.3em]" style="color: rgba(255,255,255,0.22);">01 / 13</span>
+      </div>
+
+      <div class="wg-layout">
+        <!-- Left: card stack + pips -->
+        <div class="wg-left">
+          <div class="wg-stage">
+            <div class="wg-stack" id="wg-stack">
+              {[
+                { src: '/images/winner/coxtrack1.png',  alt: 'Cox Track Winners' },
+                { src: '/images/winner/coxtrack2.webp', alt: 'Cox Track Winners' },
+                { src: '/images/winner/nexlayer1.webp', alt: 'Nexlayer Track Winners' },
+                { src: '/images/winner/nexlayer2.webp', alt: 'Nexlayer Track Winners' },
+                { src: '/images/winner/finance1.webp',  alt: 'Finance Track Winners' },
+                { src: '/images/winner/finance2.webp',  alt: 'Finance Track Winners' },
+                { src: '/images/winner/creative1.webp', alt: 'Most Creative Winners' },
+                { src: '/images/winner/creative2.webp', alt: 'Most Creative Winners' },
+                { src: '/images/winner/IMG_4622.webp', alt: 'Hacklanta Spring 2026' },
+                { src: '/images/winner/IMG_4678.webp', alt: 'Hacklanta Spring 2026' },
+                { src: '/images/winner/IMG_4680.webp', alt: 'Hacklanta Spring 2026' },
+                { src: '/images/winner/IMG_4682.webp', alt: 'Hacklanta Spring 2026' },
+                { src: '/images/winner/IMG_4683.png',  alt: 'Hacklanta Spring 2026' },
+              ].map((photo, i) => (
+                <div class="wg-card" data-wi={i}>
+                  <img src={photo.src} alt={photo.alt} loading={i < 3 ? 'eager' : 'lazy'} draggable="false" />
+                  <div class="wg-vignette"></div>
+                </div>
+              ))}
+            </div>
+            <button class="wg-btn wg-btn--prev" id="wg-prev" aria-label="Previous">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
+            </button>
+            <button class="wg-btn wg-btn--next" id="wg-next" aria-label="Next">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
+            </button>
+          </div>
+
+          <div class="wg-pips" id="wg-pips">
+            {Array.from({ length: 13 }).map((_, i) => (
+              <div class="wg-pip" data-pi={i}></div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: View Full Gallery + credit -->
+        <div class="wg-right">
+          <a
+            href="https://lifeoftito.pixieset.com/hacklanta/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="gallery-btn group inline-flex items-center gap-3 border px-6 py-3 transition-all duration-200"
+            style="border-color: rgba(196,30,58,0.3); background: rgba(196,30,58,0.06); color: rgba(230,80,80,0.9);"
+            onmouseover="this.style.borderColor='rgba(196,30,58,0.6)'; this.style.background='rgba(196,30,58,0.12)'; this.style.boxShadow='0 0 24px rgba(196,30,58,0.1)';"
+            onmouseout="this.style.borderColor='rgba(196,30,58,0.3)'; this.style.background='rgba(196,30,58,0.06)'; this.style.boxShadow='none';"
+          >
+            <span class="font-mono text-[10px] tracking-[0.3em] uppercase">View Full Gallery</span>
+            <span class="font-mono text-xs transition-transform duration-200 group-hover:translate-x-0.5" style="color: rgba(196,30,58,0.55);" aria-hidden="true">→</span>
+          </a>
+          <p class="gallery-row font-mono text-[9px] tracking-[0.2em] uppercase" style="color: rgba(255,255,255,0.18);">
+            Photography by Arturo &amp; Fred
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<style>
+  /* ── Section title hover ── */
+  .participants-label h2 {
+    -webkit-text-stroke: 2px transparent;
+    cursor: default;
+    transition: color 0.35s ease, -webkit-text-stroke-color 0.35s ease, filter 0.35s ease;
+  }
+  .participants-label h2:hover {
+    color: transparent;
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.85);
+    filter: drop-shadow(0 0 16px rgba(196,30,58,0.55)) drop-shadow(0 0 40px rgba(196,30,58,0.22));
+  }
+
+  /* ── Track card ── */
+  .track-card {
+    position: relative;
+    background: rgba(10, 5, 16, 0.95);
+    border: 1px solid rgba(var(--card-accent-rgb), 0.2);
+    padding: 1.25rem 1.25rem 1.25rem 1.6rem;
+    overflow: hidden;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .track-card:hover {
+    border-color: rgba(var(--card-accent-rgb), 0.45);
+    box-shadow: 0 0 32px rgba(var(--card-accent-rgb), 0.1), inset 0 0 20px rgba(var(--card-accent-rgb), 0.03);
+  }
+
+  /* Left accent stripe */
+  .track-card-stripe {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--card-accent);
+    opacity: 0.85;
+  }
+
+  /* TL corner suit */
+  .track-card-corner {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.85rem;
+    font-size: 1rem;
+    color: var(--card-accent);
+    opacity: 0.5;
+    line-height: 1;
+    user-select: none;
+  }
+
+  /* Ghost watermark */
+  .track-card-wm {
+    position: absolute;
+    bottom: -0.5rem;
+    right: -0.5rem;
+    font-size: 7rem;
+    line-height: 1;
+    color: var(--card-accent);
+    opacity: 0.04;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Header: sponsor + track name */
+  .track-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(var(--card-accent-rgb), 0.15);
+  }
+  .track-card-sponsor {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 900;
+    font-style: italic;
+    line-height: 1;
+    color: var(--card-accent);
+    letter-spacing: -0.01em;
+  }
+  .track-card-trackname {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.28);
+    line-height: 1;
+  }
+
+  /* Place blocks */
+  .track-card-place-block {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  /* Eyebrow */
+  .track-card-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    line-height: 1;
+    display: block;
+  }
+  .track-card-eyebrow--1st { color: rgba(var(--card-accent-rgb), 0.7); }
+  .track-card-eyebrow--2nd { color: rgba(255, 255, 255, 0.25); }
+
+  /* Winner names */
+  .track-card-name {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 900;
+    line-height: 0.9;
+    text-decoration: none;
+    word-break: break-word;
+    display: block;
+    transition: opacity 0.2s;
+  }
+  .track-card-name:hover {
+    opacity: 0.7;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  .track-card-name--1st {
+    font-size: clamp(1.5rem, 3.8vw, 2.2rem);
+    color: #fff;
+    letter-spacing: -0.03em;
+  }
+  .track-card-name--2nd {
+    font-size: clamp(1rem, 2.4vw, 1.4rem);
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: -0.02em;
+  }
+
+  /* Divider between 1st and 2nd */
+  .track-card-divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(var(--card-accent-rgb), 0.2), transparent);
+    margin: 0.6rem 0;
+    flex-shrink: 0;
+  }
+
+  /* ── Winner gallery layout ── */
+  .wg-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+  .wg-left {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .wg-right {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    align-self: stretch;
+    gap: 1.5rem;
+  }
+
+  /* ── Winner gallery card stack ── */
+  .wg-stage {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 4 / 3;
+  }
+  .wg-stack {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .wg-card {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(196,30,58,0.2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.75), 0 3px 10px rgba(0,0,0,0.5);
+    will-change: transform, opacity;
+    transform-origin: center center;
+    opacity: 0;
+  }
+  .wg-card img { width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; user-select:none; }
+  .wg-vignette { position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse 90% 90% at 50% 50%, transparent 55%, rgba(0,0,0,0.4) 100%); }
+
+
+  .wg-btn {
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:34px; height:34px; border-radius:50%;
+    border:1px solid rgba(196,30,58,0.25);
+    background:rgba(16,2,8,0.85);
+    color:rgba(255,255,255,0.5);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; z-index:30;
+    transition:border-color 0.2s, color 0.2s, background 0.2s;
+    backdrop-filter:blur(4px);
+  }
+  .wg-btn:hover { border-color:rgba(196,30,58,0.7); color:rgba(255,255,255,0.9); background:rgba(196,30,58,0.12); }
+  .wg-btn--prev { left:-17px; }
+  .wg-btn--next { right:-17px; }
+
+  .wg-pips { display:flex; gap:6px; justify-content:center; margin-top:1rem; flex-wrap:wrap; }
+  .wg-pip { width:4px; height:4px; border-radius:50%; background:rgba(255,255,255,0.12); transition:background 0.3s,transform 0.3s; flex-shrink:0; }
+  .wg-pip.wg-pip-active { background:rgba(196,30,58,0.9); transform:scale(1.5); }
+  .wg-pip.wg-pip-done   { background:rgba(196,30,58,0.3); }
+
+  /* ── Challenge winner links ── */
+  .challenge-winner-link {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .challenge-winner-link:hover {
+    color: rgba(255,215,0,0.9) !important;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.participants-label', {
+    scrollTrigger: { trigger: '.participants-label', start: 'top 82%', once: true },
+    opacity: 0, y: 36, duration: 0.9, ease: 'power3.out',
+    immediateRender: false,
+  });
+
+  // ── Spark burst on card reveal ──────────────────────────────────────────────
+  function spawnSparks(card: HTMLElement) {
+    const rect = card.getBoundingClientRect();
+    const accent = card.style.getPropertyValue('--card-accent').trim() || '#ffffff';
+
+    // Flash the card border glow
+    gsap.fromTo(card,
+      { boxShadow: `0 0 0 2px ${accent}, 0 0 48px ${accent}99, inset 0 0 24px ${accent}22` },
+      { boxShadow: `0 0 32px rgba(0,0,0,0) , inset 0 0 0px rgba(0,0,0,0)`, duration: 1.4, ease: 'power2.out' }
+    );
+
+    // Spawn spark particles
+    const count = 22;
+    for (let i = 0; i < count; i++) {
+      const isStreak = i % 4 === 0;
+      const spark = document.createElement('div');
+
+      // Spawn from card edges
+      const edge = Math.floor(Math.random() * 4);
+      let sx: number, sy: number;
+      if (edge === 0)      { sx = rect.left + Math.random() * rect.width;  sy = rect.top; }
+      else if (edge === 1) { sx = rect.right;                               sy = rect.top + Math.random() * rect.height; }
+      else if (edge === 2) { sx = rect.left + Math.random() * rect.width;  sy = rect.bottom; }
+      else                 { sx = rect.left;                                sy = rect.top + Math.random() * rect.height; }
+
+      const useWhite = Math.random() > 0.6;
+      const color = useWhite ? 'rgba(255,255,255,0.95)' : accent;
+      const w = isStreak ? Math.random() * 2 + 1 : Math.random() * 4 + 2;
+      const h = isStreak ? Math.random() * 16 + 10 : w;
+
+      spark.style.cssText = `
+        position: fixed;
+        width: ${w}px;
+        height: ${h}px;
+        border-radius: ${isStreak ? '1px' : '50%'};
+        background: ${color};
+        box-shadow: 0 0 6px ${color}, 0 0 12px ${color}66;
+        left: ${sx}px;
+        top: ${sy}px;
+        pointer-events: none;
+        z-index: 9999;
+        will-change: transform, opacity;
+      `;
+      document.body.appendChild(spark);
+
+      const angle = Math.random() * Math.PI * 2;
+      const dist  = Math.random() * 110 + 45;
+      const dur   = Math.random() * 0.65 + 0.35;
+
+      gsap.to(spark, {
+        x: Math.cos(angle) * dist,
+        y: Math.sin(angle) * dist - (Math.random() * 20), // slight upward drift
+        opacity: 0,
+        scale: Math.random() * 0.2 + 0.05,
+        rotation: (Math.random() - 0.5) * 200,
+        duration: dur,
+        ease: 'power2.out',
+        onComplete: () => spark.remove(),
+      });
+    }
+  }
+
+  // ── Confetti burst on card reveal ───────────────────────────────────────────
+  const CONFETTI_COLORS = [
+    '#f94144','#f3722c','#f8961e','#f9c74f',
+    '#90be6d','#43aa8b','#577590','#a78bfa',
+    '#e879f9','#ffffff','#ffd700',
+  ];
+
+  function spawnConfetti(card: HTMLElement) {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height * 0.35; // shoot from upper half
+
+    // Party popper emoji that pops up and fades
+    const popper = document.createElement('div');
+    popper.textContent = '🎉';
+    popper.style.cssText = `
+      position: fixed;
+      left: ${cx}px;
+      top: ${cy}px;
+      font-size: ${Math.random() * 14 + 22}px;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      will-change: transform, opacity;
+    `;
+    document.body.appendChild(popper);
+    gsap.fromTo(popper,
+      { opacity: 1, scale: 0.4, y: 0 },
+      { opacity: 0, scale: 1.4, y: -60, duration: 1.1, ease: 'power2.out', onComplete: () => popper.remove() }
+    );
+
+    // Confetti pieces
+    const count = 38;
+    for (let i = 0; i < count; i++) {
+      const piece = document.createElement('div');
+      const color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+      const isRect = Math.random() > 0.35;
+      const w = isRect ? Math.random() * 8 + 5 : Math.random() * 7 + 5;
+      const h = isRect ? Math.random() * 4 + 3 : w;
+
+      piece.style.cssText = `
+        position: fixed;
+        width: ${w}px;
+        height: ${h}px;
+        border-radius: ${isRect ? '1px' : '50%'};
+        background: ${color};
+        left: ${cx + (Math.random() - 0.5) * rect.width * 0.6}px;
+        top: ${cy}px;
+        pointer-events: none;
+        z-index: 9998;
+        will-change: transform, opacity;
+      `;
+      document.body.appendChild(piece);
+
+      const angle = (Math.random() * 160 + 200) * (Math.PI / 180); // mostly upward fan
+      const speed = Math.random() * 180 + 80;
+      const vx = Math.cos(angle) * speed;
+      const vy = Math.sin(angle) * speed;
+      const dur = Math.random() * 0.8 + 0.9;
+      const gravity = Math.random() * 280 + 180;
+
+      gsap.to(piece, {
+        x: vx,
+        y: vy + gravity, // arc up then fall with gravity
+        rotation: (Math.random() - 0.5) * 720,
+        opacity: 0,
+        duration: dur,
+        ease: 'power1.out',
+        onComplete: () => piece.remove(),
+      });
+    }
+  }
+
+  // ── Animate each card individually so we can fire sparks on complete ────────
+  const trackCards = gsap.utils.toArray<HTMLElement>('.track-card');
+  trackCards.forEach((card, i) => {
+    gsap.fromTo(card,
+      { opacity: 0, y: 32, scale: 0.95 },
+      {
+        scrollTrigger: { trigger: '.track-grid', start: 'top 84%', once: true },
+        opacity: 1, y: 0, scale: 1,
+        duration: 0.65,
+        ease: 'power3.out',
+        delay: i * 0.13,
+        immediateRender: false,
+        onComplete: () => { spawnSparks(card); spawnConfetti(card); },
+      }
+    );
+  });
+
+  gsap.from('.challenge-card', {
+    scrollTrigger: { trigger: '.adopt-challenges', start: 'top 85%', once: true },
+    opacity: 0, y: 18,
+    stagger: 0.07, duration: 0.5, ease: 'power3.out',
+    immediateRender: false,
+  });
+
+  gsap.from('.gallery-row', {
+    scrollTrigger: { trigger: '.gallery-row', start: 'top 90%', once: true },
+    opacity: 0, y: 14, duration: 0.6, ease: 'power3.out',
+    immediateRender: false,
+  });
+
+  // ── Winner photo gallery — shuffle-to-back ───────────────────────────────────
+  {
+    const stack  = document.getElementById('wg-stack');
+    const counter = document.getElementById('wg-counter');
+    const pipsEl  = document.getElementById('wg-pips');
+    if (stack) {
+      const cards = Array.from(stack.querySelectorAll<HTMLElement>('.wg-card'));
+      const pips  = pipsEl ? Array.from(pipsEl.querySelectorAll<HTMLElement>('.wg-pip')) : [];
+      const total = cards.length;
+      const OFFSET      = 5;     // px per depth level
+      const SCALE_STEP  = 0.018;
+      const MAX_DEPTH   = 4;
+      let cur  = 0;
+      let busy = false;
+
+      function depth(i: number) { return (i - cur + total) % total; }
+
+      function setRest(card: HTMLElement, d: number, animated = false) {
+        const cd = Math.min(d, MAX_DEPTH);
+        const props = { y: cd * OFFSET, scale: 1 - cd * SCALE_STEP, rotation: 0, zIndex: d === 0 ? total : Math.max(0, total - d), opacity: d > MAX_DEPTH ? 0 : 1 };
+        if (animated) { gsap.to(card, { ...props, duration: 0.35, ease: 'power2.out' }); }
+        else { gsap.set(card, props); }
+      }
+
+      function updateUI() {
+        if (counter) counter.textContent = `${String(cur + 1).padStart(2,'0')} / ${String(total).padStart(2,'0')}`;
+        pips.forEach((p, i) => {
+          p.classList.remove('wg-pip-active','wg-pip-done');
+          if (i === cur)    p.classList.add('wg-pip-active');
+          else if (i < cur) p.classList.add('wg-pip-done');
+        });
+      }
+
+      // Init
+      cards.forEach((c, i) => setRest(c, depth(i)));
+      updateUI();
+
+      function next() {
+        if (busy) return; busy = true;
+        const topIdx  = cur;
+        const topCard = cards[topIdx];
+        let bd = 0, bcd = 0; // back-depth computed after index swap
+
+        const tl = gsap.timeline({ onComplete() { busy = false; } });
+
+        // ① Arc UP — card leaves the top of the deck
+        tl.to(topCard, {
+          y: -90,
+          x: 5,
+          rotation: -9,
+          scale: 1.06,
+          duration: 0.32,
+          ease: 'power3.out',
+        });
+
+        // ② Midpoint — swap state while card is at peak
+        tl.call(() => {
+          cur = (cur + 1) % total;
+          updateUI();
+          // Deck cards shift to their new positions
+          cards.forEach((c, i) => { if (i !== topIdx) setRest(c, depth(i), true); });
+          // Card commits to going behind
+          gsap.set(topCard, { zIndex: 0 });
+          bd  = depth(topIdx);
+          bcd = Math.min(bd, MAX_DEPTH);
+        });
+
+        // ③ Arc DOWN — card descends into back of deck (gravity)
+        tl.to(topCard, {
+          y:       () => bcd * OFFSET,
+          x:       0,
+          rotation: 0,
+          scale:   () => 1 - bcd * SCALE_STEP,
+          opacity: () => (bd > MAX_DEPTH ? 0 : 1),
+          duration: 0.42,
+          ease: 'power3.in',
+        });
+      }
+
+      function prev() {
+        if (busy) return; busy = true;
+        const prevIdx  = (cur - 1 + total) % total;
+        const prevCard = cards[prevIdx];
+
+        // Ensure card is visible before lifting
+        gsap.set(prevCard, { opacity: 1, zIndex: total + 1 });
+
+        const tl = gsap.timeline({ onComplete() { busy = false; } });
+
+        // ① Arc UP — card rises from the back
+        tl.to(prevCard, {
+          y: -90,
+          x: -5,
+          rotation: 9,
+          scale: 1.06,
+          duration: 0.32,
+          ease: 'power3.out',
+        });
+
+        // ② Midpoint — commit to new top
+        tl.call(() => {
+          cur = prevIdx;
+          updateUI();
+          cards.forEach((c, i) => { if (i !== prevIdx) setRest(c, depth(i), true); });
+          gsap.set(prevCard, { zIndex: total });
+        });
+
+        // ③ Arc DOWN — card settles into top position
+        tl.to(prevCard, {
+          y: 0, x: 0, rotation: 0, scale: 1,
+          duration: 0.42,
+          ease: 'power3.in',
+        });
+      }
+
+      document.getElementById('wg-next')?.addEventListener('click', next);
+      document.getElementById('wg-prev')?.addEventListener('click', prev);
+
+      gsap.from('.event-moments', {
+        scrollTrigger: { trigger: '.event-moments', start: 'top 85%', once: true },
+        opacity: 0, y: 28, duration: 0.85, ease: 'power3.out', immediateRender: false,
+      });
+    }
+  }
+</script>

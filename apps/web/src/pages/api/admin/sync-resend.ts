@@ -108,6 +108,7 @@ export const POST: APIRoute = async ({ locals, url }) => {
   }
 
   // Find or create audience
+  // eslint-disable-next-line no-useless-assignment
   let audienceId: string | null = null
   try {
     const { data: audiences } = await resend.audiences.list()
@@ -181,8 +182,8 @@ export const POST: APIRoute = async ({ locals, url }) => {
 
   // Push only new contacts
   let synced = 0
-  let skippedExisting = existingEmails.size
-  let skippedUnsubscribed = unsubscribedEmails.size
+  const skippedExisting = existingEmails.size
+  const skippedUnsubscribed = unsubscribedEmails.size
   let failed = 0
   const errors: Array<{ email: string; error: string }> = []
 

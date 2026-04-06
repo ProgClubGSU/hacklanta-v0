@@ -3,11 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdminPanel from '../../components/admin/AdminPanel';
 
 const devBypass = import.meta.env.DEV;
-let isAdmin = false;
+let isAdmin = devBypass;
 
-if (devBypass) {
-  isAdmin = true;
-} else {
+if (!devBypass) {
   const { userId } = Astro.locals.auth();
   if (!userId) {
     return Astro.redirect('/sign-in');

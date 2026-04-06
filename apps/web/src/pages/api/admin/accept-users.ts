@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ locals }) => {
 
   // Build email payloads using templates
   const emails = users.map(user => {
-    const isOverflow = (user as any).applications?.[0]?.status === 'accepted_overflow'
+    const isOverflow = (user as Record<string, unknown> & { applications?: Array<{ status: string }> }).applications?.[0]?.status === 'accepted_overflow'
     const template = isOverflow
       ? templates.acceptance_overflow({ firstName: user.first_name })
       : templates.acceptance({ firstName: user.first_name })

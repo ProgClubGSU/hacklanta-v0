@@ -1,0 +1,615 @@
+---
+// Spring 2026 Recap — red casino noir, track cards, sponsor data
+
+const suitSvg = {
+  spade: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg>',
+  heart: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg>',
+  club: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 50m-16 0a16 16 0 1 1 32 0 16 16 0 1 1-32 0M50 5a20 20 0 0 1 0 40A20 20 0 0 1 50 5M22 30a20 20 0 0 0 18 35A20 20 0 0 0 22 30M60 65a20 20 0 0 0 18-35A20 20 0 0 0 60 65M44 85h12V65H44z"/></svg>',
+  diamond: '<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;display:inline-block;vertical-align:-0.125em;"><path d="M50 5L5 50 50 95 95 50z"/></svg>',
+};
+
+const tracks = [
+  {
+    rank: 'A',
+    suit: suitSvg.diamond,
+    label: 'ACE OF DIAMONDS',
+    name: 'House Pick',
+    sponsor: 'Cox Track',
+    accentColor: '#C9A84C',
+    accentRgb: '201,168,76',
+    desc: 'Build an AI-powered solution that solves a real problem and creates positive impact for communities or the world around us.',
+    centerLogo: '/images/sponsors/cox-icon.svg',
+    centerLogoLg: true,
+    footerLogo: '/images/sponsors/cox-full.svg',
+  },
+  {
+    rank: 'K',
+    suit: suitSvg.spade,
+    label: 'KING OF SPADES',
+    name: 'All-In',
+    sponsor: 'Nexlayer Track',
+    accentColor: '#C41E3A',
+    accentRgb: '196,30,58',
+    desc: 'Build something that feels like the start of a real company. Solve a meaningful problem, then pitch why it deserves to exist beyond Hacklanta.',
+    centerLogo: '/images/sponsors/nexlayer-icon.png',
+    footerLogo: '/images/sponsors/nexlayer-full.png',
+  },
+  {
+    rank: 'Q',
+    suit: suitSvg.heart,
+    label: 'QUEEN OF HEARTS',
+    name: 'Jackpot',
+    sponsor: 'Finance Track',
+    accentColor: '#E63946',
+    accentRgb: '230,57,70',
+    desc: 'Create a product around money, markets, or financial access — then prove it has more upside than a lucky hand.',
+    centerLogo: null,
+    footerLogo: null,
+  },
+  {
+    rank: 'J',
+    suit: suitSvg.club,
+    label: 'JACK OF CLUBS',
+    name: 'Jack of All Trades',
+    sponsor: 'Most Creative',
+    accentColor: '#C41E3A',
+    accentRgb: '196,30,58',
+    desc: 'Build something bold, weird, and impossible to ignore. Take creative risks. Combine ideas in unexpected ways.',
+    centerLogo: null,
+    footerLogo: null,
+  },
+];
+
+const sponsors = [
+  { name: 'Cox', tier: 'Title Partner', img: '/images/sponsors/cox-full.svg', href: 'https://www.coxautoinc.com/', accentColor: 'rgba(255,215,0,0.3)', borderColor: 'rgba(255,215,0,0.25)' },
+  { name: 'Nexlayer', tier: 'Silver', img: '/images/sponsors/nexlayer-full.png', href: 'https://nexlayer.com/', accentColor: 'rgba(255,255,255,0.15)', borderColor: 'rgba(255,255,255,0.15)' },
+];
+
+---
+
+<section id="spring-recap" class="relative overflow-hidden px-4 pt-24 pb-0 md:pt-32" style="background: #100208;">
+
+  <!-- Red ambient bleeds -->
+  <div
+    class="pointer-events-none absolute right-0 top-0"
+    style="width: 700px; height: 700px; background: radial-gradient(circle, rgba(196,30,58,0.35) 0%, transparent 60%); transform: translate(20%, -20%); border-radius: 50%;"
+  ></div>
+  <div
+    class="pointer-events-none absolute left-0 top-1/3"
+    style="width: 600px; height: 600px; background: radial-gradient(circle, rgba(180,20,45,0.28) 0%, transparent 60%); transform: translate(-20%, 0); border-radius: 50%;"
+  ></div>
+  <div
+    class="pointer-events-none absolute right-0 bottom-0"
+    style="width: 500px; height: 500px; background: radial-gradient(circle, rgba(160,15,35,0.25) 0%, transparent 60%); transform: translate(15%, 15%); border-radius: 50%;"
+  ></div>
+  <!-- Purple bleed — keeps continuity with Fall section -->
+  <div
+    class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+    style="width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(80,20,160,0.03) 0%, transparent 70%); border-radius: 50%;"
+  ></div>
+
+  <!-- Top rule -->
+  <div
+    class="absolute inset-x-0 top-0 h-px"
+    style="background: linear-gradient(to right, transparent, rgba(196,30,58,0.7), rgba(139,92,246,0.3), transparent);"
+  ></div>
+
+  <div class="relative z-10 mx-auto max-w-5xl">
+
+    <!-- ── Section header ── -->
+    <div class="spring-label mb-16">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="h-px w-6" style="background: rgba(196,30,58,0.6);"></div>
+        <span class="font-mono text-[10px] tracking-[0.4em] uppercase" style="color: rgba(196,30,58,0.65);">April 2026 · Atlanta, GA</span>
+      </div>
+      <h2
+        class="font-display italic leading-[0.9] tracking-tight text-white"
+        style="font-size: clamp(2.5rem, 8vw, 5.5rem);"
+      >
+        Spring 2026 Recap
+      </h2>
+<p class="mt-4 max-w-xl font-body text-sm leading-[1.9]" style="color: rgba(255,255,255,0.38);">
+        GSU's first hackathon. Casino-themed, all-in energy, 12 hours straight. Four tracks, real judges, and
+        a room full of builders who refused to fold.
+      </p>
+    </div>
+
+    <!-- ── Stats bar ── -->
+    <div
+      class="spring-stats mb-20 grid grid-cols-3 border"
+      style="border-color: rgba(196,30,58,0.12); background: rgba(196,30,58,0.03);"
+    >
+      {[
+        { val: '12', lbl: 'Hours' },
+        { val: '4',  lbl: 'Tracks' },
+        { val: 'GSU', lbl: 'Georgia State' },
+      ].map((s, i) => (
+        <div
+          class="flex flex-col items-center justify-center gap-1 py-7 px-4"
+          style={`background: transparent; ${i < 2 ? 'border-right: 1px solid rgba(196,30,58,0.1);' : ''}`}
+        >
+          <span
+            class="font-display italic leading-none text-white"
+            style="font-size: clamp(2rem, 5vw, 3rem);"
+          >{s.val}</span>
+          <span class="font-mono text-[9px] tracking-[0.35em] uppercase" style="color: rgba(255,255,255,0.28);">{s.lbl}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- ── Track cards — Bicycle playing card style ── -->
+    <div class="spring-tracks mb-20">
+      <p class="mb-8 font-mono text-[10px] tracking-[0.4em] uppercase" style="color: rgba(196,30,58,0.55);">// the four tracks</p>
+      <div class="recap-track-grid grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {tracks.map((t, i) => (
+          <div class="recap-track-slot group relative">
+            <!-- Placemat outline -->
+            <div class="recap-placemat absolute inset-0 rounded-xl border-2 border-dashed" style="border-color: rgba(196,30,58,0.1); aspect-ratio: 5/7;"></div>
+
+            <!-- Card wrapper -->
+            <div class:list={['recap-track-card', { 'recap-track-card--sponsored': t.centerLogo }]} data-index={i}>
+              <div class="recap-card-flipper" data-flip="false">
+
+                <!-- BACK FACE -->
+                <div class="recap-card-back">
+                  <div class="recap-card-back-inner">
+                    <div class="recap-card-back-pattern"></div>
+                    <div class="recap-card-back-border-1"></div>
+                    <div class="recap-card-back-border-2"></div>
+                    <div class="recap-card-back-center">
+                      <div class="recap-card-back-diamond">
+                        <span class="recap-card-back-diamond-suit"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span>
+                      </div>
+                    </div>
+                    <span class="recap-card-back-corner recap-card-back-corner--tl"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5L5 50 50 95 95 50z"/></svg></span>
+                    <span class="recap-card-back-corner recap-card-back-corner--tr"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 50m-16 0a16 16 0 1 1 32 0 16 16 0 1 1-32 0M50 5a20 20 0 0 1 0 40A20 20 0 0 1 50 5M22 30a20 20 0 0 0 18 35A20 20 0 0 0 22 30M60 65a20 20 0 0 0 18-35A20 20 0 0 0 60 65M44 85h12V65H44z"/></svg></span>
+                    <span class="recap-card-back-corner recap-card-back-corner--bl"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 90C50 90 5 55 5 35 5 18 20 5 35 10c7 3 12 8 15 15 3-7 8-12 15-15 15-5 30 8 30 25C95 55 50 90 50 90z"/></svg></span>
+                    <span class="recap-card-back-corner recap-card-back-corner--br"><svg viewBox="0 0 100 100" fill="currentColor" width="1em" height="1em" aria-hidden="true"><path d="M50 5C50 5 20 40 20 58c0 12 8 20 18 20 6 0 10-3 12-7v14H40v6h20v-6H50V71c2 4 6 7 12 7 10 0 18-8 18-20C80 40 50 5 50 5z"/></svg></span>
+                  </div>
+                </div>
+
+                <!-- FRONT FACE -->
+                <div class="recap-card-front" style={`--card-accent: ${t.accentColor}; --card-accent-rgb: ${t.accentRgb};`}>
+                  <div class="recap-card-front-inner">
+                    <div class="recap-card-front-tl">
+                      <span class="recap-card-rank">{t.rank}</span>
+                      <span class="recap-card-suit-sm" set:html={t.suit}></span>
+                    </div>
+                    <div class="recap-card-front-br">
+                      <span class="recap-card-rank">{t.rank}</span>
+                      <span class="recap-card-suit-sm" set:html={t.suit}></span>
+                    </div>
+                    <div class="recap-card-center">
+                      {t.centerLogo ? (
+                        <img src={t.centerLogo} alt={t.name} class:list={['recap-card-sponsor-logo-center', { 'recap-card-sponsor-logo-center--lg': t.centerLogoLg }]} />
+                      ) : (
+                        <span class="recap-card-suit-lg" set:html={t.suit}></span>
+                      )}
+                      <span class="recap-card-track-name">{t.name.toUpperCase()}</span>
+                      <span class="recap-card-track-sponsor">{t.sponsor}</span>
+                      <div class="recap-card-divider"></div>
+                      <span class="recap-card-track-desc">{t.desc}</span>
+                    </div>
+                    {t.footerLogo && (
+                      <div class="recap-card-sponsor-footer">
+                        <span class="recap-card-sponsor-footer-label">Sponsored by</span>
+                        <img src={t.footerLogo} alt={t.sponsor} class="recap-card-sponsor-logo-footer" />
+                      </div>
+                    )}
+                    <span class="recap-card-label">{t.label}</span>
+                    <div class="recap-card-inner-border"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── Sponsors ── -->
+    <div class="spring-sponsors mb-20">
+      <p class="mb-5 font-mono text-[10px] tracking-[0.4em] uppercase" style="color: rgba(196,30,58,0.55);">// backed by</p>
+      <div class="grid gap-3 sm:grid-cols-2 mb-6">
+        <a
+          href="https://www.coxautoinc.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sponsor-card sponsor-card--cox group flex flex-col items-center justify-center gap-3 border py-6 px-8 transition-all duration-300"
+        >
+          <span class="font-mono text-[9px] tracking-[0.35em] uppercase" style="color: rgba(255,215,0,0.6);">Title Partner</span>
+          <img src="/images/sponsors/cox-full.svg" alt="Cox" class="h-8 w-auto transition-opacity duration-200" style="filter: brightness(0) invert(1); opacity: 0.85;" />
+        </a>
+        <a
+          href="https://nexlayer.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="sponsor-card sponsor-card--nexlayer group flex flex-col items-center justify-center gap-3 border py-6 px-8 transition-all duration-300"
+        >
+          <span class="font-mono text-[9px] tracking-[0.35em] uppercase" style="color: rgba(255,255,255,0.5);">Silver</span>
+          <img src="/images/sponsors/nexlayer-full.png" alt="Nexlayer" class="h-8 w-auto transition-opacity duration-200" style="filter: brightness(0) invert(1); opacity: 0.85;" />
+        </a>
+      </div>
+
+      <!-- Adopt-a-Hack people — compact -->
+      <p class="mb-4 font-mono text-[9px] tracking-[0.3em] uppercase" style="color: rgba(255,255,255,0.2);">Adopt-a-Hack Contributors</p>
+      <div class="grid gap-2 sm:grid-cols-2">
+        {[
+          { name: 'Joey Zhang',       role: 'Founder, progsu',                    amount: '$2,000', img: '/images/joey-zhang.png' },
+          { name: 'Bogdan Boyko',     role: 'GSU Student',                        amount: '$500',   img: '/images/sponsors/bogdan-boyko.jpg' },
+          { name: 'Gabriel Cherian',  role: 'GSU Alumni',                         amount: '$500',   img: '/images/sponsors/gabriel-cherian.jpg' },
+          { name: 'Nick San George',  role: 'Cloud & AI @ Microsoft',             amount: '$200',   img: '/images/sponsors/nick-sangeorge.jpg' },
+        ].map((p) => (
+          <div
+            class="adopt-card flex items-center gap-4 border px-4 py-3.5"
+            style="border-color: rgba(196,30,58,0.1); background: rgba(6,3,12,0.7);"
+          >
+            <img
+              src={p.img}
+              alt={p.name}
+              class="h-9 w-9 flex-shrink-0 rounded-full object-cover"
+              style="border: 1px solid rgba(196,30,58,0.15);"
+            />
+            <div class="flex-1 min-w-0">
+              <p class="font-body text-sm font-medium text-white leading-tight">{p.name}</p>
+              <p class="font-mono text-[9px] tracking-[0.15em] uppercase mt-0.5" style="color: rgba(255,255,255,0.28);">{p.role}</p>
+            </div>
+            <span class="font-mono text-xs flex-shrink-0" style="color: rgba(255,215,0,0.65);">{p.amount}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<style>
+  /* ── Section title hover — outlined stroke effect ── */
+  .spring-label h2 {
+    -webkit-text-stroke: 2px transparent;
+    cursor: default;
+    transition: color 0.35s ease, -webkit-text-stroke-color 0.35s ease, filter 0.35s ease;
+  }
+  .spring-label h2:hover {
+    color: transparent;
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.85);
+    filter: drop-shadow(0 0 16px rgba(196,30,58,0.6)) drop-shadow(0 0 40px rgba(196,30,58,0.25));
+  }
+
+  /* ── Presented by link ── */
+  .presented-link { transition: color 0.2s; }
+  .presented-link:hover { color: rgba(196,30,58,1) !important; }
+
+  /* ── Sponsor cards ── */
+  .sponsor-card--cox {
+    border-color: rgba(255,215,0,0.25);
+    background: rgba(18,8,4,0.85);
+  }
+  .sponsor-card--cox:hover {
+    border-color: rgba(255,215,0,0.55);
+    background: rgba(22,10,4,0.95);
+    box-shadow: 0 0 28px rgba(255,215,0,0.12);
+  }
+  .sponsor-card--cox:hover img { opacity: 1 !important; }
+  .sponsor-card--nexlayer {
+    border-color: rgba(255,255,255,0.18);
+    background: rgba(18,8,4,0.85);
+  }
+  .sponsor-card--nexlayer:hover {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(22,10,4,0.95);
+    box-shadow: 0 0 28px rgba(255,255,255,0.06);
+  }
+  .sponsor-card--nexlayer:hover img { opacity: 1 !important; }
+
+  /* ── Track slot ── */
+  .recap-track-slot {
+    aspect-ratio: 5 / 7;
+    position: relative;
+  }
+  .recap-placemat {
+    box-shadow: inset 0 0 30px rgba(196,30,58,0.03);
+  }
+
+  /* ── Card wrapper ── */
+  .recap-track-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .recap-track-card--sponsored {
+    border-radius: 12px;
+    box-shadow: 0 0 0 2px rgba(201,168,76,0.4), 0 0 20px rgba(201,168,76,0.12), 0 0 40px rgba(201,168,76,0.06);
+  }
+  .recap-track-card--sponsored:hover {
+    box-shadow: 0 0 0 2px rgba(201,168,76,0.6), 0 0 30px rgba(201,168,76,0.2), 0 0 60px rgba(201,168,76,0.1);
+  }
+  .recap-card-flipper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .recap-card-flipper[data-flip="true"] {
+    transform: rotateY(180deg);
+  }
+
+  /* ── Card Back ── */
+  .recap-card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .recap-card-back-inner {
+    width: 100%;
+    height: 100%;
+    background: #B22234;
+    border: 3px solid #d4c8b0;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .recap-card-back-pattern {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 8px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 8px);
+  }
+  .recap-card-back-border-1 {
+    position: absolute;
+    inset: 7%;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+  }
+  .recap-card-back-border-2 {
+    position: absolute;
+    inset: 10%;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 4px;
+  }
+  .recap-card-back-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .recap-card-back-diamond {
+    width: 30px;
+    height: 30px;
+    transform: rotate(45deg);
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .recap-card-back-diamond-suit {
+    transform: rotate(-45deg);
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1;
+  }
+  .recap-card-back-corner {
+    position: absolute;
+    font-size: 9px;
+    color: rgba(255,255,255,0.2);
+    line-height: 1;
+  }
+  .recap-card-back-corner--tl { top: 12%; left: 14%; }
+  .recap-card-back-corner--tr { top: 12%; right: 14%; }
+  .recap-card-back-corner--bl { bottom: 12%; left: 14%; }
+  .recap-card-back-corner--br { bottom: 12%; right: 14%; }
+
+  /* ── Card Front ── */
+  .recap-card-front {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .recap-card-front-inner {
+    width: 100%;
+    height: 100%;
+    background: #e8dcc8;
+    border: 2.5px solid #d4c8b0;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 3px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 3px),
+      linear-gradient(180deg, #ebe0ce, #ddd0ba);
+  }
+  .recap-card-front-tl {
+    position: absolute;
+    top: 6%;
+    left: 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+  }
+  .recap-card-front-br {
+    position: absolute;
+    bottom: 6%;
+    right: 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: rotate(180deg);
+    z-index: 2;
+  }
+  .recap-card-rank {
+    font-family: var(--font-serif);
+    font-size: clamp(18px, 3.5vw, 32px);
+    font-weight: 400;
+    line-height: 1;
+    color: var(--card-accent);
+  }
+  .recap-card-suit-sm {
+    font-size: clamp(11px, 2vw, 20px);
+    line-height: 1;
+    color: var(--card-accent);
+    opacity: 0.8;
+  }
+  .recap-card-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 22% 8%;
+    text-align: center;
+    gap: 4px;
+  }
+  .recap-card-suit-lg {
+    font-size: clamp(24px, 5vw, 48px);
+    line-height: 1;
+    color: var(--card-accent);
+    opacity: 0.5;
+  }
+  .recap-card-track-name {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 2vw, 16px);
+    letter-spacing: 0.15em;
+    color: #1a1a1a;
+    line-height: 1.1;
+  }
+  .recap-card-sponsor-logo-center {
+    width: clamp(36px, 9vw, 63px);
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 4px;
+  }
+  .recap-card-sponsor-logo-center--lg {
+    width: clamp(80px, 20vw, 140px);
+  }
+  .recap-card-sponsor-footer {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    z-index: 2;
+  }
+  .recap-card-sponsor-footer-label {
+    font-family: var(--font-mono);
+    font-size: clamp(5px, 0.9vw, 7px);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+  .recap-card-sponsor-logo-footer {
+    width: clamp(50px, 12vw, 90px);
+    height: auto;
+    object-fit: contain;
+  }
+  .recap-card-track-sponsor {
+    font-family: var(--font-mono);
+    font-size: clamp(7px, 1.2vw, 10px);
+    letter-spacing: 0.12em;
+    color: var(--card-accent);
+    text-transform: uppercase;
+    margin-top: 2px;
+    opacity: 0.8;
+  }
+  .recap-card-divider {
+    width: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--card-accent-rgb), 0.25), transparent);
+    margin: 2px 0;
+  }
+  .recap-card-track-desc {
+    font-family: var(--font-body);
+    font-size: clamp(7px, 1.4vw, 12px);
+    color: #777;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .recap-card-label {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: clamp(5px, 1vw, 9px);
+    letter-spacing: 0.18em;
+    color: rgba(var(--card-accent-rgb), 0.35);
+    white-space: nowrap;
+  }
+  .recap-card-inner-border {
+    position: absolute;
+    inset: 7%;
+    border: 1px solid rgba(var(--card-accent-rgb), 0.06);
+    border-radius: 5px;
+    pointer-events: none;
+  }
+
+</style>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.spring-label', {
+    scrollTrigger: { trigger: '.spring-label', start: 'top 82%', once: true },
+    opacity: 0, y: 40, duration: 0.95, ease: 'power3.out',
+  });
+  gsap.from('.spring-stats', {
+    scrollTrigger: { trigger: '.spring-stats', start: 'top 85%', once: true },
+    opacity: 0, y: 20, duration: 0.75, ease: 'power3.out',
+  });
+
+  // Cards slide in face-down, then flip face-up
+  gsap.from('.recap-track-card', {
+    scrollTrigger: { trigger: '.recap-track-grid', start: 'top 84%', once: true },
+    opacity: 0, y: 28, scale: 0.975,
+    stagger: 0.1, duration: 0.65, ease: 'power3.out',
+  });
+  ScrollTrigger.create({
+    trigger: '.recap-track-grid',
+    start: 'top 70%',
+    once: true,
+    onEnter: () => {
+      document.querySelectorAll<HTMLElement>('.recap-card-flipper').forEach((flipper, i) => {
+        setTimeout(() => flipper.setAttribute('data-flip', 'true'), 400 + i * 130);
+      });
+    },
+  });
+
+  // Placemat hover glow
+  document.querySelectorAll<HTMLElement>('.recap-placemat').forEach((pm) => {
+    const slot = pm.parentElement!;
+    slot.addEventListener('mouseenter', () => gsap.to(pm, { borderColor: 'rgba(196,30,58,0.28)', duration: 0.3 }));
+    slot.addEventListener('mouseleave', () => gsap.to(pm, { borderColor: 'rgba(196,30,58,0.1)', duration: 0.3 }));
+  });
+
+  gsap.from('.sponsor-card', {
+    scrollTrigger: { trigger: '.spring-sponsors', start: 'top 90%', once: true },
+    opacity: 0, y: 20, stagger: 0.1, duration: 0.6, ease: 'power3.out',
+    immediateRender: false,
+  });
+  gsap.from('.adopt-card', {
+    scrollTrigger: { trigger: '.adopt-card', start: 'top 88%', once: true },
+    opacity: 0, y: 14, stagger: 0.07, duration: 0.5, ease: 'power3.out',
+  });
+
+</script>

@@ -14,9 +14,6 @@ const gate = await checkDashboardAccess(userId);
 if (gate.status === 'accepted') {
   return Astro.redirect('/dashboard/team');
 }
-if (gate.status === 'pending') {
-  return Astro.redirect('/dashboard/pending');
-}
 ---
 
 <BaseLayout title="No Application Found | Hacklanta">
