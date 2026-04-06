@@ -15,9 +15,12 @@ const currentYear = new Date().getFullYear();
 
       <a
         href="/archive/spring26"
-        class="footer-s26-btn inline-block"
+        class="footer-s26-btn inline-flex items-center gap-2 transition-colors duration-300"
+        onmouseover="this.style.color='rgba(139,92,246,0.95)'; this.style.textShadow='0 0 12px rgba(139,92,246,0.5)';"
+        onmouseout="this.style.color='rgba(255,255,255,1)'; this.style.textShadow='none';"
       >
-        <span class="font-display italic text-[11px] tracking-[0.3em] uppercase text-white">View S26 Site</span>
+        <span aria-hidden="true">→</span>
+        <span class="font-display italic text-[11px] tracking-[0.3em] text-white">View S26 Site</span>
       </a>
 
       <a href="/" class="footer-logo-link inline-block">
