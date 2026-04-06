@@ -15,12 +15,9 @@ const currentYear = new Date().getFullYear();
 
       <a
         href="/archive/spring26"
-        class="footer-s26-btn inline-flex items-center gap-2 transition-colors duration-300"
-        onmouseover="this.style.color='rgba(139,92,246,0.95)'; this.style.textShadow='0 0 12px rgba(139,92,246,0.5)';"
-        onmouseout="this.style.color='rgba(255,255,255,1)'; this.style.textShadow='none';"
+        class="footer-s26-btn inline-block relative"
       >
-        <span aria-hidden="true">→</span>
-        <span class="font-display italic text-[11px] tracking-[0.3em] text-white">View S26 Site</span>
+        <span class="footer-s26-btn-text font-display italic text-[11px] tracking-[0.3em] text-white">View S26 Site</span>
       </a>
 
       <a href="/" class="footer-logo-link inline-block">
@@ -89,5 +86,33 @@ const currentYear = new Date().getFullYear();
   .footer-progsu-link:hover {
     color: rgba(167,139,250,0.9) !important;
     text-shadow: 0 0 12px rgba(167,139,250,0.45);
+  }
+
+  /* S26 button with underline effect */
+  .footer-s26-btn {
+    position: relative;
+  }
+  .footer-s26-btn-text {
+    position: relative;
+    transition: color 0.25s, text-shadow 0.25s;
+  }
+  .footer-s26-btn-text::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(139, 92, 246, 0.7);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .footer-s26-btn:hover .footer-s26-btn-text {
+    color: rgba(139, 92, 246, 0.95);
+    text-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
+  }
+  .footer-s26-btn:hover .footer-s26-btn-text::after {
+    transform: scaleX(1);
   }
 </style>

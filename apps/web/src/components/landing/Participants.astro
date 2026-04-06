@@ -218,12 +218,9 @@ const adoptChallenges = [
             href="https://lifeoftito.pixieset.com/hacklanta/"
             target="_blank"
             rel="noopener noreferrer"
-            class="gallery-btn inline-flex items-center gap-2 transition-colors duration-300"
-            onmouseover="this.style.color='rgba(196,30,58,0.9)'; this.style.textShadow='0 0 12px rgba(196,30,58,0.5)';"
-            onmouseout="this.style.color='rgba(255,255,255,1)'; this.style.textShadow='none';"
+            class="gallery-btn inline-block relative"
           >
-            <span aria-hidden="true">→</span>
-            <span class="font-display italic text-[11px] tracking-[0.3em] text-white">View Full Gallery</span>
+            <span class="gallery-btn-text font-display italic text-[11px] tracking-[0.3em] text-white">View Full Gallery</span>
           </a>
           <p class="gallery-row font-mono text-[9px] tracking-[0.2em] uppercase" style="color: rgba(196,30,58,0.75); text-shadow: 0 0 12px rgba(196,30,58,0.4);">
             Photography by Arturo &amp; Fred
@@ -458,6 +455,34 @@ const adoptChallenges = [
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
+  }
+
+  /* Gallery button with underline effect */
+  .gallery-btn {
+    position: relative;
+  }
+  .gallery-btn-text {
+    position: relative;
+    transition: color 0.25s, text-shadow 0.25s;
+  }
+  .gallery-btn-text::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(196, 30, 58, 0.7);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .gallery-btn:hover .gallery-btn-text {
+    color: rgba(196, 30, 58, 0.9);
+    text-shadow: 0 0 12px rgba(196, 30, 58, 0.4);
+  }
+  .gallery-btn:hover .gallery-btn-text::after {
+    transform: scaleX(1);
   }
 </style>
 
