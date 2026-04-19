@@ -46,6 +46,7 @@ const adoptChallenges = [
   { sponsor: 'Bogdan Boyko',    challenge: 'Most Auramaxxing',           prize: '$125',        winner: 'Guess The Brainrot',winnerUrl: 'https://devspot.app/projects/1744' },
   { sponsor: 'Bogdan Boyko',    challenge: 'Best Demo Video',            prize: '$125',        winner: 'Guess The Brainrot',winnerUrl: 'https://devspot.app/projects/1744' },
   { sponsor: 'Nick San George', challenge: 'Best Corporate Larp',        prize: '$200',        winner: 'LinkedOut',         winnerUrl: 'https://devspot.app/projects/1765' },
+  { sponsor: 'The People',      challenge: "People's Choice",            prize: '$100',        winner: 'PulseRoute',        winnerUrl: 'https://devspot.app/projects/1780' },
   { sponsor: 'Google',          challenge: 'Best Use of Gemini API',     prize: 'Google Swag', winner: 'LIM Video Editor',  winnerUrl: 'https://devspot.app/projects/1767' },
   { sponsor: 'Hacklanta',       challenge: 'Best Solo Project',          prize: '$100',        winner: 'Brand Factory',     winnerUrl: 'https://devspot.app/projects/1824' },
 ];
@@ -217,15 +218,11 @@ const adoptChallenges = [
             href="https://lifeoftito.pixieset.com/hacklanta/"
             target="_blank"
             rel="noopener noreferrer"
-            class="gallery-btn group inline-flex items-center gap-3 border px-6 py-3 transition-all duration-200"
-            style="border-color: rgba(196,30,58,0.3); background: rgba(196,30,58,0.06); color: rgba(230,80,80,0.9);"
-            onmouseover="this.style.borderColor='rgba(196,30,58,0.6)'; this.style.background='rgba(196,30,58,0.12)'; this.style.boxShadow='0 0 24px rgba(196,30,58,0.1)';"
-            onmouseout="this.style.borderColor='rgba(196,30,58,0.3)'; this.style.background='rgba(196,30,58,0.06)'; this.style.boxShadow='none';"
+            class="gallery-btn inline-block relative"
           >
-            <span class="font-mono text-[10px] tracking-[0.3em] uppercase">View Full Gallery</span>
-            <span class="font-mono text-xs transition-transform duration-200 group-hover:translate-x-0.5" style="color: rgba(196,30,58,0.55);" aria-hidden="true">→</span>
+            <span class="gallery-btn-text font-display italic text-[11px] tracking-[0.3em] text-white">View Full Gallery</span>
           </a>
-          <p class="gallery-row font-mono text-[9px] tracking-[0.2em] uppercase" style="color: rgba(255,255,255,0.18);">
+          <p class="gallery-row font-mono text-[9px] tracking-[0.2em] uppercase" style="color: rgba(196,30,58,0.75); text-shadow: 0 0 12px rgba(196,30,58,0.4);">
             Photography by Arturo &amp; Fred
           </p>
         </div>
@@ -458,6 +455,34 @@ const adoptChallenges = [
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
+  }
+
+  /* Gallery button with underline effect */
+  .gallery-btn {
+    position: relative;
+  }
+  .gallery-btn-text {
+    position: relative;
+    transition: color 0.25s, text-shadow 0.25s;
+  }
+  .gallery-btn-text::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(196, 30, 58, 0.7);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .gallery-btn:hover .gallery-btn-text {
+    color: rgba(196, 30, 58, 0.9);
+    text-shadow: 0 0 12px rgba(196, 30, 58, 0.4);
+  }
+  .gallery-btn:hover .gallery-btn-text::after {
+    transform: scaleX(1);
   }
 </style>
 
